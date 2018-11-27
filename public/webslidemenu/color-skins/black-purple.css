@@ -1,0 +1,87 @@
+/* Desktop Main Menu Color */
+
+.wsmainfull {
+  background-color: #333;
+}
+
+.wsmenu>.wsmenu-list {
+  background-color: #424242;
+}
+
+/* Mobile Header Color */
+
+.wsmobileheader {
+  background-color: #424242;
+}
+
+.wsmenu>.wsmenu-list>li>a {
+  color: #fff;
+  border-right: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+.wsmenu>.wsmenu-list>li>a .wsarrow:after {
+  border-top-color: #b3b3b3;
+}
+
+.wsmenu>.wsmenu-list>li>a:hover .wsarrow:after {
+  border-top-color: #fff;
+}
+
+.wsmenu>.wsmenu-list>li>a.active .wsarrow:after {
+  border-top-color: #fff;
+}
+
+.wsmenu>.wsmenu-list>li:hover>a .wsarrow:after {
+  border-top-color: #fff;
+}
+
+.wsmenu>.wsmenu-list>li>a>.fa {
+  color: #898d91;
+}
+
+.wsmenu>.wsmenu-list>li>a.active .fa {
+  color: #fff;
+}
+
+.wsmenu>.wsmenu-list>li:hover>a>.fa {
+  color: #fff;
+}
+
+.wsmenu>.wsmenu-list>li>a:hover .fa {
+  color: #fff;
+}
+
+.wsmenu>.wsmenu-list>li>.wsmegamenu .menu_form input[type="submit"] {
+  background-color: #967ADC;
+  color: #fff;
+}
+
+.wsmenu>.wsmenu-list>li>.wsmegamenu .menu_form input[type="button"] {
+  background-color: #967ADC;
+  color: #fff;
+}
+
+.wsmenu>.wsmenu-list>li>a.active {
+  background-color: #967ADC;
+  color: #fff;
+}
+
+.wsmenu>.wsmenu-list>li:hover>a {
+  background-color: #967ADC;
+  color: #fff;
+}
+
+.wsmenu>.wsmenu-list>li>ul.sub-menu>li:hover>a {
+  background-color: #967ADC;
+  color: #fff;
+}
+
+.wsmenu>.wsmenu-list>li>ul.sub-menu>li>ul.sub-menu>li:hover>a {
+  background-color: #967ADC;
+  color: #fff;
+}
+
+.wsmenu>.wsmenu-list>li>ul.sub-menu>li>ul.sub-menu>li>ul.sub-menu>li:hover a {
+  background-color: #967ADC;
+  color: #fff;
+}

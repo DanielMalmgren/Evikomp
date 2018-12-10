@@ -1,0 +1,16 @@
+
+@media (max-width: 991px) {
+    .wsmobileheader-fill {
+        height:90px;
+    }
+}
+
+@media (min-width: 992px) {
+    .wsmobileheader-fill {
+        display:none;
+    }
+
+    .wsmainfull {
+        margin-bottom: 35px;
+    }
+}

@@ -1,0 +1,12 @@
+.wsmenucontainer {
+    min-height: 100vh;
+}
+
+.fillparent {
+    display: block;
+    padding: .75rem 100% .75rem 1.25rem;
+}
+
+.nopadding {
+    padding: 0;
+}

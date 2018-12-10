@@ -21,7 +21,7 @@ Route::get('/track/{track_id}', 'PagesController@track');
 
 Route::get('/lesson/{lesson_id}', 'PagesController@lesson');
 
-Route::get('/userinfo', 'PagesController@userinfo');
+Route::get('/userinfo/{user_id?}', 'PagesController@userinfo');
 
 Route::get('/settings', 'PagesController@settings');
 

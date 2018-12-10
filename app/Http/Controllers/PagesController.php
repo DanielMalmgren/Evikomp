@@ -41,10 +41,16 @@ class PagesController extends Controller
         return view('pages.about');
     }
 
-    public function userinfo() {
-        $data = array(
-            'user' => Auth::user()
-        );
+    public function userinfo($user_id = null) {
+        if($user_id) {
+            $data = array(
+                'user' => User::find($user_id)
+            );
+        } else {
+            $data = array(
+                'user' => Auth::user()
+            );
+        }
 
         return view('pages.userinfo')->with($data);
     }

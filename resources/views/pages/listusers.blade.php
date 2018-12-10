@@ -9,7 +9,9 @@
         @foreach($users as $user)
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                <h6 class="my-0">{{$user->name}}</h6>
+                <a href="/userinfo/{{$user->id}}">
+                    <h6 class="my-0">{{$user->name}}</h6>
+                </a>
                 @if($user->workplace)
                     <small class="text-muted">{{$user->workplace->name}}</small>
                 @endif

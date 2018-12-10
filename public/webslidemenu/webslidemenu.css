@@ -41,13 +41,13 @@ Extra @Media Query
   line-height: 18px;
   font-family: Helvetica, sans-serif;
   -webkit-font-smoothing: subpixel-antialiased;
-  font-smoothing: antialiased;
-  font-smooth: antialiased;
+  /*font-smoothing: antialiased;
+  font-smooth: antialiased;*/
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -webkit-font-smoothing: subpixel-antialiased;
-  font-smoothing: subpixel-antialiased;
-  font-smooth: subpixel-antialiased;
+  /*font-smoothing: subpixel-antialiased;
+  font-smooth: subpixel-antialiased;*/
 }
 
 .wsmenu .cl {
@@ -790,6 +790,7 @@ Extra @Media Query
     -moz-transition: inherit;
     transition: inherit;
     -webkit-transform-style: flat;
+    transform-style: flat;
   }
 
   .wsmenu>.wsmenu-list>li>ul.sub-menu>li>a {
@@ -839,6 +840,7 @@ Extra @Media Query
     -moz-transition: inherit;
     transition: inherit;
     -webkit-transform-style: flat;
+    transform-style: flat;
   }
 
   .wsmenu>.wsmenu-list>li>ul.sub-menu>li>ul.sub-menu>li {
@@ -897,6 +899,7 @@ Extra @Media Query
     -moz-transition: inherit;
     transition: inherit;
     -webkit-transform-style: flat;
+    transform-style: flat;
   }
 
   .wsmenu>.wsmenu-list>li>ul.sub-menu>li>ul.sub-menu>li>ul.sub-menu>li {
@@ -949,6 +952,7 @@ Extra @Media Query
     transition: inherit;
     border-bottom: 1px solid rgba(0, 0, 0, 0.13);
     -webkit-transform-style: flat;
+    transform-style: flat;
   }
 
   .wsmenu>.wsmenu-list>li>.wsmegamenu.halfmenu {
@@ -1176,6 +1180,7 @@ Extra @Media Query
     -moz-transition: opacity 1.5s ease-in-out;
     -ms-transition: opacity 1.5s ease-in-out;
     -o-transition: opacity 1.5s ease-in-out;
+    transition: opacity 1.5s ease-in-out;
   }
 
   .wsmenucontainer {

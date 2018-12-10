@@ -23,6 +23,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(RolesAndPermissionsSeeder::class);
 
-        factory(App\User::class, 10)->create();
+        factory(App\User::class, 50)->create();
     }
 }

@@ -20,6 +20,9 @@
             </li>
         @endforeach
     </ul>
+
+    <a href="/exportusers" class="btn btn-primary">@lang('Hämta som Excel-fil')</a>
+
     @endif
 
 @endsection

@@ -26,5 +26,29 @@ class MunicipalitySeeder extends Seeder
         DB::table('municipalities')->insert([
             'name' => 'Linköping'
         ]);
+        DB::table('municipalities')->insert([
+            'name' => 'Finspång'
+        ]);
+        DB::table('municipalities')->insert([
+            'name' => 'Mjölby'
+        ]);
+        DB::table('municipalities')->insert([
+            'name' => 'Motala'
+        ]);
+        DB::table('municipalities')->insert([
+            'name' => 'Norrköping'
+        ]);
+        DB::table('municipalities')->insert([
+            'name' => 'Söderköping'
+        ]);
+        DB::table('municipalities')->insert([
+            'name' => 'Vadstena'
+        ]);
+        DB::table('municipalities')->insert([
+            'name' => 'Valdemarsvik'
+        ]);
+        DB::table('municipalities')->insert([
+            'name' => 'Åtvidaberg'
+        ]);
     }
 }

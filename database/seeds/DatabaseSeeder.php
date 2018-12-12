@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call(RolesAndPermissionsSeeder::class);
 
-        factory(App\User::class, 50)->create();
+        if(App::environment('lab') || App::environment('dev')) {
+            $this->command->comment('Generating dummy users...');
+            factory(App\User::class, 50)->create();
+        }
     }
 }

@@ -11,10 +11,12 @@ use App\User;
 use App\Lesson;
 use App\Locale;
 
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class PagesController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
     }
 
@@ -27,9 +29,10 @@ class PagesController extends Controller
 
         if(empty(Auth::user()["workplace_id"])) {
             $data = array(
-                'municipalities' => Municipality::all(),
-                'workplaces' => Workplace::all(),
-                'locales' => Locale::All()
+                'municipalities' => Municipality::orderBy('name')->get(),
+                'workplaces' => Workplace::orderBy('name')->get(),
+                'locales' => Locale::All(),
+                'user' => Auth::user()
             );
             return view('pages.firstlogin')->with($data);
         } else {
@@ -90,21 +93,34 @@ class PagesController extends Controller
         return view('pages.lesson')->with($data);
     }
 
+    public function storeFirstLoginLanguage(Request $request) {
+
+        $this->validate($request, [
+            'locale' => 'required'
+        ]);
+
+        $user = $request->user();
+        $user->locale_id = $request->input('locale');
+        $user->save();
+
+        return redirect('/');
+    }
+
     public function storeFirstLogin(Request $request) {
 
         //logger(print_r($request->all(), true));
 
         $this->validate($request, [
             'workplace' => 'required',
-            'email' => 'required',
-            'locale' => 'required'
+            'email' => 'required'
         ]);
 
         $user = $request->user();
         $user->email = $request->input('email');
         $user->workplace_id = $request->input('workplace');
-        $user->locale_id = $request->input('locale');
         $user->save();
+
+        $user->assignRole('Registered');
 
         return redirect('/')->with('success', 'Uppgifterna sparade');
     }
@@ -130,6 +146,10 @@ class PagesController extends Controller
             'users' => $users
         );
         return view('pages.listusers')->with($data);
+    }
+
+    public function exportUsers() {
+        return Excel::download(new UsersExport, 'Deltagare_Evikomp.xlsx');
     }
 
 }

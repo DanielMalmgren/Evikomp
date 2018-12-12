@@ -11,20 +11,40 @@ class WorkplaceSeeder extends Seeder
      */
     public function run()
     {
-        $kindaid = DB::table('municipalities')->where('name', 'Kinda')->first()->id;
+        //Kinda
+        $id = DB::table('municipalities')->where('name', 'Kinda')->first()->id;
         DB::table('workplaces')->insert([
-            'municipality_id' => $kindaid,
+            'municipality_id' => $id,
             'name' => 'Stångågården'
         ]);
         DB::table('workplaces')->insert([
-            'municipality_id' => $kindaid,
+            'municipality_id' => $id,
             'name' => 'Bergdala'
         ]);
-
-        $ydreid = DB::table('municipalities')->where('name', 'Ydre')->first()->id;
         DB::table('workplaces')->insert([
-            'municipality_id' => $ydreid,
+            'municipality_id' => $id,
+            'name' => 'Västerliden'
+        ]);
+
+        //Ydre
+        $id = DB::table('municipalities')->where('name', 'Ydre')->first()->id;
+        DB::table('workplaces')->insert([
+            'municipality_id' => $id,
             'name' => 'Solängen'
+        ]);
+
+        //Boxholm
+        $id = DB::table('municipalities')->where('name', 'Boxholm')->first()->id;
+        DB::table('workplaces')->insert([
+            'municipality_id' => $id,
+            'name' => 'Bjursdalen'
+        ]);
+
+        //Åtvidaberg
+        $id = DB::table('municipalities')->where('name', 'Åtvidaberg')->first()->id;
+        DB::table('workplaces')->insert([
+            'municipality_id' => $id,
+            'name' => 'Rosengården'
         ]);
     }
 }

@@ -26,11 +26,13 @@ Route::get('/userinfo/{user_id?}', 'PagesController@userinfo');
 Route::get('/settings', 'PagesController@settings');
 
 Route::get('/listusers', 'PagesController@listUsers')->middleware('permission:list users');
+Route::get('/exportusers', 'PagesController@exportUsers')->middleware('permission:list users');
 
 Auth::routes();
 
 //Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('storeFirstLogin', 'PagesController@storeFirstLogin');
+Route::post('storeFirstLoginLanguage', 'PagesController@storeFirstLoginLanguage');
 
 Route::post('storeSettings', 'PagesController@storeSettings');

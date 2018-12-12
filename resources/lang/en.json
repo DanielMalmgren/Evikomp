@@ -3,5 +3,15 @@
     "Användarinfo": "User info",
     "Inställningar": "Settings",
     "Välkommen": "Welcome",
-    "Lista användare": "List users"
+    "Välkommen!": "Welcome!",
+    "Lista användare": "List users",
+    "Det verkar vara första gången du loggar in här. Du behöver därför ange lite uppgifter nedan:": "Since this appears to be the first time you are logging in here, you have to provide some information about yourself:",
+    "Språk": "Language",
+    "Kommun": "Municipality",
+    "Arbetsplats": "Workplace",
+    "E-postadress": "E-mail address",
+    "Gå vidare": "Continue",
+    "Välj...": "Choose...",
+    "Välj kommun först": "Choose municipality first",
+    "Spara": "Save"
 }

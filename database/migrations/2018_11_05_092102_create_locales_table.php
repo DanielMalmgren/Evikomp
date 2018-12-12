@@ -20,6 +20,7 @@ class CreateLocalesTable extends Migration
             $table->boolean('default');
             //$table->string('code', 2);
             $table->timestamps();
+            $table->collation = 'utf8mb4_swedish_ci';
         });
     }
 

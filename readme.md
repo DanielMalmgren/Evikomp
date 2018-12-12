@@ -14,3 +14,4 @@ Följande tredjepartsmoduler till Laravel har använts i utvecklingen:
 - [Laravel-Translatable](https://github.com/dimsav/laravel-translatable)
 - [Laravel-SAML2](https://github.com/aacotroneo/laravel-saml2)
 - [Laravel-Permission](https://github.com/spatie/laravel-permission)
+- [Laravel Excel](https://laravel-excel.maatwebsite.nl/)

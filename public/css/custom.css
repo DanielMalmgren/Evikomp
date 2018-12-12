@@ -2,11 +2,18 @@
     min-height: 100vh;
 }
 
-.fillparent {
-    display: block;
-    padding: .75rem 100% .75rem 1.25rem;
-}
-
 .nopadding {
     padding: 0;
+}
+
+ul.tracks a {
+    display:block;
+    width: 100%;
+    padding: .75rem 1.25rem;
+}
+
+ul.lessons a {
+    display:block;
+    width: 100%;
+    padding: .75rem 1.25rem;
 }

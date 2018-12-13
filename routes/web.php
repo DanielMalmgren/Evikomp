@@ -21,6 +21,9 @@ Route::get('/track/{track_id}', 'PagesController@track');
 
 Route::get('/lesson/{lesson_id}', 'PagesController@lesson');
 
+Route::get('/test/{lesson_id}/{order?}', 'PagesController@test');
+Route::get('/testresult/{lesson_id}', 'PagesController@testresult');
+
 Route::get('/userinfo/{user_id?}', 'PagesController@userinfo');
 
 Route::get('/settings', 'PagesController@settings');
@@ -29,8 +32,6 @@ Route::get('/listusers', 'PagesController@listUsers')->middleware('permission:li
 Route::get('/exportusers', 'PagesController@exportUsers')->middleware('permission:list users');
 
 Auth::routes();
-
-//Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('storeFirstLogin', 'PagesController@storeFirstLogin');
 Route::post('storeFirstLoginLanguage', 'PagesController@storeFirstLoginLanguage');

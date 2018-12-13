@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(LessonSeeder::class);
 
+        $this->call(QuestionSeeder::class);
+
         $this->call(LocaleSeeder::class);
 
         $this->call(RolesAndPermissionsSeeder::class);

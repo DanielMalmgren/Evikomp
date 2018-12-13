@@ -10,6 +10,8 @@ use App\Workplace;
 use App\User;
 use App\Lesson;
 use App\Locale;
+use App\Question;
+use App\ResponseOption;
 
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -87,10 +89,39 @@ class PagesController extends Controller
 
     public function lesson($lesson_id) {
         $lesson = Lesson::where('id', $lesson_id)->first();
+        $question = Question::where('lesson_id', $lesson_id)->first();
         $data = array(
+            'question' => $question,
             'lesson' => $lesson
         );
         return view('pages.lesson')->with($data);
+    }
+
+    public function test($lesson_id, $order = null) {
+        $lesson = Lesson::where('id', $lesson_id)->first();
+        //Om $order är null, börja med första frågan
+        if(!$order) {
+            $question = Question::where('lesson_id', $lesson_id)->first();
+        } else {
+            $question = Question::where([['lesson_id', '=', $lesson_id],['order', '>=', $order]])->first();
+            if(!$question) {
+                //Om det inte finns någon fråga med $order är testet klart, dirigera om till sidan med resultat
+                return redirect('/testresult/'.$lesson_id);
+            }
+        }
+
+        $responseoptions = ResponseOption::where('question_id', $question->id)->get();
+
+        $data = array(
+            'question' => $question,
+            'lesson' => $lesson,
+            'responseoptions' => $responseoptions
+        );
+        return view('pages.question')->with($data);
+    }
+
+    public function testresult($lesson_id) {
+        return view('pages.testresult');
     }
 
     public function storeFirstLoginLanguage(Request $request) {

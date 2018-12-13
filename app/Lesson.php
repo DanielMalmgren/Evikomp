@@ -14,6 +14,11 @@ class Lesson extends Model
     {
         return $this->belongsToMany('App\Track');
     }
+
+    public function questions()
+    {
+        return $this->hasMany('App\Question');
+    }
 }
 
 class LessonTranslation extends Model

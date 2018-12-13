@@ -17,3 +17,10 @@ ul.lessons a {
     width: 100%;
     padding: .75rem 1.25rem;
 }
+
+.vimeo-container { position: relative; padding-bottom: 70%; height: 0; overflow: hidden; max-width: 100%; height: auto; }
+.vimeo-container iframe, .vimeo-container object, .vimeo-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+.resultstar {
+    width: 30%;
+}

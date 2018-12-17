@@ -26,7 +26,7 @@ $(function() {
 
     <p>@lang('Det verkar vara första gången du loggar in här. Du behöver därför ange lite uppgifter nedan:')</p>
 
-    <form method="post" action="{{action('PagesController@storeFirstLoginLanguage')}}" accept-charset="UTF-8">
+    <form method="post" action="{{action('FirstLoginController@storeLanguage')}}" accept-charset="UTF-8">
         @csrf
 
         <div class="mb-3">
@@ -43,7 +43,7 @@ $(function() {
         </div>
     </form>
 
-    <form method="post" action="{{action('PagesController@storeFirstLogin')}}" accept-charset="UTF-8">
+    <form method="post" action="{{action('FirstLoginController@store')}}" accept-charset="UTF-8">
         @csrf
 
         <div class="mb-3">

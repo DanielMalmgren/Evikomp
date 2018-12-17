@@ -1,39 +1,33 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::get('/', 'PagesController@index');
-
-Route::get('/about', 'PagesController@about');
-
-Route::get('/tracks', 'PagesController@tracks');
-
-Route::get('/track/{track_id}', 'PagesController@track');
-
-Route::get('/lesson/{lesson_id}', 'PagesController@lesson');
-
-Route::get('/test/{lesson_id}/{order?}', 'PagesController@test');
-Route::get('/testresult/{lesson_id}', 'PagesController@testresult');
-
-Route::get('/userinfo/{user_id?}', 'PagesController@userinfo');
-
-Route::get('/settings', 'PagesController@settings');
-
-Route::get('/listusers', 'PagesController@listUsers')->middleware('permission:list users');
-Route::get('/exportusers', 'PagesController@exportUsers')->middleware('permission:list users');
-
 Auth::routes();
 
-Route::post('storeFirstLogin', 'PagesController@storeFirstLogin');
-Route::post('storeFirstLoginLanguage', 'PagesController@storeFirstLoginLanguage');
+Route::get('/',                             'HomeController@index');
+Route::get('/about',                        'HomeController@about');
 
-Route::post('storeSettings', 'PagesController@storeSettings');
+//TrackController
+Route::get('/tracks',                       'TrackController@index');
+Route::get('/track/{track_id}',             'TrackController@show');
+
+//LessonController
+Route::get('/lesson/{lesson_id}',           'LessonController@show');
+
+//TestController
+Route::get('/test/{lesson_id}/{order?}',    'TestController@show');
+
+//TestResultController
+Route::get('/testresult/{lesson_id}',       'TestResultController@show');
+
+//UsersControler
+Route::get('/userinfo/{user_id?}',          'UsersController@show');
+Route::get('/listusers',                    'UsersController@index')->middleware('permission:list users');
+Route::get('/exportusers',                  'UsersController@export')->middleware('permission:list users');
+
+//FirstLoginController
+Route::get('firstlogin',                    'FirstLoginController@show');
+Route::post('storefirstlogin',              'FirstLoginController@store');
+Route::post('storefirstloginlanguage',      'FirstLoginController@storeLanguage');
+
+//SettingsController
+Route::get('/settings',                     'SettingsController@edit');
+Route::post('storesettings',                'SettingsController@store');

@@ -5,7 +5,7 @@
 <div class="col-md-5 mb-3">
     <H1>@lang('Inställningar')</H1>
 
-    <form method="post" action="{{action('PagesController@storeSettings')}}" accept-charset="UTF-8">
+    <form method="post" action="{{action('SettingsController@store')}}" accept-charset="UTF-8">
         @csrf
 
         <div class="mb-3">

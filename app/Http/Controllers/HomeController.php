@@ -3,26 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Track;
+use App\Municipality;
+use App\Workplace;
+use App\User;
+use App\Lesson;
+use App\Locale;
+use App\Question;
+use App\ResponseOption;
+
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
+    public function index() {
+        if(empty(Auth::user()["workplace_id"])) {
+            return redirect('/firstlogin');
+        } else {
+            return view('pages.index');
+        }
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return view('home');
+    public function about() {
+        return view('pages.about');
     }
 }

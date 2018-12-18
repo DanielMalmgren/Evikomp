@@ -20,6 +20,7 @@ class CreateQuestionsTable extends Migration
             $table->foreign('lesson_id')->references('id')->on('lessons');
             $table->unsignedTinyInteger('order');
             $table->boolean('isMultichoice')->default(false);
+            $table->unsignedTinyInteger('correctAnswers')->default(1);
         });
 
         Schema::create('question_translations', function(Blueprint $table)

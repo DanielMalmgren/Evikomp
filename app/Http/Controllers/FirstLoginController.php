@@ -40,7 +40,7 @@ class FirstLoginController extends Controller
 
         $this->validate($request, [
             'workplace' => 'required',
-            'email' => 'required'
+            'email' => 'required|email'
         ]);
 
         $user = $request->user();

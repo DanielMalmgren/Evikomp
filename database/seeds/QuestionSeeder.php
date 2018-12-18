@@ -76,7 +76,8 @@ class QuestionSeeder extends Seeder
         $questionid = DB::table('questions')->insertGetId([
             'lesson_id' => 1,
             'order' => 2,
-            'isMultichoice' => true
+            'isMultichoice' => true,
+            'correctAnswers' => 2
         ]);
         DB::table('question_translations')->insert([
             'question_id' => $questionid,
@@ -101,7 +102,7 @@ class QuestionSeeder extends Seeder
 
         $responseid = DB::table('response_options')->insertGetId([
             'question_id' => $questionid,
-            'isCorrectAnswer' => true
+            'isCorrectAnswer' => false
         ]);
         DB::table('response_option_translations')->insert([
             'response_option_id' => $responseid,
@@ -111,7 +112,7 @@ class QuestionSeeder extends Seeder
 
         $responseid = DB::table('response_options')->insertGetId([
             'question_id' => $questionid,
-            'isCorrectAnswer' => true
+            'isCorrectAnswer' => false
         ]);
         DB::table('response_option_translations')->insert([
             'response_option_id' => $responseid,

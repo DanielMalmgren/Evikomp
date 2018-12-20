@@ -3,6 +3,14 @@
 @section('content')
 
     <script type="text/javascript">
+        function enableordisableall(enabled) {
+            for(var i=0; i < document.question.response.length; i++) {
+                if(!document.question.response[i].checked) {
+                    document.question.response[i].disabled = !enabled;
+                }
+            }
+        }
+
         function chkcontrol(j) {
             var total=0;
             for(var i=0; i < document.question.response.length; i++) {
@@ -11,39 +19,40 @@
                 }
                 if(total < {{$question->correctAnswers}}){
                     document.question.submit.disabled = true;
+                    enableordisableall(true);
                 } else {
                     document.question.submit.disabled = false;
-                }
-                if(total > {{$question->correctAnswers}}){
-                    alert("Du får välja {{$question->correctAnswers}} svarsalternativ!")
-                    document.getElementById(j).checked = false;
-                    return false;
+                    enableordisableall(false);
                 }
             }
         }
     </script>
 
+    <H1>Fråga {{$test_session->completed_questions+1}} av {{$test_session->number_of_questions}}</H1>
+
     {{$question->translateOrDefault(App::getLocale())->text}}
 
     <br><br>
 
-    @if(count($responseoptions) > 0)
-        <form method="post" name="question" action="{{action('TestController@store')}}" accept-charset="UTF-8">
+    @if(count($response_options) > 0)
+        <form method="post" name="question" action="{{action('QuestionController@store')}}" accept-charset="UTF-8">
             @csrf
 
+            {{-- <input type="hidden" name="testsession_id" value="{{$testsession->id}}">
             <input type="hidden" name="question_id" value="{{$question->id}}">
+            <input type="hidden" name="test_response_id" value="{{$test_response->id}}"> --}}
 
             @if (!$question->isMultichoice)
-                @foreach($responseoptions as $responseoption)
+                @foreach($response_options as $response_option)
                     <div class="radio">
-                        <label><input type="radio" name="response" value="{{$responseoption->id}}" onclick="document.question.submit.disabled=false;">{{$responseoption->translateOrDefault(App::getLocale())->text}}</label>
+                        <label><input type="radio" name="response" value="{{$response_option->id}}" onclick="document.question.submit.disabled=false;">{{$response_option->translateOrDefault(App::getLocale())->text}}</label>
                     </div>
                 @endforeach
             @else
                 <p>(Ange {{$question->correctAnswers}} alternativ)</p>
-                @foreach($responseoptions as $responseoption)
+                @foreach($response_options as $response_option)
                     <div class="checkbox">
-                        <label><input type="checkbox" name="response" value="{{$responseoption->id}}" id="{{$responseoption->id}}" onclick="chkcontrol({{$responseoption->id}})">{{$responseoption->translateOrDefault(App::getLocale())->text}}</label>
+                        <label><input type="checkbox" name="response" value="{{$response_option->id}}" id="{{$response_option->id}}" onclick="chkcontrol({{$response_option->id}})">{{$response_option->translateOrDefault(App::getLocale())->text}}</label>
                     </div>
                 @endforeach
             @endif

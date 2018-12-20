@@ -39,4 +39,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Locale');
     }
+
+    public function testsession()
+    {
+        return $this->hasMany('App\TestSession');
+    }
 }

@@ -14,5 +14,7 @@
     "Välj...": "Choose...",
     "Välj kommun först": "Choose municipality first",
     "Spara": "Save",
-    "Användare": "Users"
+    "Användare": "Users",
+    "Testresultat": "Test result",
+    "Grattis, du hade rätt på :percent% av frågorna på första försöket!": "Congratulations, you answered correctly on :percent% of the questions on first try!"
 }

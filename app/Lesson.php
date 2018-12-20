@@ -19,6 +19,11 @@ class Lesson extends Model
     {
         return $this->hasMany('App\Question');
     }
+
+    public function testsession()
+    {
+        return $this->hasMany('App\TestSession');
+    }
 }
 
 class LessonTranslation extends Model

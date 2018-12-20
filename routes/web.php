@@ -13,11 +13,14 @@ Route::get('/track/{track_id}',                 'TrackController@show');
 Route::get('/lesson/{lesson_id}',               'LessonController@show');
 
 //TestController
-Route::get('/test/{lesson_id}/{question_id?}',  'TestController@show');
-Route::post('storetestresponse',                'TestController@store');
+Route::get('/test/{lesson_id}',                 'TestController@show');
+
+//QuestionController
+Route::get('/test/question/{question_id?}',     'QuestionController@show');
+Route::post('/test/storeResponse',              'QuestionController@store');
 
 //TestResultController
-Route::get('/testresult/{lesson_id}',           'TestResultController@show');
+Route::get('/test/result/{testsession_id}',     'TestResultController@show');
 
 //UsersControler
 Route::get('/userinfo/{user_id?}',              'UsersController@show');

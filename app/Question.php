@@ -14,6 +14,11 @@ class Question extends Model
     {
         return $this->belongsTo('App\Lesson');
     }
+
+    public function testresponses()
+    {
+        return $this->hasMany('App\TestResponse');
+    }
 }
 
 class QuestionTranslation extends Model

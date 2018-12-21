@@ -15,4 +15,6 @@ class TestResponse extends Model
     {
         return $this->belongsTo('App\Question');
     }
+
+    protected $fillable = ['id', 'test_session_id', 'question_id'];
 }

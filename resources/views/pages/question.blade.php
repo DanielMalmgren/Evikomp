@@ -4,17 +4,17 @@
 
     <script type="text/javascript">
         function enableordisableall(enabled) {
-            for(var i=0; i < document.question.response.length; i++) {
-                if(!document.question.response[i].checked) {
-                    document.question.response[i].disabled = !enabled;
+            for(var i=0; i < document.question.multiresponse.length; i++) {
+                if(!document.question.multiresponse[i].checked) {
+                    document.question.multiresponse[i].disabled = !enabled;
                 }
             }
         }
 
         function chkcontrol(j) {
             var total=0;
-            for(var i=0; i < document.question.response.length; i++) {
-                if(document.question.response[i].checked) {
+            for(var i=0; i < document.question.multiresponse.length; i++) {
+                if(document.question.multiresponse[i].checked) {
                     total=total+1;
                 }
                 if(total < {{$question->correctAnswers}}){
@@ -28,7 +28,7 @@
         }
     </script>
 
-    <H1>Fråga {{$test_session->completed_questions+1}} av {{$test_session->number_of_questions}}</H1>
+    <H1>Fråga {{$question->order}} av {{$test_session->number_of_questions()}}</H1>
 
     {{$question->translateOrDefault(App::getLocale())->text}}
 
@@ -45,14 +45,14 @@
             @if (!$question->isMultichoice)
                 @foreach($response_options as $response_option)
                     <div class="radio">
-                        <label><input type="radio" name="response" value="{{$response_option->id}}" onclick="document.question.submit.disabled=false;">{{$response_option->translateOrDefault(App::getLocale())->text}}</label>
+                        <label><input type="radio" name="singleresponse" value="{{$response_option->id}}" onclick="document.question.submit.disabled=false;">{{$response_option->translateOrDefault(App::getLocale())->text}}</label>
                     </div>
                 @endforeach
             @else
                 <p>(Ange {{$question->correctAnswers}} alternativ)</p>
                 @foreach($response_options as $response_option)
                     <div class="checkbox">
-                        <label><input type="checkbox" name="response" value="{{$response_option->id}}" id="{{$response_option->id}}" onclick="chkcontrol({{$response_option->id}})">{{$response_option->translateOrDefault(App::getLocale())->text}}</label>
+                        <label><input type="checkbox" name="multiresponse" value="{{$response_option->id}}" id="{{$response_option->id}}" onclick="chkcontrol({{$response_option->id}})">{{$response_option->translateOrDefault(App::getLocale())->text}}</label>
                     </div>
                 @endforeach
             @endif

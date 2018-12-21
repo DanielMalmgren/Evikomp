@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('lastname')->nullable();
             $table->string('email')->unique()->nullable();
             //$table->timestamp('email_verified_at')->nullable();
-            $table->string('password')->nullable();
+            //$table->string('password')->nullable();
             $table->string('locale_id')->nullable();
             $table->foreign('locale_id')->references('id')->on('locales');
             //$table->rememberToken();

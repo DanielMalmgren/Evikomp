@@ -44,4 +44,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\TestSession');
     }
+
+    public function tracks()
+    {
+        return $this->belongsToMany('App\Track');
+    }
 }

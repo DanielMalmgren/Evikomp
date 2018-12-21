@@ -16,16 +16,28 @@ class QuestionController extends Controller
         //$testsession = TestSession::where('id', $request->query('testsession_id'));
         $test_session = TestSession::find($request->query('testsession_id'));
 
+        logger('Question ID: '.$question_id);
         $question = Question::find($question_id);
 
-        $test_response = TestResponse::find($request->session()->get('test_response_id'));
+        //Om det finns en test_response vars id är sparat i sessionen och som har rätt test_session_id,
+        //använd det, annars skapa en ny
+        $test_response = TestResponse::firstOrCreate(
+            ['test_session_id' => $test_session->id,
+            'question_id' => $question->id]
+        );
+
+        //if($test_response->wasRecentlyCreated) {
+            $request->session()->put('test_response_id', $test_response->id);
+        //}
+
+        /*$test_response = TestResponse::find($request->session()->get('test_response_id'));
         if(!$test_response || $test_response->test_session_id != $test_session->id) {
             $test_response = new TestResponse();
             $test_response->test_session_id = $test_session->id;
             $test_response->question_id = $question->id;
             $test_response->save();
             $request->session()->put('test_response_id', $test_response->id);
-        }
+        }*/
 
         //session(['test_response_id' => $test_response->id]);
 
@@ -61,7 +73,7 @@ class QuestionController extends Controller
         $test_session = $test_response->test_session;
         $lesson = $test_session->lesson;
 
-        $test_session->completed_questions++;
+        //$test_session->completed_questions++;
         $test_session->save();
 
         $nextquestion = Question::where([['lesson_id', '=', $lesson->id],['order', '>', $question->order]])->first();

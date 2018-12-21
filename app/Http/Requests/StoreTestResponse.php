@@ -7,6 +7,7 @@ use App\Question;
 use App\ResponseOption;
 use App\TestResponse;
 use App\TestSession;
+use Illuminate\Validation\Rule;
 
 class StoreTestResponse extends FormRequest
 {
@@ -36,8 +37,13 @@ class StoreTestResponse extends FormRequest
         $question = $test_response->question;
         //$lesson = $testsession->lesson;
         $correctoptions = ResponseOption::where([['question_id', '=', $question->id],['isCorrectAnswer', '=', true]])->get();
+        logger("Rätt svar för fråga ".$question->id." är ".$correctoptions->implode('id', ','));
+        if($this->input('multiresponse')) {
+            logger("Angivet svar: ".$this->input('multiresponse'));
+        }
         return [
-            'response' => 'in:'.$correctoptions->implode('id', ',')
+            //'singleresponse' => 'nullable|in:'.$correctoptions->implode('id', ',')
+            'singleresponse' => Rule::in($correctoptions->pluck('id'))
         ];
     }
 

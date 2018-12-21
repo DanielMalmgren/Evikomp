@@ -19,7 +19,7 @@ class TestController extends Controller
         $test_session = new TestSession;
         $test_session->lesson_id = $lesson_id;
         $test_session->user_id = Auth::user()->id;
-        $test_session->number_of_questions = $questions->count();
+        //$test_session->number_of_questions = $questions->count();
         $test_session->save();
 
         logger('Testsessions-ID: '.$test_session->id);

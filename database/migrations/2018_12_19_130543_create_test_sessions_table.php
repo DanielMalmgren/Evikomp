@@ -20,8 +20,8 @@ class CreateTestSessionsTable extends Migration
             $table->foreign('lesson_id')->references('id')->on('lessons');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedTinyInteger('number_of_questions');
-            $table->unsignedTinyInteger('completed_questions')->default(0);
+            //$table->unsignedTinyInteger('number_of_questions');
+            //$table->unsignedTinyInteger('completed_questions')->default(0);
         });
     }
 

@@ -19,6 +19,11 @@ class Track extends Model
     {
         return $this->belongsToMany('App\Lesson');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany('App\User');
+    }
 }
 
 class TrackTranslation extends Model

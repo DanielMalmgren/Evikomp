@@ -19,7 +19,7 @@ class CreateQuestionsTable extends Migration
             $table->unsignedInteger('lesson_id');
             $table->foreign('lesson_id')->references('id')->on('lessons');
             $table->unsignedTinyInteger('order');
-            $table->boolean('isMultichoice')->default(false);
+            //$table->boolean('isMultichoice')->default(false);
             $table->unsignedTinyInteger('correctAnswers')->default(1);
         });
 

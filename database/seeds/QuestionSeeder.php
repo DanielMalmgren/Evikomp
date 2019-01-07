@@ -76,7 +76,6 @@ class QuestionSeeder extends Seeder
         $questionid = DB::table('questions')->insertGetId([
             'lesson_id' => 1,
             'order' => 2,
-            'isMultichoice' => true,
             'correctAnswers' => 2
         ]);
         DB::table('question_translations')->insert([

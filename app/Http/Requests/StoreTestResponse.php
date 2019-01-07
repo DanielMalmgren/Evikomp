@@ -38,12 +38,9 @@ class StoreTestResponse extends FormRequest
         //$lesson = $testsession->lesson;
         $correctoptions = ResponseOption::where([['question_id', '=', $question->id],['isCorrectAnswer', '=', true]])->get();
         logger("Rätt svar för fråga ".$question->id." är ".$correctoptions->implode('id', ','));
-        if($this->input('multiresponse')) {
-            logger("Angivet svar: ".$this->input('multiresponse'));
-        }
         return [
-            //'singleresponse' => 'nullable|in:'.$correctoptions->implode('id', ',')
-            'singleresponse' => Rule::in($correctoptions->pluck('id'))
+            'singleresponse' => Rule::in($correctoptions->pluck('id')),
+            'multiresponse.*' => Rule::in($correctoptions->pluck('id'))
         ];
     }
 

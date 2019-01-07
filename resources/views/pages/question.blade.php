@@ -14,9 +14,7 @@
 
         function chkcontrol(j) {
             var total=0;
-            alert(j);
             var mr=document.getElementsByName("multiresponse[]");
-            alert(mr.length);
             for(var i=0; i < mr.length; i++) {
                 if(mr[i].checked) {
                     total=total+1;

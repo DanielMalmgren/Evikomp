@@ -20,9 +20,14 @@ class Lesson extends Model
         return $this->hasMany('App\Question');
     }
 
-    public function testsession()
+    public function test_sessions()
     {
         return $this->hasMany('App\TestSession');
+    }
+
+    public function lesson_results()
+    {
+        return $this->hasMany('App\LessonResult');
     }
 }
 

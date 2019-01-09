@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTestSessionsTable extends Migration
+class CreateLessonResultsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateTestSessionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('test_sessions', function (Blueprint $table) {
+        Schema::create('lesson_results', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('lesson_id');
             $table->foreign('lesson_id')->references('id')->on('lessons');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            //$table->unsignedTinyInteger('number_of_questions');
-            //$table->unsignedTinyInteger('completed_questions')->default(0);
+            $table->unsignedTinyInteger('personal_best_percent')->default(0);
+            $table->unsignedTinyInteger('rating')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateTestSessionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('test_sessions');
+        Schema::dropIfExists('lesson_results');
     }
 }

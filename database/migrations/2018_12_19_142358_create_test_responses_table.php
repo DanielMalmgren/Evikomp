@@ -15,13 +15,13 @@ class CreateTestResponsesTable extends Migration
     {
         Schema::create('test_responses', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
             $table->unsignedInteger('test_session_id');
             $table->foreign('test_session_id')->references('id')->on('test_sessions');
             $table->unsignedInteger('question_id');
             $table->foreign('question_id')->references('id')->on('questions');
             $table->unsignedTinyInteger('wrong_responses')->default(0);
             $table->boolean('correct')->default(false);
+            $table->timestamps();
         });
     }
 

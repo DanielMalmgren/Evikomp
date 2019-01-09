@@ -40,9 +40,14 @@ class User extends Authenticatable
         return $this->belongsTo('App\Locale');
     }
 
-    public function testsession()
+    public function test_session()
     {
         return $this->hasMany('App\TestSession');
+    }
+
+    public function lesson_results()
+    {
+        return $this->hasMany('App\LessonResult');
     }
 
     public function tracks()

@@ -17,10 +17,8 @@ class TrackController extends Controller
 
     public function show($track_id) {
         $track = Track::where('id', $track_id)->first();
-        $lessons = $track->lessons()->get();
         $data = array(
-            'track' => $track,
-            'lessons' => $lessons
+            'track' => $track
         );
         return view('pages.track')->with($data);
     }

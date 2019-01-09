@@ -15,12 +15,12 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
             $table->unsignedInteger('lesson_id');
             $table->foreign('lesson_id')->references('id')->on('lessons');
             $table->unsignedTinyInteger('order');
             //$table->boolean('isMultichoice')->default(false);
             $table->unsignedTinyInteger('correctAnswers')->default(1);
+            $table->timestamps();
         });
 
         Schema::create('question_translations', function(Blueprint $table)

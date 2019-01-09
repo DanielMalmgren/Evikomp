@@ -15,10 +15,10 @@ class CreateResponseOptionsTable extends Migration
     {
         Schema::create('response_options', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
             $table->unsignedInteger('question_id');
             $table->foreign('question_id')->references('id')->on('questions');
             $table->boolean('isCorrectAnswer');
+            $table->timestamps();
         });
 
         Schema::create('response_option_translations', function(Blueprint $table)

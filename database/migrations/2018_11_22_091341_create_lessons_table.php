@@ -16,9 +16,9 @@ class CreateLessonsTable extends Migration
         Schema::create('lessons', function (Blueprint $table) {
             $table->increments('id');
             //$table->string('name'); //Moved to lesson_translations to be localized
-            $table->timestamps();
             $table->unsignedInteger('video_id')->nullable();
             $table->foreign('video_id')->references('id')->on('videos');
+            $table->timestamps();
         });
 
         Schema::create('lesson_translations', function(Blueprint $table)

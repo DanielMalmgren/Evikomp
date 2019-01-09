@@ -3,9 +3,8 @@
 @section('content')
 
     <script type="text/javascript">
-        function enableordisableall(enabled) {
-            var mr=document.getElementsByName("multiresponse[]");
-            for(var i=0; i < mr.length; i++) {
+        function enableordisableall(enabled, mr, mr_length) {
+            for(var i=0; i < mr_length; i++) {
                 if(!mr[i].checked) {
                     mr[i].disabled = !enabled;
                 }
@@ -15,16 +14,17 @@
         function chkcontrol(j) {
             var total=0;
             var mr=document.getElementsByName("multiresponse[]");
-            for(var i=0; i < mr.length; i++) {
+            var mr_length=mr.length;
+            for(var i=0; i < mr_length; i++) {
                 if(mr[i].checked) {
                     total=total+1;
                 }
                 if(total < {{$question->correctAnswers}}){
                     document.question.submit.disabled = true;
-                    enableordisableall(true);
+                    enableordisableall(true, mr, mr_length);
                 } else {
                     document.question.submit.disabled = false;
-                    enableordisableall(false);
+                    enableordisableall(false, mr, mr_length);
                 }
             }
         }

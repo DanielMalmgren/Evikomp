@@ -35,3 +35,8 @@ Route::post('storefirstloginlanguage',          'FirstLoginController@storeLangu
 //SettingsController
 Route::get('/settings',                         'SettingsController@edit');
 Route::post('storesettings',                    'SettingsController@store');
+
+//WorkplaceSettings
+Route::get('/wpsettings',                       'WorkplaceSettingsController@edit');
+Route::post('storewpsettings',                  'WorkplaceSettingsController@store');
+Route::get('/wpsettingsajax/{workplace_id}',    'WorkplaceSettingsController@ajax');

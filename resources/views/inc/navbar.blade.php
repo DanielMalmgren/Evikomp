@@ -25,7 +25,7 @@
                                 @can('list users')
                                     <li aria-haspopup="false"><a href="/listusers">@lang('Användare')</a></li>
                                 @endcan
-                            <li aria-haspopup="false"><a href="#">@lang('Spår')</a></li>
+                            <li aria-haspopup="false"><a href="/wpsettings">@lang('Arbetsplatsinställningar')</a></li>
                             </ul>
                         </li>
                     @endcan

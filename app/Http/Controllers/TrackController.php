@@ -16,7 +16,8 @@ class TrackController extends Controller
     }
 
     public function show($track_id) {
-        $track = Track::where('id', $track_id)->first();
+        //$track = Track::where('id', $track_id)->first();
+        $track = Track::find($track_id);
         $data = array(
             'track' => $track
         );

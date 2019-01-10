@@ -27,9 +27,12 @@ class UsersController extends Controller
     }
 
     public function index() {
-        $users = User::all();
+        //$users = User::all();
+        $workplaces = Auth::user()->admin_workplaces;
+        $users = User::all()->whereIn('workplace_id', $workplaces->pluck('id'));
         $data = array(
-            'users' => $users
+            'users' => $users,
+            'workplaces' => $workplaces
         );
         return view('pages.listusers')->with($data);
     }

@@ -2,10 +2,34 @@
 
 @section('content')
 
+    <script type="text/javascript">
+        $(function() {
+            $('#workplace').change(function(){
+                var selectedValue = $(this).val();
+                $('#userlist li').each(function(){
+                    if ($(this).find("small").text() == selectedValue) {
+                        $(this).css("cssText", "");
+                    } else {
+                        $(this).css("cssText", "display: none !important;");
+                    }
+                });
+            });
+            $("#workplace").change();
+        });
+    </script>
+
     <H1>Användare</H1>
 
+    @if(count($workplaces) > 0)
+        <select class="custom-select d-block w-100" id="workplace" name="workplace" required="">
+            @foreach($workplaces as $workplace)
+                <option value="{{$workplace->name}}">{{$workplace->name}}</option>
+            @endforeach
+        </select>
+    @endif
+
     @if(count($users) > 0)
-    <ul class="list-group mb-3">
+    <ul class="list-group mb-3" id="userlist">
         @foreach($users as $user)
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>

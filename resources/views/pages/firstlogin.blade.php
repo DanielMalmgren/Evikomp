@@ -2,7 +2,7 @@
 
 @section('content')
 
-<script>
+<script type="text/javascript">
 $(function() {
     var $workplaceSelect = $('select[id="workplace"]');
     var $workplaces = $('option', $workplaceSelect);

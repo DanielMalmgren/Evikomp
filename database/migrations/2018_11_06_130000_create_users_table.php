@@ -25,9 +25,9 @@ class CreateUsersTable extends Migration
             $table->string('locale_id')->nullable();
             $table->foreign('locale_id')->references('id')->on('locales');
             //$table->rememberToken();
-            $table->timestamps();
             $table->unsignedInteger('workplace_id')->nullable();
             $table->foreign('workplace_id')->references('id')->on('workplaces');
+            $table->timestamps();
             $table->collation = 'utf8mb4_swedish_ci';
         });
     }

@@ -11,8 +11,10 @@ class WorkplaceSettingsController extends Controller
 {
     public function edit() {
         $workplaces = Auth::user()->admin_workplaces;
+        $tracks = Track::all();
         $data = array(
-            'workplaces' => $workplaces
+            'workplaces' => $workplaces,
+            'tracks' => $tracks
         );
 
         return view('pages.workplacesettings')->with($data);

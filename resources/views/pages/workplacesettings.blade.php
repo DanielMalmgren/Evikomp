@@ -13,7 +13,12 @@
 
     <H1>Inställningar för arbetsplats</H1>
 
-    @if(count($workplaces) > 0)
+    @if(count($workplaces) == 1)
+        @foreach($workplaces as $workplace)
+            <H1>{{$workplace->name}}</H1>
+            @include('ajax.workplacesettings')
+        @endforeach
+    @elseif(count($workplaces) > 1)
         <select class="custom-select d-block w-100" id="workplace" name="workplace" required="">
             <option disabled selected>Välj arbetsplats...</option>
             @foreach($workplaces as $workplace)

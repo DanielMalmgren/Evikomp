@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Locale;
+use App\Track;
 
 class SettingsController extends Controller
 {
     public function edit() {
+        $tracks = Track::all();
+
         $data = array(
             'user' => Auth::user(),
-            'locales' => Locale::All()
+            'locales' => Locale::All(),
+            'tracks' => $tracks
         );
 
         return view('pages.settings')->with($data);
@@ -26,6 +30,7 @@ class SettingsController extends Controller
         ]);
 
         $user = $request->user();
+        $user->tracks()->sync($request->tracks);
         $user->locale_id = $request->input('locale');
         $user->save();
 

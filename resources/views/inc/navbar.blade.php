@@ -16,7 +16,7 @@
             <ul class="wsmenu-list">
                 @hasanyrole('Registered|Admin')
                     <li aria-haspopup="false"><a href="/" class="menuhomeicon {{ request()->is('/') ? 'active' : '' }}"><i class="fa fa-home"></i><span class="hometext">&nbsp;&nbsp;Home</span></a></li>
-                    <li aria-haspopup="false"><a href="/userinfo" class="{{ request()->is('userinfo') ? 'active' : '' }}"><i class="fa"></i>@lang('Användarinfo')</a></li>
+                    <!-- <li aria-haspopup="false"><a href="/userinfo" class="{{ request()->is('userinfo') ? 'active' : '' }}"><i class="fa"></i>@lang('Användarinfo')</a></li> -->
                     <li aria-haspopup="false"><a href="/tracks" class="{{ request()->is('tracks') ? 'active' : '' }}"><i class="fa"></i>@lang('Spår')</a></li>
                     <li aria-haspopup="false"><a href="/settings" class="{{ request()->is('settings') ? 'active' : '' }}"><i class="fa"></i>@lang('Inställningar')</a></li>
                     @can('use administration')
@@ -29,6 +29,7 @@
                             </ul>
                         </li>
                     @endcan
+                    <li aria-haspopup="false"><p class="menunota">{{ Auth::user()->name }} ({{ Auth::user()->workplace->name }})</p></li>
                 @endhasanyrole
             </ul>
         </nav>

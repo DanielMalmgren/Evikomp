@@ -22,5 +22,6 @@
     "Fortsätt till testet": "Continue to the test",
     "Fråga :question av :questions": "Question :question of :questions",
     "Fel svar, försök igen!": "Wrong answer, please try again!",
-    "(Ange :alternatives alternativ)": "(Enter :alternatives options)"
+    "(Ange :alternatives alternativ)": "(Enter :alternatives options)",
+    "Vänligen ange en giltig e-postadress": "Please enter a valid email address."
 }

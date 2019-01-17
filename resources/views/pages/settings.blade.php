@@ -95,14 +95,14 @@
                 <input type="email" name="email" class="form-control" id="email" placeholder="fornamn.efternamn@kommun.se">
             @endif
             <div class="invalid-feedback">
-                Please enter a valid email address.
+                @lang('Vänligen ange en giltig e-postadress')
             </div>
         </div>
 
-        @if(count($tracks) > 0)
+        @if(count($tracks) > 0 && $user->workplace)
             @foreach($tracks as $track)
                 <div class="checkbox">
-                    @if($user->workplace && $user->workplace->tracks->contains('id', $track->id))
+                    @if($user->workplace->tracks->contains('id', $track->id))
                         <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}" checked disabled>{{$track->translateOrDefault(App::getLocale())->name}}</label>
                     @elseif($user->tracks->contains('id', $track->id))
                         <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}" checked>{{$track->translateOrDefault(App::getLocale())->name}}</label>
@@ -112,6 +112,8 @@
                 </div>
             @endforeach
         @endif
+
+        <br>
 
         <button class="btn btn-primary btn-lg btn-block" type="submit">@lang('Spara')</button>
     </form>

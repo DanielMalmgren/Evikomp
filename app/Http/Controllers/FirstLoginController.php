@@ -19,7 +19,7 @@ class FirstLoginController extends Controller
             'user' => Auth::user()
         );
         if(Auth::user()->accepted_gdpr) {
-            //
+            return redirect('/settings');
         } else {
             return view('pages.gdprinfo')->with($data);
         }

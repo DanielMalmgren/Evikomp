@@ -7,10 +7,10 @@ Route::get('/about',                            'HomeController@about');
 
 //TrackController
 Route::get('/tracks',                           'TrackController@index');
-Route::get('/track/{track_id}',                 'TrackController@show');
+Route::get('/track/{track}',                    'TrackController@show');
 
 //LessonController
-Route::get('/lesson/{lesson_id}',               'LessonController@show');
+Route::get('/lesson/{lesson}',                  'LessonController@show');
 
 //TestController
 Route::get('/test/{lesson_id}',                 'TestController@show');
@@ -38,7 +38,10 @@ Route::get('/settings',                         'SettingsController@edit');
 Route::post('storesettings',                    'SettingsController@store');
 Route::post('storelanguage',                    'SettingsController@storeLanguage');
 
-//WorkplaceSettings
+//WorkplaceSettingsController
 Route::get('/wpsettings',                       'WorkplaceSettingsController@edit');
 Route::post('storewpsettings',                  'WorkplaceSettingsController@store');
 Route::get('/wpsettingsajax/{workplace_id}',    'WorkplaceSettingsController@ajax');
+
+//AnnouncementsController
+Route::resource('announcements',                'AnnouncementsController');

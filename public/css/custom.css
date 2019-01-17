@@ -12,6 +12,12 @@ ul.tracks a {
     padding: .75rem 1.25rem;
 }
 
+ul.announcements {
+    display:block;
+    width: 100%;
+    padding: .75rem 1.25rem;
+}
+
 ul.lessons a {
     display:block;
     width: 100%;

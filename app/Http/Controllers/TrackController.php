@@ -10,7 +10,7 @@ use App\User;
 class TrackController extends Controller
 {
     public function index() {
-        $tracks = Auth::user()->tracks->merge(Auth::user()->workplace->tracks);
+        $tracks = Auth::user()->tracks->merge(Auth::user()->workplace->tracks)->sort();
 
         $data = array(
             'tracks' => $tracks
@@ -18,9 +18,9 @@ class TrackController extends Controller
         return view('pages.tracks')->with($data);
     }
 
-    public function show($track_id) {
+    public function show(Track $track) {
         //$track = Track::where('id', $track_id)->first();
-        $track = Track::find($track_id);
+        //$track = Track::find($track_id);
         $data = array(
             'track' => $track
         );

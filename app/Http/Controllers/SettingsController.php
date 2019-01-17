@@ -52,11 +52,10 @@ class SettingsController extends Controller
         $user->tracks()->sync($request->tracks);
         $user->email = $request->input('email');
         $user->workplace_id = $request->input('workplace');
-        $user->locale_id = $request->input('locale');
         $user->save();
 
         $user->assignRole('Registered');
 
-        return redirect('/')->with('success', 'Uppgifterna sparade');
+        return redirect('/')->with('success', __('Inställningarna sparade'));
     }
 }

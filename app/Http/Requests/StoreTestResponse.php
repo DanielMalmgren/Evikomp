@@ -3,10 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Question;
 use App\ResponseOption;
 use App\TestResponse;
-use App\TestSession;
 use Illuminate\Validation\Rule;
 
 class StoreTestResponse extends FormRequest

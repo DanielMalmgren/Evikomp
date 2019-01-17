@@ -8,9 +8,9 @@ use App\Question;
 
 class LessonController extends Controller
 {
-    public function show($lesson_id) {
-        $lesson = Lesson::where('id', $lesson_id)->first();
-        $question = Question::where('lesson_id', $lesson_id)->first();
+    public function show(Lesson $lesson) {
+        //$lesson = Lesson::where('id', $lesson_id)->first();
+        $question = Question::where('lesson_id', $lesson->id)->first();
         $data = array(
             'question' => $question,
             'lesson' => $lesson

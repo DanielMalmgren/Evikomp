@@ -10,7 +10,9 @@ Route::get('/tracks',                           'TrackController@index');
 Route::get('/track/{track}',                    'TrackController@show');
 
 //LessonController
-Route::get('/lesson/{lesson}',                  'LessonController@show');
+Route::get('/lessons/{lesson}',                 'LessonController@show');
+Route::get('/lessons/{lesson}/edit',            'LessonController@edit');
+Route::put('/lessons/{lesson}',                 'LessonController@update');
 
 //TestController
 Route::get('/test/{lesson_id}',                 'TestController@show');

@@ -8,7 +8,7 @@
         <ul class="list-group mb-3 lessons">
             @foreach($track->lessons->where('active', true) as $lesson)
                 <li class="list-group-item d-flex justify-content-between lh-condensed nopadding">
-                    <a href="/lesson/{{$lesson->id}}">
+                    <a href="/lessons/{{$lesson->id}}">
                         <h6 class="my-0">{{$lesson->translateOrDefault(App::getLocale())->name}}</h6>
                         @if($lesson->lesson_results->where('user_id', Auth::user()->id)->first())
                             {{--<small class="text-muted">{{$lesson->lesson_results->where('user_id', Auth::user()->id)->first()->personal_best_percent}}</small>--}}

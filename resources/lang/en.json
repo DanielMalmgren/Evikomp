@@ -25,5 +25,6 @@
     "(Ange :alternatives alternativ)": "(Enter :alternatives options)",
     "Vänligen ange en giltig e-postadress": "Please enter a valid email address.",
     "Inställningarna sparade": "Settings saved",
-    "Nyheter": "News"
+    "Nyheter": "News",
+    "Du har inga spår valda. Klicka på \"Inställningar\" för att välja vilka spår som ska visas här!": "You haven't selected any tracks. Please click \"Settings\" to choose which tracks to show."
 }

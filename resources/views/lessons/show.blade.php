@@ -18,4 +18,8 @@
         <a href="/test/{{$lesson->id}}" class="btn btn-primary disabled">@lang('Fortsätt till testet')</a>
     @endif
 
+    @can ('manage lessons')
+        <a href="/lessons/{{$lesson->id}}/edit" class="btn btn-primary">@lang('Redigera denna lektion')</a>
+    @endcan
+
 @endsection

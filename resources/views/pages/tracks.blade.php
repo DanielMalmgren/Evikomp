@@ -15,6 +15,8 @@
                 </li>
             @endforeach
         </ul>
+    @else
+        @lang('Du har inga spår valda. Klicka på "Inställningar" för att välja vilka spår som ska visas här!')
     @endif
 
 @endsection

@@ -19,7 +19,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class HomeController extends Controller
 {
     public function index() {
-        if(empty(Auth::user()["workplace_id"])) {
+        if(empty(Auth::user()["workplace_id"]) || !Auth::user()->accepted_gdpr) {
             return redirect('/firstlogin');
         } else {
             return view('pages.index');

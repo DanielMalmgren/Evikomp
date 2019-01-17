@@ -29,12 +29,14 @@ Route::get('/exportusers',                      'UsersController@export')->middl
 
 //FirstLoginController
 Route::get('/firstlogin',                       'FirstLoginController@show');
-Route::post('storefirstlogin',                  'FirstLoginController@store');
+//Route::post('storefirstlogin',                  'FirstLoginController@store');
 Route::post('storefirstloginlanguage',          'FirstLoginController@storeLanguage');
+Route::post('storegdpraccept',                  'FirstLoginController@storeGdprAccept');
 
 //SettingsController
 Route::get('/settings',                         'SettingsController@edit');
 Route::post('storesettings',                    'SettingsController@store');
+Route::post('storelanguage',                    'SettingsController@storeLanguage');
 
 //WorkplaceSettings
 Route::get('/wpsettings',                       'WorkplaceSettingsController@edit');

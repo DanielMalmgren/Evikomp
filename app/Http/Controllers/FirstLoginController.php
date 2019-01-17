@@ -18,7 +18,11 @@ class FirstLoginController extends Controller
             'locales' => Locale::All(),
             'user' => Auth::user()
         );
-        return view('pages.firstlogin')->with($data);
+        if(Auth::user()->accepted_gdpr) {
+            //
+        } else {
+            return view('pages.gdprinfo')->with($data);
+        }
     }
 
     public function storeLanguage(Request $request) {
@@ -31,10 +35,18 @@ class FirstLoginController extends Controller
         $user->locale_id = $request->input('locale');
         $user->save();
 
-        return redirect('/');
+        return redirect('/firstlogin');
     }
 
-    public function store(Request $request) {
+    public function storeGdprAccept(Request $request) {
+        $user = $request->user();
+        $user->accepted_gdpr = true;
+        $user->save();
+
+        return redirect('/settings');
+    }
+
+    /*public function store(Request $request) {
 
         //logger(print_r($request->all(), true));
 
@@ -51,5 +63,5 @@ class FirstLoginController extends Controller
         $user->assignRole('Registered');
 
         return redirect('/')->with('success', 'Uppgifterna sparade');
-    }
+    }*/
 }

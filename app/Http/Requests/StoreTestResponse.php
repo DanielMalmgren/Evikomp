@@ -52,7 +52,7 @@ class StoreTestResponse extends FormRequest
     public function messages()
     {
         return [
-            'in' => 'Fel svar, försök igen!'
+            'in' => __('Fel svar, försök igen!')
         ];
     }
 

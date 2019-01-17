@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
             $table->string('email')->unique()->nullable();
+            $table->boolean('accepted_gdpr')->default(false);
             //$table->timestamp('email_verified_at')->nullable();
             //$table->string('password')->nullable();
             $table->string('locale_id')->nullable();

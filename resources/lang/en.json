@@ -16,5 +16,11 @@
     "Spara": "Save",
     "Användare": "Users",
     "Testresultat": "Test result",
-    "Grattis, du hade rätt på :percent% av frågorna på första försöket!": "Congratulations, you answered correctly on :percent% of the questions on first try!"
+    "Grattis, du hade rätt på :percent% av frågorna på första försöket!": "Congratulations, you answered correctly on :percent% of the questions on first try!",
+    "Acceptera": "Accept",
+    "Fortsätt": "Continue",
+    "Fortsätt till testet": "Continue to the test",
+    "Fråga :question av :questions": "Question :question of :questions",
+    "Fel svar, försök igen!": "Wrong answer, please try again!",
+    "(Ange :alternatives alternativ)": "(Enter :alternatives options)"
 }

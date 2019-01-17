@@ -30,7 +30,7 @@
         }
     </script>
 
-    <H1>Fråga {{$question->order}} av {{$test_session->number_of_questions()}}</H1>
+    <H1>@lang('Fråga :question av :questions', ['question' => $question->order, 'questions' => $test_session->number_of_questions()])</H1>
 
     {{$question->translateOrDefault(App::getLocale())->text}}
 
@@ -51,7 +51,7 @@
                     </div>
                 @endforeach
             @else
-                <p>(Ange {{$question->correctAnswers}} alternativ)</p>
+                <p>@lang('(Ange :alternatives alternativ)', ['alternatives' => $question->correctAnswers])</p>
                 @foreach($response_options as $response_option)
                     <div class="checkbox">
                         <label><input type="checkbox" name="multiresponse[]" value="{{$response_option->id}}" id="{{$response_option->id}}" onclick="chkcontrol({{$response_option->id}})">{{$response_option->translateOrDefault(App::getLocale())->text}}</label>

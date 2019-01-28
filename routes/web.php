@@ -16,10 +16,12 @@ Route::put('/lessons/{lesson}',                 'LessonController@update');
 
 //TestController
 Route::get('/test/{lesson_id}',                 'TestController@show');
+Route::post('/test/storeResponse',              'TestController@store');
 
 //QuestionController
-Route::get('/test/question/{question_id?}',     'QuestionController@show');
-Route::post('/test/storeResponse',              'QuestionController@store');
+Route::get('/test/question/{question?}',        'QuestionController@show');
+Route::get('/test/question/{question}/edit',    'QuestionController@edit');
+Route::put('/test/question/{question}',         'QuestionController@update');
 
 //TestResultController
 Route::get('/test/result/{testsession_id}',     'TestResultController@show');

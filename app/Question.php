@@ -19,6 +19,11 @@ class Question extends Model
     {
         return $this->hasMany('App\TestResponse');
     }
+
+    public function response_options()
+    {
+        return $this->hasMany('App\ResponseOption');
+    }
 }
 
 class QuestionTranslation extends Model

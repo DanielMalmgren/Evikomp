@@ -36,8 +36,8 @@
 
     <br><br>
 
-    @if(count($response_options) > 0)
-        <form method="post" name="question" action="{{action('QuestionController@store')}}" accept-charset="UTF-8">
+    @if(count($question->response_options) > 0)
+        <form method="post" name="question" action="{{action('TestController@store')}}" accept-charset="UTF-8">
             @csrf
 
             {{-- <input type="hidden" name="testsession_id" value="{{$testsession->id}}">
@@ -45,7 +45,7 @@
             <input type="hidden" name="test_response_id" value="{{$test_response->id}}"> --}}
 
             @if ($question->correctAnswers < 2)
-                @foreach($response_options as $response_option)
+                @foreach($question->response_options as $response_option)
                     <div class="radio">
                         <label><input type="radio" name="singleresponse" value="{{$response_option->id}}" onclick="document.question.submit.disabled=false;">{{$response_option->translateOrDefault(App::getLocale())->text}}</label>
                     </div>

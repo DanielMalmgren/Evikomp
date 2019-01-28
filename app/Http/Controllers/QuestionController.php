@@ -12,86 +12,55 @@ use App\Http\Requests\StoreTestResponse;
 
 class QuestionController extends Controller
 {
-    public function show(Request $request, $question_id) {
+    public function show(Request $request, Question $question) {
         logger('Session ID: '.$request->query('testsession_id'));
-        //$testsession = TestSession::where('id', $request->query('testsession_id'));
         $test_session = TestSession::find($request->query('testsession_id'));
 
-        logger('Question ID: '.$question_id);
-        $question = Question::find($question_id);
-
-        //Om det finns en test_response vars id är sparat i sessionen och som har rätt test_session_id,
-        //använd det, annars skapa en ny
         $test_response = TestResponse::firstOrCreate(
             ['test_session_id' => $test_session->id,
             'question_id' => $question->id]
         );
 
-        //if($test_response->wasRecentlyCreated) {
-            $request->session()->put('test_response_id', $test_response->id);
-        //}
-
-        /*$test_response = TestResponse::find($request->session()->get('test_response_id'));
-        if(!$test_response || $test_response->test_session_id != $test_session->id) {
-            $test_response = new TestResponse();
-            $test_response->test_session_id = $test_session->id;
-            $test_response->question_id = $question->id;
-            $test_response->save();
-            $request->session()->put('test_response_id', $test_response->id);
-        }*/
-
-        //session(['test_response_id' => $test_response->id]);
-
-        //$lesson = $question->lesson;
-
-        /*$lesson = Lesson::where('id', $lesson_id)->first();
-        //Om $question_id är null, börja med första frågan
-        if(!$question_id) {
-            $question = Question::where('lesson_id', $lesson_id)->first();
-        } else {
-            $question = Question::where('id', $question_id)->first();
-        }*/
-
-        $response_options = ResponseOption::where('question_id', $question->id)->get();
+        $request->session()->put('test_response_id', $test_response->id);
 
         $data = array(
             'question' => $question,
-        //    'lesson' => $lesson,
-            'response_options' => $response_options,
             'test_session' => $test_session,
             'test_response' => $test_response
         );
-        return view('pages.question')->with($data);
+        return view('questions.show')->with($data);
     }
 
-    public function store(StoreTestResponse $request) {
-        //$test_response = TestResponse::find($request->input('test_response_id'));
-        $test_response = TestResponse::find($request->session()->get('test_response_id'));
-        //$testsession = TestSession::find($request->input('testsession_id'));
-        //$question_id = $request->input('question_id');
-        //$question = Question::find($request->input('question_id'));
-        $question = $test_response->question;
-        $test_session = $test_response->test_session;
-        $lesson = $test_session->lesson;
+    public function edit(Question $question) {
+        $data = array(
+            'question' => $question
+        );
+        return view('questions.edit')->with($data);
+    }
 
-        //$test_session->completed_questions++;
-        $test_session->save();
+    public function update(Request $request, Question $question) {
+        $this->validate($request, [
+            'text' => 'required',
+            'correctAnswers' => 'required'
+        ]);
 
-        $nextquestion = Question::where([['lesson_id', '=', $lesson->id],['order', '>', $question->order]])->first();
-        if($nextquestion) {
-            //return redirect('/test/'.$lesson->id.'/'.$nextquestion->id);
-            $request->session()->forget('test_response_id'); //Rensa denna så det skapas en ny när vi kommer till QuestionController@show
-            return redirect('/test/question/'.$nextquestion->id.'?testsession_id='.$test_session->id);
-        } else {
-            $lesson_result = LessonResult::updateOrCreate(
-                ['user_id' => $test_session->user_id, 'lesson_id' => $test_session->lesson_id]
-            );
-            if($test_session->percent() > $lesson_result->personal_best_percent) {
-                $lesson_result->personal_best_percent = $test_session->percent();
-                $lesson_result->save();
-            }
+        $currentLocale = \App::getLocale();
+        $question->translate($currentLocale)->text = $request->text;
+        $question->correctAnswers = $request->correctAnswers;
+        $question->save();
 
-            return redirect('/test/result/'.$test_session->id);
+        //logger('Alternativ:');
+        //logger(print_r($request->response_option_text, true));
+        //logger('Alternativ rätt:');
+        //logger(print_r($request->response_option_correct, true));
+
+        foreach($request->response_option_text as $response_option_id => $response_option_text) {
+            $response_option = ResponseOption::find($response_option_id);
+            $response_option->text = $response_option_text;
+            $response_option->isCorrectAnswer = in_array($response_option_id, $request->response_option_correct);
+            $response_option->save();
         }
+
+        return redirect('/lessons/'.$question->lesson->id.'/edit')->with('success', 'Ändringar sparade');
     }
 }

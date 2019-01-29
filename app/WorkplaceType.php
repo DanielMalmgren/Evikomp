@@ -10,4 +10,9 @@ class WorkplaceType extends Model
     {
         return $this->hasMany('App\Workplace');
     }
+
+    public function titles()
+    {
+        return $this->hasMany('App\Title');
+    }
 }

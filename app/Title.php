@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Title extends Model
 {
-    public function workplaces()
+    public function workplace_type()
     {
-        return $this->hasMany('App\Workplace');
+        return $this->belongsTo('App\WorkplaceType');
     }
 
     public function lessons()

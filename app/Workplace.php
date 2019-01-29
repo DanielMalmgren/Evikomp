@@ -26,11 +26,6 @@ class Workplace extends Model
         return $this->belongsTo('App\WorkplaceType');
     }
 
-    public function title()
-    {
-        return $this->belongsTo('App\Title');
-    }
-
     public function tracks()
     {
         return $this->belongsToMany('App\Track');

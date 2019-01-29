@@ -17,7 +17,27 @@
                 }
             });
             document.getElementById('workplace').disabled = false;
+            $("#workplace").change();
         });
+        //$("#municipality").change();
+    });
+
+    $(function() {
+        var $titleSelect = $('select[id="title"]');
+        var $titles = $('option', $titleSelect);
+        // and then listen to change event and show/hide them
+        $('#workplace').on('change', function() {
+            // first remove all elements from dom
+            $titles.detach();
+            var val = $(this).find('option:selected').attr("data-workplace-type");
+            $titles.each(function() {
+                if($(this).is('[data-workplace_type="' + val + '"') || $(this).is('[data-workplace_type="' + -1 + '"')) {
+                    $(this).appendTo($titleSelect);
+                }
+            });
+            document.getElementById('title').disabled = false;
+        });
+        //$("#workplace").change();
     });
 </script>
 
@@ -71,9 +91,9 @@
                 <select class="custom-select d-block w-100" id="workplace" name="workplace" required="">
                     @foreach($workplaces as $workplace)
                         @if($user->workplace->id == $workplace->id)
-                            <option selected data-municipality="{{$workplace->municipality_id}}" value="{{$workplace->id}}">{{$workplace->name}}</option>
+                            <option selected data-municipality="{{$workplace->municipality_id}}" data-workplace-type="{{$workplace->workplace_type_id}}" value="{{$workplace->id}}">{{$workplace->name}}</option>
                         @else
-                            <option data-municipality="{{$workplace->municipality_id}}" value="{{$workplace->id}}">{{$workplace->name}}</option>
+                            <option data-municipality="{{$workplace->municipality_id}}" data-workplace-type="{{$workplace->workplace_type_id}}" value="{{$workplace->id}}">{{$workplace->name}}</option>
                         @endif
                     @endforeach
                 </select>
@@ -81,7 +101,36 @@
                 <select class="custom-select d-block w-100" id="workplace" name="workplace" required="" disabled>
                     <option>@lang('Välj kommun först')</option>
                     @foreach($workplaces as $workplace)
-                        <option data-municipality="{{$workplace->municipality_id}}" value="{{$workplace->id}}">{{$workplace->name}}</option>
+                        <option data-municipality="{{$workplace->municipality_id}}" data-workplace-type="{{$workplace->workplace_type_id}}" value="{{$workplace->id}}">{{$workplace->name}}</option>
+                    @endforeach
+                </select>
+            @endif
+        </div>
+
+        <div class="mb-3">
+            <label for="title">@lang('Befattning')</label>
+            @if($user->title)
+                <select class="custom-select d-block w-100" id="title" name="title" required="">
+                    <option disabled data-workplace_type="-1">@lang('Välj din befattning')</option>
+                    @foreach($titles as $title)
+                        @if($user->title->id == $title->id)
+                            <option selected data-workplace_type="{{$title->workplace_type->id}}" value="{{$title->id}}">{{$title->name}}</option>
+                        @else
+                            <option data-workplace_type="{{$title->workplace_type->id}}" value="{{$title->id}}">{{$title->name}}</option>
+                        @endif
+                    @endforeach
+                </select>
+            @else
+                <select class="custom-select d-block w-100" id="title" name="title" required="" disabled>
+                    @if($user->workplace)
+                        <option>@lang('Välj arbetsplats först')</option>
+                        <option disabled selected data-workplace_type="-1">@lang('Välj din befattning')</option>
+                    @else
+                        <option selected>@lang('Välj arbetsplats först')</option>
+                        <option disabled data-workplace_type="-1">@lang('Välj din befattning')</option>
+                    @endif
+                    @foreach($titles as $title)
+                        <option data-workplace_type="{{$title->workplace_type->id}}" value="{{$title->id}}">{{$title->name}}</option>
                     @endforeach
                 </select>
             @endif

@@ -9,6 +9,7 @@ use App\Track;
 use App\Municipality;
 use App\Workplace;
 use App\User;
+use App\Title;
 
 class SettingsController extends Controller
 {
@@ -20,6 +21,7 @@ class SettingsController extends Controller
             'workplaces' => Workplace::orderBy('name')->get(),
             'user' => Auth::user(),
             'locales' => Locale::All(),
+            'titles' => Title::All(),
             'tracks' => $tracks
         );
 
@@ -51,6 +53,7 @@ class SettingsController extends Controller
         $user = $request->user();
         $user->tracks()->sync($request->tracks);
         $user->email = $request->input('email');
+        $user->title_id = $request->input('title');
         $user->workplace_id = $request->input('workplace');
         $user->save();
 

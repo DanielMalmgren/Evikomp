@@ -41,7 +41,7 @@ class QuestionController extends Controller
     public function update(Request $request, Question $question) {
         $this->validate($request, [
             'text' => 'required',
-            'correctAnswers' => 'required'
+            'correctAnswers' => 'required|integer'
         ]);
 
         $currentLocale = \App::getLocale();
@@ -49,16 +49,46 @@ class QuestionController extends Controller
         $question->correctAnswers = $request->correctAnswers;
         $question->save();
 
-        //logger('Alternativ:');
-        //logger(print_r($request->response_option_text, true));
-        //logger('Alternativ rätt:');
-        //logger(print_r($request->response_option_correct, true));
+        logger('Alternativ:');
+        logger(print_r($request->response_option_text, true));
+        logger('Alternativ rätt:');
+        logger(print_r($request->response_option_correct, true));
 
+        logger('Nya alternativ:');
+        logger(print_r($request->new_response_option_text, true));
+        logger('Nya alternativ rätt:');
+        logger(print_r($request->new_response_option_correct, true));
+
+        //Loop through all changed response options
+        if($request->response_option_text) {
         foreach($request->response_option_text as $response_option_id => $response_option_text) {
             $response_option = ResponseOption::find($response_option_id);
             $response_option->text = $response_option_text;
             $response_option->isCorrectAnswer = in_array($response_option_id, $request->response_option_correct);
             $response_option->save();
+        }
+
+        //Loop through all deleted response options
+        if($request->remove_response_option_text) {
+                foreach($request->remove_response_option_text as $response_option_id => $response_option_text) {
+                    ResponseOption::destroy($response_option_id);
+                }
+            }
+        }
+
+        //Loop through all added response options
+        if($request->new_response_option_text) {
+            foreach($request->new_response_option_text as $response_option_id => $response_option_text) {
+                $response_option = new ResponseOption;
+                $response_option->text = $response_option_text;
+                if($request->new_response_option_correct) {
+                    $response_option->isCorrectAnswer = in_array($response_option_id, $request->new_response_option_correct);
+                } else {
+                    $response_option->isCorrectAnswer = false;
+                }
+                $response_option->question_id = $question->id;
+                $response_option->save();
+            }
         }
 
         return redirect('/lessons/'.$question->lesson->id.'/edit')->with('success', 'Ändringar sparade');

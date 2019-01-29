@@ -17,7 +17,6 @@ class CreateMunicipalitiesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
-            $table->collation = 'utf8mb4_swedish_ci';
         });
     }
 

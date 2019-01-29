@@ -29,6 +29,11 @@ class Lesson extends Model
     {
         return $this->hasMany('App\LessonResult');
     }
+
+    public function titles()
+    {
+        return $this->belongsToMany('App\Title');
+    }
 }
 
 class LessonTranslation extends Model

@@ -17,6 +17,7 @@ class CreateLessonsTable extends Migration
             $table->increments('id');
             //$table->string('name'); //Moved to lesson_translations to be localized
             $table->boolean('active')->default(true);
+            $table->boolean('limited_by_title')->default(false);
             $table->unsignedInteger('video_id')->nullable();
             $table->foreign('video_id')->references('id')->on('videos');
             $table->timestamps();
@@ -50,6 +51,23 @@ class CreateLessonsTable extends Migration
 
             $table->primary(['track_id', 'lesson_id']);
         });
+
+        Schema::create('lesson_title', function (Blueprint $table) {
+            $table->unsignedInteger('title_id');
+            $table->unsignedInteger('lesson_id');
+
+            $table->foreign('title_id')
+                ->references('id')
+                ->on('titles')
+                ->onDelete('cascade');
+
+            $table->foreign('lesson_id')
+                ->references('id')
+                ->on('lessons')
+                ->onDelete('cascade');
+
+            $table->primary(['title_id', 'lesson_id']);
+        });
     }
 
     /**
@@ -60,6 +78,7 @@ class CreateLessonsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('lesson_track');
+        Schema::dropIfExists('lesson_title');
         Schema::dropIfExists('lesson_translations');
         Schema::dropIfExists('lessons');
     }

@@ -18,7 +18,8 @@ class CreateWorkplacesTable extends Migration
             $table->string('name');
             $table->unsignedInteger('municipality_id');
             $table->foreign('municipality_id')->references('id')->on('municipalities');
-            $table->collation = 'utf8mb4_swedish_ci';
+            $table->unsignedInteger('workplace_type_id');
+            $table->foreign('workplace_type_id')->references('id')->on('workplace_types');
             $table->timestamps();
         });
     }

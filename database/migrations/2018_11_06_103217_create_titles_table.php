@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLocalesTable extends Migration
+class CreateTitlesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateLocalesTable extends Migration
      */
     public function up()
     {
-        Schema::create('locales', function (Blueprint $table) {
-            $table->string('id', 2)->unique();
-            $table->primary('id');
+        Schema::create('titles', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('name');
-            $table->boolean('default');
-            //$table->string('code', 2);
+            $table->unsignedInteger('workplace_type_id');
+            $table->foreign('workplace_type_id')->references('id')->on('workplace_types');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateLocalesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('locales');
+        Schema::dropIfExists('titles');
     }
 }

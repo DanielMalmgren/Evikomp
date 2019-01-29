@@ -13,6 +13,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(MunicipalitySeeder::class);
 
+        $this->call(WorkplaceTypeSeeder::class);
+
+        $this->call(TitleSeeder::class);
+
         $this->call(WorkplaceSeeder::class);
 
         $this->call(TrackSeeder::class);

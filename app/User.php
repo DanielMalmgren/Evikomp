@@ -35,6 +35,11 @@ class User extends Authenticatable
         return $this->belongsTo('App\Workplace');
     }
 
+    public function title()
+    {
+        return $this->belongsTo('App\Title');
+    }
+
     public function admin_workplaces()
     {
         return $this->belongsToMany('App\Workplace', 'workplace_admins');

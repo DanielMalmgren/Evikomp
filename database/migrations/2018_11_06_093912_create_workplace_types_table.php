@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLocalesTable extends Migration
+class CreateWorkplaceTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateLocalesTable extends Migration
      */
     public function up()
     {
-        Schema::create('locales', function (Blueprint $table) {
-            $table->string('id', 2)->unique();
-            $table->primary('id');
+        Schema::create('workplace_types', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('name');
-            $table->boolean('default');
-            //$table->string('code', 2);
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateLocalesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('locales');
+        Schema::dropIfExists('workplace_types');
     }
 }

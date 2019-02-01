@@ -16,9 +16,9 @@ class CreateLessonResultsTable extends Migration
         Schema::create('lesson_results', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('lesson_id');
-            $table->foreign('lesson_id')->references('id')->on('lessons');
+            $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
             $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedTinyInteger('personal_best_percent')->default(0);
             $table->unsignedTinyInteger('rating')->nullable();
             $table->timestamps();

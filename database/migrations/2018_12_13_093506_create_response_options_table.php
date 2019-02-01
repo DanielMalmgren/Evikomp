@@ -16,7 +16,7 @@ class CreateResponseOptionsTable extends Migration
         Schema::create('response_options', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('question_id');
-            $table->foreign('question_id')->references('id')->on('questions');
+            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
             $table->boolean('isCorrectAnswer');
             $table->timestamps();
         });

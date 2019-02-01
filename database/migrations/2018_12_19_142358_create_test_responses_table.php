@@ -16,9 +16,9 @@ class CreateTestResponsesTable extends Migration
         Schema::create('test_responses', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('test_session_id');
-            $table->foreign('test_session_id')->references('id')->on('test_sessions');
+            $table->foreign('test_session_id')->references('id')->on('test_sessions')->onDelete('cascade');
             $table->unsignedInteger('question_id');
-            $table->foreign('question_id')->references('id')->on('questions');
+            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
             $table->unsignedTinyInteger('wrong_responses')->default(0);
             $table->boolean('correct')->default(false);
             $table->timestamps();

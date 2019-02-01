@@ -51,7 +51,12 @@ class QuestionController extends Controller
         $question->order = 100;
         $question->save();
 
-        $this->update($request, $question);
+        return $this->update($request, $question);
+    }
+
+    public function destroy(Question $question) {
+        logger('Destroying question '.$question->id);
+        $question->delete();
     }
 
     public function edit(Question $question) {
@@ -103,8 +108,6 @@ class QuestionController extends Controller
                 $response_option->save();
             }
         }
-
-        logger("QuestionController@update, redirecting to ".'/lessons/'.$question->lesson->id.'/edit');
 
         return redirect('/lessons/'.$question->lesson->id.'/edit')->with('success', 'Ändringar sparade');
     }

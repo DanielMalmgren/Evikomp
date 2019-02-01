@@ -7,8 +7,22 @@
         var $titlesDiv = $('select[id="titles"]');
         $('#limited_by_title').on('change', function() {
             var val = this.checked;
-            console.log(val);
             $("#titles").toggle(this.checked);
+        });
+
+        var wrapper = $("#questionlist");
+        $(wrapper).on("click",".remove_question", function(e){
+            e.preventDefault();
+            var parentdiv = $(this).parent('div').parent();
+            var questionId = parentdiv.data('question_id');
+            console.log(questionId);
+            var token = "{{ csrf_token() }}";
+            $.ajax({
+                url: '/test/question/'+questionId,
+                data : {_token:token},
+                type: 'DELETE'
+            });
+            parentdiv.css("cssText", "display: none !important;");
         });
     });
 </script>
@@ -49,11 +63,12 @@
             @lang('Frågor')
             <ul class="list-group mb-3" id="questionlist">
                 @foreach($lesson->questions as $question)
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <li class="list-group-item d-flex justify-content-between lh-condensed" data-question_id="{{$question->id}}">
                         <div>
                         <a href="/test/question/{{$question->id}}/edit">
                             <h6 class="my-0">{{$question->translateOrDefault(App::getLocale())->text}}</h6>
                         </a>
+                        <button class="btn btn-default btn-danger remove_question" type="button">X</button>
                         </div>
                     </li>
                 @endforeach

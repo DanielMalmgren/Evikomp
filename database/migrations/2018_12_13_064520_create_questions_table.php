@@ -16,7 +16,7 @@ class CreateQuestionsTable extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('lesson_id');
-            $table->foreign('lesson_id')->references('id')->on('lessons');
+            $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
             $table->unsignedTinyInteger('order');
             //$table->boolean('isMultichoice')->default(false);
             $table->unsignedTinyInteger('correctAnswers')->default(1);

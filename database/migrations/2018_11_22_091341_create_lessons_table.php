@@ -19,6 +19,8 @@ class CreateLessonsTable extends Migration
             $table->boolean('active')->default(true);
             $table->boolean('limited_by_title')->default(false);
             $table->unsignedInteger('video_id')->nullable();
+            $table->unsignedInteger('times_started')->default(0);
+            $table->unsignedInteger('times_finished')->default(0);
             $table->foreign('video_id')->references('id')->on('videos');
             $table->timestamps();
         });

@@ -28,8 +28,8 @@
             </select>
         </div>
 
-        @if(count($question->response_options) > 0)
-            @lang('Svarsalternativ')
+        @lang('Svarsalternativ')
+            @if(count($question->response_options) > 0)
             <div id="input_fields_wrap">
             @foreach($question->response_options as $response_option)
                 <div class="mb-3">

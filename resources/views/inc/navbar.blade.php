@@ -29,7 +29,7 @@
                             </ul>
                         </li>
                     @endcan
-                    <li aria-haspopup="false"><p class="menunota">{{ Auth::user()->name }} ({{ Auth::user()->workplace->name }})</p></li>
+                    <li aria-haspopup="false"><p class="menunota">{{Auth::user()->name}} {{Auth::user()->workplace?"(".Auth::user()->workplace->name.")":""}}</p></li>
                 @endhasanyrole
             </ul>
         </nav>

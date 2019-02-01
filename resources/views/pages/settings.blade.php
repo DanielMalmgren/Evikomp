@@ -4,11 +4,27 @@
 
 <script type="text/javascript">
     $(function() {
+        var $titleSelect = $('select[id="title"]');
+        var $titleSelectId = $titleSelect.val();
+        var $titles = $('option', $titleSelect);
+        $('#workplace').on('change', function() {
+            $titles.detach();
+            var val = $(this).find('option:selected').attr("data-workplace-type");
+            $titles.each(function() {
+                if($(this).is('[data-workplace_type="' + val + '"') || $(this).is('[data-workplace_type="' + -1 + '"')) {
+                    $(this).appendTo($titleSelect);
+                }
+            });
+            document.getElementById('title').disabled = false;
+            $titleSelect.val($titleSelectId);
+        });
+    });
+
+    $(function() {
         var $workplaceSelect = $('select[id="workplace"]');
+        var $workplaceSelectId = $workplaceSelect.val();
         var $workplaces = $('option', $workplaceSelect);
-        // and then listen to change event and show/hide them
         $('#municipality').on('change', function() {
-            // first remove all elements from dom
             $workplaces.detach();
             var val = $(this).val();
             $workplaces.each(function() {
@@ -18,26 +34,15 @@
             });
             document.getElementById('workplace').disabled = false;
             $("#workplace").change();
+            $workplaceSelect.val($workplaceSelectId);
         });
-        //$("#municipality").change();
+        $("#municipality").change();
     });
 
     $(function() {
-        var $titleSelect = $('select[id="title"]');
-        var $titles = $('option', $titleSelect);
-        // and then listen to change event and show/hide them
-        $('#workplace').on('change', function() {
-            // first remove all elements from dom
-            $titles.detach();
-            var val = $(this).find('option:selected').attr("data-workplace-type");
-            $titles.each(function() {
-                if($(this).is('[data-workplace_type="' + val + '"') || $(this).is('[data-workplace_type="' + -1 + '"')) {
-                    $(this).appendTo($titleSelect);
-                }
-            });
-            document.getElementById('title').disabled = false;
+        $('#title').on('change', function() {
+            document.settings.submit.disabled = false;
         });
-        //$("#workplace").change();
     });
 </script>
 
@@ -66,7 +71,7 @@
         </form>
     @endif
 
-    <form method="post" action="{{action('SettingsController@store')}}" accept-charset="UTF-8">
+    <form method="post" name="settings" action="{{action('SettingsController@store')}}" accept-charset="UTF-8">
         @csrf
 
         <div class="mb-3">
@@ -164,7 +169,7 @@
 
         <br>
 
-        <button class="btn btn-primary btn-lg btn-block" type="submit">@lang('Spara')</button>
+        <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit" {{$user->title?"":"disabled"}}>@lang('Spara')</button>
     </form>
 </div>
 

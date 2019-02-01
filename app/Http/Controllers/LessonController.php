@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Lesson;
 use App\Question;
+use App\Title;
 
 class LessonController extends Controller
 {
@@ -18,8 +19,10 @@ class LessonController extends Controller
     }
 
     public function edit(Lesson $lesson) {
+        $titles = Title::all();
         $data = array(
-            'lesson' => $lesson
+            'lesson' => $lesson,
+            'titles' => $titles
         );
         return view('lessons.edit')->with($data);
     }
@@ -31,8 +34,12 @@ class LessonController extends Controller
 
         $currentLocale = \App::getLocale();
         $lesson->translate($currentLocale)->name = $request->name;
+        $lesson->active = $request->active;
+        $lesson->limited_by_title = $request->limited_by_title;
         $lesson->translate($currentLocale)->description = $request->description;
         $lesson->save();
+
+        $lesson->titles()->sync($request->titles);
 
         return redirect('/lessons/'.$lesson->id)->with('success', 'Ändringar sparade');
     }

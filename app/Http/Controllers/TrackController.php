@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Track;
 use App\User;
+use App\Lesson;
 
 class TrackController extends Controller
 {
@@ -15,15 +16,32 @@ class TrackController extends Controller
         $data = array(
             'tracks' => $tracks
         );
-        return view('pages.tracks')->with($data);
+        return view('tracks.index')->with($data);
     }
 
     public function show(Track $track) {
-        //$track = Track::where('id', $track_id)->first();
-        //$track = Track::find($track_id);
+        if(Auth::user()->can('list all lessons')) {
+            $lessons = $track->lessons;
+        } else {
+            $title = Auth::user()->title;
+
+            $lessons = Lesson::where('active', true)
+            ->whereHas('tracks', function ($query) use ($track) {
+                $query->where('id', $track->id);
+            })
+            ->where(function ($query) use ($title) {
+                $query->whereHas('titles', function ($query) use ($title) {
+                    $query->where('id', $title->id);
+                })
+                ->orWhere('limited_by_title', false);
+            })
+            ->get();
+
+        }
         $data = array(
-            'track' => $track
+            'track' => $track,
+            'lessons' => $lessons
         );
-        return view('pages.track')->with($data);
+        return view('tracks.show')->with($data);
     }
 }

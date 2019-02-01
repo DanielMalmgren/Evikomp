@@ -19,9 +19,12 @@ Route::get('/test/{lesson_id}',                 'TestController@show');
 Route::post('/test/storeResponse',              'TestController@store');
 
 //QuestionController
-Route::get('/test/question/{question?}',        'QuestionController@show');
+Route::get('/test/question/create',             'QuestionController@create');
+Route::post('/test/question',                   'QuestionController@store');
+Route::get('/test/question/{question}',         'QuestionController@show');
 Route::get('/test/question/{question}/edit',    'QuestionController@edit');
 Route::put('/test/question/{question}',         'QuestionController@update');
+Route::delete('/test/question/{question}',      'QuestionController@destroy');
 
 //TestResultController
 Route::get('/test/result/{testsession_id}',     'TestResultController@show');

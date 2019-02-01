@@ -31,6 +31,29 @@ class QuestionController extends Controller
         return view('questions.show')->with($data);
     }
 
+    public function create(Request $request) {
+        $lesson_id = $request->input('lesson_id');
+        $data = array(
+            'lesson_id' => $lesson_id
+        );
+        return view('questions.create')->with($data);
+    }
+
+    public function store(Request $request) {
+        $this->validate($request, [
+            'text' => 'required',
+            'correctAnswers' => 'required|integer',
+            'lesson_id' => 'required'
+        ]);
+
+        $question = new Question;
+        $question->lesson_id = $request->lesson_id;
+        $question->order = 100;
+        $question->save();
+
+        $this->update($request, $question);
+    }
+
     public function edit(Question $question) {
         $data = array(
             'question' => $question
@@ -45,19 +68,9 @@ class QuestionController extends Controller
         ]);
 
         $currentLocale = \App::getLocale();
-        $question->translate($currentLocale)->text = $request->text;
         $question->correctAnswers = $request->correctAnswers;
+        $question->translateOrNew($currentLocale)->text = $request->text;
         $question->save();
-
-        logger('Alternativ:');
-        logger(print_r($request->response_option_text, true));
-        logger('Alternativ rätt:');
-        logger(print_r($request->response_option_correct, true));
-
-        logger('Nya alternativ:');
-        logger(print_r($request->new_response_option_text, true));
-        logger('Nya alternativ rätt:');
-        logger(print_r($request->new_response_option_correct, true));
 
         //Loop through all changed response options
         if($request->response_option_text) {
@@ -90,6 +103,8 @@ class QuestionController extends Controller
                 $response_option->save();
             }
         }
+
+        logger("QuestionController@update, redirecting to ".'/lessons/'.$question->lesson->id.'/edit');
 
         return redirect('/lessons/'.$question->lesson->id.'/edit')->with('success', 'Ändringar sparade');
     }

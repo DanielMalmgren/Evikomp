@@ -29,6 +29,11 @@ ul.lessons a {
 
 .resultstar {
     width: 30%;
+    max-width: 202px;
+}
+
+.votebutton {
+    max-width: 150px;
 }
 
 .menunota {

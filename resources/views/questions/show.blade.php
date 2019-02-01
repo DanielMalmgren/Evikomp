@@ -52,7 +52,7 @@
                 @endforeach
             @else
                 <p>@lang('(Ange :alternatives alternativ)', ['alternatives' => $question->correctAnswers])</p>
-                @foreach($response_options as $response_option)
+                @foreach($question->response_options as $response_option)
                     <div class="checkbox">
                         <label><input type="checkbox" name="multiresponse[]" value="{{$response_option->id}}" id="{{$response_option->id}}" onclick="chkcontrol({{$response_option->id}})">{{$response_option->translateOrDefault(App::getLocale())->text}}</label>
                     </div>

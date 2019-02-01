@@ -31,6 +31,7 @@
                                 <img src="/images/Star_unhappy_small.png">
                             @endif
                         @endif
+                        @lang('Betyg'): {{$lesson->rating()}}
                     </a>
                 </li>
             @endforeach

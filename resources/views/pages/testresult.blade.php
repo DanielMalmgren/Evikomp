@@ -26,4 +26,36 @@
         @endif
     </div>
 
+    <div>
+        <img id="upvote" class="votebutton" src="/images/upvote.png">
+        <img id="downvote" class="votebutton" src="/images/downvote.png">
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#upvote").click(function(){
+                var lessonId = "{{$test_session->lesson->id}}";
+                var userId = "{{$test_session->user->id}}";
+                var token = "{{ csrf_token() }}";
+                var vote = "1";
+                $.ajax({
+                    url: '/lessons/'+lessonId+'/vote',
+                    data : {_token:token,user_id:userId,vote:vote},
+                    type: 'PUT'
+                });
+            });
+            $("#downvote").click(function(){
+                var lessonId = "{{$test_session->lesson->id}}";
+                var userId = "{{$test_session->user->id}}";
+                var token = "{{ csrf_token() }}";
+                var vote = "-1";
+                $.ajax({
+                    url: '/lessons/'+lessonId+'/vote',
+                    data : {_token:token,user_id:userId,vote:vote},
+                    type: 'PUT'
+                });
+            });
+        });
+    </script>
+
 @endsection

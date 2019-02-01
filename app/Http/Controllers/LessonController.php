@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Lesson;
 use App\Question;
 use App\Title;
+use App\LessonResult;
 
 class LessonController extends Controller
 {
@@ -16,6 +17,12 @@ class LessonController extends Controller
             'lesson' => $lesson
         );
         return view('lessons.show')->with($data);
+    }
+
+    public function vote(Request $request, Lesson $lesson) {
+        $lesson_result = LessonResult::where([['user_id', '=', $request->user_id],['lesson_id', '=', $lesson->id]])->first();
+        $lesson_result->rating = $request->vote;
+        $lesson_result->save();
     }
 
     public function edit(Lesson $lesson) {

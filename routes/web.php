@@ -13,6 +13,7 @@ Route::get('/track/{track}',                    'TrackController@show');
 Route::get('/lessons/{lesson}',                 'LessonController@show');
 Route::get('/lessons/{lesson}/edit',            'LessonController@edit');
 Route::put('/lessons/{lesson}',                 'LessonController@update');
+Route::put('/lessons/{lesson}/vote',            'LessonController@vote');
 
 //TestController
 Route::get('/test/{lesson_id}',                 'TestController@show');

@@ -34,6 +34,11 @@ class Lesson extends Model
     {
         return $this->belongsToMany('App\Title');
     }
+
+    public function rating()
+    {
+        return $this->lesson_results->sum('rating');
+    }
 }
 
 class LessonTranslation extends Model

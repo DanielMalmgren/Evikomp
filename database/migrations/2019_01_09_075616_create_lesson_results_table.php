@@ -20,7 +20,7 @@ class CreateLessonResultsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedTinyInteger('personal_best_percent')->default(0);
-            $table->unsignedTinyInteger('rating')->nullable();
+            $table->tinyInteger('rating')->default(0);
             $table->timestamps();
         });
     }

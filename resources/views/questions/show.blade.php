@@ -36,13 +36,12 @@
 
     <br><br>
 
-    @if(count($question->response_options) > 0)
-        <form method="post" name="question" action="{{action('TestController@store')}}" accept-charset="UTF-8">
-            @csrf
+    <form method="post" name="question" action="{{action('TestController@store')}}" accept-charset="UTF-8">
+        @csrf
 
-            {{-- <input type="hidden" name="testsession_id" value="{{$testsession->id}}">
-            <input type="hidden" name="question_id" value="{{$question->id}}">
-            <input type="hidden" name="test_response_id" value="{{$test_response->id}}"> --}}
+        @if(count($question->response_options) == 0)
+            <button class="btn btn-primary btn-lg btn-block" id="submit" name="submit" type="submit">@lang('Gå vidare')</button>
+        @else
 
             @if ($question->correctAnswers < 2)
                 @foreach($question->response_options as $response_option)
@@ -62,7 +61,9 @@
             <br><br>
 
             <button class="btn btn-primary btn-lg btn-block" id="submit" name="submit" type="submit" disabled>@lang('Gå vidare')</button>
-        </form>
-    @endif
+
+        @endif
+
+    </form>
 
 @endsection

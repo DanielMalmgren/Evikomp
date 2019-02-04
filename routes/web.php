@@ -16,7 +16,7 @@ Route::put('/lessons/{lesson}',                 'LessonController@update');
 Route::put('/lessons/{lesson}/vote',            'LessonController@vote');
 
 //TestController
-Route::get('/test/{lesson_id}',                 'TestController@show');
+Route::get('/test/{lesson}',                    'TestController@show');
 Route::post('/test/storeResponse',              'TestController@store');
 
 //QuestionController
@@ -28,7 +28,7 @@ Route::put('/test/question/{question}',         'QuestionController@update');
 Route::delete('/test/question/{question}',      'QuestionController@destroy');
 
 //TestResultController
-Route::get('/test/result/{testsession_id}',     'TestResultController@show');
+Route::get('/test/result/{test_session}',       'TestResultController@show');
 
 //UsersControler
 Route::get('/userinfo/{user_id?}',              'UsersController@show');
@@ -37,7 +37,6 @@ Route::get('/exportusers',                      'UsersController@export')->middl
 
 //FirstLoginController
 Route::get('/firstlogin',                       'FirstLoginController@show');
-//Route::post('storefirstlogin',                  'FirstLoginController@store');
 Route::post('storefirstloginlanguage',          'FirstLoginController@storeLanguage');
 Route::post('storegdpraccept',                  'FirstLoginController@storeGdprAccept');
 

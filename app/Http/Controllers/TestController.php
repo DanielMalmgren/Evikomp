@@ -14,19 +14,18 @@ use App\Http\Requests\StoreTestResponse;
 
 class TestController extends Controller
 {
-    public function show($lesson_id) {
-
-        $questions = Question::where('lesson_id', $lesson_id);
-
+    public function show(Lesson $lesson) {
         $test_session = new TestSession;
-        $test_session->lesson_id = $lesson_id;
+        $test_session->lesson_id = $lesson->id;
         $test_session->user_id = Auth::user()->id;
-        //$test_session->number_of_questions = $questions->count();
         $test_session->save();
+
+        $lesson->times_test_started++;
+        $lesson->save();
 
         logger('Testsessions-ID: '.$test_session->id);
 
-        $question = $questions->orderBy('order')->first();
+        $question = $lesson->questions->sortBy('order')->first();
         return redirect('/test/question/'.$question->id.'?testsession_id='.$test_session->id);
     }
 
@@ -41,14 +40,17 @@ class TestController extends Controller
         $lesson = $test_session->lesson;
 
         //$test_session->completed_questions++;
-        $test_session->save();
+        //$test_session->save();
 
         $nextquestion = Question::where([['lesson_id', '=', $lesson->id],['order', '>', $question->order]])->first();
+        //If there is a next question, go to it. Otherwise the test is finished.
         if($nextquestion) {
-            //return redirect('/test/'.$lesson->id.'/'.$nextquestion->id);
             $request->session()->forget('test_response_id'); //Rensa denna så det skapas en ny när vi kommer till QuestionController@show
             return redirect('/test/question/'.$nextquestion->id.'?testsession_id='.$test_session->id);
         } else {
+            $lesson->times_finished++;
+            $lesson->save();
+
             $lesson_result = LessonResult::updateOrCreate(
                 ['user_id' => $test_session->user_id, 'lesson_id' => $test_session->lesson_id]
             );

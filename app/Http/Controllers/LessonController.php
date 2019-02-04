@@ -12,6 +12,8 @@ class LessonController extends Controller
 {
     public function show(Lesson $lesson) {
         $question = Question::where('lesson_id', $lesson->id)->first();
+        $lesson->times_started++;
+        $lesson->save();
         $data = array(
             'question' => $question,
             'lesson' => $lesson

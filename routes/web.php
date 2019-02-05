@@ -31,9 +31,12 @@ Route::delete('/test/question/{question}',      'QuestionController@destroy');
 Route::get('/test/result/{test_session}',       'TestResultController@show');
 
 //UsersControler
-Route::get('/userinfo/{user_id?}',              'UsersController@show');
+Route::get('/userinfo/{user?}',                 'UsersController@show');
 Route::get('/listusers',                        'UsersController@index')->middleware('permission:list users');
 Route::get('/exportusers',                      'UsersController@export')->middleware('permission:list users');
+
+//ActiveTimeController
+Route::post('/activetime',                      'ActiveTimeController@store');
 
 //FirstLoginController
 Route::get('/firstlogin',                       'FirstLoginController@show');

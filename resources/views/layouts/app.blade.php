@@ -15,6 +15,23 @@
         <script type="text/javascript" language="javascript" src="{{asset('webslidemenu/webslidemenu.js')}}"></script>
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('webslidemenu/color-skins/black-blue.css')}}" />
 
+        <script src="/js/timeme.min.js"></script>
+        <script type="text/javascript">
+            TimeMe.initialize({
+                idleTimeoutInSeconds: 30 // seconds
+            });
+
+            window.onbeforeunload = function(){
+                var time = Math.ceil(TimeMe.getTimeOnCurrentPageInSeconds());
+                var token = "{{ csrf_token() }}";
+                $.ajax({
+                    url: '/activetime',
+                    data : {_token:token,time:time},
+                    type: 'POST'
+                });
+            };
+        </script>
+
         <title>Evikomp</title>
 
     </head>

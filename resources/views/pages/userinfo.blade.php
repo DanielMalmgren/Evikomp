@@ -31,6 +31,14 @@
                 {{$role}}<br>
             @endforeach
         </p>
+
+        <p>
+            Aktiv tid denna månad:<br>
+            @foreach($active_times as $i => $active_time)
+                {{$i}}: {{$active_time}}<br>
+            @endforeach
+            Totalt: {{$total_active_time}}
+        </p>
     @endif
 
 @endsection

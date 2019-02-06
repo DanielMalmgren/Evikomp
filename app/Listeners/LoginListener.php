@@ -47,15 +47,13 @@ class LoginListener
         if(empty($user)) {
             logger("Ny användare!");
             $user = new \App\User;
-            $user->name = $firstname." ".$lastname;
-            $user->firstname = $firstname;
-            $user->lastname = $lastname;
             $user->email = $mail;
             $user->personid = $personnr;
-			$user->save();
-        } else {
-            logger("Existerande användare!");
         }
+        $user->name = $firstname." ".$lastname;
+        $user->firstname = $firstname;
+        $user->lastname = $lastname;
+        $user->save();
 
         //Behövs senare för SLO
         session(['sessionIndex' => $samluser->getSessionIndex()]);

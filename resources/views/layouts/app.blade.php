@@ -18,7 +18,7 @@
         <script src="/js/timeme.min.js"></script>
         <script type="text/javascript">
             TimeMe.initialize({
-                idleTimeoutInSeconds: 30 // seconds
+                idleTimeoutInSeconds: 60 // seconds
             });
 
             window.onbeforeunload = function(){

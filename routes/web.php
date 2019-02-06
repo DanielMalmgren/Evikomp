@@ -37,6 +37,7 @@ Route::get('/exportusers',                      'UsersController@export')->middl
 
 //ActiveTimeController
 Route::post('/activetime',                      'ActiveTimeController@store');
+Route::get('/exportactivetime/{user?}',         'ActiveTimeController@export');
 
 //FirstLoginController
 Route::get('/firstlogin',                       'FirstLoginController@show');
@@ -51,7 +52,7 @@ Route::post('storelanguage',                    'SettingsController@storeLanguag
 //WorkplaceSettingsController
 Route::get('/wpsettings',                       'WorkplaceSettingsController@edit');
 Route::post('storewpsettings',                  'WorkplaceSettingsController@store');
-Route::get('/wpsettingsajax/{workplace_id}',    'WorkplaceSettingsController@ajax');
+Route::get('/wpsettingsajax/{workplace}',       'WorkplaceSettingsController@ajax');
 
 //AnnouncementsController
 Route::resource('announcements',                'AnnouncementsController');

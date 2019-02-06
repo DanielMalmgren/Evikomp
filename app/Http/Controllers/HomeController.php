@@ -14,11 +14,8 @@ class HomeController extends Controller
         } else {
             $announcements = Announcement::All()->sort()->reverse()->take(5);
 
-            $active_time = gmdate("H:i:s", Auth::user()->active_times->sum('seconds'));
-
             $data = array(
-                'announcements' => $announcements,
-                'active_time' => $active_time
+                'announcements' => $announcements
             );
             return view('pages.index')->with($data);
         }

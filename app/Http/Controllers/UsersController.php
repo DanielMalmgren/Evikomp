@@ -20,12 +20,12 @@ class UsersController extends Controller
         for($i = 1; $i <= date("j"); $i++) {
             $this_time = $active_times_db = ActiveTime::where('user_id', $user->id)->whereMonth('date', date("n"))->whereDay('date', $i)->first();
             if($this_time) {
-                $active_times[$i] = gmdate("H:i:s", $this_time->seconds);
+                $active_times[$i] = date("H:i:s", $this_time->seconds);
             } else {
                 $active_times[$i] = "00:00:00";
             }
         }
-        $total_active_time = gmdate("H:i:s", $user->active_times->sum('seconds'));
+        $total_active_time = date("H:i", $user->active_times->sum('seconds')+59);
 
         $data = array(
             'user' => $user,

@@ -20,8 +20,7 @@ class WorkplaceSettingsController extends Controller
         return view('pages.workplacesettings')->with($data);
     }
 
-    public function ajax($workplace_id) {
-        $workplace = Workplace::find($workplace_id);
+    public function ajax(Workplace $workplace) {
         $tracks = Track::all();
         $data = array(
             'workplace' => $workplace,

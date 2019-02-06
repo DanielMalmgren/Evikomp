@@ -22,6 +22,6 @@
     <a href="/announcements/create" class="btn btn-primary">@lang('Skapa nytt meddelande')</a>
 @endcan
 
-Aktiv tid idag: {{$active_time}}
+Aktiv tid idag: {{Auth::user()->active_time_today()}}
 
 @endsection

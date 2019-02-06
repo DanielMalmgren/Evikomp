@@ -39,6 +39,8 @@
             @endforeach
             Totalt: {{$total_active_time}}
         </p>
+
+        <a href="/exportactivetime/{{$user->id}}" class="btn btn-primary">@lang('Hämta aktiv tid som Excel-fil')</a>
     @endif
 
 @endsection

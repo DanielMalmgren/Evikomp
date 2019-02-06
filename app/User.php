@@ -69,4 +69,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Track');
     }
+
+    public function active_time_today()
+    {
+        return date("H:i:s", $this->active_times->last()->seconds);
+    }
+
+    public function active_time_total()
+    {
+        return date("H:i:s", $this->active_times->sum('seconds')+59);
+    }
 }

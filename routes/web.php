@@ -49,10 +49,10 @@ Route::get('/settings',                         'SettingsController@edit');
 Route::post('storesettings',                    'SettingsController@store');
 Route::post('storelanguage',                    'SettingsController@storeLanguage');
 
-//WorkplaceSettingsController
-Route::get('/wpsettings',                       'WorkplaceSettingsController@edit');
-Route::post('storewpsettings',                  'WorkplaceSettingsController@store');
-Route::get('/wpsettingsajax/{workplace}',       'WorkplaceSettingsController@ajax');
+//WorkplaceController
+Route::get('/workplace',                        'WorkplaceController@edit');
+Route::post('/workplace',                       'WorkplaceController@store');
+Route::get('/workplaceajax/{workplace}',        'WorkplaceController@ajax');
 
 //AnnouncementsController
 Route::resource('announcements',                'AnnouncementsController');

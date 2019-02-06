@@ -1,12 +1,16 @@
-
-<H2>Obligatoriska spår</H2>
-
-
-<form method="post" name="question" action="{{action('WorkplaceSettingsController@store')}}" accept-charset="UTF-8">
+<form method="post" name="question" action="{{action('WorkplaceController@store')}}" accept-charset="UTF-8">
     @csrf
 
     <input type="hidden" name="workplace_id" value="{{$workplace->id}}">
 
+    <H2>Typ av arbetsplats</H2>
+    <select class="custom-select d-block w-100" id="workplace_type" name="workplace_type" required="">
+        @foreach($workplace_types as $workplace_type)
+            <option value="{{$workplace_type->id}}" {{$workplace->workplace_type_id==$workplace_type->id?"selected":""}}>{{$workplace_type->name}}</option>
+        @endforeach
+    </select>
+
+    <H2>Obligatoriska spår</H2>
     @if(count($tracks) > 0)
         @foreach($tracks as $track)
             <div class="checkbox">

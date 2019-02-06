@@ -6,7 +6,7 @@
     $(function() {
         $('#workplace').change(function(){
             var selectedValue = $(this).val();
-            $("#settings").load("/wpsettingsajax/" + selectedValue);
+            $("#settings").load("/workplaceajax/" + selectedValue);
         });
     });
 </script>

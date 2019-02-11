@@ -10,6 +10,8 @@ Route::get('/tracks',                           'TrackController@index');
 Route::get('/track/{track}',                    'TrackController@show');
 
 //LessonController
+Route::get('/lessons/create/{track}',           'LessonController@create');
+Route::post('/lessons',                         'LessonController@store');
 Route::get('/lessons/{lesson}',                 'LessonController@show');
 Route::get('/lessons/{lesson}/edit',            'LessonController@edit');
 Route::put('/lessons/{lesson}',                 'LessonController@update');

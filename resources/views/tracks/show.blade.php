@@ -37,5 +37,8 @@
             @endforeach
         </ul>
     @endif
+    @can('manage lessons')
+    <a href="/lessons/create/{{$track->id}}" class="btn btn-primary">@lang('Lägg till lektion')</a>
+    @endcan
 
 @endsection

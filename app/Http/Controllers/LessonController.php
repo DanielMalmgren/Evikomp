@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Lesson;
+use App\Track;
 use App\Question;
 use App\Title;
 use App\LessonResult;
@@ -19,6 +20,28 @@ class LessonController extends Controller
             'lesson' => $lesson
         );
         return view('lessons.show')->with($data);
+    }
+
+    public function create(Request $request, Track $track) {
+        $titles = Title::all();
+        $data = array(
+            'track' => $track,
+            'titles' => $titles
+        );
+        return view('lessons.create')->with($data);
+    }
+
+    public function store(Request $request) {
+        $this->validate($request, [
+            'name' => 'required',
+            'track_id' => 'required'
+        ]);
+
+        $lesson = new Lesson;
+        $lesson->save();
+        $lesson->tracks()->attach($request->track_id);
+
+        return $this->update($request, $lesson);
     }
 
     public function vote(Request $request, Lesson $lesson) {
@@ -42,10 +65,10 @@ class LessonController extends Controller
         ]);
 
         $currentLocale = \App::getLocale();
-        $lesson->translate($currentLocale)->name = $request->name;
+        $lesson->translateOrNew($currentLocale)->name = $request->name;
         $lesson->active = $request->active;
         $lesson->limited_by_title = $request->limited_by_title;
-        $lesson->translate($currentLocale)->description = $request->description;
+        $lesson->translateOrNew($currentLocale)->description = $request->description;
         $lesson->save();
 
         $lesson->titles()->sync($request->titles);

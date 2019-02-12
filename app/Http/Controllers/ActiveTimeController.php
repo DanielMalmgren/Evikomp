@@ -106,7 +106,7 @@ class ActiveTimeController extends Controller
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
 
-        $filename = "Närvaro Evikomp ".$monthstr." ".$year." ".$user->name;
+        $filename = "Närvaro Evikomp ".$monthstr." ".$year." ".$user->name.".xlsx";
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment; filename="'.$filename.'"');
         $writer->save("php://output");

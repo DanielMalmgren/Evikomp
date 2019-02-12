@@ -19,12 +19,12 @@ class QuestionSeeder extends Seeder
         DB::table('question_translations')->insert([
             'question_id' => $questionid,
             'text' => 'Vilket kom först, hönan eller ägget?',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('question_translations')->insert([
             'question_id' => $questionid,
             'text' => 'What came first, the hen or the egg?',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
 
         $responseid = DB::table('response_options')->insertGetId([
@@ -34,12 +34,12 @@ class QuestionSeeder extends Seeder
         DB::table('response_option_translations')->insert([
             'response_option_id' => $responseid,
             'text' => 'Hönan',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('response_option_translations')->insert([
             'response_option_id' => $responseid,
             'text' => 'The hen',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
 
         $responseid = DB::table('response_options')->insertGetId([
@@ -49,12 +49,12 @@ class QuestionSeeder extends Seeder
         DB::table('response_option_translations')->insert([
             'response_option_id' => $responseid,
             'text' => 'Ägget',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('response_option_translations')->insert([
             'response_option_id' => $responseid,
             'text' => 'The egg',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
 
         $responseid = DB::table('response_options')->insertGetId([
@@ -64,12 +64,12 @@ class QuestionSeeder extends Seeder
         DB::table('response_option_translations')->insert([
             'response_option_id' => $responseid,
             'text' => 'Tuppen',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('response_option_translations')->insert([
             'response_option_id' => $responseid,
             'text' => 'The cock',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
 
         //Vilka av följande alternativ är sanna?
@@ -81,12 +81,12 @@ class QuestionSeeder extends Seeder
         DB::table('question_translations')->insert([
             'question_id' => $questionid,
             'text' => 'Vilka av följande kommuner ligger i Östergötland?',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('question_translations')->insert([
             'question_id' => $questionid,
             'text' => 'Which of the following municipalities are placed in Östergötland?',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
 
         $responseid = DB::table('response_options')->insertGetId([
@@ -96,7 +96,7 @@ class QuestionSeeder extends Seeder
         DB::table('response_option_translations')->insert([
             'response_option_id' => $responseid,
             'text' => 'Kinda',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
 
         $responseid = DB::table('response_options')->insertGetId([
@@ -106,7 +106,7 @@ class QuestionSeeder extends Seeder
         DB::table('response_option_translations')->insert([
             'response_option_id' => $responseid,
             'text' => 'Östersund',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
 
         $responseid = DB::table('response_options')->insertGetId([
@@ -116,7 +116,7 @@ class QuestionSeeder extends Seeder
         DB::table('response_option_translations')->insert([
             'response_option_id' => $responseid,
             'text' => 'Idre',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
 
         $responseid = DB::table('response_options')->insertGetId([
@@ -126,7 +126,7 @@ class QuestionSeeder extends Seeder
         DB::table('response_option_translations')->insert([
             'response_option_id' => $responseid,
             'text' => 'Ydre',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
     }
 }

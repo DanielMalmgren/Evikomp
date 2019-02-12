@@ -71,9 +71,13 @@ class ActiveTimeController extends Controller
             $year = date('Y');
         }
 
+        setlocale(LC_TIME, 'sv_SE');
         if($request->month) {
             $month = $request->month;
             $monthstr = strftime('%B', strtotime('2000-'.$request->month.'-15'));
+            //logger("Månad enligt strftime med locale ".\App::getLocale(LC_TIME).": ".$monthstr);
+            //$monthstr = \Carbon\Carbon::parse('2000-'.$request->month.'-15')->formatLocalized('%B');
+            //logger("Månad enligt formatLocalized med locale ".\Carbon\Carbon::getLocale().": ".$monthstr);
         } else {
             $month = date('n');
             $monthstr = strftime('%B');
@@ -91,8 +95,7 @@ class ActiveTimeController extends Controller
         $worksheet->getCell('W3')->setValue('2018/00079'); //Diarienummer
         $worksheet->getCell('W4')->setValue('Evikomp'); //Projektnamn
 
-        setlocale(LC_TIME, 'sv_SE');
-        $worksheet->getCell('W6')->setValue($monthstr); //Redovisningsmånad
+        $worksheet->getCell('W6')->setValue(ucfirst($monthstr)); //Redovisningsmånad
         $worksheet->getCell('W7')->setValue($year); //År
 
         $worksheet->getCell('A13')->setValue('Tid i Evikomps webapp');

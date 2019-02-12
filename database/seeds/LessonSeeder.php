@@ -16,13 +16,13 @@ class LessonSeeder extends Seeder
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.1 - Anställningen',
-            'locale' => 'sv',
+            'locale' => 'sv_SE',
             'description' => 'Om verksamhetens rutiner och förväntningar. Din roll som medarbetare är viktig!'
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.1 - The employment',
-            'locale' => 'en',
+            'locale' => 'en_US',
             'description' => 'About the business\'s routines and expectations. Your role as an employee is important!'
         ]);
         DB::table('lesson_track')->insert([
@@ -35,12 +35,12 @@ class LessonSeeder extends Seeder
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.2 - Bemötande',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.2 - Treatment',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
         DB::table('lesson_track')->insert([
             'track_id' => 1,
@@ -52,12 +52,12 @@ class LessonSeeder extends Seeder
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.3 - Dokumentation och sekretess',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.3 - Documentation and secrecy',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
         DB::table('lesson_track')->insert([
             'track_id' => 1,
@@ -69,12 +69,12 @@ class LessonSeeder extends Seeder
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.4 - Omvårdnadsarbete',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.4 - Nursing',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
         DB::table('lesson_track')->insert([
             'track_id' => 1,
@@ -86,12 +86,12 @@ class LessonSeeder extends Seeder
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.5 - Måltider och andra aktiviteter',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.5 - Meals and other activities',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
         DB::table('lesson_track')->insert([
             'track_id' => 1,
@@ -103,12 +103,12 @@ class LessonSeeder extends Seeder
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.6 - Ergonomi och förflyttningsteknik',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.6 - Ergonomics and transfer techniques',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
         DB::table('lesson_track')->insert([
             'track_id' => 1,
@@ -120,12 +120,12 @@ class LessonSeeder extends Seeder
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.7 - Palliativ vård',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.7 - Palliative care',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
         DB::table('lesson_track')->insert([
             'track_id' => 1,
@@ -137,12 +137,12 @@ class LessonSeeder extends Seeder
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => 'Lektion 4.1',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => 'Lesson 4.1',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
         DB::table('lesson_track')->insert([
             'track_id' => 4,
@@ -154,12 +154,12 @@ class LessonSeeder extends Seeder
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => 'Lektion 4.2',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => 'Lesson 4.2',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
         DB::table('lesson_track')->insert([
             'track_id' => 4,

@@ -17,12 +17,12 @@ class TrackSeeder extends Seeder
         DB::table('track_translations')->insert([
             'track_id' => 1,
             'name' => 'Spår 1 - Introduktion äldreomsorg',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('track_translations')->insert([
             'track_id' => 1,
             'name' => 'Track 1 - Introduction elder care',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
 
         DB::table('tracks')->insert([
@@ -31,12 +31,12 @@ class TrackSeeder extends Seeder
         DB::table('track_translations')->insert([
             'track_id' => 2,
             'name' => 'Spår 2 - Vårdens grunder och teori',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('track_translations')->insert([
             'track_id' => 2,
             'name' => 'Track 2 - The bases and theory of care',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
 
         DB::table('tracks')->insert([
@@ -45,12 +45,12 @@ class TrackSeeder extends Seeder
         DB::table('track_translations')->insert([
             'track_id' => 3,
             'name' => 'Spår 3 - Vara människa',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('track_translations')->insert([
             'track_id' => 3,
             'name' => 'Track 3 - Being human',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
 
         DB::table('tracks')->insert([
@@ -59,12 +59,12 @@ class TrackSeeder extends Seeder
         DB::table('track_translations')->insert([
             'track_id' => 4,
             'name' => 'Spår 4 - Diskriminering',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('track_translations')->insert([
             'track_id' => 4,
             'name' => 'Track 4 - Discrimination',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
 
         DB::table('tracks')->insert([
@@ -73,12 +73,12 @@ class TrackSeeder extends Seeder
         DB::table('track_translations')->insert([
             'track_id' => 5,
             'name' => 'Spår 5 - Äldres hälsa och livskvalitet',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('track_translations')->insert([
             'track_id' => 5,
             'name' => 'Track 5 - Health and quality of life for elderly',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
 
         DB::table('tracks')->insert([
@@ -87,12 +87,12 @@ class TrackSeeder extends Seeder
         DB::table('track_translations')->insert([
             'track_id' => 6,
             'name' => 'Spår 6 - Funktionsnedsättning (LSS)',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('track_translations')->insert([
             'track_id' => 6,
             'name' => 'Track 6 - Disabilities (LSS)',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
 
         DB::table('tracks')->insert([
@@ -101,12 +101,12 @@ class TrackSeeder extends Seeder
         DB::table('track_translations')->insert([
             'track_id' => 7,
             'name' => 'Spår 7 - Demens',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('track_translations')->insert([
             'track_id' => 7,
             'name' => 'Track 7 - Dementia',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
 
         DB::table('tracks')->insert([
@@ -115,12 +115,12 @@ class TrackSeeder extends Seeder
         DB::table('track_translations')->insert([
             'track_id' => 8,
             'name' => 'Spår 8',
-            'locale' => 'sv'
+            'locale' => 'sv_SE'
         ]);
         DB::table('track_translations')->insert([
             'track_id' => 8,
             'name' => 'Track 8',
-            'locale' => 'en'
+            'locale' => 'en_US'
         ]);
     }
 }

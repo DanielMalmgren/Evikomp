@@ -13,42 +13,42 @@ class LocaleSeeder extends Seeder
     {
         DB::table('locales')->insert([
             'name' => 'svenska',
-            'id' => 'sv',
+            'id' => 'sv_SE',
             'default' => true
         ]);
         DB::table('locales')->insert([
             'name' => 'english',
-            'id' => 'en',
+            'id' => 'en_US',
             'default' => false
         ]);
         DB::table('locales')->insert([
             'name' => 'العربية',
-            'id' => 'ar',
+            'id' => 'ar_AE',
             'default' => false
         ]);
         DB::table('locales')->insert([
             'name' => 'français',
-            'id' => 'fr',
+            'id' => 'fr_FR',
             'default' => false
         ]);
         DB::table('locales')->insert([
             'name' => 'español',
-            'id' => 'es',
+            'id' => 'es_ES',
             'default' => false
         ]);
         DB::table('locales')->insert([
             'name' => 'ትግርኛ',
-            'id' => 'ti',
+            'id' => 'ti_ER',
             'default' => false
         ]);
         DB::table('locales')->insert([
             'name' => 'فارسی',
-            'id' => 'fa',
+            'id' => 'fa_IR',
             'default' => false
         ]);
         DB::table('locales')->insert([
             'name' => 'soomaali',
-            'id' => 'so',
+            'id' => 'so_SO',
             'default' => false
         ]);
     }

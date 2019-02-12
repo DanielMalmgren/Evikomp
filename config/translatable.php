@@ -11,14 +11,14 @@ return [
     |
     */
     'locales' => [
-        'sv', //Svenska
-        'en', //Engelska
-        'ar', //Arabiska
-        'fr', //Franska
-        'es', //Spanska
-        'ti', //Tigrinja
-        'fa', //Persiska
-        'so', //Somaliska
+        'sv_SE', //Svenska
+        'en_US', //Engelska
+        'ar_AE', //Arabiska
+        'fr_FR', //Franska
+        'es_ES', //Spanska
+        'ti_ER', //Tigrinja
+        'fa_IR', //Persiska
+        'so_SO', //Somaliska
     ],
 
     /*
@@ -45,7 +45,7 @@ return [
     | and never fallback to the translator one.
     |
     */
-    'locale' => 'sv',
+    'locale' => 'sv_SE',
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +82,7 @@ return [
     | set it to false.
     |
     */
-    'fallback_locale' => 'sv',
+    'fallback_locale' => 'sv_SE',
 
     /*
     |--------------------------------------------------------------------------

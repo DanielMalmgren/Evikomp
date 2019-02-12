@@ -12,43 +12,56 @@ class MunicipalitySeeder extends Seeder
     public function run()
     {
         DB::table('municipalities')->insert([
-            'name' => 'Ödeshög'
+            'name' => 'Ödeshög',
+            'orgnummer' => '212000-0373'
         ]);
         DB::table('municipalities')->insert([
-            'name' => 'Boxholm'
+            'name' => 'Boxholm',
+            'orgnummer' => '212000-0407'
         ]);
         DB::table('municipalities')->insert([
-            'name' => 'Kinda'
+            'name' => 'Kinda',
+            'orgnummer' => '212000-0399'
         ]);
         DB::table('municipalities')->insert([
-            'name' => 'Ydre'
+            'name' => 'Ydre',
+            'orgnummer' => '212000-0381'
         ]);
         DB::table('municipalities')->insert([
-            'name' => 'Linköping'
+            'name' => 'Linköping',
+            'orgnummer' => '212000-0449'
         ]);
         DB::table('municipalities')->insert([
-            'name' => 'Finspång'
+            'name' => 'Finspång',
+            'orgnummer' => '212000-0423'
         ]);
         DB::table('municipalities')->insert([
-            'name' => 'Mjölby'
+            'name' => 'Mjölby',
+            'orgnummer' => '212000-0480'
         ]);
         DB::table('municipalities')->insert([
-            'name' => 'Motala'
+            'name' => 'Motala',
+            'orgnummer' => '212000-2817'
         ]);
         DB::table('municipalities')->insert([
-            'name' => 'Norrköping'
+            'name' => 'Norrköping',
+            'orgnummer' => '212000-0456'
         ]);
         DB::table('municipalities')->insert([
-            'name' => 'Söderköping'
+            'name' => 'Söderköping',
+            'orgnummer' => '212000-0464'
         ]);
         DB::table('municipalities')->insert([
-            'name' => 'Vadstena'
+            'name' => 'Vadstena',
+            'orgnummer' => '212000-2825'
         ]);
         DB::table('municipalities')->insert([
-            'name' => 'Valdemarsvik'
+            'name' => 'Valdemarsvik',
+            'orgnummer' => '212000-0431'
         ]);
         DB::table('municipalities')->insert([
-            'name' => 'Åtvidaberg'
+            'name' => 'Åtvidaberg',
+            'orgnummer' => '212000-0415'
         ]);
     }
 }

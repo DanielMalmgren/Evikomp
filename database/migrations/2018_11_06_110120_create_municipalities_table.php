@@ -16,6 +16,7 @@ class CreateMunicipalitiesTable extends Migration
         Schema::create('municipalities', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('orgnummer', 11); //I format xxxxxx-xxxx, eftersom det är så ESF vill ha in dem
             $table->timestamps();
         });
     }

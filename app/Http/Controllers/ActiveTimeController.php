@@ -87,6 +87,7 @@ class ActiveTimeController extends Controller
 
         $worksheet = $spreadsheet->getActiveSheet();
 
+        //TODO: Man kan anropa setCellValue(), gör samma sak som först getCell() och sedan setValue()
         $worksheet->getCell('C6')->setValue($user->name); //Namn på deltagare
         $worksheet->getCell('C7')->setValue(substr_replace($user->personid, '-', 8, 0)); //Personnummer
         $worksheet->getCell('C8')->setValue($user->workplace->municipality->name); //Namn på deltagarens arbetsgivare
@@ -100,6 +101,7 @@ class ActiveTimeController extends Controller
 
         $worksheet->getCell('A13')->setValue('Tid i Evikomps webapp');
 
+        //TODO: Man kan nog använda setCellValueByColumnAndRow istället för den fula arrayen
         for($i = 1; $i <= 31; $i++) {
             $this_time = $active_times_db = ActiveTime::where('user_id', $user->id)->whereMonth('date', $month)->whereYear('date', $year)->whereDay('date', $i)->first();
             if($this_time) {

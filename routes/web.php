@@ -28,6 +28,7 @@ Route::get('/test/question/{question}',         'QuestionController@show');
 Route::get('/test/question/{question}/edit',    'QuestionController@edit');
 Route::put('/test/question/{question}',         'QuestionController@update');
 Route::delete('/test/question/{question}',      'QuestionController@destroy');
+Route::post('/test/question/reorder',           'QuestionController@reorder');
 
 //TestResultController
 Route::get('/test/result/{test_session}',       'TestResultController@show');

@@ -66,6 +66,17 @@ class QuestionController extends Controller
         return view('questions.edit')->with($data);
     }
 
+    public function reorder(Request $request) {
+        parse_str($request->data, $data);
+        $ids = $data['id'];
+
+        foreach($ids as $order => $id){
+            $question = Question::findOrFail($id);
+            $question->order = $order+1;
+            $question->save();
+        }
+    }
+
     public function update(Request $request, Question $question) {
         $this->validate($request, [
             'text' => 'required',

@@ -2,6 +2,8 @@
 
 @section('content')
 
+<script type="text/javascript" language="javascript" src="{{asset('vendor/jquery-ui-1.12.1.custom/jquery-ui.js')}}"></script>
+
 <script type="text/javascript">
     $(function() {
         var $titlesDiv = $('select[id="titles"]');
@@ -24,6 +26,18 @@
             });
             parentdiv.css("cssText", "display: none !important;");
         });
+
+        $("#questionlist").sortable({
+           update: function (e, u) {
+               var token = "{{ csrf_token() }}";
+               var data = $(this).sortable('serialize');
+                $.ajax({
+                    url: '/test/question/reorder',
+                    data : {_token:token,data:data},
+                    type: 'POST'
+                });
+           }
+        });
     });
 </script>
 
@@ -41,6 +55,11 @@
         <div class="mb-3">
             <label for="description">@lang('Beskrivning')</label>
             <textarea rows=5 name="description" class="form-control" id="description" value="{{$lesson->translateOrDefault(App::getLocale())->description}}"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="video_id">@lang('Video-ID')</label>
+            <input name="video_id" class="form-control" id="video_id" value="{{$lesson->video_id}}">
         </div>
 
         <div class="mb-3">
@@ -62,8 +81,8 @@
         @if(count($lesson->questions) > 0)
             @lang('Frågor')
             <ul class="list-group mb-3" id="questionlist">
-                @foreach($lesson->questions as $question)
-                    <li class="list-group-item d-flex justify-content-between lh-condensed" data-question_id="{{$question->id}}">
+                @foreach($questions as $question)
+                    <li class="list-group-item d-flex justify-content-between lh-condensed" id="id-{{$question->id}}" data-question_id="{{$question->id}}">
                         <div>
                         <a href="/test/question/{{$question->id}}/edit">
                             <h6 class="my-0">{{$question->translateOrDefault(App::getLocale())->text}}</h6>

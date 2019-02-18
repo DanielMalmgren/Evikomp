@@ -52,9 +52,11 @@ class LessonController extends Controller
 
     public function edit(Lesson $lesson) {
         $titles = Title::all();
+        $questions = $lesson->questions->sortBy('order');
         $data = array(
             'lesson' => $lesson,
-            'titles' => $titles
+            'titles' => $titles,
+            'questions' => $questions
         );
         return view('lessons.edit')->with($data);
     }
@@ -67,6 +69,7 @@ class LessonController extends Controller
         $currentLocale = \App::getLocale();
         $lesson->translateOrNew($currentLocale)->name = $request->name;
         $lesson->active = $request->active;
+        $lesson->video_id = $request->video_id;
         $lesson->limited_by_title = $request->limited_by_title;
         $lesson->translateOrNew($currentLocale)->description = $request->description;
         $lesson->save();

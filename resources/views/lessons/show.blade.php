@@ -7,7 +7,7 @@
     {{$lesson->translateOrDefault(App::getLocale())->description}}
 
     <div class="vimeo-container">
-        <iframe src="https://player.vimeo.com/video/259554350" class="vimeo-iframe" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+        <iframe src="https://player.vimeo.com/video/{{$lesson->video_id}}" class="vimeo-iframe" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
     </div>
 
     <br>

@@ -1,7 +1,6 @@
-<form method="post" name="question" action="{{action('WorkplaceController@store')}}" accept-charset="UTF-8">
+<form method="post" name="question" action="{{action('WorkplaceController@update', $workplace->id)}}" accept-charset="UTF-8">
+    @method('put')
     @csrf
-
-    <input type="hidden" name="workplace_id" value="{{$workplace->id}}">
 
     <H2>Typ av arbetsplats</H2>
     <select class="custom-select d-block w-100" id="workplace_type" name="workplace_type" required="">

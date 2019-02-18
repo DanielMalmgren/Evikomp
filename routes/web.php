@@ -53,8 +53,10 @@ Route::post('storesettings',                    'SettingsController@store');
 Route::post('storelanguage',                    'SettingsController@storeLanguage');
 
 //WorkplaceController
-Route::get('/workplace',                        'WorkplaceController@edit');
+Route::get('/workplace/create',                 'WorkplaceController@create');
 Route::post('/workplace',                       'WorkplaceController@store');
+Route::get('/workplace',                        'WorkplaceController@edit');
+Route::put('/workplace/{workplace}',            'WorkplaceController@update');
 Route::get('/workplaceajax/{workplace}',        'WorkplaceController@ajax');
 
 //AnnouncementsController

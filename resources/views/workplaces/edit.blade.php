@@ -16,7 +16,7 @@
     @if(count($workplaces) == 1)
         @foreach($workplaces as $workplace)
             <H1>{{$workplace->name}}</H1>
-            @include('ajax.workplacesettings')
+            @include('workplaces.ajax')
         @endforeach
     @elseif(count($workplaces) > 1)
         <select class="custom-select d-block w-100" id="workplace" name="workplace" required="">
@@ -28,5 +28,10 @@
     @endif
 
     <div id="settings"></div>
+
+    @can('manage workplaces')
+        <a href="/workplace/create" class="btn btn-primary">@lang('Lägg till arbetsplats')</a>
+    @endcan
+
 
 @endsection

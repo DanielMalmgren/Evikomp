@@ -2,7 +2,7 @@
 
 @section('content')
 
-<script type="text/javascript" language="javascript" src="{{asset('vendor/jquery-ui-1.12.1.custom/jquery-ui.js')}}"></script>
+<script type="text/javascript" language="javascript" src="{{asset('vendor/jquery-ui-1.12.1.custom/jquery-ui.min.js')}}"></script>
 
 <script type="text/javascript">
     $(function() {

@@ -33,6 +33,10 @@ Route::post('/test/question/reorder',           'QuestionController@reorder');
 //TestResultController
 Route::get('/test/result/{test_session}',       'TestResultController@show');
 
+//FeedbackController
+Route::get('/feedback',                         'FeedbackController@create');
+Route::post('/feedback',                        'FeedbackController@post');
+
 //UsersControler
 Route::get('/userinfo/{user?}',                 'UsersController@show');
 Route::get('/listusers',                        'UsersController@index')->middleware('permission:list users');

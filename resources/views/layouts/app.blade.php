@@ -4,8 +4,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" media="all" href="{{asset('css/app.css')}}">
-        <link rel="stylesheet" type="text/css" media="all" href="{{asset('css/header.css')}}">
+        <link rel="stylesheet" type="text/css" media="all" href="{{asset('css/bootstrap.css')}}">
+        <link rel="stylesheet" type="text/css" media="all" href="{{asset('css/footer.css')}}">
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('css/custom.css')}}">
 
         <script type="text/javascript" language="javascript" src="{{asset('js/jquery.min.js')}}"></script>
@@ -13,7 +13,7 @@
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('webslidemenu/dropdown-effects/fade-down.css')}}" />
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('webslidemenu/webslidemenu.css')}}">
         <script type="text/javascript" language="javascript" src="{{asset('webslidemenu/webslidemenu.js')}}"></script>
-        <link rel="stylesheet" type="text/css" media="all" href="{{asset('webslidemenu/color-skins/black-blue.css')}}" />
+        <link rel="stylesheet" type="text/css" media="all" href="{{asset('webslidemenu/color-skins/black-orange.css')}}" />
 
         <script src="/js/timeme.min.js"></script>
         <script type="text/javascript">
@@ -32,14 +32,15 @@
             };
         </script>
 
-        <title>Evikomp</title>
+        <title>@yield('title') - Evikomp</title>
 
     </head>
     <body>
         @include('inc.navbar')
-        <div class="container clearfix">
+        <div class="container main clearfix">
             @include('inc.messages')
             @yield('content')
         </div>
+        @include('inc.footer')
     </body>
 </html>

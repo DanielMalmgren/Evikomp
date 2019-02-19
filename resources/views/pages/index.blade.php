@@ -5,23 +5,21 @@
 <H1>@lang('Nyheter')</H1>
 
 @if(count($announcements) > 0)
-    <ul class="list-group mb-3 announcements">
+    <div class="list-group mb-4">
         @foreach($announcements as $announcement)
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <h5 class="my-0">{{$announcement->heading}}</h5>
-                    <small class="text-muted">{{$announcement->bodytext}}</small>
-                </div>
-                <div>{{\Carbon\Carbon::parse($announcement->created_at)->format('Y-m-d')}}<div>
-            </li>
+            <a href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{$announcement->heading}}</h5>
+                <small>{{\Carbon\Carbon::parse($announcement->created_at)->format('Y-m-d')}}</small>
+            </div>
+            <p class="mb-1">{{$announcement->bodytext}}</p>
+            </a>
         @endforeach
-    </ul>
+      </div>
 @endif
 
 @can('manage announcements')
     <a href="/announcements/create" class="btn btn-primary">@lang('Skapa nytt meddelande')</a>
 @endcan
-
-Aktiv tid idag: {{Auth::user()->active_time_today()}}
 
 @endsection

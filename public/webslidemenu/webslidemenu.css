@@ -1,4 +1,24 @@
 /*
+    Custom stuff from Daniel
+*/
+
+@media (max-width: 991px) {
+    .wsheader-fill {
+        height:90px;
+    }
+}
+
+@media (min-width: 992px) {
+    .wsheader-fill {
+        height:110px;
+    }
+
+    .wsmainfull {
+        margin-bottom: 35px;
+    }
+}
+
+/*
  * Plugin: Web Slide Navigation System
  * Demo Link: https://uxwing.com/webslide/
  * Author: UXWing
@@ -85,6 +105,8 @@ Extra @Media Query
 .wsmainfull {
   width: 100%;
   height: 70px;
+  position: fixed;
+  z-index: 1000;
 }
 
 .wsmainwp {
@@ -94,7 +116,7 @@ Extra @Media Query
 }
 
 .desktoplogo {
-  padding: 16px 0px 0px 0px;
+  padding: 22px 0px 0px 0px;
   margin: 0;
   float: left;
   width: 133px;
@@ -1049,7 +1071,11 @@ Extra @Media Query
 
   .wsmobileheader .smllogo {
     display: inline-block;
-    margin-top: 12px;
+    margin-top: 15px;
+  }
+
+  .wsmobileheader .smllogo img {
+    width: 133px;
   }
 
   /* Mobile Search Bar*/
@@ -1110,7 +1136,7 @@ Extra @Media Query
     cursor: pointer;
     height: 2px;
     width: 17px;
-    background: #707274;
+    background: #ff812c;
     position: absolute;
     display: block;
     content: '';
@@ -1279,7 +1305,7 @@ Extra @Media Query
 /* Extra @Media Query*/
 @media only screen and (min-width: 992px) and (max-width:1162px) {
   .desktoplogo {
-    margin-left: 12px;
+    margin-left: 20px;
   }
 
   .wsmenu>.wsmenu-list>li>a>.wsarrow {

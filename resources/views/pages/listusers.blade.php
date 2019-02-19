@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'List user') {{--TODO: Fixa i18n på denna och även på alla andra Blade-mallar--}}
+
 @section('content')
 
     <H1>Användare</H1>

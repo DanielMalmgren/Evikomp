@@ -5,12 +5,19 @@
     <H1>{{$track->translateOrDefault(App::getLocale())->name}}</H1>
 
     @if(count($lessons) > 0)
-        <ul class="list-group mb-3 lessons">
+
+        <div class="list-group mb-4 lessonslist">
             @foreach($lessons as $lesson)
-                <li class="list-group-item d-flex justify-content-between lh-condensed nopadding">
-                    <a href="/lessons/{{$lesson->id}}">
-                        <h6 class="my-0">{{$lesson->translateOrDefault(App::getLocale())->name}}</h6>
-                        @if($lesson->lesson_results->where('user_id', Auth::user()->id)->first())
+                <a href="/lessons/{{$lesson->id}}" class="list-group-item list-group-item-action">
+                <div class="row">
+                    <div class="col-lg-9 col-md-7 col-sm-5">
+                        <h5 class="mb-0">{{$lesson->translateOrDefault(App::getLocale())->name}}</h5>
+                    </div>
+                    <div class="col-lg-1 col-md-2 col-sm-2">
+                        <small>@lang('Betyg'): {{$lesson->rating()}}</small>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-5 test-stars">
+                            @if($lesson->lesson_results->where('user_id', Auth::user()->id)->first())
                             {{--<small class="text-muted">{{$lesson->lesson_results->where('user_id', Auth::user()->id)->first()->personal_best_percent}}</small>--}}
                             @php
                                 $percent = $lesson->lesson_results->where('user_id', Auth::user()->id)->first()->personal_best_percent;
@@ -31,11 +38,16 @@
                                 <img src="/images/Star_unhappy_small.png">
                             @endif
                         @endif
-                        @lang('Betyg'): {{$lesson->rating()}}
-                    </a>
-                </li>
+                    </div>
+                </div>
+
+                </a>
             @endforeach
-        </ul>
+              </div>
+
+
+
+
     @endif
     @can('manage lessons')
     <a href="/lessons/create/{{$track->id}}" class="btn btn-primary">@lang('Lägg till lektion')</a>

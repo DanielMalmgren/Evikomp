@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('GDPR'))
+
 @section('content')
 
 <div class="col-md-5 mb-3">

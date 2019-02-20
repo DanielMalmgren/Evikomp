@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Test'))
+
 @section('content')
 
     <script type="text/javascript">

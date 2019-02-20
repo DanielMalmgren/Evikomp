@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Startsida'))
+
 @section('content')
 
 <H1>@lang('Nyheter')</H1>

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Spår'))
+
 @section('content')
 
     <H1>@lang('Spår')</H1>

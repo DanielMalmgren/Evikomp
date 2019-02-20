@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class ActiveTimeController extends Controller
 {
     public function show() {
+        setlocale(LC_TIME, \Auth::user()->locale_id);
         return view('activetime.show');
     }
 

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Inställningar'))
+
 @section('content')
 
 <script type="text/javascript">
@@ -153,6 +155,7 @@
             </div>
         </div>
 
+        <label>@lang('Valda spår')</label>
         @if(count($tracks) > 0 && $user->workplace)
             @foreach($tracks as $track)
                 <div class="checkbox">

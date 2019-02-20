@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Feedback'))
+
 @section('content')
 
     <H1>@lang('Skicka feedback')</H1>

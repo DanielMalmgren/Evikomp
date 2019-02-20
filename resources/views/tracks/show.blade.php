@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', $track->translateOrDefault(App::getLocale())->name)
+
 @section('content')
 
     <H1>{{$track->translateOrDefault(App::getLocale())->name}}</H1>

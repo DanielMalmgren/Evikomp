@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->boolean('accepted_gdpr')->default(false);
             //$table->timestamp('email_verified_at')->nullable();
             //$table->string('password')->nullable();
-            $table->string('locale_id')->nullable();
+            $table->string('locale_id')->default('sv_SE');
             $table->foreign('locale_id')->references('id')->on('locales');
             //$table->rememberToken();
             $table->unsignedInteger('workplace_id')->nullable();

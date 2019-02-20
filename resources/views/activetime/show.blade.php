@@ -1,33 +1,33 @@
 @extends('layouts.app')
 
+@section('title', __('Närvarorapport'))
+
 @section('content')
 
-<H1>@lang('Närvarorapport för ESF')</H1>
-
     <div class="col-md-5 mb-3">
+
+        <H1>@lang('Närvarorapport för ESF')</H1>
         <form method="get" name="settings" action="{{action('ActiveTimeController@export')}}" accept-charset="UTF-8">
             @csrf
 
-            <select class="custom-select d-block w-100" id="year" name="year" required="">
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-            </select>
+            <div class="mb-3">
+                <label for="year">@lang('År')</label>
+                <select class="custom-select d-block w-100" id="year" name="year" required="">
+                    <option value="{{date('Y')-1}}">{{date('Y')-1}}</option>
+                    <option selected value="{{date('Y')}}">{{date('Y')}}</option>
+                </select>
+            </div>
 
-            <select class="custom-select d-block w-100" id="month" name="month" required="">
-                <option value="1">@lang('Januari')</option>
-                <option value="2">@lang('Februari')</option>
-                <option value="3">@lang('Mars')</option>
-                <option value="4">@lang('April')</option>
-                <option value="5">@lang('Maj')</option>
-                <option value="6">@lang('Juni')</option>
-                <option value="7">@lang('Juli')</option>
-                <option value="8">@lang('Augusti')</option>
-                <option value="9">@lang('September')</option>
-                <option value="10">@lang('Oktober')</option>
-                <option value="11">@lang('November')</option>
-                <option value="12">@lang('December')</option>
-            </select>
+            <div class="mb-3">
+                <label for="month">@lang('Månad')</label>
+                <select class="custom-select d-block w-100" id="month" name="month" required="">
+                    @for ($i = 1; $i < 12; $i++)
+                        <option value="{{$i}}" {{$i==date('n')-1?"selected":""}}>{{strftime('%B', strtotime('2000-'.$i.'-15'))}}</option>
+                    @endfor
+                </select>
+            </div>
 
+            <br>
             <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">@lang('Hämta närvarorapport')</button>
         </form>
     </div>

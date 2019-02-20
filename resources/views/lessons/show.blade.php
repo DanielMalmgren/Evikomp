@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', $lesson->translateOrDefault(App::getLocale())->name)
+
 @section('content')
 
     <H1>{{$lesson->translateOrDefault(App::getLocale())->name}}</H1>

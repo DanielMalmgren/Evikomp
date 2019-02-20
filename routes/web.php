@@ -38,11 +38,12 @@ Route::get('/feedback',                         'FeedbackController@create');
 Route::post('/feedback',                        'FeedbackController@post');
 
 //UsersControler
-Route::get('/userinfo/{user?}',                 'UsersController@show');
+//Route::get('/userinfo/{user?}',                 'UsersController@show');
 Route::get('/listusers',                        'UsersController@index')->middleware('permission:list users');
 Route::get('/exportusers',                      'UsersController@export')->middleware('permission:list users');
 
 //ActiveTimeController
+Route::get('/activetime',                        'ActiveTimeController@show');
 Route::post('/activetime',                      'ActiveTimeController@store');
 Route::get('/exportactivetime/{user?}',         'ActiveTimeController@export');
 

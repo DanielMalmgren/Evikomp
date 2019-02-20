@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class UsersController extends Controller
 {
-    public function show(User $user = null) {
+    /*public function show(User $user = null) {
         if(!$user) {
             $user = Auth::user();
         }
@@ -34,7 +34,7 @@ class UsersController extends Controller
         );
 
         return view('pages.userinfo')->with($data);
-    }
+    }*/
 
     public function index() {
         //$users = User::all();

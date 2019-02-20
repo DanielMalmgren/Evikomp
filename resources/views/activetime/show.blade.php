@@ -2,44 +2,9 @@
 
 @section('content')
 
-<H1>Användarinfo</H1>
+<H1>@lang('Närvarorapport för ESF')</H1>
 
-    @if($user)
-        <p>
-            Inloggad användare: {{$user->name}}
-        </p>
-
-        @if($user->workplace)
-            <p>
-                Arbetsplats: {{$user->workplace->name}}
-            </p>
-
-            @if($user->workplace->municipality)
-                <p>
-                    Kommun: {{$user->workplace->municipality->name}}
-                </p>
-            @endif
-        @endif
-
-        <p>
-            E-post: {{$user->email}}
-        </p>
-
-        <p>
-            Roller:<br>
-            @foreach($user->getRoleNames() as $role)
-                {{$role}}<br>
-            @endforeach
-        </p>
-
-        <p>
-            Aktiv tid denna månad:<br>
-            @foreach($active_times as $i => $active_time)
-                {{$i}}: {{$active_time}}<br>
-            @endforeach
-            Totalt: {{$total_active_time}}
-        </p>
-
+    <div class="col-md-5 mb-3">
         <form method="get" name="settings" action="{{action('ActiveTimeController@export')}}" accept-charset="UTF-8">
             @csrf
 
@@ -65,6 +30,5 @@
 
             <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">@lang('Hämta närvarorapport')</button>
         </form>
-    @endif
-
+    </div>
 @endsection

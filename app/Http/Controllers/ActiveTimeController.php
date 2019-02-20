@@ -12,6 +12,10 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ActiveTimeController extends Controller
 {
+    public function show() {
+        return view('activetime.show');
+    }
+
     public function store(Request $request) {
         $this->validate($request, [
             'time' => 'required'

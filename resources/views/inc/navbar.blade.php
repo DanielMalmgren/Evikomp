@@ -15,9 +15,7 @@
             <ul class="wsmenu-list">
                 @hasanyrole('Registered|Admin')
                     <li aria-haspopup="false"><a href="/" class="menuhomeicon {{ request()->is('/') ? 'active' : '' }}"><i class="fa fa-home"></i><span class="hometext">&nbsp;&nbsp;@lang('Hem')</span></a></li>
-                    <!-- <li aria-haspopup="false"><a href="/userinfo" class="{{ request()->is('userinfo') ? 'active' : '' }}"></i>@lang('Användarinfo')</a></li> -->
                     <li aria-haspopup="false"><a href="/tracks" class="{{ request()->is('tracks') ? 'active' : '' }}"></i>@lang('Spår')</a></li>
-                    <li aria-haspopup="false"><a href="/settings" class="{{ request()->is('settings') ? 'active' : '' }}"></i>@lang('Inställningar')</a></li>
                     @can('use administration')
                         <li aria-haspopup="true"><a href="#"><i class="fa fa-angle-right"></i>@lang('Administration')</a>
                             <ul class="sub-menu">
@@ -28,8 +26,14 @@
                             </ul>
                         </li>
                     @endcan
-                    <li aria-haspopup="false"><a href="/userinfo">{{Auth::user()->name}} {{Auth::user()->workplace?"(".Auth::user()->workplace->name.")":""}}</a></li>
-                @endhasanyrole
+                    <li aria-haspopup="true"><a href="#"><i class="fa fa-angle-right"></i>{{Auth::user()->firstname}}</a>
+                        <ul class="sub-menu">
+                            <li aria-haspopup="false"><a href="/settings">@lang('Inställningar')</a></li>
+                            <li aria-haspopup="false"><a href="/activetime">@lang('Närvarorapport')</a></li>
+                            <li aria-haspopup="false"><a href="/saml2/logout">@lang('Logga ut')</a></li>
+                        </ul>
+                    </li>
+            @endhasanyrole
             </ul>
         </nav>
         <!--Menu HTML Code-->

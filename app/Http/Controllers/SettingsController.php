@@ -57,7 +57,7 @@ class SettingsController extends Controller
         $user->workplace_id = $request->input('workplace');
         $user->save();
 
-        $user->assignRole('Registered');
+        $user->assignRole('Registrerad');
 
         return redirect('/')->with('success', __('Inställningarna sparade'));
     }

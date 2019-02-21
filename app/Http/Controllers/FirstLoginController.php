@@ -45,23 +45,4 @@ class FirstLoginController extends Controller
 
         return redirect('/settings');
     }
-
-    /*public function store(Request $request) {
-
-        //logger(print_r($request->all(), true));
-
-        $this->validate($request, [
-            'workplace' => 'required',
-            'email' => 'required|email'
-        ]);
-
-        $user = $request->user();
-        $user->email = $request->input('email');
-        $user->workplace_id = $request->input('workplace');
-        $user->save();
-
-        $user->assignRole('Registered');
-
-        return redirect('/')->with('success', 'Uppgifterna sparade');
-    }*/
 }

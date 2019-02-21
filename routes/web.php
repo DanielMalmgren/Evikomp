@@ -10,11 +10,11 @@ Route::get('/tracks',                           'TrackController@index');
 Route::get('/track/{track}',                    'TrackController@show');
 
 //LessonController
-Route::get('/lessons/create/{track}',           'LessonController@create');
-Route::post('/lessons',                         'LessonController@store');
+Route::get('/lessons/create/{track}',           'LessonController@create')->middleware('permission:manage lessons');
+Route::post('/lessons',                         'LessonController@store')->middleware('permission:manage lessons');
 Route::get('/lessons/{lesson}',                 'LessonController@show');
-Route::get('/lessons/{lesson}/edit',            'LessonController@edit');
-Route::put('/lessons/{lesson}',                 'LessonController@update');
+Route::get('/lessons/{lesson}/edit',            'LessonController@edit')->middleware('permission:manage lessons');
+Route::put('/lessons/{lesson}',                 'LessonController@update')->middleware('permission:manage lessons');
 Route::put('/lessons/{lesson}/vote',            'LessonController@vote');
 
 //TestController
@@ -22,13 +22,13 @@ Route::get('/test/{lesson}',                    'TestController@show');
 Route::post('/test/storeResponse',              'TestController@store');
 
 //QuestionController
-Route::get('/test/question/create',             'QuestionController@create');
-Route::post('/test/question',                   'QuestionController@store');
+Route::get('/test/question/create',             'QuestionController@create')->middleware('permission:manage lessons');
+Route::post('/test/question',                   'QuestionController@store')->middleware('permission:manage lessons');
 Route::get('/test/question/{question}',         'QuestionController@show');
-Route::get('/test/question/{question}/edit',    'QuestionController@edit');
-Route::put('/test/question/{question}',         'QuestionController@update');
-Route::delete('/test/question/{question}',      'QuestionController@destroy');
-Route::post('/test/question/reorder',           'QuestionController@reorder');
+Route::get('/test/question/{question}/edit',    'QuestionController@edit')->middleware('permission:manage lessons');
+Route::put('/test/question/{question}',         'QuestionController@update')->middleware('permission:manage lessons');
+Route::delete('/test/question/{question}',      'QuestionController@destroy')->middleware('permission:manage lessons');
+Route::post('/test/question/reorder',           'QuestionController@reorder')->middleware('permission:manage lessons');
 
 //TestResultController
 Route::get('/test/result/{test_session}',       'TestResultController@show');
@@ -39,8 +39,8 @@ Route::post('/feedback',                        'FeedbackController@post');
 
 //UsersControler
 //Route::get('/userinfo/{user?}',                 'UsersController@show');
-Route::get('/listusers',                        'UsersController@index')->middleware('permission:list users');
-Route::get('/exportusers',                      'UsersController@export')->middleware('permission:list users');
+Route::get('/listusers',                        'UsersController@index')->middleware('permission:manage users');
+Route::get('/exportusers',                      'UsersController@export')->middleware('permission:manage users');
 
 //ActiveTimeController
 Route::get('/activetime',                        'ActiveTimeController@show');
@@ -58,11 +58,11 @@ Route::post('storesettings',                    'SettingsController@store');
 Route::post('storelanguage',                    'SettingsController@storeLanguage');
 
 //WorkplaceController
-Route::get('/workplace/create',                 'WorkplaceController@create');
-Route::post('/workplace',                       'WorkplaceController@store');
-Route::get('/workplace',                        'WorkplaceController@edit');
-Route::put('/workplace/{workplace}',            'WorkplaceController@update');
-Route::get('/workplaceajax/{workplace}',        'WorkplaceController@ajax');
+Route::get('/workplace/create',                 'WorkplaceController@create')->middleware('permission:manage workplaces');
+Route::post('/workplace',                       'WorkplaceController@store')->middleware('permission:manage workplaces');
+Route::get('/workplace',                        'WorkplaceController@edit')->middleware('permission:manage workplaces');
+Route::put('/workplace/{workplace}',            'WorkplaceController@update')->middleware('permission:manage workplaces');
+Route::get('/workplaceajax/{workplace}',        'WorkplaceController@ajax')->middleware('permission:manage workplaces');
 
 //AnnouncementsController
 Route::resource('announcements',                'AnnouncementsController');

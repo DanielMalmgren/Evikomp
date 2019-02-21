@@ -44,13 +44,13 @@ class WorkplaceAdmin extends Command
         if($this->option('remove')) {
             $user->admin_workplaces()->detach($workplace);
             if($user->admin_workplaces()->count() == 0) {
-                $this->info('Removing '.$user->name.' from role WorkplaceAdmin');
-                $user->removeRole('WorkplaceAdmin');
+                $this->info('Removing '.$user->name.' from role Arbetsplatsadministratör');
+                $user->removeRole('Arbetsplatsadministratör');
             }
         } else {
             $user->admin_workplaces()->attach($workplace);
-            $this->info('Adding '.$user->name.' to role WorkplaceAdmin');
-            $user->assignRole('WorkplaceAdmin');
+            $this->info('Adding '.$user->name.' to role Arbetsplatsadministratör');
+            $user->assignRole('Arbetsplatsadministratör');
         }
     }
 }

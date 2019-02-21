@@ -13,22 +13,25 @@
         <!--Main Menu HTML Code-->
         <nav class="wsmenu clearfix">
             <ul class="wsmenu-list">
-                @hasanyrole('Registered|Admin')
+                @hasanyrole('Registrerad|Admin')
                     <li aria-haspopup="false"><a href="/" class="menuhomeicon {{ request()->is('/') ? 'active' : '' }}"><i class="fa fa-home"></i><span class="hometext">&nbsp;&nbsp;@lang('Hem')</span></a></li>
                     <li aria-haspopup="false"><a href="/tracks" class="{{ request()->is('tracks') ? 'active' : '' }}"></i>@lang('Spår')</a></li>
                     @can('use administration')
                         <li aria-haspopup="true"><a href="#"><i class="fa fa-angle-right"></i>@lang('Administration')</a>
                             <ul class="sub-menu">
-                                @can('list users')
+                                @can('manage users')
                                     <li aria-haspopup="false"><a href="/listusers">@lang('Användare')</a></li>
                                 @endcan
-                                <li aria-haspopup="false"><a href="/workplace">@lang('Arbetsplatsinställningar')</a></li>
+                                @can('manage workplaces')
+                                    <li aria-haspopup="false"><a href="/workplace">@lang('Arbetsplatsinställningar')</a></li>
+                                @endcan
                             </ul>
                         </li>
                     @endcan
                     <li aria-haspopup="true"><a href="#"><i class="fa fa-angle-right"></i>{{Auth::user()->firstname}}</a>
                         <ul class="sub-menu">
                             <li aria-haspopup="false"><a href="/settings">@lang('Inställningar')</a></li>
+                            <li aria-haspopup="false"><a href="/feedback">@lang('Feedback')</a></li>
                             <li aria-haspopup="false"><a href="/activetime">@lang('Närvarorapport')</a></li>
                             <li aria-haspopup="false"><a href="/saml2/logout">@lang('Logga ut')</a></li>
                         </ul>

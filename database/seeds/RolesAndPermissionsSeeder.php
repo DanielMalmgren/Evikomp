@@ -18,19 +18,20 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // create permissions
         Permission::create(['name' => 'use administration']);
-        Permission::create(['name' => 'list users']);
-        Permission::create(['name' => 'list all lessons']);
+        Permission::create(['name' => 'manage users']);
+        Permission::create(['name' => 'manage lessons']);
+        Permission::create(['name' => 'manage workplaces']);
+        Permission::create(['name' => 'manage announcements']);
 
         // create roles and assign created permissions
 
         $role = Role::create(['name' => 'Admin']);
-        //$user = User::where('email', 'daniel.malmgren@itsam.se')->get()->first();
-        //$user->assignRole('Admin');
 
-        $role = Role::create(['name' => 'Registered']);
+        $role = Role::create(['name' => 'Registrerad']);
 
-        $role = Role::create(['name' => 'WorkplaceAdmin']);
-        $role->givePermissionTo('list users');
+        $role = Role::create(['name' => 'Arbetsplatsadministratör']);
+        $role->givePermissionTo('manage users');
+        $role->givePermissionTo('manage workplaces');
         $role->givePermissionTo('use administration');
     }
 }

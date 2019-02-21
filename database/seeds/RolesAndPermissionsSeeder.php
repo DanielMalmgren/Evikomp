@@ -20,7 +20,8 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'use administration']);
         Permission::create(['name' => 'manage users']);
         Permission::create(['name' => 'manage lessons']);
-        Permission::create(['name' => 'manage workplaces']);
+        Permission::create(['name' => 'edit workplaces']);
+        Permission::create(['name' => 'add workplaces']);
         Permission::create(['name' => 'manage announcements']);
 
         // create roles and assign created permissions
@@ -31,7 +32,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $role = Role::create(['name' => 'Arbetsplatsadministratör']);
         $role->givePermissionTo('manage users');
-        $role->givePermissionTo('manage workplaces');
+        $role->givePermissionTo('edit workplaces');
         $role->givePermissionTo('use administration');
     }
 }

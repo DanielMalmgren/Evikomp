@@ -43,9 +43,14 @@ Route::get('/listusers',                        'UsersController@index')->middle
 Route::get('/exportusers',                      'UsersController@export')->middleware('permission:manage users');
 
 //ActiveTimeController
-Route::get('/activetime',                        'ActiveTimeController@show');
+Route::get('/activetime',                       'ActiveTimeController@show');
 Route::post('/activetime',                      'ActiveTimeController@store');
 Route::get('/exportactivetime/{user?}',         'ActiveTimeController@export');
+
+//PhysicalLessonController
+Route::get('/physicallesson/create',            'PhysicalLessonController@create');
+Route::post('/physicallesson',                  'PhysicalLessonController@store');
+Route::get('/physicallessonajax/{workplace}',   'PhysicalLessonController@ajax');
 
 //FirstLoginController
 Route::get('/firstlogin',                       'FirstLoginController@show');
@@ -58,11 +63,11 @@ Route::post('storesettings',                    'SettingsController@store');
 Route::post('storelanguage',                    'SettingsController@storeLanguage');
 
 //WorkplaceController
-Route::get('/workplace/create',                 'WorkplaceController@create')->middleware('permission:manage workplaces');
-Route::post('/workplace',                       'WorkplaceController@store')->middleware('permission:manage workplaces');
-Route::get('/workplace',                        'WorkplaceController@edit')->middleware('permission:manage workplaces');
-Route::put('/workplace/{workplace}',            'WorkplaceController@update')->middleware('permission:manage workplaces');
-Route::get('/workplaceajax/{workplace}',        'WorkplaceController@ajax')->middleware('permission:manage workplaces');
+Route::get('/workplace/create',                 'WorkplaceController@create')->middleware('permission:add workplaces');
+Route::post('/workplace',                       'WorkplaceController@store')->middleware('permission:add workplaces');
+Route::get('/workplace',                        'WorkplaceController@edit')->middleware('permission:edit workplaces');
+Route::put('/workplace/{workplace}',            'WorkplaceController@update')->middleware('permission:edit workplaces');
+Route::get('/workplaceajax/{workplace}',        'WorkplaceController@ajax')->middleware('permission:edit workplaces');
 
 //AnnouncementsController
 Route::resource('announcements',                'AnnouncementsController');

@@ -29,7 +29,7 @@
 
     <div id="settings"></div>
 
-    @can('manage workplaces')
+    @can('add workplaces')
         <a href="/workplace/create" class="btn btn-primary">@lang('Lägg till arbetsplats')</a>
     @endcan
 

@@ -22,9 +22,10 @@
                                 @can('manage users')
                                     <li aria-haspopup="false"><a href="/listusers">@lang('Användare')</a></li>
                                 @endcan
-                                @can('manage workplaces')
+                                @canany(['add workplaces','edit workplaces'])
                                     <li aria-haspopup="false"><a href="/workplace">@lang('Arbetsplatsinställningar')</a></li>
-                                @endcan
+                                @endcanany
+                                <li aria-haspopup="false"><a href="/physicallesson/create">@lang('Registrera lektionstillfälle')</a></li>
                             </ul>
                         </li>
                     @endcan

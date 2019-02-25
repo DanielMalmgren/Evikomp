@@ -13,6 +13,7 @@ class WorkplaceSeeder extends Seeder
     {
         $aoid = DB::table('workplace_types')->where('name', 'Äldreomsorg')->first()->id;
         $lssid = DB::table('workplace_types')->where('name', 'LSS')->first()->id;
+        $evikompid = DB::table('workplace_types')->where('name', 'ESF-projektgrupp')->first()->id;
 
         //Kinda
         $id = DB::table('municipalities')->where('name', 'Kinda')->first()->id;
@@ -54,6 +55,15 @@ class WorkplaceSeeder extends Seeder
             'municipality_id' => $id,
             'name' => 'Rosengården',
             'workplace_type_id' => $aoid
+        ]);
+
+        //Linköping
+        $id = DB::table('municipalities')->where('name', 'Linköping')->first()->id;
+        DB::table('workplaces')->insert([
+            'municipality_id' => $id,
+            'name' => 'Evikomp',
+            'includetimeinreports' => false,
+            'workplace_type_id' => $evikompid
         ]);
     }
 }

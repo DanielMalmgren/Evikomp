@@ -17,6 +17,7 @@ class CreateLessonsTable extends Migration
             $table->increments('id');
             //$table->string('name'); //Moved to lesson_translations to be localized
             $table->boolean('active')->default(true);
+            $table->unsignedTinyInteger('order');
             $table->boolean('limited_by_title')->default(false);
             $table->unsignedInteger('times_started')->default(0);
             $table->unsignedInteger('times_test_started')->default(0);

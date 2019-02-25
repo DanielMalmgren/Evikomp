@@ -6,14 +6,14 @@
     $(function() {
         $('#workplace').change(function(){
             var selectedValue = $(this).val();
-            $("#users").load("/physicallessonajax/" + selectedValue);
+            $("#users").load("/projecttimeajax/" + selectedValue);
         });
     });
 </script>
 
 <div class="col-md-5 mb-3">
 
-    <H1>Lägg till lektionstillfälle</H1>
+    <H1>Registrera projekttid</H1>
 
     <select class="custom-select d-block w-100" id="workplace" name="workplace" required="">
         <option disabled selected>Välj arbetsplats...</option>

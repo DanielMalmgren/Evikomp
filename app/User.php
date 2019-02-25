@@ -79,4 +79,15 @@ class User extends Authenticatable
     {
         return date("H:i:s", $this->active_times->sum('seconds')+59);
     }
+
+    //Get the last lesson that this user did
+    public function last_lesson()
+    {
+        return $this->lesson_results->orderBy('created_at')->first()->get();
+    }
+
+    public function setRememberToken($value)
+    {
+        //Override this function, doing noop since we don't use remember tokens
+    }
 }

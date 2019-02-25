@@ -25,7 +25,7 @@
                                 @canany(['add workplaces','edit workplaces'])
                                     <li aria-haspopup="false"><a href="/workplace">@lang('Arbetsplatsinställningar')</a></li>
                                 @endcanany
-                                <li aria-haspopup="false"><a href="/physicallesson/create">@lang('Registrera lektionstillfälle')</a></li>
+                                <li aria-haspopup="false"><a href="/projecttime/create">@lang('Registrera projekttid')</a></li>
                             </ul>
                         </li>
                     @endcan
@@ -34,7 +34,7 @@
                             <li aria-haspopup="false"><a href="/settings">@lang('Inställningar')</a></li>
                             <li aria-haspopup="false"><a href="/feedback">@lang('Feedback')</a></li>
                             <li aria-haspopup="false"><a href="/activetime">@lang('Närvarorapport')</a></li>
-                            <li aria-haspopup="false"><a href="/saml2/logout">@lang('Logga ut')</a></li>
+                            <li aria-haspopup="false"><a href="/logout">@lang('Logga ut')</a></li>
                         </ul>
                     </li>
             @endhasanyrole

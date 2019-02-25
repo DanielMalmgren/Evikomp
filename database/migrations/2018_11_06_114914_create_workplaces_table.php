@@ -16,6 +16,7 @@ class CreateWorkplacesTable extends Migration
         Schema::create('workplaces', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->boolean('includetimeinreports')->default(true);
             $table->unsignedInteger('municipality_id');
             $table->foreign('municipality_id')->references('id')->on('municipalities');
             $table->unsignedInteger('workplace_type_id');

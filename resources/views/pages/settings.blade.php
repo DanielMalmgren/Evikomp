@@ -155,7 +155,8 @@
             </div>
         </div>
 
-        <label>@lang('Valda spår')</label>
+        <label>@lang('Valda spår')</label><br>
+        <small>@lang('De spår som är utgråade är förvalda av din arbetsplats och går inte att välja bort')</small>
         @if(count($tracks) > 0 && $user->workplace)
             @foreach($tracks as $track)
                 <div class="checkbox">

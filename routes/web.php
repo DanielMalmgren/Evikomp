@@ -4,6 +4,7 @@ Auth::routes();
 
 Route::get('/',                                 'HomeController@index');
 Route::get('/about',                            'HomeController@about');
+Route::get('/logout',                           'HomeController@logout');
 
 //TrackController
 Route::get('/tracks',                           'TrackController@index');
@@ -47,10 +48,10 @@ Route::get('/activetime',                       'ActiveTimeController@show');
 Route::post('/activetime',                      'ActiveTimeController@store');
 Route::get('/exportactivetime/{user?}',         'ActiveTimeController@export');
 
-//PhysicalLessonController
-Route::get('/physicallesson/create',            'PhysicalLessonController@create');
-Route::post('/physicallesson',                  'PhysicalLessonController@store');
-Route::get('/physicallessonajax/{workplace}',   'PhysicalLessonController@ajax');
+//ProjectTimeController
+Route::get('/projecttime/create',               'ProjectTimeController@create');
+Route::post('/projecttime',                     'ProjectTimeController@store');
+Route::get('/projecttimeajax/{workplace}',      'ProjectTimeController@ajax');
 
 //FirstLoginController
 Route::get('/firstlogin',                       'FirstLoginController@show');

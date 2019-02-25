@@ -18,5 +18,9 @@ class WorkplaceTypeSeeder extends Seeder
         DB::table('workplace_types')->insert([
             'name' => 'LSS'
         ]);
+
+        DB::table('workplace_types')->insert([
+            'name' => 'ESF-projektgrupp'
+        ]);
     }
 }

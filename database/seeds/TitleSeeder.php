@@ -13,6 +13,7 @@ class TitleSeeder extends Seeder
     {
         $aoid = DB::table('workplace_types')->where('name', 'Äldreomsorg')->first()->id;
         $lssid = DB::table('workplace_types')->where('name', 'LSS')->first()->id;
+        $evikompid = DB::table('workplace_types')->where('name', 'ESF-projektgrupp')->first()->id;
 
         DB::table('titles')->insert([
             'name' => 'Undersköterska',
@@ -46,6 +47,23 @@ class TitleSeeder extends Seeder
         DB::table('titles')->insert([
             'name' => 'Annat',
             'workplace_type_id' => $lssid
+        ]);
+
+        DB::table('titles')->insert([
+            'name' => 'Projektledare',
+            'workplace_type_id' => $evikompid
+        ]);
+        DB::table('titles')->insert([
+            'name' => 'Kompetenssamordnare',
+            'workplace_type_id' => $evikompid
+        ]);
+        DB::table('titles')->insert([
+            'name' => 'IT-nörd',
+            'workplace_type_id' => $evikompid
+        ]);
+        DB::table('titles')->insert([
+            'name' => 'Annat',
+            'workplace_type_id' => $evikompid
         ]);
     }
 }

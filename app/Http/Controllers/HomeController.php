@@ -24,4 +24,10 @@ class HomeController extends Controller
     public function about() {
         return view('pages.about');
     }
+
+    public function logout() {
+        logger('Loggar ut');
+        Auth::logout();
+        return view('pages.logout');
+    }
 }

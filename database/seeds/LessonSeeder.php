@@ -12,7 +12,8 @@ class LessonSeeder extends Seeder
     public function run()
     {
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350'
+            'video_id' => '259554350',
+            'order' => 1
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
@@ -32,7 +33,8 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350'
+            'video_id' => '259554350',
+            'order' => 2
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
@@ -50,7 +52,8 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350'
+            'video_id' => '259554350',
+            'order' => 3
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
@@ -68,7 +71,8 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350'
+            'video_id' => '259554350',
+            'order' => 4
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
@@ -86,7 +90,8 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350'
+            'video_id' => '259554350',
+            'order' => 5
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
@@ -104,7 +109,8 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350'
+            'video_id' => '259554350',
+            'order' => 6
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
@@ -122,7 +128,8 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350'
+            'video_id' => '259554350',
+            'order' => 7
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
@@ -140,7 +147,8 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350'
+            'video_id' => '259554350',
+            'order' => 1
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
@@ -158,7 +166,8 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350'
+            'video_id' => '259554350',
+            'order' => 2
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,

@@ -50,7 +50,7 @@ Route::get('/exportactivetime/{user?}',         'ActiveTimeController@export');
 
 //ProjectTimeController
 Route::get('/projecttime/create',               'ProjectTimeController@create');
-Route::post('/projecttime',                     'ProjectTimeController@store');
+Route::post('/projecttime/{workplace}',         'ProjectTimeController@store');
 Route::get('/projecttimeajax/{workplace}',      'ProjectTimeController@ajax');
 
 //FirstLoginController

@@ -70,6 +70,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Track');
     }
 
+    public function project_times()
+    {
+        return $this->belongsToMany('App\ProjectTime');
+    }
+
     public function active_time_today()
     {
         return date("H:i:s", $this->active_times->last()->seconds);

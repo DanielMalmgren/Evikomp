@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\ActiveTime;
 use App\User;
 use DateInterval;
+use App\ProjectTime;
+use App\ProjectTimeType;
 use App\Exports\ActiveTimeExport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -30,40 +32,6 @@ class ActiveTimeController extends Controller
         $activetime->seconds += $request->time;
         $activetime->save();
     }
-
-    private static $timecells = array(
-        1 => 'E13',
-        2 => 'F13',
-        3 => 'G13',
-        4 => 'H13',
-        5 => 'I13',
-        6 => 'J13',
-        7 => 'K13',
-        8 => 'L13',
-        9 => 'M13',
-        10 => 'N13',
-        11 => 'O13',
-        12 => 'P13',
-        13 => 'Q13',
-        14 => 'R13',
-        15 => 'S13',
-        16 => 'T13',
-        17 => 'U13',
-        18 => 'V13',
-        19 => 'W13',
-        20 => 'X13',
-        21 => 'Y13',
-        22 => 'Z13',
-        23 => 'AA13',
-        24 => 'AB13',
-        25 => 'AC13',
-        26 => 'AD13',
-        27 => 'AE13',
-        28 => 'AF13',
-        29 => 'AG13',
-        30 => 'AH13',
-        31 => 'AI13'
-    );
 
     public function export(User $user = null, Request $request) {
         if(!$user) {
@@ -92,26 +60,50 @@ class ActiveTimeController extends Controller
 
         $worksheet = $spreadsheet->getActiveSheet();
 
-        //TODO: Man kan anropa setCellValue(), gör samma sak som först getCell() och sedan setValue()
-        $worksheet->getCell('C6')->setValue($user->name); //Namn på deltagare
-        $worksheet->getCell('C7')->setValue(substr_replace($user->personid, '-', 8, 0)); //Personnummer
-        $worksheet->getCell('C8')->setValue($user->workplace->municipality->name); //Namn på deltagarens arbetsgivare
-        $worksheet->getCell('C9')->setValue($user->workplace->municipality->orgnummer); //Organisationsnummer
+        $worksheet->setCellValue('C6', $user->name); //Namn på deltagare
+        $worksheet->setCellValue('C7', substr_replace($user->personid, '-', 8, 0)); //Personnummer
+        $worksheet->setCellValue('C8', $user->workplace->municipality->name); //Namn på deltagarens arbetsgivare
+        $worksheet->setCellValue('C9', $user->workplace->municipality->orgnummer); //Organisationsnummer
 
-        $worksheet->getCell('W3')->setValue('2018/00079'); //Diarienummer
-        $worksheet->getCell('W4')->setValue('Evikomp'); //Projektnamn
+        $worksheet->setCellValue('W3', '2018/00079'); //Diarienummer
+        $worksheet->setCellValue('W4', 'Evikomp'); //Projektnamn
 
-        $worksheet->getCell('W6')->setValue(ucfirst($monthstr)); //Redovisningsmånad
-        $worksheet->getCell('W7')->setValue($year); //År
+        $worksheet->setCellValue('W6', ucfirst($monthstr)); //Redovisningsmånad
+        $worksheet->setCellValue('W7', $year); //År
 
-        $worksheet->getCell('A13')->setValue('Tid i Evikomps webapp');
+        $worksheet->setCellValue('A13', 'Tid i Evikomps webapp');
 
-        //TODO: Man kan nog använda setCellValueByColumnAndRow istället för den fula arrayen
         for($i = 1; $i <= 31; $i++) {
             $this_time = $active_times_db = ActiveTime::where('user_id', $user->id)->whereMonth('date', $month)->whereYear('date', $year)->whereDay('date', $i)->first();
             if($this_time) {
-                $worksheet->getCell(self::$timecells[$i])->setValue(round($this_time->seconds/3600, 1));
+                $worksheet->setCellValueByColumnAndRow($i+4,13,round($this_time->seconds/3600, 1));
             }
+        }
+
+        $types = $user->project_times()->groupBy('project_time_type_id')->pluck('project_time_type_id');
+
+        //logger("Typer: ".print_r($types, true));
+
+        $row = 14;
+        foreach($types as $type) {
+            $typename = ProjectTimeType::find($type)->name;
+            $worksheet->setCellValueByColumnAndRow(1,$row,$typename);
+            logger("Typ: ".print_r($type, true));
+            $dates = $user->project_times()->where('project_time_type_id', $type)->groupBy('date')->pluck('date');
+            //logger("Datumn: "$date));
+            foreach($dates as $date) {
+                logger("Datum: ".$date);
+                $occasions = $user->project_times()->where('project_time_type_id', $type)->where('date', $date)->get();
+                $minutes = 0;
+                foreach($occasions as $occasion) {
+                    logger("Tillfälle: ".$occasion->minutes());
+                     $minutes += $occasion->minutes();
+                }
+                $day = date('j', strtotime($date));
+                logger("Dag: ".$day.", minuter: ".$minutes);
+                $worksheet->setCellValueByColumnAndRow($day+4,$row,round($minutes/60, 1));
+            }
+            $row++;
         }
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');

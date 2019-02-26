@@ -1,14 +1,12 @@
-<form method="post" name="question" action="{{action('ProjectTimeController@store')}}" accept-charset="UTF-8">
+<form method="post" name="question" action="{{action('ProjectTimeController@store', $workplace->id)}}" accept-charset="UTF-8">
     @csrf
 
     <input type="hidden" name="workplace_id" value="{{$workplace->id}}">
 
     <select class="custom-select d-block w-100" id="type" name="type" required="">
-        <option value="1">Lektionstillfälle i grupp</option>
-        <option value="2">Egen reflektionstid</option>
-        <option value="3">Kick-off</option>
-        <option value="4">Kick-in</option>
-        <option value="5">Tårtätande</option>
+        @foreach($project_time_types as $type)
+            <option value="{{$type->id}}">{{$type->name}}</option>
+        @endforeach
     </select>
 
     <div class="mb-3">

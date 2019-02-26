@@ -30,4 +30,9 @@ class Workplace extends Model
     {
         return $this->belongsToMany('App\Track');
     }
+
+    public function project_times()
+    {
+        return $this->hasMany('App\ProjectTime');
+    }
 }

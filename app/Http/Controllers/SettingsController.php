@@ -53,7 +53,11 @@ class SettingsController extends Controller
         $user = $request->user();
         $user->tracks()->sync($request->tracks);
         $user->email = $request->input('email');
-        $user->firstname = $request->input('firstname');
+        if($request->input('firstname')) {
+            $user->firstname = $request->input('firstname');
+        } else {
+            $user->firstname = $user->saml_firstname;
+        }
         $user->title_id = $request->input('title');
         $user->workplace_id = $request->input('workplace');
         $user->save();

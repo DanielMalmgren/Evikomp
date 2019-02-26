@@ -31,6 +31,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(AnnouncementSeeder::class);
 
+        $this->call(ProjectTimeTypeSeeder::class);
+
         if(App::environment('lab') || App::environment('dev')) {
             $this->command->comment('Generating dummy users...');
             factory(App\User::class, 50)->create();

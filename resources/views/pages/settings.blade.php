@@ -77,6 +77,31 @@
         @csrf
 
         <div class="mb-3">
+            <div class="row container">
+                <div>
+                    <label for="firstname">@lang('Förnamn')</label>
+                    @if (str_word_count($user->saml_firstname) > 1)
+                        <select class="custom-select d-block w-200" name="firstname">
+                            @foreach(str_word_count($user->saml_firstname, 1) as $firstname)
+                                @if($user->firstname == $firstname)
+                                    <option selected value="{{$firstname}}">{{$firstname}}</option>
+                                @else
+                                    <option value="{{$firstname}}">{{$firstname}}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    @else
+                        <input type="text" name="firstname" class="form-control" disabled value="{{$user->firstname}}">
+                    @endif
+                </div>
+                <div>
+                    <label for="lastname">@lang('Efternamn')</label>
+                    <input type="text" name="lastname" class="form-control" disabled value="{{$user->lastname}}">
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
             <label for="municipality">@lang('Kommun')</label>
             <select class="custom-select d-block w-100" id="municipality" required="">
                 @if(!$user->workplace)
@@ -155,9 +180,9 @@
             </div>
         </div>
 
-        <label>@lang('Valda spår')</label><br>
-        <small>@lang('De spår som är utgråade är förvalda av din arbetsplats och går inte att välja bort')</small>
         @if(count($tracks) > 0 && $user->workplace)
+            <label>@lang('Valda spår')</label><br>
+            <small>@lang('De spår som är utgråade är förvalda av din arbetsplats och går inte att välja bort')</small>
             @foreach($tracks as $track)
                 <div class="checkbox">
                     @if($user->workplace->tracks->contains('id', $track->id))

@@ -18,15 +18,15 @@
 
     <div class="mb-3">
         <div class="row container">
-        <div class="mb-3">
-            <label for="starttime">@lang('Från')</label>
-            <input type="time" name="starttime" class="form-control">
+            <div class="mb-3">
+                <label for="starttime">@lang('Från')</label>
+                <input type="time" name="starttime" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="endtime">@lang('Till')</label>
+                <input type="time" name="endtime" class="form-control">
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="endtime">@lang('Till')</label>
-            <input type="time" name="endtime" class="form-control">
-        </div>
-    </div>
     </div>
 
     <H2>Närvarande personer</H2>

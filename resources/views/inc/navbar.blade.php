@@ -1,3 +1,14 @@
+<script>
+    $(function() {
+        $( 'body').on( 'click', 'a#logout', function( event ) {
+            window.location.replace("/logout");
+            var wnd = window.open("{{env('SAML2_IDP_HOST')}}/wa/logout");
+            wnd.close();
+            return false;
+        });
+    });
+</script>
+
 <!-- Mobile Header -->
 <div class="wsmobileheader clearfix ">
     <a id="wsnavtoggle" class="wsanimated-arrow"><span></span></a>
@@ -34,7 +45,7 @@
                             <li aria-haspopup="false"><a href="/settings">@lang('Inställningar')</a></li>
                             <li aria-haspopup="false"><a href="/feedback">@lang('Feedback')</a></li>
                             <li aria-haspopup="false"><a href="/activetime">@lang('Närvarorapport')</a></li>
-                            <li aria-haspopup="false"><a href="/logout">@lang('Logga ut')</a></li>
+                            <li aria-haspopup="false"><a href="#" id="logout">@lang('Logga ut')</a></li>
                         </ul>
                     </li>
             @endhasanyrole

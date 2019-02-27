@@ -48,6 +48,10 @@ Route::get('/activetime',                       'ActiveTimeController@show');
 Route::post('/activetime',                      'ActiveTimeController@store');
 Route::get('/exportactivetime/{user?}',         'ActiveTimeController@export');
 
+//TimeSummaryController
+Route::get('/timesummary',                      'TimeSummaryController@show');
+Route::get('/exporttimesummary',                'TimeSummaryController@export');
+
 //ProjectTimeController
 Route::get('/projecttime/create',               'ProjectTimeController@create');
 Route::post('/projecttime/{workplace}',         'ProjectTimeController@store');

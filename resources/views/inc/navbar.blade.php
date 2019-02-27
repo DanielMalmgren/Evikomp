@@ -37,6 +37,7 @@
                                     <li aria-haspopup="false"><a href="/workplace">@lang('Arbetsplatsinställningar')</a></li>
                                 @endcanany
                                 <li aria-haspopup="false"><a href="/projecttime/create">@lang('Registrera projekttid')</a></li>
+                                <li aria-haspopup="false"><a href="/timesummary">@lang('Sammanställning till ESF')</a></li>
                             </ul>
                         </li>
                     @endcan

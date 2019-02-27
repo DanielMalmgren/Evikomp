@@ -83,6 +83,7 @@ class ActiveTimeController extends Controller
         $types = $user->project_times()->groupBy('project_time_type_id')->pluck('project_time_type_id');
 
         //logger("Typer: ".print_r($types, true));
+        //TODO: Ta bort lite loggning. Kolla också om det inte finns något smidigare sätt att göra databasfrågorna...
 
         $row = 14;
         foreach($types as $type) {

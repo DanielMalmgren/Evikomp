@@ -10,11 +10,16 @@ use App\Lesson;
 
 class TrackController extends Controller
 {
-    public function index() {
-        $tracks = Auth::user()->tracks->merge(Auth::user()->workplace->tracks)->sort();
+    public function index(Request $request) {
+        if($request->showall) {
+            $tracks = Track::all();
+        } else {
+            $tracks = Auth::user()->tracks->merge(Auth::user()->workplace->tracks)->sort();
+        }
 
         $data = array(
-            'tracks' => $tracks
+            'tracks' => $tracks,
+            'showall' => $request->showall
         );
         return view('tracks.index')->with($data);
     }

@@ -15,7 +15,8 @@ class HomeController extends Controller
             $announcements = Announcement::All()->sort()->reverse()->take(5);
 
             $data = array(
-                'announcements' => $announcements
+                'announcements' => $announcements,
+                'lesson' => Auth::user()->next_lesson()
             );
             return view('pages.index')->with($data);
         }

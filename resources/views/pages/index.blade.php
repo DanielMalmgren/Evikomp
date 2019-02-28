@@ -4,6 +4,12 @@
 
 @section('content')
 
+@if($lesson)
+    <h1>@lang('Nästa lektion')</h1>
+    @include('inc.listlesson')
+    <br>
+@endif
+
 <H1>@lang('Nyheter')</H1>
 
 @if(count($announcements) > 0)

@@ -30,10 +30,10 @@ class TrackController extends Controller
         } else {
             $title = Auth::user()->title;
 
-            $lessons = Lesson::where('active', true)
-            ->whereHas('tracks', function ($query) use ($track) {
-                $query->where('id', $track->id);
-            })
+            $lessons = $track->lessons()->where('active', true)
+            //->whereHas('tracks', function ($query) use ($track) {
+            //    $query->where('id', $track->id);
+            //})
             ->where(function ($query) use ($title) {
                 $query->whereHas('titles', function ($query) use ($title) {
                     $query->where('id', $title->id);

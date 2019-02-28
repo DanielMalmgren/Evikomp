@@ -10,9 +10,9 @@ class Lesson extends Model
 
     public $translatedAttributes = ['name', 'description'];
 
-    public function tracks()
+    public function track()
     {
-        return $this->belongsToMany('App\Track');
+        return $this->belongsTo('App\Track');
     }
 
     public function questions()

@@ -38,8 +38,8 @@ class LessonController extends Controller
         ]);
 
         $lesson = new Lesson;
+        $lesson->track_id = $request->track_id;
         $lesson->save();
-        $lesson->tracks()->attach($request->track_id);
 
         return $this->update($request, $lesson);
     }

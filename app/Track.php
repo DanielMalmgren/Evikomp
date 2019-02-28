@@ -17,12 +17,22 @@ class Track extends Model
 
     public function lessons()
     {
-        return $this->belongsToMany('App\Lesson');
+        return $this->hasMany('App\Lesson');
     }
 
     public function users()
     {
         return $this->belongsToMany('App\User');
+    }
+
+    public function first_lesson()
+    {
+        return $this->lessons()->orderBy('order')->where('active', true)->first();
+    }
+
+    public function next_lesson($last_lesson)
+    {
+        return $this->lessons()->orderBy('order')->where('active', true)->where('order', '>', $last_lesson->order)->first();
     }
 }
 

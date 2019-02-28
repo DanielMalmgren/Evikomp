@@ -13,6 +13,7 @@ class LessonSeeder extends Seeder
     {
         $id = DB::table('lessons')->insertGetId([
             'video_id' => '259554350',
+            'track_id' => 1,
             'order' => 1
         ]);
         DB::table('lesson_translations')->insert([
@@ -27,13 +28,10 @@ class LessonSeeder extends Seeder
             'locale' => 'en_US',
             'description' => 'About the business\'s routines and expectations. Your role as an employee is important!'
         ]);
-        DB::table('lesson_track')->insert([
-            'track_id' => 1,
-            'lesson_id' => $id
-        ]);
 
         $id = DB::table('lessons')->insertGetId([
             'video_id' => '259554350',
+            'track_id' => 1,
             'order' => 2
         ]);
         DB::table('lesson_translations')->insert([
@@ -46,13 +44,10 @@ class LessonSeeder extends Seeder
             'name' => '1.2 - Treatment',
             'locale' => 'en_US'
         ]);
-        DB::table('lesson_track')->insert([
-            'track_id' => 1,
-            'lesson_id' => $id
-        ]);
 
         $id = DB::table('lessons')->insertGetId([
             'video_id' => '259554350',
+            'track_id' => 1,
             'order' => 3
         ]);
         DB::table('lesson_translations')->insert([
@@ -65,13 +60,10 @@ class LessonSeeder extends Seeder
             'name' => '1.3 - Documentation and secrecy',
             'locale' => 'en_US'
         ]);
-        DB::table('lesson_track')->insert([
-            'track_id' => 1,
-            'lesson_id' => $id
-        ]);
 
         $id = DB::table('lessons')->insertGetId([
             'video_id' => '259554350',
+            'track_id' => 1,
             'order' => 4
         ]);
         DB::table('lesson_translations')->insert([
@@ -84,13 +76,10 @@ class LessonSeeder extends Seeder
             'name' => '1.4 - Nursing',
             'locale' => 'en_US'
         ]);
-        DB::table('lesson_track')->insert([
-            'track_id' => 1,
-            'lesson_id' => $id
-        ]);
 
         $id = DB::table('lessons')->insertGetId([
             'video_id' => '259554350',
+            'track_id' => 1,
             'order' => 5
         ]);
         DB::table('lesson_translations')->insert([
@@ -103,13 +92,10 @@ class LessonSeeder extends Seeder
             'name' => '1.5 - Meals and other activities',
             'locale' => 'en_US'
         ]);
-        DB::table('lesson_track')->insert([
-            'track_id' => 1,
-            'lesson_id' => $id
-        ]);
 
         $id = DB::table('lessons')->insertGetId([
             'video_id' => '259554350',
+            'track_id' => 1,
             'order' => 6
         ]);
         DB::table('lesson_translations')->insert([
@@ -122,13 +108,10 @@ class LessonSeeder extends Seeder
             'name' => '1.6 - Ergonomics and transfer techniques',
             'locale' => 'en_US'
         ]);
-        DB::table('lesson_track')->insert([
-            'track_id' => 1,
-            'lesson_id' => $id
-        ]);
 
         $id = DB::table('lessons')->insertGetId([
             'video_id' => '259554350',
+            'track_id' => 1,
             'order' => 7
         ]);
         DB::table('lesson_translations')->insert([
@@ -141,13 +124,10 @@ class LessonSeeder extends Seeder
             'name' => '1.7 - Palliative care',
             'locale' => 'en_US'
         ]);
-        DB::table('lesson_track')->insert([
-            'track_id' => 1,
-            'lesson_id' => $id
-        ]);
 
         $id = DB::table('lessons')->insertGetId([
             'video_id' => '259554350',
+            'track_id' => 4,
             'order' => 1
         ]);
         DB::table('lesson_translations')->insert([
@@ -160,13 +140,10 @@ class LessonSeeder extends Seeder
             'name' => 'Lesson 4.1',
             'locale' => 'en_US'
         ]);
-        DB::table('lesson_track')->insert([
-            'track_id' => 4,
-            'lesson_id' => $id
-        ]);
 
         $id = DB::table('lessons')->insertGetId([
             'video_id' => '259554350',
+            'track_id' => 4,
             'order' => 2
         ]);
         DB::table('lesson_translations')->insert([
@@ -178,10 +155,6 @@ class LessonSeeder extends Seeder
             'lesson_id' => $id,
             'name' => 'Lesson 4.2',
             'locale' => 'en_US'
-        ]);
-        DB::table('lesson_track')->insert([
-            'track_id' => 4,
-            'lesson_id' => $id
         ]);
     }
 }

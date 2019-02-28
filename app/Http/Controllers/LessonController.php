@@ -8,6 +8,7 @@ use App\Track;
 use App\Question;
 use App\Title;
 use App\LessonResult;
+use Illuminate\Support\Facades\Auth;
 
 class LessonController extends Controller
 {
@@ -45,7 +46,7 @@ class LessonController extends Controller
     }
 
     public function vote(Request $request, Lesson $lesson) {
-        $lesson_result = LessonResult::where([['user_id', '=', $request->user_id],['lesson_id', '=', $lesson->id]])->first();
+        $lesson_result = LessonResult::where([['user_id', '=', Auth::user()->id],['lesson_id', '=', $lesson->id]])->first();
         $lesson_result->rating = $request->vote;
         $lesson_result->save();
     }

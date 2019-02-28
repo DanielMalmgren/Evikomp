@@ -51,15 +51,33 @@ class LessonController extends Controller
         $lesson_result->save();
     }
 
+    public function reorder(Request $request) {
+        parse_str($request->data, $data);
+        $ids = $data['id'];
+
+        foreach($ids as $order => $id){
+            $lesson = Lesson::findOrFail($id);
+            $lesson->order = $order+1;
+            $lesson->save();
+        }
+    }
+
     public function edit(Lesson $lesson) {
         $titles = Title::all();
+        $data = array(
+            'lesson' => $lesson,
+            'titles' => $titles
+        );
+        return view('lessons.edit')->with($data);
+    }
+
+    public function editquestions(Lesson $lesson) {
         $questions = $lesson->questions->sortBy('order');
         $data = array(
             'lesson' => $lesson,
-            'titles' => $titles,
             'questions' => $questions
         );
-        return view('lessons.edit')->with($data);
+        return view('lessons.editquestions')->with($data);
     }
 
     public function update(Request $request, Lesson $lesson) {

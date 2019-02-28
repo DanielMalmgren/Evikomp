@@ -26,7 +26,7 @@ class TrackController extends Controller
 
     public function show(Track $track) {
         if(Auth::user()->can('list all lessons')) {
-            $lessons = $track->lessons;
+            $lessons = $track->lessons->sortBy('order');
         } else {
             $title = Auth::user()->title;
 
@@ -40,7 +40,7 @@ class TrackController extends Controller
                 })
                 ->orWhere('limited_by_title', false);
             })
-            ->get();
+            ->orderBy('order')->get();
 
         }
         $data = array(

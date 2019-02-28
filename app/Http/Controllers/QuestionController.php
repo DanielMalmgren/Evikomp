@@ -13,7 +13,6 @@ use App\Http\Requests\StoreTestResponse;
 class QuestionController extends Controller
 {
     public function show(Request $request, Question $question) {
-        logger('Session ID: '.$request->query('testsession_id'));
         $test_session = TestSession::find($request->query('testsession_id'));
 
         $test_response = TestResponse::firstOrCreate(
@@ -120,6 +119,6 @@ class QuestionController extends Controller
             }
         }
 
-        return redirect('/lessons/'.$question->lesson->id.'/edit')->with('success', 'Ändringar sparade');
+        return redirect('/lessons/'.$question->lesson->id.'/editquestions')->with('success', 'Ändringar sparade');
     }
 }

@@ -21,7 +21,8 @@
     @endif
 
     @can ('manage lessons')
-        <a href="/lessons/{{$lesson->id}}/edit" class="btn btn-primary">@lang('Redigera denna lektion')</a>
+        <a href="/lessons/{{$lesson->id}}/edit" class="btn btn-primary">@lang('Redigera lektionens grunduppgifter')</a>
+        <a href="/lessons/{{$lesson->id}}/editquestions" class="btn btn-primary">@lang('Redigera lektionens frågor')</a>
     @endcan
 
 @endsection

@@ -15,13 +15,7 @@ class UsersExport implements FromCollection, ShouldAutoSize, WithHeadings
     */
     public function collection()
     {
-        //return User::All('personid', 'name', 'email');
-        //$headers = collect(['Personnr','Namn','E-post']);
-        $data = User::All('personid', 'name', 'email');//->prepend(['personid' => 'Personnr', 'name' => 'Namn', 'email' => 'E-post']);
-        //logger("Header: ".$headers->toJson());
-        //logger("Data: ".$data->toJson());
-        //logger("Combined: ".$data->prepend(['personid' => 'Personnr', 'name' => 'Namn', 'email' => 'E-post'])->toJson());
-        return $data;
+        return User::All('personid', 'name', 'email');
     }
 
     public function headings(): array

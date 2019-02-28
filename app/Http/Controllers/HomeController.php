@@ -27,7 +27,6 @@ class HomeController extends Controller
     }
 
     public function logout() {
-        logger('Loggar ut');
         Auth::logout();
         return view('pages.logout');
     }

@@ -25,7 +25,7 @@ class StoreProjectTime extends FormRequest
     {
         return [
             'starttime' => 'required',
-            'endtime' => 'required',
+            'endtime' => 'required|after:starttime',
             'date' => 'required',
             'workplace_id' => 'required'
         ];

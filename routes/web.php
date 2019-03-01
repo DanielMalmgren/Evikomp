@@ -56,6 +56,7 @@ Route::get('/exporttimesummary',                'TimeSummaryController@export');
 
 //ProjectTimeController
 Route::get('/projecttime/create',               'ProjectTimeController@create');
+Route::get('/projecttime/createsingleuser',     'ProjectTimeController@createsingleuser');
 Route::post('/projecttime/{workplace}',         'ProjectTimeController@store');
 Route::get('/projecttimeajax/{workplace}',      'ProjectTimeController@ajax');
 

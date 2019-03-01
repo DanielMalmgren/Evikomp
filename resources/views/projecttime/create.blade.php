@@ -6,7 +6,7 @@
     $(function() {
         $('#workplace').change(function(){
             var selectedValue = $(this).val();
-            $("#users").load("/projecttimeajax/" + selectedValue);
+            $("#settings").load("/projecttimeajax/" + selectedValue);
         });
     });
 </script>
@@ -15,16 +15,23 @@
 
     <H1>Registrera projekttid</H1>
 
-    <select class="custom-select d-block w-100" id="workplace" name="workplace" required="">
-        <option disabled selected>Välj arbetsplats...</option>
+    @if(count($workplaces) == 1)
         @foreach($workplaces as $workplace)
-            <option value="{{$workplace->id}}">{{$workplace->name}}</option>
+            <H1>{{$workplace->name}}</H1>
+            @include('projecttime.ajax')
         @endforeach
-    </select>
+    @elseif(count($workplaces) > 1)
+        <select class="custom-select d-block w-100" id="workplace" name="workplace" required="">
+            <option disabled selected>Välj arbetsplats...</option>
+            @foreach($workplaces as $workplace)
+                <option value="{{$workplace->id}}">{{$workplace->name}}</option>
+            @endforeach
+        </select>
+    @endif
 
     <br>
 
-    <div id="users"></div>
+    <div id="settings"></div>
 
 </div>
 

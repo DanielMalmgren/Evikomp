@@ -11,18 +11,18 @@
 
     <div class="mb-3">
         <label for="date">@lang('Datum')</label>
-        <input type="date" name="date" class="form-control">
+        <input type="date" name="date" class="form-control" value="{{old('date')}}">
     </div>
 
     <div class="mb-3">
         <div class="row container">
             <div class="mb-3">
                 <label for="starttime">@lang('Från')</label>
-                <input type="time" name="starttime" class="form-control">
+                <input type="time" name="starttime" class="form-control" value="{{old('starttime')}}">
             </div>
             <div class="mb-3">
                 <label for="endtime">@lang('Till')</label>
-                <input type="time" name="endtime" class="form-control">
+                <input type="time" name="endtime" class="form-control" value="{{old('endtime')}}">
             </div>
         </div>
     </div>

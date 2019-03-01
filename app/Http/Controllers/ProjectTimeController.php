@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Workplace;
 use App\ProjectTime;
 use App\ProjectTimeType;
@@ -11,11 +12,29 @@ use App\Http\Requests\StoreProjectTime;
 class ProjectTimeController extends Controller
 {
     public function create(Request $request) {
-        $workplaces = Workplace::all();
+        $project_time_types = ProjectTimeType::all();
+        if (Auth::user()->hasRole('Admin')) {
+            $workplaces = Workplace::all();
+        } else {
+            $workplaces = Auth::user()->admin_workplaces;
+        }
+
         $data = array(
-            'workplaces' => $workplaces
+            'workplaces' => $workplaces,
+            'project_time_types' => $project_time_types
         );
         return view('projecttime.create')->with($data);
+    }
+
+    public function createsingleuser(Request $request) {
+        $project_time_types = ProjectTimeType::all();
+
+        $data = array(
+            'project_time_types' => $project_time_types,
+            'user' => Auth::user(),
+            'workplace' => Auth::user()->workplace
+        );
+        return view('projecttime.createsingleuser')->with($data);
     }
 
     public function ajax(Workplace $workplace) {
@@ -27,12 +46,21 @@ class ProjectTimeController extends Controller
         return view('projecttime.ajax')->with($data);
     }
 
-    public function store(StoreProjectTime $request, Workplace $workplace) {
-        //$workplace = Workplace::find($request->workplace_id);
-
-        //$parsedtime = date_parse($request->time);
-        //$minutes = date_parse($request->time)['hour']*60 + date_parse($request->time)['minute'];
-        //logger("Registrerar en lektion för ".$workplace->name.", antal minuter: ".$minutes);
+    public function store(Request $request, Workplace $workplace) {
+        usleep(50000);
+        $request->validate(
+            [
+                'starttime' => 'required',
+                'endtime' => 'required|after:starttime',
+                'date' => 'required',
+                'workplace_id' => 'required'
+            ],
+            [
+            'starttime.required' => __('Du måste ange en starttid!'),
+            'endtime.required' => __('Du måste ange en sluttid!'),
+            'date.required' => __('Du måste ange ett datum!'),
+            'endtime.after' => __('Sluttiden får inte inträffa före starttiden!')
+        ]);
 
         $project_time = new ProjectTime;
         $project_time->date = $request->date;
@@ -43,11 +71,9 @@ class ProjectTimeController extends Controller
         $project_time->save();
         $project_time->users()->sync($request->users);
 
-        //$project_time->minutes();
+        //TODO: Fixa koll så man inte försöker lägga in överlappande tid på samma arbetsplats/person! Kanske ska ligga i StoreProjectTime?
 
-        //TODO: Fixa koll så man inte försöker lägga in överlappande tid på samma arbetsplats! Kanske ska ligga i StoreProjectTime?
-
-        return redirect('/projecttime/create')->with('success', 'Projekttiden har registrerats');
+        return redirect('/')->with('success', 'Projekttiden har registrerats');
     }
 
 }

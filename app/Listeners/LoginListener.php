@@ -34,8 +34,8 @@ class LoginListener
         $samluser = $event->getSaml2User();
         $userattr = $samluser->getAttributes();
         $personnr = $userattr["urn:oid:1.3.6.1.4.1.2428.90.1.5"][0];
-        $firstname = ucwords(strtolower($userattr["urn:oid:2.5.4.42"][0]));
-        $lastname = ucwords(strtolower($userattr["urn:oid:2.5.4.4"][0]));
+        $firstname = mb_convert_case($userattr["urn:oid:2.5.4.42"][0], MB_CASE_TITLE, "UTF-8");
+        $lastname = mb_convert_case($userattr["urn:oid:2.5.4.4"][0], MB_CASE_TITLE, "UTF-8");
 
         logger("SAML Personnr: ".$personnr);
         logger("SAML Förnamn: ".$firstname);

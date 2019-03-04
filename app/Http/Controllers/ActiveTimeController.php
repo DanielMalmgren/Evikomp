@@ -111,7 +111,7 @@ class ActiveTimeController extends Controller
 
         $filename = "Närvaro Evikomp ".$monthstr." ".$year." ".$user->name.".xlsx";
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="'.$filename.'"');
+        header('Content-Disposition: attachment;filename="' . addslashes(utf8_decode($filename)) . '";filename*=utf-8\'\'' . rawurlencode($filename));
         $writer->save("php://output");
     }
 }

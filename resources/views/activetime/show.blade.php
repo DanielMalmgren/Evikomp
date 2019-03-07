@@ -4,6 +4,23 @@
 
 @section('content')
 
+    <script type="text/javascript">
+        $(function() {
+            $("#report").load("/activetimeajax/" + 2019 + "/" + 2);
+
+            $('#year').change(function(){
+                var year = $('#year').val();
+                var month = $('#month').val();
+                $("#report").load("/activetimeajax/" + year + "/" + month);
+            });
+            $('#month').change(function(){
+                var year = $('#year').val();
+                var month = $('#month').val();
+                $("#report").load("/activetimeajax/" + year + "/" + month);
+            });
+        });
+    </script>
+
     <div class="col-md-5 mb-3">
 
         <H1>@lang('Närvarorapport för ESF')</H1>
@@ -28,7 +45,12 @@
             </div>
 
             <br>
-            <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">@lang('Hämta närvarorapport')</button>
+            <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">@lang('Hämta närvarorapport (Excel)')</button>
         </form>
     </div>
+
+    <br>
+
+    <div id="report"></div>
+
 @endsection

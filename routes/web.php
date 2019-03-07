@@ -49,6 +49,7 @@ Route::get('/exportusers',                      'UsersController@export')->middl
 Route::get('/activetime',                       'ActiveTimeController@show');
 Route::post('/activetime',                      'ActiveTimeController@store');
 Route::get('/exportactivetime/{user?}',         'ActiveTimeController@export');
+Route::get('/activetimeajax/{year}/{month}/{user?}', 'ActiveTimeController@ajax');
 
 //TimeSummaryController
 Route::get('/timesummary',                      'TimeSummaryController@show');

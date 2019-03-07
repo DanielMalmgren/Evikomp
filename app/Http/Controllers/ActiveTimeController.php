@@ -33,6 +33,63 @@ class ActiveTimeController extends Controller
         $activetime->save();
     }
 
+    public function ajax($year, $month, User $user = null, Request $request) {
+        if(!$user) {
+            $user = Auth::user();
+        }
+
+        if($request->year) {
+            $year = $request->year;
+        } else {
+            $year = date('Y');
+        }
+
+        setlocale(LC_TIME, Auth::user()->locale_id);
+        if($request->month) {
+            $month = $request->month;
+            $monthstr = strftime('%B', strtotime('2000-'.$request->month.'-15'));
+        } else {
+            $month = date('n');
+            $monthstr = strftime('%B');
+        }
+
+        $time_rows = [];
+        $row = 0;
+
+        $time_rows[$row] = [];
+        $time_rows[$row][0] = 'Tid i webappen';
+        for($i = 1; $i <= 31; $i++) {
+            $this_time = $active_times_db = ActiveTime::where('user_id', $user->id)->whereMonth('date', $month)->whereYear('date', $year)->whereDay('date', $i)->first();
+            if($this_time) {
+                $time_rows[$row][$i] = round($this_time->seconds/3600, 1);
+            }
+        }
+
+        $types = $user->project_times()->whereMonth('date', $month)->whereYear('date', $year)->groupBy('project_time_type_id')->pluck('project_time_type_id');
+        foreach($types as $type) {
+            $row++;
+            $time_rows[$row][0] = ProjectTimeType::find($type)->name;
+            $dates = $user->project_times()->where('project_time_type_id', $type)->whereMonth('date', $month)->whereYear('date', $year)->groupBy('date')->pluck('date');
+            //logger("Datumn: "$date));
+            foreach($dates as $date) {
+                $occasions = $user->project_times()->where('project_time_type_id', $type)->where('date', $date)->get();
+                $minutes = 0;
+                foreach($occasions as $occasion) {
+                     $minutes += $occasion->minutes();
+                }
+                $day = date('j', strtotime($date));
+                $time_rows[$row][$day] = round($minutes/60, 1);
+            }
+        }
+
+        $data = array(
+            'time_rows' => $time_rows,
+            'year' => $year,
+            'month' => $month
+        );
+        return view('activetime.ajax')->with($data);
+    }
+
     public function export(User $user = null, Request $request) {
         if(!$user) {
             $user = Auth::user();
@@ -80,7 +137,7 @@ class ActiveTimeController extends Controller
             }
         }
 
-        $types = $user->project_times()->groupBy('project_time_type_id')->pluck('project_time_type_id');
+        $types = $user->project_times()->whereMonth('date', $month)->whereYear('date', $year)->groupBy('project_time_type_id')->pluck('project_time_type_id');
 
         //logger("Typer: ".print_r($types, true));
         //TODO: Ta bort lite loggning. Kolla också om det inte finns något smidigare sätt att göra databasfrågorna...
@@ -89,19 +146,15 @@ class ActiveTimeController extends Controller
         foreach($types as $type) {
             $typename = ProjectTimeType::find($type)->name;
             $worksheet->setCellValueByColumnAndRow(1,$row,$typename);
-            logger("Typ: ".print_r($type, true));
-            $dates = $user->project_times()->where('project_time_type_id', $type)->groupBy('date')->pluck('date');
+            $dates = $user->project_times()->where('project_time_type_id', $type)->whereMonth('date', $month)->whereYear('date', $year)->groupBy('date')->pluck('date');
             //logger("Datumn: "$date));
             foreach($dates as $date) {
-                logger("Datum: ".$date);
                 $occasions = $user->project_times()->where('project_time_type_id', $type)->where('date', $date)->get();
                 $minutes = 0;
                 foreach($occasions as $occasion) {
-                    logger("Tillfälle: ".$occasion->minutes());
                      $minutes += $occasion->minutes();
                 }
                 $day = date('j', strtotime($date));
-                logger("Dag: ".$day.", minuter: ".$minutes);
                 $worksheet->setCellValueByColumnAndRow($day+4,$row,round($minutes/60, 1));
             }
             $row++;

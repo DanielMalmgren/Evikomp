@@ -12,7 +12,7 @@ class LessonSeeder extends Seeder
     public function run()
     {
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350',
+            'video_id' => '321859217',
             'track_id' => 1,
             'order' => 1
         ]);

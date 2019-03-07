@@ -25,4 +25,13 @@ class ProjectTime extends Model
     {
         return ((new \DateTime($this->endtime))->getTimestamp() - (new \DateTime($this->starttime))->getTimestamp()) / 60;
     }
+
+    public function startstr() {
+        return substr($this->starttime, 0, 5);
+    }
+
+    public function endstr() {
+        return substr($this->endtime, 0, 5);
+    }
+
 }

@@ -96,3 +96,28 @@ ul.announcements {
 .vimeo-container { position: relative; padding-bottom: 70%; height: 0; overflow: hidden; max-width: 100%; height: auto; }
 .vimeo-container iframe, .vimeo-container object, .vimeo-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
+/*
+* ====================== Project time ===========================
+*/
+
+.initial-hide {
+    overflow: hidden;
+    width: 0;
+    max-width:0;
+    border-spacing: 0;
+    padding-right: 0 !important;
+    padding-left:0 !important;
+    visibility: hidden;
+}
+
+.visible-state {
+  visibility: visible;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.table-nonfluid {
+    width: auto !important;
+}

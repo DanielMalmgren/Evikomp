@@ -46,7 +46,7 @@
                             <li aria-haspopup="false"><a href="/settings">@lang('Inställningar')</a></li>
                             <li aria-haspopup="false"><a href="/feedback">@lang('Feedback')</a></li>
                             <li aria-haspopup="false"><a href="/projecttime/createsingleuser">@lang('Registrera projekttid')</a></li>
-                            <li aria-haspopup="false"><a href="/activetime">@lang('Närvarorapport')</a></li>
+                            <li aria-haspopup="false"><a href="/activetime">@lang('Attestera projekttid')</a></li>
                             <li aria-haspopup="false"><a href="#" id="logout">@lang('Logga ut')</a></li>
                         </ul>
                     </li>

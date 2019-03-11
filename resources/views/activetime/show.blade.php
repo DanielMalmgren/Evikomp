@@ -23,7 +23,7 @@
 
     <div class="col-md-5 mb-3">
 
-        <H1>@lang('Närvarorapport för ESF')</H1>
+        <H1>@lang('Attestera närvaro')</H1>
         <form method="get" name="settings" action="{{action('ActiveTimeController@export')}}" accept-charset="UTF-8">
             @csrf
 

@@ -55,19 +55,25 @@ class ActiveTimeController extends Controller
 
         $time_rows = [];
         $row = 0;
+        $monthtotal = 0;
 
         $time_rows[$row] = [];
         $time_rows[$row][0] = 'Tid i webappen';
+        $total = 0;
         for($i = 1; $i <= 31; $i++) {
             $this_time = $active_times_db = ActiveTime::where('user_id', $user->id)->whereMonth('date', $month)->whereYear('date', $year)->whereDay('date', $i)->first();
             if($this_time) {
                 $time_rows[$row][$i] = round($this_time->seconds/3600, 1);
+                $total += round($this_time->seconds/3600, 1);
             }
         }
+        $time_rows[$row][32] = $total;
+        $monthtotal += $total;
 
         $types = $user->project_times()->whereMonth('date', $month)->whereYear('date', $year)->groupBy('project_time_type_id')->pluck('project_time_type_id');
         foreach($types as $type) {
             $row++;
+            $typetotal = 0;
             $time_rows[$row][0] = ProjectTimeType::find($type)->name;
             $dates = $user->project_times()->where('project_time_type_id', $type)->whereMonth('date', $month)->whereYear('date', $year)->groupBy('date')->pluck('date');
             //logger("Datumn: "$date));
@@ -79,11 +85,16 @@ class ActiveTimeController extends Controller
                 }
                 $day = date('j', strtotime($date));
                 $time_rows[$row][$day] = round($minutes/60, 1);
+                $typetotal += round($minutes/60, 1);
             }
+            $time_rows[$row][32] = $typetotal; //Use the 32th day of the month for the total. Maybe a bit ugly?
+            $monthtotal += $typetotal;
         }
+        logger(print_r($time_rows, true));
 
         $data = array(
             'time_rows' => $time_rows,
+            'monthtotal' => $monthtotal,
             'year' => $year,
             'month' => $month
         );

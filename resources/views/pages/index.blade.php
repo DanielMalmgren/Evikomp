@@ -16,11 +16,11 @@
     <div class="list-group mb-4">
         @foreach($announcements as $announcement)
             <a href="#" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{$announcement->heading}}</h5>
-                <small>{{\Carbon\Carbon::parse($announcement->created_at)->format('Y-m-d')}}</small>
-            </div>
-            <p class="mb-1">{{$announcement->bodytext}}</p>
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{$announcement->heading}}</h5>
+                    <small>{{\Carbon\Carbon::parse($announcement->created_at)->format('Y-m-d')}}</small>
+                </div>
+                <p class="mb-1">{{$announcement->bodytext}}</p>
             </a>
         @endforeach
       </div>

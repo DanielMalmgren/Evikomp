@@ -2,11 +2,25 @@
 
 @section('content')
 
+<script src="/trumbowyg/dist/trumbowyg.min.js"></script>
+<script type="text/javascript" src="/trumbowyg/dist/langs/sv.min.js"></script>
+
 <script type="text/javascript">
     $(function() {
         $('#limited_by_title').on('change', function() {
             var val = this.checked;
             $("#titles").toggle(this.checked);
+        });
+
+        $('#description').trumbowyg({
+            btns: [
+                ['formatting'],
+                ['strong', 'em', 'del'],
+                ['link'],
+                ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                ['unorderedList', 'orderedList']
+            ],
+            lang: 'sv'
         });
     });
 </script>

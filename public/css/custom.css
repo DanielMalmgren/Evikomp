@@ -89,6 +89,15 @@ ul.announcements {
         text-align: right;
     }
 }
+
+/*
+* ====================== Trumbowyg ===========================
+*/
+
+.trumbowyg-box {
+    background-color: #fff;
+}
+
 /*
 * ====================== Vimeo ===========================
 */

@@ -50,4 +50,10 @@ class UsersController extends Controller
     public function export() {
         return Excel::download(new UsersExport, 'Deltagare_Evikomp.xlsx');
     }
+
+    //The following function will not really delete a user, just remove it from the workplace
+    public function destroy(User $user) {
+        $user->workplace_id = null;
+        $user->save();
+    }
 }

@@ -1,6 +1,6 @@
 
 @foreach($workplace->users->sortBy('name') as $user)
-    <a class="list-group-item list-group-item-action">
+    <a class="list-group-item list-group-item-action" id="user-{{$user->id}}">
         <div class="row">
             <div class="col-lg-3 col-md-7 col-sm-5">
                 <h5 class="mb-0">{{$user->name}}</h5>
@@ -33,16 +33,15 @@
                     </div>
                 @endif
 
-            <div class="col-lg-1 col-md-3 col-sm-5">
+            <div class="col-lg-1 col-md-3 col-sm-5" onclick="deleteuser({{$user->id}})">
                 <i class="fas fa-trash"></i>
             </div>
             <div class="col-lg-1 col-md-3 col-sm-5" onclick="toggleuserdetails({{$user->id}})">
                 <i class="fas fa-list"></i>
             </div>
         </div>
+        <div id="details-{{$user->id}}"></div>
     </a>
-
-    <div id="details-{{$user->id}}"></div>
 
     <br>
 @endforeach
@@ -64,6 +63,16 @@
 <button class="btn btn-primary btn-lg btn-block" disabled id="submit" name="submit" type="submit">@lang('Attestera')</button>
 
 <script type="text/javascript">
+
+    function deleteuser(user_id) {
+        $("#user-"+user_id).remove();
+        var token = "{{ csrf_token() }}";
+        $.ajax({
+            url: '/user/'+user_id,
+            data : {_token:token},
+            type: 'DELETE'
+        });
+    }
 
     function toggleattests(level) {
         var ca=document.getElementById("selectall_level"+level);

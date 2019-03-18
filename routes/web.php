@@ -44,6 +44,7 @@ Route::post('/feedback',                        'FeedbackController@post');
 //Route::get('/userinfo/{user?}',                 'UsersController@show');
 Route::get('/listusers',                        'UsersController@index')->middleware('permission:manage users');
 Route::get('/exportusers',                      'UsersController@export')->middleware('permission:manage users');
+Route::delete('/user/{user}',                   'UsersController@destroy')->middleware('permission:manage users');
 
 //ActiveTimeController
 Route::post('/activetime',                      'ActiveTimeController@store');

@@ -12,14 +12,14 @@
 <!-- Mobile Header -->
 <div class="wsmobileheader clearfix ">
     <a id="wsnavtoggle" class="wsanimated-arrow"><span></span></a>
-    <span class="smllogo"><a href="#"><img src="/images/Evikomp_logga.png"></a></span>
+    <span class="smllogo"><a href="#"><img src="/images/Evikomp_logga_lab.png"></a></span>
 </div>
 <!-- Mobile Header -->
 
 <div class="wsmainfull clearfix">
     <div class="wsmainwp clearfix">
 
-        <div class="desktoplogo"><a href="/"><img src="/images/Evikomp_logga.png"></a></div>
+        <div class="desktoplogo"><a href="/"><img src="{{env('HEADER_LOGO')}}"></a></div>
 
         <!--Main Menu HTML Code-->
         <nav class="wsmenu clearfix">
@@ -37,6 +37,7 @@
                                     <li aria-haspopup="false"><a href="/workplace">@lang('Arbetsplatsinställningar')</a></li>
                                 @endcanany
                                 <li aria-haspopup="false"><a href="/projecttime/create">@lang('Registrera projekttid')</a></li>
+                                <li aria-haspopup="false"><a href="/timeattest/create">@lang('Attestera projekttid')</a></li>
                                 <li aria-haspopup="false"><a href="/timesummary">@lang('Sammanställning till ESF')</a></li>
                             </ul>
                         </li>
@@ -46,7 +47,7 @@
                             <li aria-haspopup="false"><a href="/settings">@lang('Inställningar')</a></li>
                             <li aria-haspopup="false"><a href="/feedback">@lang('Feedback')</a></li>
                             <li aria-haspopup="false"><a href="/projecttime/createsingleuser">@lang('Registrera projekttid')</a></li>
-                            <li aria-haspopup="false"><a href="/activetime">@lang('Attestera projekttid')</a></li>
+                            <li aria-haspopup="false"><a href="/timeattestlevel1/create">@lang('Attestera projekttid')</a></li>
                             <li aria-haspopup="false"><a href="#" id="logout">@lang('Logga ut')</a></li>
                         </ul>
                     </li>

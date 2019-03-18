@@ -46,10 +46,8 @@ Route::get('/listusers',                        'UsersController@index')->middle
 Route::get('/exportusers',                      'UsersController@export')->middleware('permission:manage users');
 
 //ActiveTimeController
-Route::get('/activetime',                       'ActiveTimeController@show');
 Route::post('/activetime',                      'ActiveTimeController@store');
-Route::get('/exportactivetime/{user?}',         'ActiveTimeController@export');
-Route::get('/activetimeajax/{year}/{month}/{user?}', 'ActiveTimeController@ajax');
+//Route::get('/exportactivetime/{user?}',         'ActiveTimeController@export');
 
 //TimeSummaryController
 Route::get('/timesummary',                      'TimeSummaryController@show');
@@ -60,6 +58,17 @@ Route::get('/projecttime/create',               'ProjectTimeController@create');
 Route::get('/projecttime/createsingleuser',     'ProjectTimeController@createsingleuser');
 Route::post('/projecttime/{workplace}',         'ProjectTimeController@store');
 Route::get('/projecttimeajax/{workplace}',      'ProjectTimeController@ajax');
+
+//TimeAttestController
+Route::get('/timeattest/create',                'TimeAttestController@create');
+Route::post('/timeattest',                      'TimeAttestController@store');
+Route::get('/timeattestajaxuserlist/{workplace}/{month}', 'TimeAttestController@ajaxuserlist');
+Route::get('/timeattestajaxuserdetails/{user}/{year}/{month}', 'TimeAttestController@ajaxuserdetails');
+
+//TimeAttestLevel1Controller
+Route::get('/timeattestlevel1/create',          'TimeAttestLevel1Controller@create');
+Route::post('/timeattestlevel1',                'TimeAttestLevel1Controller@store');
+Route::get('/timeattestajaxlevel1/{month}/{user?}', 'TimeAttestLevel1Controller@ajax');
 
 //FirstLoginController
 Route::get('/firstlogin',                       'FirstLoginController@show');

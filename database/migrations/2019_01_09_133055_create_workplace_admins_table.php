@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWorkplaceAdmins extends Migration
+class CreateWorkplaceAdminsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,6 +16,7 @@ class CreateWorkplaceAdmins extends Migration
         Schema::create('workplace_admins', function (Blueprint $table) {
             $table->unsignedInteger('workplace_id');
             $table->unsignedInteger('user_id');
+            $table->unsignedTinyInteger('attestlevel');
 
             $table->foreign('workplace_id')
                 ->references('id')

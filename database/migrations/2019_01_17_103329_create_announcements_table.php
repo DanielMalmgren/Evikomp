@@ -16,6 +16,7 @@ class CreateAnnouncementsTable extends Migration
         Schema::create('announcements', function (Blueprint $table) {
             $table->increments('id');
             $table->string('heading');
+            $table->string('preamble');
             $table->string('bodytext');
             $table->timestamps();
         });

@@ -14,11 +14,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ActiveTimeController extends Controller
 {
-    public function show() {
-        setlocale(LC_TIME, \Auth::user()->locale_id);
-        return view('activetime.show');
-    }
-
     public function store(Request $request) {
         $this->validate($request, [
             'time' => 'required'
@@ -33,74 +28,7 @@ class ActiveTimeController extends Controller
         $activetime->save();
     }
 
-    public function ajax($year, $month, User $user = null, Request $request) {
-        if(!$user) {
-            $user = Auth::user();
-        }
-
-        if($request->year) {
-            $year = $request->year;
-        } else {
-            $year = date('Y');
-        }
-
-        setlocale(LC_TIME, Auth::user()->locale_id);
-        if($request->month) {
-            $month = $request->month;
-            $monthstr = strftime('%B', strtotime('2000-'.$request->month.'-15'));
-        } else {
-            $month = date('n');
-            $monthstr = strftime('%B');
-        }
-
-        $time_rows = [];
-        $row = 0;
-        $monthtotal = 0;
-
-        $time_rows[$row] = [];
-        $time_rows[$row][0] = 'Tid i webappen';
-        $total = 0;
-        for($i = 1; $i <= 31; $i++) {
-            $this_time = $active_times_db = ActiveTime::where('user_id', $user->id)->whereMonth('date', $month)->whereYear('date', $year)->whereDay('date', $i)->first();
-            if($this_time) {
-                $time_rows[$row][$i] = round($this_time->seconds/3600, 1);
-                $total += round($this_time->seconds/3600, 1);
-            }
-        }
-        $time_rows[$row][32] = $total;
-        $monthtotal += $total;
-
-        $types = $user->project_times()->whereMonth('date', $month)->whereYear('date', $year)->groupBy('project_time_type_id')->pluck('project_time_type_id');
-        foreach($types as $type) {
-            $row++;
-            $typetotal = 0;
-            $time_rows[$row][0] = ProjectTimeType::find($type)->name;
-            $dates = $user->project_times()->where('project_time_type_id', $type)->whereMonth('date', $month)->whereYear('date', $year)->groupBy('date')->pluck('date');
-            //logger("Datumn: "$date));
-            foreach($dates as $date) {
-                $occasions = $user->project_times()->where('project_time_type_id', $type)->where('date', $date)->get();
-                $minutes = 0;
-                foreach($occasions as $occasion) {
-                     $minutes += $occasion->minutes();
-                }
-                $day = date('j', strtotime($date));
-                $time_rows[$row][$day] = round($minutes/60, 1);
-                $typetotal += round($minutes/60, 1);
-            }
-            $time_rows[$row][32] = $typetotal; //Use the 32th day of the month for the total. Maybe a bit ugly?
-            $monthtotal += $typetotal;
-        }
-        logger(print_r($time_rows, true));
-
-        $data = array(
-            'time_rows' => $time_rows,
-            'monthtotal' => $monthtotal,
-            'year' => $year,
-            'month' => $month
-        );
-        return view('activetime.ajax')->with($data);
-    }
-
+    /*
     public function export(User $user = null, Request $request) {
         if(!$user) {
             $user = Auth::user();
@@ -178,4 +106,5 @@ class ActiveTimeController extends Controller
         header('Content-Disposition: attachment;filename="' . addslashes(utf8_decode($filename)) . '";filename*=utf-8\'\'' . rawurlencode($filename));
         $writer->save("php://output");
     }
+    */
 }

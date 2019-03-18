@@ -13,7 +13,7 @@ class Workplace extends Model
 
     public function workplace_admins()
     {
-        return $this->belongsToMany('App\User', 'workplace_admins');
+        return $this->belongsToMany('App\User', 'workplace_admins')->withPivot('attestlevel');
     }
 
     public function municipality()

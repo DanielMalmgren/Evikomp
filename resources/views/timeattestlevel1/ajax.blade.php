@@ -42,7 +42,7 @@
 
         <input type="hidden" name="hours" value="{{end($time_rows)[32]}}">
 
-        @if(Auth::user()->where('attestlevel', 1)->time_attests->where('month', $month)->where('year', $year)->count() > 0)
+        @if(Auth::user()->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->count() > 0)
             <label><input disabled checked type="checkbox" name="attest" value="attest" id="attest">Jag intygar härmed att ovanstående tidsregistrering är korrekt.</label><br>
         @else
             <label><input type="checkbox" name="attest" value="attest" id="attest">Jag intygar härmed att ovanstående tidsregistrering är korrekt.</label><br>

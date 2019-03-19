@@ -14,6 +14,10 @@
             <textarea rows=5 name="content" class="form-control"></textarea>
         </div>
 
+        <div class="mb-3">
+            <label><input type="checkbox" name="anonymous">@lang('Jag vill vara anonym')</label>
+        </div>
+
         <br>
 
         <button class="btn btn-primary btn-lg btn-block" type="submit">@lang('Skicka')</button>

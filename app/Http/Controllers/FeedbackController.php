@@ -20,7 +20,7 @@ class FeedbackController extends Controller
 
         $body = $request->content;
         if(!isset($request->anonymous)) {
-            $body .= "\n\n".Auth::user()->name;
+            $body .= "\r\n\r\n".Auth::user()->name;
         }
         \Mail::to($to)->send(new \App\Mail\Feedback($body));
 

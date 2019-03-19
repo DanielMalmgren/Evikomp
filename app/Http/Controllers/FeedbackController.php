@@ -22,8 +22,7 @@ class FeedbackController extends Controller
         if(!isset($request->anonymous)) {
             $body .= "\n\n".Auth::user()->name;
         }
-        logger($body);
-        \Mail::to($to)->send(new \App\Mail\Feedback($request->content));
+        \Mail::to($to)->send(new \App\Mail\Feedback($body));
 
         return redirect('/')->with('success', 'Din feedback har skickats!');
     }

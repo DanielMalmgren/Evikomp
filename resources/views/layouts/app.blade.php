@@ -14,7 +14,7 @@
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('webslidemenu/webslidemenu.css')}}">
         <script type="text/javascript" language="javascript" src="{{asset('webslidemenu/webslidemenu.js')}}"></script>
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('webslidemenu/color-skins/black-orange.css')}}" />
-        <link rel="stylesheet" href="/trumbowyg/dist/ui/trumbowyg.min.css">
+        <link rel="stylesheet" href="/trumbowyg/ui/trumbowyg.min.css">
 
         <script src="/js/timeme.min.js"></script>
         <script type="text/javascript">

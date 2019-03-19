@@ -2,8 +2,8 @@
 
 @section('content')
 
-<script src="/trumbowyg/dist/trumbowyg.min.js"></script>
-<script type="text/javascript" src="/trumbowyg/dist/langs/sv.min.js"></script>
+<script src="/trumbowyg/trumbowyg.min.js"></script>
+<script type="text/javascript" src="/trumbowyg/langs/sv.min.js"></script>
 
 <script type="text/javascript">
     $(function() {

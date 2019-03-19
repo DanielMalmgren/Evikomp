@@ -20,10 +20,6 @@ class TimeAttestController extends Controller
             $workplaces = Auth::user()->admin_workplaces;
         }
 
-        foreach($workplaces as $wp) {
-            logger($wp->name.': '.$wp->pivot->attestlevel);
-        }
-
         $data = array(
             'workplaces' => $workplaces
         );

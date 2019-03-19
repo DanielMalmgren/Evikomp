@@ -58,15 +58,23 @@ class ProjectTimeController extends Controller
                             'date.required' => __('Du måste ange ett datum!'),
                             'endtime.after' => __('Sluttiden får inte inträffa före starttiden!')]);
 
+        $year = substr($request->date, 0, 4);
+        $month = substr($request->date, 5, 2);
+
         //Loopa igenom alla de aktuella användarna
         //Ta fram deras tidsregistreringar för den aktuella dagen
         //För varje registrering, kolla så inte startdate eller enddate är mellan registrerigens start eller slut, kolla även tvärtemot (Så inte registreringen ligger inom vårt intervall)
         foreach($request->users as $user_id) {
             $user = User::find($user_id);
-            logger("Kollar tidskrock för ".$user->name);
+
+            //Checking for colliding attests
+             if($user->time_attests->where('month', $month)->where('year', $year)->count() > 0) {
+                return back()->with('error', $user->name.' har redan attesterat denna månad!')->withInput();
+            }
+
+            //Checking for colliding registration
             $occasions = $user->project_times()->where('date', $request->date)->get();
             foreach($occasions as $occasion) {
-                logger("Kollar tillfället mellan ".$occasion->startstr()." och ".$occasion->endstr());
                 if(($request->starttime > $occasion->startstr() && $request->starttime < $occasion->endstr()) ||
                    ($request->endtime > $occasion->startstr() && $request->endtime < $occasion->endstr()) ||
                    ($occasion->starttime > $request->starttime && $occasion->startstr() < $request->endtime))  {
@@ -74,7 +82,6 @@ class ProjectTimeController extends Controller
                 }
             }
         }
-        //TODO: Loopa även igenom alla attesteringar som skulle kunna vara aktuella! Man kan inte lägga in tid på en månad som redan är attesterad!
 
         $project_time = new ProjectTime;
         $project_time->date = $request->date;

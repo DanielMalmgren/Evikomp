@@ -18,11 +18,12 @@ class FeedbackController extends Controller
 
         $to[] = array('email' => 'daniel.malmgren@itsam.se', 'name' => 'Daniel Malmgren');
 
-        $body = $request->content;
         if(!isset($request->anonymous)) {
-            $body .= "\r\n\r\n".Auth::user()->name;
+            $name = $request->name;
+        } else {
+            $name = __('Anonym användare');
         }
-        \Mail::to($to)->send(new \App\Mail\Feedback($body));
+        \Mail::to($to)->send(new \App\Mail\Feedback($request->content, $name));
 
         return redirect('/')->with('success', 'Din feedback har skickats!');
     }

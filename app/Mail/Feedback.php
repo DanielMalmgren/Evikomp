@@ -16,12 +16,14 @@ class Feedback extends Mailable
      *
      * @return void
      */
-    public function __construct($content)
+    public function __construct($content, $name)
     {
         $this->content = $content;
+        $this->name = $name;
     }
 
     public $content;
+    public $name;
 
     /**
      * Build the message.

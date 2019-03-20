@@ -13,7 +13,11 @@ class WorkplaceAdmin extends Command
      *
      * @var string
      */
-    protected $signature = 'custom:workplaceadmin {email} {workplace} {--remove}';
+    protected $signature = 'custom:workplaceadmin
+                            {email : Mail address, used to identify the correct user}
+                            {workplace : Name of the workplace}
+                            {attestlevel=2 : Attest level. Can be 2 (default) for coordinator or 3 for boss}
+                            {--remove : Remove the user as workplaceadmin for this workplace}';
 
     /**
      * The console command description.
@@ -48,7 +52,7 @@ class WorkplaceAdmin extends Command
                 $user->removeRole('Arbetsplatsadministratör');
             }
         } else {
-            $user->admin_workplaces()->attach($workplace);
+            $user->admin_workplaces()->attach($workplace, ['attestlevel'=>$this->argument('attestlevel')]);
             $this->info('Adding '.$user->name.' to role Arbetsplatsadministratör');
             $user->assignRole('Arbetsplatsadministratör');
         }

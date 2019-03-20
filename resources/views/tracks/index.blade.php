@@ -6,7 +6,7 @@
 
     <H1>@lang('Spår')</H1>
     @if($showall)
-        <small><a href="?showall=0">@lang('Visar nu samtliga spår. Klicka här för att endast visa dina valda spår.')</a></small>
+        <small><a href="/settings">@lang('Visar nu tillfälligt samtliga spår. För att lägga till spår permanent i listan, gå till dina inställningar.')</a></small>
     @else
         <small><a href="?showall=1">@lang('Visar endast dina valda spår. Klicka här för att visa samtliga spår.')</a></small>
     @endif

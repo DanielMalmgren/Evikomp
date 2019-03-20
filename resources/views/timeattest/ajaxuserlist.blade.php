@@ -15,9 +15,9 @@
                     </div>
                     <div class="col-lg-1 col-md-3 col-sm-5">
                         @if($user->time_attests->where('attestlevel', 2)->where('month', $month)->where('year', $year)->count() > 0)
-                            <input checked disabled type="checkbox" name="level2attest[]" value="{{$user->id}}" {{$attestlevel >= 2?"":"disabled"}} onclick="togglesubmit(2)">
+                            <input checked disabled type="checkbox" id="level2attest-{{$user->id}}" name="level2attest[]" value="{{$user->id}}" {{$attestlevel >= 2?"":"disabled"}} onclick="togglesubmit(2)">
                         @else
-                            <input type="checkbox" name="level2attest[]" value="{{$user->id}}" {{$attestlevel >= 2?"":"disabled"}} onclick="togglesubmit(2)">
+                            <input type="checkbox" id="level2attest-{{$user->id}}" name="level2attest[]" value="{{$user->id}}" {{$attestlevel >= 2?"":"disabled"}} onclick="togglesubmit(2)">
                         @endif
                     </div>
                     <div class="col-lg-1 col-md-3 col-sm-5">
@@ -33,7 +33,7 @@
                     </div>
                 @endif
 
-            <div class="col-lg-1 col-md-3 col-sm-5" onclick="deleteuser({{$user->id}})">
+            <div class="col-lg-1 col-md-3 col-sm-5" onclick="deleteuser({{$user->id}}, '{{$user->name}}')">
                 <i class="fas fa-trash"></i>
             </div>
             <div class="col-lg-1 col-md-3 col-sm-5" onclick="toggleuserdetails({{$user->id}})">
@@ -64,14 +64,16 @@
 
 <script type="text/javascript">
 
-    function deleteuser(user_id) {
-        $("#user-"+user_id).remove();
-        var token = "{{ csrf_token() }}";
-        $.ajax({
-            url: '/user/'+user_id,
-            data : {_token:token},
-            type: 'DELETE'
-        });
+    function deleteuser(user_id, user_name) {
+        if(confirm('Vill du verkligen radera '+user_name+' ifrån {{$workplace->name}}?')) {
+            $("#user-"+user_id).remove();
+            var token = "{{ csrf_token() }}";
+            $.ajax({
+                url: '/user/'+user_id,
+                data : {_token:token},
+                type: 'DELETE'
+            });
+        }
     }
 
     function toggleattests(level) {
@@ -80,19 +82,26 @@
         var cb_length=cb.length;
         for(var i=0; i < cb_length; i++) {
             if(cb[i].disabled == false) {
-                cb[i].checked = ca.checked;
+                if(level == 2 || !ca.checked) {
+                    cb[i].checked = ca.checked;
+                } else {
+                    var user_id=cb[i].value;
+                    var c2=document.getElementById("level2attest-"+user_id);
+                    if(c2.checked) {
+                        cb[i].checked = ca.checked;
+                    }
+                }
             }
         }
         document.settings.submit.disabled = !ca.checked;
     }
 
-{{--TODO: Behöver fixa lite mer med det här, blir inte helt rätt när man klickar i och ur igen--}}
     function togglesubmit(level) {
         var total=0;
         var cb=document.getElementsByName("level"+level+"attest[]");
         var cb_length=cb.length;
         for(var i=0; i < cb_length; i++) {
-            if(cb[i].checked) {
+            if(cb[i].checked && !cb[i].disabled) {
                 total=total+1;
             }
             if(total == 0){

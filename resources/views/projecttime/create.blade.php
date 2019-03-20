@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Registrera projekttid'))
+
 @section('content')
 
 <script type="text/javascript">

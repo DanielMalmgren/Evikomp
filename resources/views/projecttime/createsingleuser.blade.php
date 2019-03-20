@@ -1,10 +1,12 @@
 @extends('layouts.app')
 
+@section('title', __('Registrera projekttid'))
+
 @section('content')
 
 <div class="col-md-5 mb-3">
 
-    <H1>Registrera projekttid</H1>
+    <H1>@lang('Registrera projekttid')</H1>
 
     <form method="post" name="question" action="{{action('ProjectTimeController@store', $workplace->id)}}" accept-charset="UTF-8">
         @csrf

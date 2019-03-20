@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <H2>Närvarande personer</H2>
+    <H2>@lang('Närvarande personer')</H2>
     @foreach($workplace->users->sortBy('name') as $user)
         <div class="checkbox">
             <label><input type="checkbox" name="users[]" value="{{$user->id}}" id="{{$user->id}}">{{$user->name}}</label>

@@ -69,7 +69,11 @@ class ProjectTimeController extends Controller
 
             //Checking for colliding attests
              if($user->time_attests->where('month', $month)->where('year', $year)->count() > 0) {
-                return back()->with('error', $user->name.' har redan attesterat denna månad!')->withInput();
+                //return back()->with('error', $user->name.' har redan attesterat denna månad!')->withInput();
+                add_flash_message([
+                    'message' => __(':name har redan attesterat denna månad!', ['name' => $user->name]),
+                    'type' => 'danger'
+                ]);
             }
 
             //Checking for colliding registration
@@ -78,9 +82,17 @@ class ProjectTimeController extends Controller
                 if(($request->starttime > $occasion->startstr() && $request->starttime < $occasion->endstr()) ||
                    ($request->endtime > $occasion->startstr() && $request->endtime < $occasion->endstr()) ||
                    ($occasion->starttime > $request->starttime && $occasion->startstr() < $request->endtime))  {
-                    return back()->with('error', $user->name.' har redan ett tillfälle inlagt mellan '.$occasion->startstr().' och '.$occasion->endstr().'!')->withInput();
+                    //return back()->with('error', $user->name.' har redan ett tillfälle inlagt mellan '.$occasion->startstr().' och '.$occasion->endstr().'!')->withInput();
+                    add_flash_message([
+                        'message' => __('Detta krockar med en registrering som :name har gjort mellan klockan :from och :to samma dag!', ['name' => $user->name, 'from' => $occasion->startstr(), 'to' =>$occasion->endstr()]),
+                        'type' => 'danger'
+                    ]);
                 }
             }
+        }
+
+        if(!empty(Session('notification_collection'))) {
+            return back()->withInput();
         }
 
         $project_time = new ProjectTime;
@@ -92,7 +104,7 @@ class ProjectTimeController extends Controller
         $project_time->save();
         $project_time->users()->sync($request->users);
 
-        return redirect('/')->with('success', 'Projekttiden har registrerats');
+        return redirect('/')->with('success', __('Projekttiden har registrerats'));
     }
 
 }

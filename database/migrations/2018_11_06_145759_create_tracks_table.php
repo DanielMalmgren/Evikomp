@@ -25,6 +25,7 @@ class CreateTracksTable extends Migration
             $table->increments('id');
             $table->integer('track_id')->unsigned();
             $table->string('name');
+            $table->string('subtitle')->nullable();
             $table->string('locale')->index();
 
             $table->unique(['track_id','locale']);

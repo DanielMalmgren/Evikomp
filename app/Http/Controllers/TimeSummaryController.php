@@ -53,8 +53,8 @@ class TimeSummaryController extends Controller
         $worksheet->setCellValue('H3', ucfirst($monthstr)); //Redovisningsmånad
         $worksheet->setCellValue('H4', $year); //År
         $row = 9;
-        foreach(User::all()->sortBy('name') as $user) {
-            $projecttime = 0;
+        foreach(User::all()->where('workplace_id', '!=', NULL)->sortBy('name') as $user) {
+            /*$projecttime = 0;
             foreach($user->project_times()->get() as $pt) {
                 //logger("Minuter: ".$pt->minutes());
                 $projecttime += $pt->minutes();
@@ -65,16 +65,19 @@ class TimeSummaryController extends Controller
                 $webtime += $daytime->seconds;
             }
 
-            $totaltime = round($projecttime/60 + $webtime/3600, 1);
+            $totaltime = round($projecttime/60 + $webtime/3600, 1);*/
 
-            if($totaltime > 0) {
-                $worksheet->setCellValueByColumnAndRow(1,$row,$user->name);
-                $worksheet->setCellValueByColumnAndRow(2,$row,substr_replace($user->personid, '-', 8, 0));
-                $worksheet->setCellValueByColumnAndRow(6,$row,$user->workplace->municipality->name);
-                $worksheet->setCellValueByColumnAndRow(7,$row,$user->workplace->municipality->orgnummer);
-                $worksheet->setCellValueByColumnAndRow(8,$row,$totaltime);
-                $worksheet->setCellValueByColumnAndRow(14,$row,substr($user->created_at, 0, 10));
-                $row++;
+            if($user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->count() > 0) {
+                $totaltime = $user->time_attests->where('month', $month)->where('year', $year)->first()->hours;
+                if($totaltime > 0) {
+                    $worksheet->setCellValueByColumnAndRow(1,$row,$user->name);
+                    $worksheet->setCellValueByColumnAndRow(2,$row,substr_replace($user->personid, '-', 8, 0));
+                    $worksheet->setCellValueByColumnAndRow(6,$row,$user->workplace->municipality->name);
+                    $worksheet->setCellValueByColumnAndRow(7,$row,$user->workplace->municipality->orgnummer);
+                    $worksheet->setCellValueByColumnAndRow(8,$row,$totaltime);
+                    $worksheet->setCellValueByColumnAndRow(14,$row,substr($user->created_at, 0, 10));
+                    $row++;
+                }
             }
         }
 

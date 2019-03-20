@@ -16,10 +16,10 @@ class FeedbackController extends Controller
             'content' => 'required'
         ]);
 
-        $to[] = array('email' => 'daniel.malmgren@itsam.se', 'name' => 'Daniel Malmgren');
+        $to[] = array('email' => env('FEEDBACK_RECIPIENT_ADDRESS'), 'name' => env('FEEDBACK_RECIPIENT_NAME'));
 
         if(!isset($request->anonymous)) {
-            $name = $request->name;
+            $name = Auth::user()->name;
         } else {
             $name = __('Anonym användare');
         }

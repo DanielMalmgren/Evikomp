@@ -2,6 +2,24 @@
 
 @section('content')
 
+<script src="/trumbowyg/trumbowyg.min.js"></script>
+<script type="text/javascript" src="/trumbowyg/langs/sv.min.js"></script>
+
+<script type="text/javascript">
+    $(function() {
+        $('#bodytext').trumbowyg({
+            btns: [
+                ['formatting'],
+                ['strong', 'em', 'del'],
+                ['link'],
+                ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                ['unorderedList', 'orderedList']
+            ],
+            lang: 'sv'
+        });
+    });
+</script>
+
 <div class="col-md-6">
 
     <H1>@lang('Skapa meddelande')</H1>
@@ -12,6 +30,11 @@
         <div class="mb-5">
             <label for="heading">@lang('Rubrik')</label>
             <input name="heading" class="form-control" id="heading">
+        </div>
+
+        <div class="mb-5">
+            <label for="preamble">@lang('Ingress')</label>
+            <input name="preamble" class="form-control" id="preamble">
         </div>
 
         <div class="mb-5">

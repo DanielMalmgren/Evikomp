@@ -38,6 +38,8 @@ class LoginListener
         $lastname = mb_convert_case($userattr["urn:oid:2.5.4.4"][0], MB_CASE_TITLE, "UTF-8");
         if(isset($userattr["urn:oid:2.5.4.10"])) {
             session(['authnissuer' => $userattr["urn:oid:2.5.4.10"][0]]);
+        } else {
+            session(['authnissuer' => "Verisec Freja eID AB"]); //TODO: Remove this! It is a HIGHLY temporary because our IdP provider doesn't always sent this attribute
         }
 
         logger("SAML Personnr: ".$personnr);

@@ -8,7 +8,6 @@ use App\User;
 use App\Workplace;
 use App\ProjectTime;
 use App\ProjectTimeType;
-use App\Http\Requests\StoreProjectTime;
 
 class ProjectTimeController extends Controller
 {

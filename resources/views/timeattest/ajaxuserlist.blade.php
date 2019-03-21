@@ -93,7 +93,7 @@
                 }
             }
         }
-        document.settings.submit.disabled = !ca.checked;
+        togglesubmit(level);
     }
 
     function togglesubmit(level) {

@@ -76,10 +76,14 @@ class TimeAttestController extends Controller
         $year = date('Y', strtotime($month." month"));
         $month = date('n', strtotime($month." month"));
 
-        //TODO: Det här är inget snyggt, måste komma på hur man gör det på ett bättre sätt!
-        foreach(Auth::user()->admin_workplaces as $admin_workplace) {
-            if($admin_workplace->id == $workplace->id) {
-                $attestlevel = $admin_workplace->pivot->attestlevel;
+        if (Auth::user()->hasRole('Admin')) {
+            $attestlevel = 100;
+        } else {
+            //TODO: Det här är inget snyggt, måste komma på hur man gör det på ett bättre sätt!
+            foreach(Auth::user()->admin_workplaces as $admin_workplace) {
+                if($admin_workplace->id == $workplace->id) {
+                    $attestlevel = $admin_workplace->pivot->attestlevel;
+                }
             }
         }
 

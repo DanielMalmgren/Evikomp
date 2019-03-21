@@ -13,19 +13,19 @@ class AnnouncementSeeder extends Seeder
     {
         DB::table('announcements')->insert([
             'heading' => 'Spår 3',
-            'bodytext' => 'Nu är arbetet med spår 3 färdigt, spåret kommer att lanseras under den kommande veckan',
+            'preamble' => 'Nu är arbetet med spår 3 färdigt, spåret kommer att lanseras under den kommande veckan',
             'created_at' => '2019-01-10'
         ]);
 
         DB::table('announcements')->insert([
             'heading' => 'Somaliska',
-            'bodytext' => 'Samtliga lektioner är nu översatta till somaliska.',
+            'preamble' => 'Samtliga lektioner är nu översatta till somaliska.',
             'created_at' => '2019-01-12'
         ]);
 
         DB::table('announcements')->insert([
             'heading' => 'Kick-off',
-            'bodytext' => 'Datum är nu spikat för kick-off för samtliga deltagare i projektet!',
+            'preamble' => 'Datum är nu spikat för kick-off för samtliga deltagare i projektet!',
             'created_at' => '2019-01-17'
         ]);
     }

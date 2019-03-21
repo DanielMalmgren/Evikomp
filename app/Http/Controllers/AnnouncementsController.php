@@ -48,6 +48,7 @@ class AnnouncementsController extends Controller
         $announcement = new Announcement;
         $announcement->heading = $request->heading;
         $announcement->bodytext = $request->bodytext;
+        $announcement->preamble = $request->preamble;
         $announcement->save();
 
         return redirect('/')->with('success', 'Meddelandet sparat');
@@ -61,7 +62,10 @@ class AnnouncementsController extends Controller
      */
     public function show(Announcement $announcement)
     {
-        //
+        $data = array(
+            'announcement' => $announcement
+        );
+        return view('announcements.show')->with($data);
     }
 
     /**

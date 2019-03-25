@@ -4,24 +4,74 @@
 
 <script src="/trumbowyg/trumbowyg.min.js"></script>
 <script type="text/javascript" src="/trumbowyg/langs/sv.min.js"></script>
+<script type="text/javascript" language="javascript" src="{{asset('vendor/jquery-ui-1.12.1.custom/jquery-ui.min.js')}}"></script>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
 <script type="text/javascript">
+    function addtwe() {
+        $('.twe').trumbowyg({
+            btns: [
+                ['formatting'],
+                ['strong', 'em', 'del'],
+                ['link'],
+                ['justifyLeft', 'justifyCenter'],
+                ['unorderedList', 'orderedList']
+            ],
+            lang: 'sv'
+        });
+    }
+
+    function update_content_order() {
+        var order = $("#contents_wrap").sortable("toArray");
+        $('#content_order').val(order.join(","));
+    }
+
     $(function() {
+        var wrapper = $("#contents_wrap");
+        var add_button = $("#add_content_button");
+        var new_id = 0;
+
+        $(add_button).click(function(e){
+            e.preventDefault();
+            new_id++;
+            switch($("#content_to_add").val()) {
+                case 'vimeo':
+                    $(wrapper).append('<div id="new_vimeo['+new_id+']" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_vimeo['+new_id+']">@lang('Video-ID')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_vimeo['+new_id+']" class="form-control"></div></div>');
+                    break;
+                case 'html':
+                    $(wrapper).append('<div id="new_html['+new_id+']" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_html['+new_id+']">@lang('Text')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><textarea rows=5 name="new_html['+new_id+']" class="form-control twe"></textarea></div></div>');
+                    addtwe();
+                    break;
+            }
+        });
+
+        $(wrapper).on("click",".remove_field", function(e){
+            e.preventDefault();
+            var parentdiv = $(this).parent('div').parent('div');
+            var textbox = $(this).parent('div').find('.form-control')
+            var oldname = textbox.attr('name');
+            parentdiv.hide();
+            textbox.attr('name', 'remove_' + oldname);
+        })
+
         $('#limited_by_title').on('change', function() {
             var val = this.checked;
             $("#titles").toggle(this.checked);
         });
 
-        $('#description').trumbowyg({
-            btns: [
-                ['formatting'],
-                ['strong', 'em', 'del'],
-                ['link'],
-                ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
-                ['unorderedList', 'orderedList']
-            ],
-            lang: 'sv'
+        addtwe();
+
+        $("#contents_wrap").sortable({
+            update: function (e, u) {
+                update_content_order();
+            },
+            handle: '.handle',
+            axis: 'y'
         });
+
+        update_content_order();
+
     });
 </script>
 
@@ -31,19 +81,11 @@
         @method('put')
         @csrf
 
+        <input type="hidden" id="content_order" name="content_order" value="" />
+
         <div class="mb-3">
             <label for="name">@lang('Namn')</label>
             <input name="name" class="form-control" id="name" value="{{$lesson->translateOrDefault(App::getLocale())->name}}">
-        </div>
-
-        <div class="mb-3">
-            <label for="description">@lang('Beskrivning')</label>
-            <textarea rows=5 name="description" class="form-control" id="description">{{$lesson->translateOrDefault(App::getLocale())->description}}</textarea>
-        </div>
-
-        <div class="mb-3">
-            <label for="video_id">@lang('Video-ID')</label>
-            <input name="video_id" class="form-control" id="video_id" value="{{$lesson->video_id}}">
         </div>
 
         <div class="mb-3">
@@ -62,7 +104,58 @@
             @endforeach
         </div>
 
+        <h2>@lang('Innehåll')</h2>
+        <div id="contents_wrap">
+            @if(count($lesson->contents) > 0)
+                @foreach($lesson->contents->sortBy('order') as $content)
+                @switch($content->type)
+                    @case('vimeo')
+                        <div id="vimeo[{{$content->id}}]" class="card">
+                            <div class="card-body">
+                                <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
+                                <label class="handle" for="vimeo[{{$content->id}}]">@lang('Vimeo-film')</label>
+                                <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
+                                <input name="vimeo[{{$content->id}}]" class="form-control" value="{{$content->content}}">
+                            </div>
+                        </div>
+                        @break
+
+                    @case('html')
+                        <div id="html[{{$content->id}}]" class="card">
+                            <div class="card-body">
+                                <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
+                                <label class="handle" for="html[{{$content->id}}]">@lang('Text')</label>
+                                <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
+                                <textarea rows=4 name="html[{{$content->id}}]" class="form-control twe">{!!$content->translateOrDefault(App::getLocale())->text!!}</textarea>
+                            </div>
+                        </div>
+                        @break
+
+                    @default
+                        Unexpected content type!
+                @endswitch
+                @endforeach
+            @endif
+        </div>
+
         <br>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <label for="locale">@lang('Typ av innehåll att lägga till')</label>
+                <select class="custom-select d-block w-100" name="content_to_add" id="content_to_add">
+                    <option value="vimeo">Film (Vimeo)</option>
+                    <option value="html">Text</option>
+                </select>
+            </div>
+
+            <div class="col-lg-4">
+                <br>
+                <div id="add_content_button" class="btn btn-primary" style="margin-bottom:15px" type="text">@lang('Lägg till innehåll')</div>
+            </div>
+        </div>
+
+        <br><br>
 
         <button class="btn btn-primary btn-lg btn-block" type="submit">@lang('Spara')</button>
     </form>

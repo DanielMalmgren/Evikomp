@@ -8,7 +8,7 @@ class Lesson extends Model
 {
     use \Dimsav\Translatable\Translatable;
 
-    public $translatedAttributes = ['name', 'description'];
+    public $translatedAttributes = ['name'];
 
     public function track()
     {
@@ -30,6 +30,11 @@ class Lesson extends Model
         return $this->hasMany('App\LessonResult');
     }
 
+    public function contents()
+    {
+        return $this->hasMany('App\Content');
+    }
+
     public function titles()
     {
         return $this->belongsToMany('App\Title');
@@ -44,5 +49,5 @@ class Lesson extends Model
 class LessonTranslation extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name'];
 }

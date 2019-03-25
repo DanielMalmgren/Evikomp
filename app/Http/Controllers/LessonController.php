@@ -8,6 +8,7 @@ use App\Track;
 use App\Question;
 use App\Title;
 use App\LessonResult;
+use App\Content;
 use Illuminate\Support\Facades\Auth;
 
 class LessonController extends Controller
@@ -86,11 +87,76 @@ class LessonController extends Controller
         ]);
 
         $currentLocale = \App::getLocale();
+
+        //Loop through all changed html contents
+        if($request->html) {
+            foreach($request->html as $html_id => $html_text) {
+                $content = Content::find($html_id);
+                $content->translateOrNew($currentLocale)->text = $html_text;
+                $content->save();
+            }
+        }
+
+        //Loop through all added html contents
+        if($request->new_html) {
+            foreach($request->new_html as $new_html) {
+                logger("Ny html-content med följande innehåll: ".$new_html);
+                $content = new Content();
+                $content->type = 'html';
+                $content->translateOrNew($currentLocale)->text = $new_html;
+                $content->lesson_id = $lesson->id;
+                $content->save();
+            }
+        }
+
+        //Loop through all deleted html contents
+        if($request->remove_html) {
+            foreach($request->remove_html as $remove_html_id => $remove_html) {
+                Content::destroy($remove_html_id);
+            }
+        }
+
+        //Loop through all changed vimeo contents
+        if($request->vimeo) {
+            foreach($request->vimeo as $vimeo_id => $vimeo_text) {
+                $content = Content::find($vimeo_id);
+                $content->content = $vimeo_text;
+                $content->save();
+            }
+        }
+
+        //Loop through all added vimeo contents
+        if($request->new_vimeo) {
+            foreach($request->new_vimeo as $new_vimeo) {
+                logger("Ny Vimeo-content med följande innehåll: ".$new_vimeo);
+                $content = new Content();
+                $content->type = 'vimeo';
+                $content->content = $new_vimeo;
+                $content->lesson_id = $lesson->id;
+                $content->save();
+            }
+        }
+
+        //Loop through all deleted vimeo contents
+        if($request->remove_vimeo) {
+            foreach($request->remove_vimeo as $remove_vimeo_id => $remove_vimeo) {
+                Content::destroy($remove_vimeo_id);
+            }
+        }
+
+        //Fix sort order of all contents
+        $i = 0;
+        foreach(explode(",", $request->content_order) as $order) {
+            preg_match('#\[(.*?)\]#', $order, $match); //Exctract the id, which is between []
+            $id = $match[1];
+            $content = Content::find($id);
+            $content->order = $i++;
+            $content->save();
+        }
+
         $lesson->translateOrNew($currentLocale)->name = $request->name;
         $lesson->active = $request->active;
-        $lesson->video_id = $request->video_id;
         $lesson->limited_by_title = $request->limited_by_title;
-        $lesson->translateOrNew($currentLocale)->description = $request->description;
         $lesson->save();
 
         $lesson->titles()->sync($request->titles);

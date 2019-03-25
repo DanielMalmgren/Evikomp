@@ -38,6 +38,10 @@
     border-color: #ff812c;
 }
 
+.orange {
+    background-color: #ff812c;
+}
+
 .btn-primary:hover {
     color: #fff;
     background-color: #ff812c;
@@ -98,11 +102,19 @@ ul.announcements {
     background-color: #fff;
 }
 
+.trumbowyg-box.trumbowyg-editor-visible {
+    min-height: 150px !important;
+  }
+
+  .trumbowyg-editor {
+    min-height: 150px !important;
+  }
+
 /*
 * ====================== Vimeo ===========================
 */
 
-.vimeo-container { position: relative; padding-bottom: 70%; height: 0; overflow: hidden; max-width: 100%; height: auto; }
+.vimeo-container { position: relative; padding-bottom: 20%; height: 0; overflow: hidden; max-width: 50%; height: auto; }
 .vimeo-container iframe, .vimeo-container object, .vimeo-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
 /*

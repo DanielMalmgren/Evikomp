@@ -24,11 +24,11 @@
                 update: function (e, u) {
                     var token = "{{ csrf_token() }}";
                     var data = $(this).sortable('serialize');
-                        $.ajax({
-                            url: '/lessons/reorder',
-                            data : {_token:token,data:data},
-                            type: 'POST'
-                        });
+                    $.ajax({
+                        url: '/lessons/reorder',
+                        data : {_token:token,data:data},
+                        type: 'POST'
+                    });
                 }
                 });
             });

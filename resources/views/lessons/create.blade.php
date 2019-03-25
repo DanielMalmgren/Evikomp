@@ -2,36 +2,82 @@
 
 @section('content')
 
+<script src="/trumbowyg/trumbowyg.min.js"></script>
+<script type="text/javascript" src="/trumbowyg/langs/sv.min.js"></script>
+<script type="text/javascript" language="javascript" src="{{asset('vendor/jquery-ui-1.12.1.custom/jquery-ui.min.js')}}"></script>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
 <script type="text/javascript">
+    function addtwe() {
+        $('.twe').trumbowyg({
+            btns: [
+                ['formatting'],
+                ['strong', 'em', 'del'],
+                ['link'],
+                ['justifyLeft', 'justifyCenter'],
+                ['unorderedList', 'orderedList']
+            ],
+            lang: 'sv'
+        });
+    }
+
+    function update_content_order() {
+        var order = $("#contents_wrap").sortable("toArray");
+        $('#content_order').val(order.join(","));
+    }
+
     $(function() {
-        var $titlesDiv = $('select[id="titles"]');
+        var wrapper = $("#contents_wrap");
+        var add_button = $("#add_content_button");
+        var new_id = 0;
+
+        $(add_button).click(function(e){
+            e.preventDefault();
+            new_id++;
+            switch($("#content_to_add").val()) {
+                case 'vimeo':
+                    $(wrapper).append('<div id="new_vimeo['+new_id+']" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_vimeo['+new_id+']">@lang('Video-ID')</label><input name="new_vimeo['+new_id+']" class="form-control"></div></div>');
+                    break;
+                case 'html':
+                    $(wrapper).append('<div id="new_html['+new_id+']" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_html['+new_id+']">@lang('Text')</label><textarea rows=5 name="new_html['+new_id+']" class="form-control twe"></textarea></div></div>');
+                    addtwe();
+                    break;
+            }
+            document.lesson.submit.disabled = false;
+            update_content_order();
+        });
+
+        $(wrapper).on("click",".remove_field", function(e){
+            e.preventDefault();
+            var parentdiv = $(this).parent('div').parent('div');
+            var textbox = $(this).parent('div').find('.form-control')
+            var oldname = textbox.attr('name');
+            parentdiv.hide();
+            textbox.attr('name', 'remove_' + oldname);
+        })
+
         $('#limited_by_title').on('change', function() {
             var val = this.checked;
             $("#titles").toggle(this.checked);
         });
 
-        var wrapper = $("#questionlist");
-        $(wrapper).on("click",".remove_question", function(e){
-            e.preventDefault();
-            var parentdiv = $(this).parent('div').parent();
-            var questionId = parentdiv.data('question_id');
-            console.log(questionId);
-            var token = "{{ csrf_token() }}";
-            $.ajax({
-                url: '/test/question/'+questionId,
-                data : {_token:token},
-                type: 'DELETE'
-            });
-            parentdiv.css("cssText", "display: none !important;");
+        $("#contents_wrap").sortable({
+            update: function (e, u) {
+                update_content_order();
+            },
+            handle: '.handle',
+            axis: 'y'
         });
     });
 </script>
 
     <H1>@lang('Lägg till lektion')</H1>
 
-    <form method="post" action="{{action('LessonController@store')}}" accept-charset="UTF-8">
+    <form method="post" name="lesson" action="{{action('LessonController@store')}}" accept-charset="UTF-8">
         @csrf
 
+        <input type="hidden" id="content_order" name="content_order" value="" />
         <input type="hidden" name="track_id" value="{{$track->id}}">
 
         <div class="mb-3">
@@ -40,13 +86,8 @@
         </div>
 
         <div class="mb-3">
-            <label for="description">@lang('Beskrivning')</label>
-            <textarea rows=5 name="description" class="form-control" id="description"></textarea>
-        </div>
-
-        <div class="mb-3">
             <input type="hidden" name="active" value="0">
-            <label><input type="checkbox" name="active" value="1" checked>@lang('Aktiv')</label>
+            <label><input type="checkbox" name="active" value="1">@lang('Aktiv')</label>
         </div>
 
         <div class="mb-3">
@@ -60,28 +101,29 @@
             @endforeach
         </div>
 
-        {{--
-        @if(count($lesson->questions) > 0)
-            @lang('Frågor')
-            <ul class="list-group mb-3" id="questionlist">
-                @foreach($lesson->questions as $question)
-                    <li class="list-group-item d-flex justify-content-between lh-condensed" data-question_id="{{$question->id}}">
-                        <div>
-                        <a href="/test/question/{{$question->id}}/edit">
-                            <h6 class="my-0">{{$question->translateOrDefault(App::getLocale())->text}}</h6>
-                        </a>
-                        <button class="btn btn-default btn-danger remove_question" type="button">X</button>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-        @endif
-        <a href="/test/question/create?lesson_id={{$lesson->id}}" class="btn btn-primary">@lang('Lägg till fråga')</a>
-        --}}
+        <h2>@lang('Innehåll')</h2>
+        <div id="contents_wrap"></div>
 
         <br>
 
-        <button class="btn btn-primary btn-lg btn-block" type="submit">@lang('Spara')</button>
+        <div class="row">
+            <div class="col-lg-4">
+                <label for="locale">@lang('Typ av innehåll att lägga till')</label>
+                <select class="custom-select d-block w-100" name="content_to_add" id="content_to_add">
+                    <option value="vimeo">Film (Vimeo)</option>
+                    <option value="html">Text</option>
+                </select>
+            </div>
+
+            <div class="col-lg-4">
+                <br>
+                <div id="add_content_button" class="btn btn-primary" style="margin-bottom:15px" type="text">@lang('Lägg till innehåll')</div>
+            </div>
+        </div>
+
+        <br><br>
+
+        <button disabled class="btn btn-primary btn-lg btn-block" name="submit" type="submit">@lang('Spara')</button>
     </form>
 
 @endsection

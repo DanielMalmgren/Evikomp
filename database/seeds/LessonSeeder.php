@@ -12,25 +12,39 @@ class LessonSeeder extends Seeder
     public function run()
     {
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '321859217',
+            //'video_id' => '321859217',
             'track_id' => 1,
             'order' => 1
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.1 - Anställningen',
-            'locale' => 'sv_SE',
-            'description' => 'Om verksamhetens rutiner och förväntningar. Din roll som medarbetare är viktig!'
+            'locale' => 'sv_SE'
         ]);
         DB::table('lesson_translations')->insert([
             'lesson_id' => $id,
             'name' => '1.1 - The employment',
-            'locale' => 'en_US',
-            'description' => 'About the business\'s routines and expectations. Your role as an employee is important!'
+            'locale' => 'en_US'
+        ]);
+        DB::table('contents')->insert([
+            'lesson_id' => $id,
+            'type' => 'vimeo',
+            'content' => '321859217',
+            'order' => 1
+        ]);
+        $cid = DB::table('contents')->insert([
+            'lesson_id' => $id,
+            'type' => 'html',
+            'order' => 2
+        ]);
+        DB::table('content_translations')->insert([
+            'content_id' => $cid,
+            'text' => 'En lång beskrivande text om lektion 1.1',
+            'locale' => 'sv_SE'
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350',
+            //'video_id' => '259554350',
             'track_id' => 1,
             'order' => 2
         ]);
@@ -46,7 +60,7 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350',
+            //'video_id' => '259554350',
             'track_id' => 1,
             'order' => 3
         ]);
@@ -62,7 +76,7 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350',
+            //'video_id' => '259554350',
             'track_id' => 1,
             'order' => 4
         ]);
@@ -78,7 +92,7 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350',
+            //'video_id' => '259554350',
             'track_id' => 1,
             'order' => 5
         ]);
@@ -94,7 +108,7 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350',
+            //'video_id' => '259554350',
             'track_id' => 1,
             'order' => 6
         ]);
@@ -110,7 +124,7 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350',
+            //'video_id' => '259554350',
             'track_id' => 1,
             'order' => 7
         ]);
@@ -126,7 +140,7 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350',
+            //'video_id' => '259554350',
             'track_id' => 4,
             'order' => 1
         ]);
@@ -142,7 +156,7 @@ class LessonSeeder extends Seeder
         ]);
 
         $id = DB::table('lessons')->insertGetId([
-            'video_id' => '259554350',
+            //'video_id' => '259554350',
             'track_id' => 4,
             'order' => 2
         ]);

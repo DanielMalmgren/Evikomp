@@ -6,11 +6,31 @@
 
     <H1>{{$lesson->translateOrDefault(App::getLocale())->name}}</H1>
 
-    {!!$lesson->translateOrDefault(App::getLocale())->description!!}
+    {{--{!!$lesson->translateOrDefault(App::getLocale())->description!!}
 
     <div class="vimeo-container">
         <iframe src="https://player.vimeo.com/video/{{$lesson->video_id}}" class="vimeo-iframe" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-    </div>
+    </div>--}}
+
+    @if(count($lesson->contents) > 0)
+        @foreach($lesson->contents->sortBy('order') as $content)
+        @switch($content->type)
+            @case('vimeo')
+                <div class="vimeo-container">
+                    <iframe src="https://player.vimeo.com/video/{{$content->content}}" class="vimeo-iframe" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                </div>
+                @break
+
+            @case('html')
+                {!!$content->translateOrDefault(App::getLocale())->text!!}
+                @break
+
+            @default
+                Unexpected content type!
+        @endswitch
+        <br>
+        @endforeach
+    @endif
 
     <br>
 
@@ -21,7 +41,7 @@
     @endif
 
     @can ('manage lessons')
-        <a href="/lessons/{{$lesson->id}}/edit" class="btn btn-primary">@lang('Redigera lektionens grunduppgifter')</a>
+        <a href="/lessons/{{$lesson->id}}/edit" class="btn btn-primary">@lang('Redigera lektionen')</a>
         <a href="/lessons/{{$lesson->id}}/editquestions" class="btn btn-primary">@lang('Redigera lektionens frågor')</a>
     @endcan
 

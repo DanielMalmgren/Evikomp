@@ -89,20 +89,21 @@ class QuestionController extends Controller
 
         //Loop through all changed response options
         if($request->response_option_text) {
-        foreach($request->response_option_text as $response_option_id => $response_option_text) {
-            $response_option = ResponseOption::find($response_option_id);
-            $response_option->text = $response_option_text;
-            $response_option->isCorrectAnswer = in_array($response_option_id, $request->response_option_correct);
-            $response_option->save();
+            foreach($request->response_option_text as $response_option_id => $response_option_text) {
+                $response_option = ResponseOption::find($response_option_id);
+                $response_option->text = $response_option_text;
+                $response_option->isCorrectAnswer = in_array($response_option_id, $request->response_option_correct);
+                $response_option->save();
+            }
         }
 
         //Loop through all deleted response options
         if($request->remove_response_option_text) {
-                foreach($request->remove_response_option_text as $response_option_id => $response_option_text) {
-                    ResponseOption::destroy($response_option_id);
-                }
+            foreach($request->remove_response_option_text as $response_option_id => $response_option_text) {
+                ResponseOption::destroy($response_option_id);
             }
         }
+
 
         //Loop through all added response options
         if($request->new_response_option_text) {

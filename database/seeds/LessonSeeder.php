@@ -32,7 +32,7 @@ class LessonSeeder extends Seeder
             'content' => '321859217',
             'order' => 1
         ]);
-        $cid = DB::table('contents')->insert([
+        $cid = DB::table('contents')->insertGetId([
             'lesson_id' => $id,
             'type' => 'html',
             'order' => 2

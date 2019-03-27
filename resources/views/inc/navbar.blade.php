@@ -38,7 +38,9 @@
                                 @endcanany
                                 <li aria-haspopup="false"><a href="/projecttime/create">@lang('Registrera projekttid')</a></li>
                                 <li aria-haspopup="false"><a href="/timeattest/create">@lang('Attestera projekttid')</a></li>
-                                <li aria-haspopup="false"><a href="/timesummary">@lang('Sammanställning till ESF')</a></li>
+                                @can('export ESF report')
+                                    <li aria-haspopup="false"><a href="/timesummary">@lang('Sammanställning till ESF')</a></li>
+                                @endcan
                             </ul>
                         </li>
                     @endcan

@@ -39,7 +39,7 @@
             @endforeach
         @elseif(count($workplaces) > 1)
             <select class="custom-select d-block w-100" id="workplace" name="workplace" required="">
-                <option disabled selected>Välj arbetsplats...</option>
+                <option disabled selected>@lang('Välj arbetsplats...')</option>
                 @foreach($workplaces as $workplace)
                     <option value="{{$workplace->id}}">{{$workplace->name}}</option>
                 @endforeach

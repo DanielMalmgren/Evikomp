@@ -15,6 +15,7 @@ class CreateTracksTable extends Migration
     {
         Schema::create('tracks', function (Blueprint $table) {
             $table->integer('id')->unsigned();
+            $table->boolean('active')->default(true);
             $table->primary('id');
             //$table->string('name'); //Moved to track_translations to be localized
             $table->timestamps();

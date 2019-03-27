@@ -28,11 +28,20 @@ class ProjectTimeController extends Controller
 
     public function createsingleuser(Request $request) {
         $project_time_types = ProjectTimeType::all();
+        $user = Auth::user();
+
+        //If last month is already attested, no further time may be registered on it, so start the calendar picker on first day of this month
+        if($user->time_attests->where('month', date("m", strtotime("-1 month")))->where('year', date("Y", strtotime("-1 month")))->count() > 0) {
+            $mindate = date("Y-m")."-01";
+        } else {
+            $mindate = date("Y-m", strtotime("-1 month"))."-01";
+        }
 
         $data = array(
             'project_time_types' => $project_time_types,
-            'user' => Auth::user(),
-            'workplace' => Auth::user()->workplace
+            'user' => $user,
+            'workplace' => $user->workplace,
+            'mindate' => $mindate
         );
         return view('projecttime.createsingleuser')->with($data);
     }

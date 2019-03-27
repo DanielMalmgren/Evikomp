@@ -21,19 +21,19 @@ class DatabaseSeeder extends Seeder
 
         $this->call(TrackSeeder::class);
 
-        $this->call(LessonSeeder::class);
-
-        $this->call(QuestionSeeder::class);
-
         $this->call(LocaleSeeder::class);
 
         $this->call(RolesAndPermissionsSeeder::class);
 
-        $this->call(AnnouncementSeeder::class);
-
         $this->call(ProjectTimeTypeSeeder::class);
 
         if(App::environment('lab') || App::environment('dev')) {
+            $this->call(LessonSeeder::class);
+
+            $this->call(QuestionSeeder::class);
+
+            $this->call(AnnouncementSeeder::class);
+
             $this->command->comment('Generating dummy users...');
             factory(App\User::class, 50)->create();
         }

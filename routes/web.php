@@ -51,8 +51,8 @@ Route::post('/activetime',                      'ActiveTimeController@store');
 //Route::get('/exportactivetime/{user?}',         'ActiveTimeController@export');
 
 //TimeSummaryController
-Route::get('/timesummary',                      'TimeSummaryController@show');
-Route::get('/exporttimesummary',                'TimeSummaryController@export');
+Route::get('/timesummary',                      'TimeSummaryController@show')->middleware('permission:export ESF report');
+Route::get('/exporttimesummary',                'TimeSummaryController@export')->middleware('permission:export ESF report');
 
 //ProjectTimeController
 Route::get('/projecttime/create',               'ProjectTimeController@create');

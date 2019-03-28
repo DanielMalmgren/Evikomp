@@ -14,21 +14,30 @@ class TimeSummaryController extends Controller
         return view('timesummary.show');
     }
 
-    public function export(Request $request) {
-        if($request->year) {
-            $year = $request->year;
-        } else {
-            $year = date('Y');
-        }
+    public function ajax($rel_month) {
+        setlocale(LC_TIME, \Auth::user()->locale_id);
+        $time = strtotime($rel_month." month");
 
+        $data = array(
+            'year' => date('Y', $time),
+            'month' => date('n', $time),
+            'monthstr' => strftime('%B', $time)
+        );
+
+        return view('timesummary.ajax')->with($data);
+    }
+
+    public function export(Request $request) {
         setlocale(LC_TIME, 'sv_SE');
-        if($request->month) {
-            $month = $request->month;
-            $monthstr = strftime('%B', strtotime('2000-'.$request->month.'-15'));
-        } else {
-            $month = date('n');
-            $monthstr = strftime('%B');
-        }
+
+        $this->validate($request, [
+            'rel_month' => 'required'
+        ]);
+
+        $time = strtotime($request->rel_month." month");
+        $year = date('Y', $time);
+        $month = date('n', $time);
+        $monthstr = strftime('%B', $time);
 
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./xls-template/Sammanställning_deltagare.xlsx');
 

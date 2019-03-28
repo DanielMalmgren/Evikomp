@@ -52,19 +52,20 @@ Route::post('/activetime',                      'ActiveTimeController@store');
 
 //TimeSummaryController
 Route::get('/timesummary',                      'TimeSummaryController@show')->middleware('permission:export ESF report');
+Route::get('/timesummaryajax/{rel_month}',      'TimeSummaryController@ajax')->middleware('permission:export ESF report');
 Route::get('/exporttimesummary',                'TimeSummaryController@export')->middleware('permission:export ESF report');
 
 //ProjectTimeController
-Route::get('/projecttime/create',               'ProjectTimeController@create');
+Route::get('/projecttime/create',               'ProjectTimeController@create')->middleware('permission:edit workplaces');
 Route::get('/projecttime/createsingleuser',     'ProjectTimeController@createsingleuser');
 Route::post('/projecttime/{workplace}',         'ProjectTimeController@store');
 Route::get('/projecttimeajax/{workplace}',      'ProjectTimeController@ajax');
 
 //TimeAttestController
-Route::get('/timeattest/create',                'TimeAttestController@create');
-Route::post('/timeattest',                      'TimeAttestController@store');
-Route::get('/timeattestajaxuserlist/{workplace}/{year}/{month}', 'TimeAttestController@ajaxuserlist');
-Route::get('/timeattestajaxuserdetails/{user}/{year}/{month}', 'TimeAttestController@ajaxuserdetails');
+Route::get('/timeattest/create',                'TimeAttestController@create')->middleware('permission:manage time attests');
+Route::post('/timeattest',                      'TimeAttestController@store')->middleware('permission:manage time attests');
+Route::get('/timeattestajaxuserlist/{workplace}/{year}/{month}', 'TimeAttestController@ajaxuserlist')->middleware('permission:manage time attests');
+Route::get('/timeattestajaxuserdetails/{user}/{year}/{month}', 'TimeAttestController@ajaxuserdetails')->middleware('permission:manage time attests');
 
 //TimeAttestLevel1Controller
 Route::get('/timeattestlevel1/create',          'TimeAttestLevel1Controller@create');

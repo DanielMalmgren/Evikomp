@@ -4,6 +4,15 @@
 
 @section('content')
 
+    <script type="text/javascript">
+        $(function() {
+            $('#rel_month').change(function(){
+                var rel_month = $('#rel_month').val();
+                $("#monthsummary").load("/timesummaryajax/" + rel_month);
+            }).change();
+        });
+    </script>
+
     <div class="col-md-5 mb-3">
 
         <H1>@lang('Sammanställning till ESF')</H1>
@@ -11,23 +20,22 @@
             @csrf
 
             <div class="mb-3">
-                <label for="year">@lang('År')</label>
-                <select class="custom-select d-block w-100" id="year" name="year" required="">
-                    <option value="{{date('Y')-1}}">{{date('Y')-1}}</option>
-                    <option selected value="{{date('Y')}}">{{date('Y')}}</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="month">@lang('Månad')</label>
-                <select class="custom-select d-block w-100" id="month" name="month" required="">
-                    @for ($i = 1; $i <= 12; $i++)
-                        <option value="{{$i}}" {{$i==date('n')-1?"selected":""}}>{{strftime('%B', strtotime('2000-'.$i.'-15'))}}</option>
+                <label for="rel_month">@lang('Månad')</label>
+                <select class="custom-select d-block w-100" id="rel_month" name="rel_month" required="">
+                    @for ($i = -6; $i <= 0; $i++)
+                        <option value="{{$i}}" {{$i==-1?'selected':''}}>{{strftime('%B %Y',strtotime($i." month"))}}</option>
                     @endfor
                 </select>
             </div>
 
+            <div id="monthsummary"></div>
+
             <br>
+
+            <div class="mb-3">
+                <label><input type="checkbox" name="lock_month">@lang('Lås månad för attestering')</label>
+            </div>
+
             <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">@lang('Hämta sammanställningen')</button>
         </form>
     </div>

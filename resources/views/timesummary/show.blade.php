@@ -21,7 +21,7 @@
             <div class="mb-3">
                 <label for="month">@lang('Månad')</label>
                 <select class="custom-select d-block w-100" id="month" name="month" required="">
-                    @for ($i = 1; $i < 12; $i++)
+                    @for ($i = 1; $i <= 12; $i++)
                         <option value="{{$i}}" {{$i==date('n')-1?"selected":""}}>{{strftime('%B', strtotime('2000-'.$i.'-15'))}}</option>
                     @endfor
                 </select>

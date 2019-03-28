@@ -47,18 +47,30 @@ class SettingsController extends Controller
 
         $this->validate($request, [
             'workplace' => 'required',
-            'email' => 'required|email'
-        ]);
+            'email' => 'required|email',
+            'mobile' => 'required',
+            'terms_of_employment' => 'required',
+            'full_or_part_time' => 'required'
+            ],
+            ['workplace.required' => __('Du måste ange din arbetsplats!'),
+            'terms_of_employment.required' => __('Du måste ange anställningsvillkor!'),
+            'full_or_part_time.required' => __('Du måste ange anställningens omfattning!'),
+            'email.required' => __('Du måste ange din e-postadress!'),
+            'mobile.required' => __('Du måste ange ditt mobilnummer!'),
+            'email.email' => __('vänligen ange en giltig e-postadress!')]);
 
         $user = $request->user();
         $user->tracks()->sync($request->tracks);
         $user->email = $request->input('email');
+        $user->mobile = $request->input('mobile');
         if($request->input('firstname')) {
             $user->firstname = $request->input('firstname');
         } else {
             $user->firstname = $user->saml_firstname;
         }
         $user->title_id = $request->input('title');
+        $user->terms_of_employment = $request->input('terms_of_employment');
+        $user->full_or_part_time = $request->input('full_or_part_time');
         $user->workplace_id = $request->input('workplace');
         $user->save();
 

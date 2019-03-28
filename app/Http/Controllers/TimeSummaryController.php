@@ -54,19 +54,6 @@ class TimeSummaryController extends Controller
         $worksheet->setCellValue('H4', $year); //År
         $row = 9;
         foreach(User::all()->where('workplace_id', '!=', NULL)->sortBy('name') as $user) {
-            /*$projecttime = 0;
-            foreach($user->project_times()->get() as $pt) {
-                //logger("Minuter: ".$pt->minutes());
-                $projecttime += $pt->minutes();
-            }
-
-            $webtime = 0;
-            foreach(ActiveTime::where('user_id', $user->id)->whereMonth('date', $month)->whereYear('date', $year)->get() as $daytime) {
-                $webtime += $daytime->seconds;
-            }
-
-            $totaltime = round($projecttime/60 + $webtime/3600, 1);*/
-
             if($user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->count() > 0) {
                 $totaltime = $user->time_attests->where('month', $month)->where('year', $year)->first()->hours;
                 if($totaltime > 0) {
@@ -76,6 +63,10 @@ class TimeSummaryController extends Controller
                     $worksheet->setCellValueByColumnAndRow(7,$row,$user->workplace->municipality->orgnummer);
                     $worksheet->setCellValueByColumnAndRow(8,$row,$totaltime);
                     $worksheet->setCellValueByColumnAndRow(14,$row,substr($user->created_at, 0, 10));
+                    $worksheet->setCellValueByColumnAndRow(21,$row,$user->terms_of_employment);
+                    $worksheet->setCellValueByColumnAndRow(22,$row,$user->full_or_part_time);
+                    $worksheet->setCellValueByColumnAndRow(23,$row,$user->email);
+                    $worksheet->setCellValueByColumnAndRow(24,$row,$user->mobile);
                     $row++;
                 }
             }

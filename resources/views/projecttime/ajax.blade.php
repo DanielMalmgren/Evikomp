@@ -30,7 +30,7 @@
     <H2>@lang('Närvarande personer')</H2>
     @foreach($workplace->users->sortBy('name') as $user)
         <div class="checkbox">
-            <label><input type="checkbox" name="users[]" value="{{$user->id}}" id="{{$user->id}}">{{$user->name}}</label>
+            <label><input type="checkbox" name="users[]" {{(is_array(old('users')) && in_array($user->id, old('users'))) ? 'checked' : '' }} value="{{$user->id}}" id="{{$user->id}}">{{$user->name}}</label>
         </div>
     @endforeach
 

@@ -170,14 +170,36 @@
 
         <div class="mb-3">
             <label for="email">@lang('E-postadress')</label>
-            @if($user->email)
-                <input type="email" name="email" class="form-control" id="email" value="{{$user->email}}">
-            @else
-                <input type="email" name="email" class="form-control" id="email" placeholder="fornamn.efternamn@kommun.se">
-            @endif
-            <div class="invalid-feedback">
-                @lang('Vänligen ange en giltig e-postadress')
-            </div>
+            <input type="email" name="email" class="form-control" id="email" value="{{old('email', $user->email)}}" placeholder="fornamn.efternamn@kommun.se">
+        </div>
+
+        <div class="mb-3">
+            <label for="mobile">@lang('Mobilnummer')</label>
+            <input type="tel" name="mobile" class="form-control" id="mobile" value="{{old('mobile', $user->mobile)}}">
+        </div>
+
+        <div class="mb-3">
+            <label for="terms_of_employment">@lang('Anställningsvillkor')</label>
+            <select class="custom-select d-block w-100" name="terms_of_employment" required="">
+                @if(!$user->terms_of_employment)
+                    <option disabled selected value>@lang('Välj...')</option>
+                @endif
+                <option value="1" {{$user->terms_of_employment==1?"selected":""}}>@lang('Tillsvidareanställning')</option>
+                <option value="2" {{$user->terms_of_employment==2?"selected":""}}>@lang('Tidsbegränsad anställning')</option>
+                <option value="3" {{$user->terms_of_employment==3?"selected":""}}>@lang('Vet ej')</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="full_or_part_time">@lang('Anställningens omfattning')</label>
+            <select class="custom-select d-block w-100" name="full_or_part_time" required="">
+                @if(!$user->full_or_part_time)
+                    <option disabled selected value>@lang('Välj...')</option>
+                @endif
+                <option value="1" {{$user->full_or_part_time==1?"selected":""}}>@lang('Deltid')</option>
+                <option value="2" {{$user->full_or_part_time==2?"selected":""}}>@lang('Heltid')</option>
+                <option value="3" {{$user->full_or_part_time==3?"selected":""}}>@lang('Vet ej')</option>
+            </select>
         </div>
 
         @if(count($tracks) > 0 && $user->workplace)

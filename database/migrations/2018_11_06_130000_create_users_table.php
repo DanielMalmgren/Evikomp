@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('lastname')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('mobile')->unique()->nullable();
+            $table->unsignedTinyInteger('terms_of_employment')->nullable();
+            $table->unsignedTinyInteger('full_or_part_time')->nullable();
             $table->boolean('accepted_gdpr')->default(false);
             $table->string('locale_id')->default('sv_SE');
             $table->foreign('locale_id')->references('id')->on('locales');

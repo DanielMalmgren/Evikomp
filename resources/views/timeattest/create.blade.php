@@ -11,7 +11,8 @@
             function updatelist(){
                 var workplace = $('#workplace').val();
                 var month = $('#month').val();
-                $("#attestlist").load("/timeattestajaxuserlist/" + workplace + "/" + month);
+                var year = $('#year').val();
+                $("#attestlist").load("/timeattestajaxuserlist/" + workplace + "/" + year + "/" + month);
             }
 
             $('#workplace').change(function(){
@@ -28,7 +29,7 @@
         });
     </script>
 
-    <H1>@lang('Attestera projekttid')</H1>
+    <H1>@lang('Attestera projekttid') - {{strftime('%B %Y',strtotime("-1 month"))}}</H1>
     <form method="post" name="settings" action="{{action('TimeAttestController@store')}}" accept-charset="UTF-8">
         @csrf
 
@@ -48,14 +49,17 @@
 
         <br>
 
-        <div class="mb-3">
+        {{--<div class="mb-3">
             <select class="custom-select d-block w-100" id="month" name="month" required="">
                 <option selected value="-1">@lang('Föregående månad') ({{strftime('%B %Y',strtotime("-1 month"))}})</option>
                 <option value="0">@lang('Innevarande månad') ({{strftime('%B %Y')}})</option>
             </select>
-        </div>
+        </div>--}}
 
         <div class="list-group mb-4" id="attestlist"></div>
+
+        <input type="hidden" name="month" id="month" value="{{$month}}">
+        <input type="hidden" name="year" id="year" value="{{$year}}">
 
     </form>
 

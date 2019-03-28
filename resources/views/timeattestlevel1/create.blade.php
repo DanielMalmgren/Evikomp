@@ -1,41 +1,112 @@
 @extends('layouts.app')
 
-@section('title', __('Närvarorapport'))
+@section('title', __('Attestera projekttid'))
 
 @section('content')
 
-    <script type="text/javascript">
-        $(function() {
-            $("#report").load("/timeattestajaxlevel1/-1");
+<div class="col-md-12">
 
-            $('#year').change(function(){
-                var month = $('#month').val();
-                $("#report").load("/timeattestajaxlevel1/" + month);
-            });
-            $('#month').change(function(){
-                var month = $('#month').val();
-                $("#report").load("/timeattestajaxlevel1/" + month);
-            });
-        });
-    </script>
+    <H1>@lang('Attestera närvaro') - {{strftime('%B %Y',strtotime("-1 month"))}}</H1>
+    <form method="post" name="settings" action="{{action('TimeAttestLevel1Controller@store')}}" accept-charset="UTF-8">
+        @csrf
 
-    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
 
-        <H1>@lang('Attestera närvaro')</H1>
-        <form method="post" name="settings" action="{{action('TimeAttestLevel1Controller@store')}}" accept-charset="UTF-8">
-            @csrf
+                <table class="table table-sm table-responsive table-nonfluid">
+                    <thead>
+                        <tr>
+                            <th scope="col">@lang('Typ av aktivitet')</th>
+                            @for($day = 1; $day <= $days_in_month; $day++)
+                                <th scope="col" class="initial-hide nowrap text-center">{{$day}}</th>
+                            @endfor
+                            <th scope="col">@lang('Timmar')</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($time_rows as $title => $time_row)
+                            @if($time_row != end($time_rows))
+                                <tr>
+                                    <td>{{$title}}</td>
+                                    @for($day = 1; $day <= $days_in_month; $day++)
+                                        @if(isset($time_row[$day]))
+                                            <td class="initial-hide nowrap text-center">{{$time_row[$day]}}</td>
+                                        @else
+                                            <td class="initial-hide nowrap"></td>
+                                        @endif
+                                    @endfor
+                                    <td class="text-center">{{$time_row[32]}}</td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>@lang('Summa')</td>
+                            @for($day = 1; $day <= $days_in_month; $day++)
+                                <td class="initial-hide nowrap"></td>
+                            @endfor
+                            <th class="text-center">{{end($time_rows)[32]}}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <br>
 
-            <div class="mb-3">
-                <label for="month">@lang('Månad')</label>
-                <select class="custom-select d-block w-100" id="month" name="month" required="">
-                    <option selected value="-1">@lang('Föregående månad') ({{strftime('%B %Y',strtotime("-1 month"))}})</option>
-                    <option value="0">@lang('Innevarande månad') ({{strftime('%B %Y')}})</option>
-                </select>
+                <input type="hidden" name="hours" value="{{end($time_rows)[32]}}">
+                <input type="hidden" name="month" value="{{$month}}">
+                <input type="hidden" name="year" value="{{$year}}">
+
+                <label><input {{$already_attested>0?"disabled checked":""}} type="checkbox" name="attest" value="attest" id="attest">@lang('Jag intygar härmed att ovanstående tidsregistrering är korrekt.')</label><br>
+
             </div>
+        </div>
 
-            <div id="report"></div>
+        <br>
 
-        </form>
-    </div>
+        <button class="btn btn-primary btn-lg btn-block" disabled id="submit" name="submit" type="submit">@lang('Attestera')</button>
+
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        $expanded = false;
+        $("table").click(function() {
+            if ($expanded) {
+                $expanded = false;
+                $(".initial-hide").animate(
+                    {
+                    'width':'0px',
+                    'min-width':'0px',
+                    'max-width':'0px'
+                    },
+                    "slow",
+                    function() {
+                        $(".initial-hide").removeClass("visible-state");
+                    }
+                );
+            } else {
+                $expanded = true;
+                $(".initial-hide").addClass("visible-state");
+                $(".initial-hide").animate(
+                    {
+                        'width':'27px',
+                        'min-width':'27px',
+                        'max-width':'27px'
+                    },
+                    "slow"
+                );
+            }
+        });
+
+        $("#attest").change(function() {
+            if(this.checked){
+                document.settings.submit.disabled = false;
+            } else {
+                document.settings.submit.disabled = true;
+            }
+        });
+    });
+</script>
 
 @endsection

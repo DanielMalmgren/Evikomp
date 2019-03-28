@@ -10,18 +10,19 @@ use App\TimeAttest;
 class TimeAttestLevel1Controller extends Controller
 {
     public function store(Request $request) {
+        usleep(50000);
+
         $this->validate($request, [
             'month' => 'required',
+            'year' => 'required',
             'attest' => 'required'
         ]);
 
-        $year = date('Y', strtotime($request->month." month"));
-        $month = date('n', strtotime($request->month." month"));
         $user = Auth::user();
 
         $time_attest = new TimeAttest;
-        $time_attest->year = $year;
-        $time_attest->month = $month;
+        $time_attest->year = $request->year;
+        $time_attest->month = $request->month;
         $time_attest->user_id = $user->id;
         $time_attest->attestant_id = $user->id;
         $time_attest->attestlevel = 1;
@@ -34,26 +35,25 @@ class TimeAttestLevel1Controller extends Controller
     }
 
     public function create() {
-        setlocale(LC_TIME, \Auth::user()->locale_id);
-        return view('timeattestlevel1.create');
-    }
+        $user = Auth::user();
+        setlocale(LC_TIME, $user->locale_id);
 
-    //Month is relative to current month, so 0 is this month and -1 is last month
-    public function ajax($month, User $user = null, Request $request) {
-        if(!$user) {
-            $user = Auth::user();
-        }
-
-        $year = date('Y', strtotime($month." month"));
-        $month = date('n', strtotime($month." month"));
+        $year = date('Y', strtotime("-1 month"));
+        $month = date('n', strtotime("-1 month"));
 
         $time_rows = $user->time_rows($year, $month);
 
         $data = array(
             'time_rows' => $time_rows,
             'year' => $year,
-            'month' => $month
+            'month' => $month,
+            'days_in_month' => cal_days_in_month(CAL_GREGORIAN, $month, $year),
+            'already_attested' => $user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->count()
         );
-        return view('timeattestlevel1.ajax')->with($data);
+
+        logger("Månad: ".$month);
+        logger("Tidigare attesteringar: ".$user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->count());
+
+        return view('timeattestlevel1.create')->with($data);
     }
 }

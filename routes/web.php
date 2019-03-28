@@ -63,13 +63,12 @@ Route::get('/projecttimeajax/{workplace}',      'ProjectTimeController@ajax');
 //TimeAttestController
 Route::get('/timeattest/create',                'TimeAttestController@create');
 Route::post('/timeattest',                      'TimeAttestController@store');
-Route::get('/timeattestajaxuserlist/{workplace}/{month}', 'TimeAttestController@ajaxuserlist');
+Route::get('/timeattestajaxuserlist/{workplace}/{year}/{month}', 'TimeAttestController@ajaxuserlist');
 Route::get('/timeattestajaxuserdetails/{user}/{year}/{month}', 'TimeAttestController@ajaxuserdetails');
 
 //TimeAttestLevel1Controller
 Route::get('/timeattestlevel1/create',          'TimeAttestLevel1Controller@create');
 Route::post('/timeattestlevel1',                'TimeAttestLevel1Controller@store');
-Route::get('/timeattestajaxlevel1/{month}/{user?}', 'TimeAttestLevel1Controller@ajax');
 
 //FirstLoginController
 Route::get('/firstlogin',                       'FirstLoginController@show');

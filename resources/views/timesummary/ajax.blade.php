@@ -7,3 +7,9 @@
 
     </div>
 </div>
+
+<br>
+
+<div class="mb-3">
+    <label><input type="checkbox" {{$month_closed?'checked disabled':''}}  name="close_month">@lang('Stäng månad för attestering')</label>
+</div>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMonthClosedTable extends Migration
+class CreateClosedMonthsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMonthClosedTable extends Migration
      */
     public function up()
     {
-        Schema::create('month_closed', function (Blueprint $table) {
+        Schema::create('closed_months', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedSmallInteger('year');
             $table->unsignedTinyInteger('month');
@@ -30,6 +30,6 @@ class CreateMonthClosedTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('month_closed');
+        Schema::dropIfExists('closed_months');
     }
 }

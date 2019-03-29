@@ -6,7 +6,7 @@
 
 <div class="col-md-12">
 
-    <H1>@lang('Attestera närvaro') - {{strftime('%B %Y',strtotime("-1 month"))}}</H1>
+    <H1>@lang('Attestera närvaro') - {{$monthstr.' '.$year}}</H1>
     <form method="post" name="settings" action="{{action('TimeAttestLevel1Controller@store')}}" accept-charset="UTF-8">
         @csrf
 
@@ -56,7 +56,7 @@
                 <input type="hidden" name="month" value="{{$month}}">
                 <input type="hidden" name="year" value="{{$year}}">
 
-                <label><input {{$already_attested>0?"disabled checked":""}} type="checkbox" name="attest" value="attest" id="attest">@lang('Jag intygar härmed att ovanstående tidsregistrering är korrekt.')</label><br>
+                <label><input {{$already_attested?"disabled checked":""}} type="checkbox" name="attest" value="attest" id="attest">@lang('Jag intygar härmed att ovanstående tidsregistrering är korrekt.')</label><br>
 
             </div>
         </div>

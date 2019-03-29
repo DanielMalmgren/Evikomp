@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Municipality;
 use App\User;
 use App\ActiveTime;
+use App\ClosedMonth;
 
 class TimeSummaryController extends Controller
 {
@@ -17,11 +19,17 @@ class TimeSummaryController extends Controller
     public function ajax($rel_month) {
         setlocale(LC_TIME, \Auth::user()->locale_id);
         $time = strtotime($rel_month." month");
+        $year = date('Y', $time);
+        $month = date('n', $time);
+
+        //TODO: Tilldela en variabel här som säger om månaden är stängd. Typ MonthClosed::all()->where->isnotempty()
+        $month_closed = ClosedMonth::all()->where('month', $month)->where('year', $year)->isNotEmpty();
 
         $data = array(
-            'year' => date('Y', $time),
-            'month' => date('n', $time),
-            'monthstr' => strftime('%B', $time)
+            'year' => $year,
+            'month' => $month,
+            'monthstr' => strftime('%B', $time),
+            'month_closed' => $month_closed
         );
 
         return view('timesummary.ajax')->with($data);
@@ -38,6 +46,15 @@ class TimeSummaryController extends Controller
         $year = date('Y', $time);
         $month = date('n', $time);
         $monthstr = strftime('%B', $time);
+
+        //TODO: Nu har jag fixat så månaden blir låst, återstår att fixa så att låsningen verkligen låser någonting också...
+        if($request->close_month) {
+            $closed_month = new ClosedMonth();
+            $closed_month->user_id = Auth::user()->id;
+            $closed_month->month = $month;
+            $closed_month->year = $year;
+            $closed_month->save();
+        }
 
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./xls-template/Sammanställning_deltagare.xlsx');
 

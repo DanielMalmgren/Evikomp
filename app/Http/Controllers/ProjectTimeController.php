@@ -31,10 +31,10 @@ class ProjectTimeController extends Controller
         $user = Auth::user();
 
         //If last month is already attested, no further time may be registered on it, so start the calendar picker on first day of this month
-        if($user->time_attests->where('month', date("m", strtotime("-1 month")))->where('year', date("Y", strtotime("-1 month")))->count() > 0) {
+        if($user->time_attests->where('month', date("m", strtotime("first day of previous monthh")))->where('year', date("Y", strtotime("first day of previous month")))->count() > 0) {
             $mindate = date("Y-m")."-01";
         } else {
-            $mindate = date("Y-m", strtotime("-1 month"))."-01";
+            $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
         }
 
         $data = array(

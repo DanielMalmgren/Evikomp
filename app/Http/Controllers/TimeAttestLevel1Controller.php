@@ -38,8 +38,11 @@ class TimeAttestLevel1Controller extends Controller
         $user = Auth::user();
         setlocale(LC_TIME, $user->locale_id);
 
-        $year = date('Y', strtotime("-1 month"));
-        $month = date('n', strtotime("-1 month"));
+        $year = date('Y', strtotime("first day of previous month"));
+        $month = date('n', strtotime("first day of previous month"));
+        $monthstr = strftime('%B', strtotime("first day of previous month"));
+
+        logger(strtotime("first day of previous month"));
 
         $time_rows = $user->time_rows($year, $month);
 
@@ -47,8 +50,9 @@ class TimeAttestLevel1Controller extends Controller
             'time_rows' => $time_rows,
             'year' => $year,
             'month' => $month,
+            'monthstr' => $monthstr,
             'days_in_month' => cal_days_in_month(CAL_GREGORIAN, $month, $year),
-            'already_attested' => $user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->count()
+            'already_attested' => $user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->isNotEmpty()
         );
 
         logger("Månad: ".$month);

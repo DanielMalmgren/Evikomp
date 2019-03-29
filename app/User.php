@@ -48,6 +48,11 @@ class User extends Authenticatable
         return $this->hasMany('App\TestSession');
     }
 
+    public function closed_months()
+    {
+        return $this->hasMany('App\ClosedMonth');
+    }
+
     public function time_attests()
     {
         return $this->hasMany('App\TimeAttest');

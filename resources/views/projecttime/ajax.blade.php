@@ -11,7 +11,7 @@
 
     <div class="mb-3">
         <label for="date">@lang('Datum')</label>
-        <input type="date" name="date" min="{{date("Y-m", strtotime("-1 month"))}}-01" max="{{date("Y-m-d")}}" class="form-control" value="{{old('date')}}">
+        <input type="date" name="date" min="{{date("Y-m", strtotime("first day of previous month"))}}-01" max="{{date("Y-m-d")}}" class="form-control" value="{{old('date')}}">
     </div>
 
     <div class="mb-3">

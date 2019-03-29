@@ -30,12 +30,6 @@
 
             <div id="monthsummary"></div>
 
-            <br>
-
-            <div class="mb-3">
-                <label><input type="checkbox" name="lock_month">@lang('Lås månad för attestering')</label>
-            </div>
-
             <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">@lang('Hämta sammanställningen')</button>
         </form>
     </div>

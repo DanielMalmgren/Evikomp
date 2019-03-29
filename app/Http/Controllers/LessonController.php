@@ -10,6 +10,7 @@ use App\Title;
 use App\LessonResult;
 use App\Content;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class LessonController extends Controller
 {
@@ -88,6 +89,9 @@ class LessonController extends Controller
 
         $currentLocale = \App::getLocale();
 
+        //Store this in a local variable. We'll have to replace all the temporary id's in it for real ones before we do the ordering
+        $content_order = $request->content_order;
+
         //Loop through all changed html contents
         if($request->html) {
             foreach($request->html as $html_id => $html_text) {
@@ -99,13 +103,14 @@ class LessonController extends Controller
 
         //Loop through all added html contents
         if($request->new_html) {
-            foreach($request->new_html as $new_html) {
+            foreach($request->new_html as $temp_key => $new_html) {
                 logger("Ny html-content med följande innehåll: ".$new_html);
                 $content = new Content();
                 $content->type = 'html';
                 $content->translateOrNew($currentLocale)->text = $new_html;
                 $content->lesson_id = $lesson->id;
                 $content->save();
+                $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
             }
         }
 
@@ -127,13 +132,14 @@ class LessonController extends Controller
 
         //Loop through all added vimeo contents
         if($request->new_vimeo) {
-            foreach($request->new_vimeo as $new_vimeo) {
+            foreach($request->new_vimeo as $temp_key => $new_vimeo) {
                 logger("Ny Vimeo-content med följande innehåll: ".$new_vimeo);
                 $content = new Content();
                 $content->type = 'vimeo';
                 $content->content = $new_vimeo;
                 $content->lesson_id = $lesson->id;
                 $content->save();
+                $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
             }
         }
 
@@ -144,14 +150,40 @@ class LessonController extends Controller
             }
         }
 
+
+        //Loop through all added audio contents
+        if($request->new_audio) {
+            foreach($request->new_audio as $temp_key => $new_audio) {
+                $filename = $new_audio->getClientOriginalName();
+                $new_audio->storeAs('public/pods', $filename);
+                $content = new Content();
+                $content->type = 'audio';
+                $content->content = $filename;
+                $content->lesson_id = $lesson->id;
+                $content->save();
+                $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+            }
+        }
+
+        //Loop through all deleted audio contents
+        if($request->remove_audio) {
+            foreach($request->remove_audio as $remove_audio_id => $remove_audio) {
+                $content = Content::find($remove_audio_id);
+                Storage::delete("public/pods/".$content->content);
+                Content::destroy($remove_audio_id);
+            }
+        }
+
         //Fix sort order of all contents
         $i = 0;
-        foreach(explode(",", $request->content_order) as $order) {
+        foreach(explode(",", $content_order) as $order) {
             preg_match('#\[(.*?)\]#', $order, $match); //Exctract the id, which is between []
             $id = $match[1];
             $content = Content::find($id);
-            $content->order = $i++;
-            $content->save();
+            if($content) {
+                $content->order = $i++;
+                $content->save();
+            }
         }
 
         $lesson->translateOrNew($currentLocale)->name = $request->name;

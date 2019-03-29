@@ -27,6 +27,23 @@
         $('#content_order').val(order.join(","));
     }
 
+    {{-- TODO: One day I will do this function in a prettier way. Not today though, this works.--}}
+    function getfreeid() {
+        for(;;) {
+            testnumber = Math.floor((Math.random() * 1000) + 1);
+            hit = 0;
+            $('#contents_wrap').children().each(function() {
+                if($(this).data("id") == testnumber) {
+                    hit=1;
+                    return false;
+                }
+            });
+            if(hit==0) {
+                return testnumber;
+            }
+        }
+    }
+
     $(function() {
         var wrapper = $("#contents_wrap");
         var add_button = $("#add_content_button");
@@ -34,14 +51,17 @@
 
         $(add_button).click(function(e){
             e.preventDefault();
-            new_id++;
+            new_id = getfreeid();
             switch($("#content_to_add").val()) {
                 case 'vimeo':
-                    $(wrapper).append('<div id="new_vimeo['+new_id+']" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_vimeo['+new_id+']">@lang('Video-ID')</label><input name="new_vimeo['+new_id+']" class="form-control"></div></div>');
+                    $(wrapper).append('<div id="new_vimeo['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_vimeo['+new_id+']">@lang('Video-ID')</label><input name="new_vimeo['+new_id+']" class="form-control"></div></div>');
                     break;
                 case 'html':
-                    $(wrapper).append('<div id="new_html['+new_id+']" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_html['+new_id+']">@lang('Text')</label><textarea rows=5 name="new_html['+new_id+']" class="form-control twe"></textarea></div></div>');
+                    $(wrapper).append('<div id="new_html['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_html['+new_id+']">@lang('Text')</label><textarea rows=5 name="new_html['+new_id+']" class="form-control twe"></textarea></div></div>');
                     addtwe();
+                    break;
+                case 'audio':
+                    $(wrapper).append('<div id="new_audio['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_audio['+new_id+']">@lang('Pod (ljudfil)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_audio['+new_id+']" class="form-control" type="file"></div></div>');
                     break;
             }
             document.lesson.submit.disabled = false;
@@ -74,7 +94,7 @@
 
     <H1>@lang('Lägg till lektion')</H1>
 
-    <form method="post" name="lesson" action="{{action('LessonController@store')}}" accept-charset="UTF-8">
+    <form method="post" name="lesson" action="{{action('LessonController@store')}}" accept-charset="UTF-8" enctype="multipart/form-data">
         @csrf
 
         <input type="hidden" id="content_order" name="content_order" value="" />
@@ -112,6 +132,7 @@
                 <select class="custom-select d-block w-100" name="content_to_add" id="content_to_add">
                     <option value="vimeo">Film (Vimeo)</option>
                     <option value="html">Text</option>
+                    <option value="audio">Pod (ljudfil)</option>
                 </select>
             </div>
 

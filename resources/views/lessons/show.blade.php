@@ -25,6 +25,12 @@
                 {!!$content->translateOrDefault(App::getLocale())->text!!}
                 @break
 
+            @case('audio')
+                <audio controls controlsList="nodownload">
+                    <source src="/storage/pods/{{$content->content}}" type="audio/mpeg">
+                </audio>
+                @break
+
             @default
                 Unexpected content type!
         @endswitch

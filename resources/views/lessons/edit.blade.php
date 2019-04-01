@@ -61,7 +61,7 @@
                     addtwe();
                     break;
                 case 'audio':
-                    $(wrapper).append('<div id="new_audio['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_audio['+new_id+']">@lang('Pod (ljudfil)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_audio['+new_id+']" class="form-control" type="file"></div></div>');
+                    $(wrapper).append('<div id="new_audio['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_audio['+new_id+']">@lang('Pod (ljudfil)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_audio['+new_id+']" class="form-control" type="file" accept="audio/mpeg"></div></div>');
                     break;
             }
             update_content_order();
@@ -152,13 +152,14 @@
                         </div>
                         @break
 
+{{-- TODO: Går det att få till någon slags progressbar eller något under själva uppladdningen? --}}
                     @case('audio')
                         <div id="audio[{{$content->id}}]" data-id="{{$content->id}}" class="card">
                             <div class="card-body">
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
                                 <label class="handle" for="audio[{{$content->id}}]">@lang('Pod (ljudfil)')</label>
                                 <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
-                                <input disabled name="audio[{{$content->id}}]" class="form-control" value="{{$content->content}}">
+                                <input readonly name="audio[{{$content->id}}]" class="form-control" value="{{$content->content}}">
                             </div>
                         </div>
                         @break

@@ -17,7 +17,7 @@
                 <li class="list-group-item d-flex justify-content-between lh-condensed nopadding">
                     <a href="/track/{{$track->id}}">
                         <h6 class="my-0">{{$track->translateOrDefault(App::getLocale())->name}}</h6>
-                        <small class="text-muted">{{$track->name}}</small>
+                        <small class="text-muted">{{$track->translateOrDefault(App::getLocale())->subtitle}}</small>
                     </a>
                 </li>
             @endforeach

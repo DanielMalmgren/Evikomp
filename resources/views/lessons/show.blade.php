@@ -6,37 +6,37 @@
 
     <H1>{{$lesson->translateOrDefault(App::getLocale())->name}}</H1>
 
-    {{--{!!$lesson->translateOrDefault(App::getLocale())->description!!}
+    <div class="card">
+        <div class="card-body">
 
-    <div class="vimeo-container">
-        <iframe src="https://player.vimeo.com/video/{{$lesson->video_id}}" class="vimeo-iframe" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-    </div>--}}
+            @if(count($lesson->contents) > 0)
+                @foreach($lesson->contents->sortBy('order') as $content)
+                @switch($content->type)
+                    @case('vimeo')
+                        <div class="vimeo-container">
+                            <iframe src="https://player.vimeo.com/video/{{$content->content}}" class="vimeo-iframe" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                        </div>
+                        @break
 
-    @if(count($lesson->contents) > 0)
-        @foreach($lesson->contents->sortBy('order') as $content)
-        @switch($content->type)
-            @case('vimeo')
-                <div class="vimeo-container">
-                    <iframe src="https://player.vimeo.com/video/{{$content->content}}" class="vimeo-iframe" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-                </div>
-                @break
+                    @case('html')
+                        {!!$content->translateOrDefault(App::getLocale())->text!!}
+                        @break
 
-            @case('html')
-                {!!$content->translateOrDefault(App::getLocale())->text!!}
-                @break
+                    @case('audio')
+                        <audio controls controlsList="nodownload">
+                            <source src="/storage/pods/{{$content->content}}" type="audio/mpeg">
+                        </audio>
+                        @break
 
-            @case('audio')
-                <audio controls controlsList="nodownload">
-                    <source src="/storage/pods/{{$content->content}}" type="audio/mpeg">
-                </audio>
-                @break
+                    @default
+                        Unexpected content type!
+                @endswitch
+                <br>
+                @endforeach
+            @endif
 
-            @default
-                Unexpected content type!
-        @endswitch
-        <br>
-        @endforeach
-    @endif
+        </div>
+    </div>
 
     <br>
 

@@ -84,8 +84,19 @@ class LessonController extends Controller
 
     public function update(Request $request, Lesson $lesson) {
         $this->validate($request, [
-            'name' => 'required'
-        ]);
+            'name' => 'required',
+            'new_audio.*' => 'mimetypes:audio/mpeg',
+            'new_html.*' => 'string',
+            'html.*' => 'string',
+            'new_vimeo.*' => 'integer',
+            'vimeo.*' => 'integer'
+        ],
+        ['name.required' => __('Du måste ange ett namn på lektionen!'),
+        'new_audio.*.mimetypes' => __('Din ljudfil måste vara i mp3-format!'),
+        'new_html.*.string' => __('Du måste skriva någon text i textrutan!'),
+        'html.*.string' => __('Du måste skriva någon text i textrutan!'),
+        'new_vimeo.*.integer' => __('Ett giltigt Vimeo-id har bara siffror!'),
+        'vimeo.*.integer' => __('Ett giltigt Vimeo-id har bara siffror!')]);
 
         $currentLocale = \App::getLocale();
 
@@ -155,7 +166,7 @@ class LessonController extends Controller
         if($request->new_audio) {
             foreach($request->new_audio as $temp_key => $new_audio) {
                 $filename = $new_audio->getClientOriginalName();
-                $new_audio->storeAs('public/pods', $filename);
+                $new_audio->storeAs('public/pods', $filename); //TODO: Måste kolla varför denna bara skapar helt tomma filer i labmiljön, funkar bra i dev
                 $content = new Content();
                 $content->type = 'audio';
                 $content->content = $filename;

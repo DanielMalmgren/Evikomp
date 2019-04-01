@@ -61,7 +61,7 @@
                     addtwe();
                     break;
                 case 'audio':
-                    $(wrapper).append('<div id="new_audio['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_audio['+new_id+']">@lang('Pod (ljudfil)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_audio['+new_id+']" class="form-control" type="file"></div></div>');
+                    $(wrapper).append('<div id="new_audio['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_audio['+new_id+']">@lang('Pod (ljudfil)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_audio['+new_id+']" class="form-control" type="file" accept="audio/mpeg"></div></div>');
                     break;
             }
             document.lesson.submit.disabled = false;
@@ -102,7 +102,7 @@
 
         <div class="mb-3">
             <label for="name">@lang('Namn')</label>
-            <input name="name" class="form-control" id="name">
+            <input name="name" class="form-control" id="name" value="{{old('name')}}">
         </div>
 
         <div class="mb-3">

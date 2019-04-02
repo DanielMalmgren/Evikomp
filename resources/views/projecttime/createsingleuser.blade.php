@@ -19,6 +19,8 @@
             @endforeach
         </select>
 
+        <br>
+
         <div class="mb-3">
             <label for="date">@lang('Datum')</label>
             <input type="date" name="date" min="{{$mindate}}" max="{{date("Y-m-d")}}" class="form-control" value="{{old('date')}}">

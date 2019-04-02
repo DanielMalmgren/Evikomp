@@ -85,7 +85,7 @@ class LessonController extends Controller
     public function update(Request $request, Lesson $lesson) {
         $this->validate($request, [
             'name' => 'required',
-            'new_audio.*' => 'mimetypes:audio/mpeg',
+            'new_audio.*' => 'file|mimetypes:audio/mpeg',
             'new_html.*' => 'string',
             'html.*' => 'string',
             'new_vimeo.*' => 'integer',
@@ -93,6 +93,7 @@ class LessonController extends Controller
         ],
         ['name.required' => __('Du måste ange ett namn på lektionen!'),
         'new_audio.*.mimetypes' => __('Din ljudfil måste vara i mp3-format!'),
+        'new_audio.*.file' => __('Du måste välja en fil add ladda upp!'),
         'new_html.*.string' => __('Du måste skriva någon text i textrutan!'),
         'html.*.string' => __('Du måste skriva någon text i textrutan!'),
         'new_vimeo.*.integer' => __('Ett giltigt Vimeo-id har bara siffror!'),
@@ -204,6 +205,6 @@ class LessonController extends Controller
 
         $lesson->titles()->sync($request->titles);
 
-        return redirect('/lessons/'.$lesson->id)->with('success', 'Ändringar sparade');
+        return redirect('/lessons/'.$lesson->id)->with('success', __('Ändringar sparade'));
     }
 }

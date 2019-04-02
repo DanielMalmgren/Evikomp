@@ -42,12 +42,9 @@ class SettingsController extends Controller
     }
 
     public function store(Request $request) {
-
-        //logger(print_r($request->all(), true));
-
         $this->validate($request, [
             'workplace' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email,'.Auth::user()->id,
             'mobile' => 'required',
             'terms_of_employment' => 'required',
             'full_or_part_time' => 'required'
@@ -56,6 +53,7 @@ class SettingsController extends Controller
             'terms_of_employment.required' => __('Du måste ange anställningsvillkor!'),
             'full_or_part_time.required' => __('Du måste ange anställningens omfattning!'),
             'email.required' => __('Du måste ange din e-postadress!'),
+            'email.unique' => __('E-postadressen du har angett finns registrerad på en annan användare!'),
             'mobile.required' => __('Du måste ange ditt mobilnummer!'),
             'email.email' => __('vänligen ange en giltig e-postadress!')]);
 

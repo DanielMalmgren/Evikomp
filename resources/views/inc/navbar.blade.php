@@ -54,6 +54,15 @@
                         </ul>
                     </li>
             @endhasanyrole
+            <li aria-haspopup="true"><a href="#"><i class="fa fa-angle-right"></i>@lang('Hjälp')</a>
+                <ul class="sub-menu">
+                    <li aria-haspopup="false"><a target="_blank" href="/pdf/Evikomp%20användarmanual.pdf">@lang('Användarmanual')</a></li>
+                    @can('use administration')
+                        <li aria-haspopup="false"><a target="_blank" href="/pdf/Evikomp%20administratörsmanual.pdf">@lang('Administratörsmanual')</a></li>
+                    @endcan
+                    <li aria-haspopup="false"><a target="_blank" href="https://www.linkoping.se/utforarwebben/vard-stod-och-omsorg/forskning-och-utveckling/pagaende-projekt/evikomp/">@lang('Om Evikomp')</a></li>
+                </ul>
+            </li>
             </ul>
         </nav>
         <!--Menu HTML Code-->

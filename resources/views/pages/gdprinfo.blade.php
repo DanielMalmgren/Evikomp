@@ -23,7 +23,11 @@
         </div>
     </form>
 
-    @lang('messages.gdprinfo')
+    <div class="card">
+        <div class="card-body">
+            @lang('messages.gdprinfo')
+        </div>
+    </div>
 
     <br><br>
 

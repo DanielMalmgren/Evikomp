@@ -204,18 +204,22 @@
 
         @if(count($tracks) > 0 && $user->workplace)
             <label>@lang('Valda spår')</label><br>
-            <small>@lang('De spår som är utgråade är förvalda av din arbetsplats och går inte att välja bort')</small>
-            @foreach($tracks as $track)
-                <div class="checkbox">
-                    @if($user->workplace->tracks->contains('id', $track->id))
-                        <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}" checked disabled>{{$track->translateOrDefault(App::getLocale())->name}}</label>
-                    @elseif($user->tracks->contains('id', $track->id))
-                        <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}" checked>{{$track->translateOrDefault(App::getLocale())->name}}</label>
-                    @else
-                        <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}">{{$track->translateOrDefault(App::getLocale())->name}}</label>
-                    @endif
+            <div class="card">
+                <div class="card-body">
+                    <small>@lang('De spår som är utgråade är förvalda av din arbetsplats och går inte att välja bort')</small>
+                    @foreach($tracks as $track)
+                        <div class="checkbox">
+                            @if($user->workplace->tracks->contains('id', $track->id))
+                                <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}" checked disabled>{{$track->translateOrDefault(App::getLocale())->name}}</label>
+                            @elseif($user->tracks->contains('id', $track->id))
+                                <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}" checked>{{$track->translateOrDefault(App::getLocale())->name}}</label>
+                            @else
+                                <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}">{{$track->translateOrDefault(App::getLocale())->name}}</label>
+                            @endif
+                        </div>
+                    @endforeach
                 </div>
-            @endforeach
+            </div>
         @endif
 
         <br>

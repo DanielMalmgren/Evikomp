@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Redigera lektion'))
+
 @section('content')
 
 <script src="/trumbowyg/trumbowyg.min.js"></script>

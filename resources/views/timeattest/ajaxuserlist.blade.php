@@ -1,3 +1,37 @@
+<a class="list-group-item list-group-item-action">
+    <div class="row">
+        <div class="col-lg-3 col-md-7 col-sm-5">
+            <h5 class="mb-0">@lang('Namn')</h5>
+        </div>
+        <div class="col-lg-1 col-md-2 col-sm-2">
+            <h5 class="mb-0">@lang('Timmar')</h5>
+        </div>
+        <div class="col-lg-3 col-md-9 col-sm-15">
+            <h5 class="mb-0">@lang('Attesterad')</h5>
+        </div>
+        <div class="col-lg-1 col-md-3 col-sm-5">
+            <h5 class="mb-0">@lang('Radera')</h5>
+        </div>
+        <div class="col-lg-1 col-md-3 col-sm-5">
+            <h5 class="mb-0">@lang('Info')</h5>
+        </div>
+    </div>
+</a>
+<a class="list-group-item list-group-item-action">
+        <div class="row">
+            <div class="col-lg-4 col-md-9 col-sm-7"></div>
+            <div class="col-lg-1 col-md-3 col-sm-5">
+                @lang('anställd')
+            </div>
+            <div class="col-lg-1 col-md-3 col-sm-5">
+                @lang('koordinator')
+            </div>
+            <div class="col-lg-1 col-md-3 col-sm-5">
+                @lang('chef')
+            </div>
+        </div>
+    </a>
+<br>
 
 @foreach($workplace->users->sortBy('name') as $user)
     <a class="list-group-item list-group-item-action" id="user-{{$user->id}}">

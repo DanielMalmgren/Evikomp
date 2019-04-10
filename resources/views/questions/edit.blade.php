@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Redigera fråga'))
+
 @section('content')
 
 <div class="col-md-5 mb-3">
@@ -47,7 +49,8 @@
 
         <br>
 
-        <button class="btn btn-primary btn-lg btn-block" type="submit">@lang('Spara')</button>
+        <button class="btn btn-primary" type="submit">@lang('Spara')</button>
+        <a href="/lessons/{{$question->lesson->id}}/editquestions" class="btn btn-primary">@lang('Avbryt')</a>
     </form>
 
 </div>

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Redigera frågor'))
+
 @section('content')
 
 <script type="text/javascript" language="javascript" src="{{asset('vendor/jquery-ui-1.12.1.custom/jquery-ui.min.js')}}"></script>
@@ -35,23 +37,26 @@
     });
 </script>
 
-    <H1>@lang('Redigera frågor för lektion')</H1>
+    <H1>@lang('Redigera frågor för lektion') {{$lesson->translateOrDefault(App::getLocale())->name}}</H1>
 
     @if(count($lesson->questions) > 0)
         @lang('Frågor')
-        <ul class="list-group mb-3" id="questionlist">
+        <div id="questionlist">
             @foreach($questions as $question)
-                <li class="list-group-item d-flex justify-content-between lh-condensed" id="id-{{$question->id}}" data-question_id="{{$question->id}}">
-                    <div>
-                    <a href="/test/question/{{$question->id}}/edit">
-                        <h6 class="my-0">{{$question->translateOrDefault(App::getLocale())->text}}</h6>
-                    </a>
-                    <button class="btn btn-default btn-danger remove_question" type="button">X</button>
+                <div class="card" id="id-{{$question->id}}" data-question_id="{{$question->id}}">
+                    <div class="card-body">
+                        <a href="#" class="close remove_question" data-dismiss="alert" aria-label="close">&times;</a>
+                        <a href="/test/question/{{$question->id}}/edit">
+                            <h6 class="mb-3">{{$question->translateOrDefault(App::getLocale())->text}}</h6>
+                        </a>
                     </div>
-                </li>
+                </div>
             @endforeach
-        </ul>
+        </div>
     @endif
+
+    <br>
+
     <a href="/test/question/create?lesson_id={{$lesson->id}}" class="btn btn-primary">@lang('Lägg till fråga')</a>
 
     <a href="/lessons/{{$lesson->id}}" class="btn btn-primary">@lang('Tillaka till lektionen')</a>

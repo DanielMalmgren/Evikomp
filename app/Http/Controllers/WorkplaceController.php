@@ -41,7 +41,7 @@ class WorkplaceController extends Controller
 
     public function edit() {
         if (Auth::user()->hasRole('Admin')) {
-            $workplaces = Workplace::all();
+            $workplaces = Workplace::all()->sortBy('name');
         } else {
             $workplaces = Auth::user()->admin_workplaces;
         }
@@ -69,7 +69,6 @@ class WorkplaceController extends Controller
 
     public function update(Request $request, Workplace $workplace) {
         $this->validate($request, [
-            'tracks' => 'required',
             'workplace_type' => 'required'
         ]);
 

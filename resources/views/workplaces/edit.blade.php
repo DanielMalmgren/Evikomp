@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Arbetsplatsinställningar'))
+
 @section('content')
 
 <script type="text/javascript">
@@ -22,7 +24,7 @@
         <select class="custom-select d-block w-100" id="workplace" name="workplace" required="">
             <option disabled selected>Välj arbetsplats...</option>
             @foreach($workplaces as $workplace)
-                <option value="{{$workplace->id}}">{{$workplace->name}}</option>
+                <option value="{{$workplace->id}}">{{$workplace->name}} ({{$workplace->municipality->name}})</option>
             @endforeach
         </select>
     @endif
@@ -30,6 +32,7 @@
     <div id="settings"></div>
 
     @can('add workplaces')
+        <br>
         <a href="/workplace/create" class="btn btn-primary">@lang('Lägg till arbetsplats')</a>
     @endcan
 

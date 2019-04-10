@@ -13,13 +13,20 @@
                 @foreach($lesson->contents->sortBy('order') as $content)
                 @switch($content->type)
                     @case('vimeo')
-                        <div class="vimeo-container">
-                            <iframe src="https://player.vimeo.com/video/{{$content->content}}" class="vimeo-iframe" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                        <div style="max-width:250px">
+                            <div class="vimeo-container">
+                                <iframe src="https://player.vimeo.com/video/{{$content->content}}" width="0" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                            </div>
                         </div>
+                        {{--@php
+                            $hash = unserialize(file_get_contents("http://vimeo.com/api/v2/video/".$content->content.".php"));
+                        @endphp
+                        <img src="{{$hash[0]['thumbnail_medium']}}">--}}
                         @break
 
                     @case('html')
                         {!!$content->translateOrDefault(App::getLocale())->text!!}
+                        <br><br>
                         @break
 
                     @case('audio')
@@ -31,7 +38,7 @@
                     @default
                         Unexpected content type!
                 @endswitch
-                <br>
+
                 @endforeach
             @endif
 

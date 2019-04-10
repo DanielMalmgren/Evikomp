@@ -2,7 +2,9 @@
     @method('put')
     @csrf
 
-    @lang('Typ av arbetsplats')
+    <br>
+
+    <label for="workplace_type">@lang('Typ av arbetsplats')</label>
     <select class="custom-select d-block w-100" id="workplace_type" name="workplace_type" required="">
         @foreach($workplace_types as $workplace_type)
             <option value="{{$workplace_type->id}}" {{$workplace->workplace_type_id==$workplace_type->id?"selected":""}}>{{$workplace_type->name}}</option>
@@ -11,7 +13,7 @@
 
     <br>
 
-    @lang('Obligatoriska spår')
+    <label>@lang('Obligatoriska spår')</label>
     @if(count($tracks) > 0)
     <div class="card">
         <div class="card-body">

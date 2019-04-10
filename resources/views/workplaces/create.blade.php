@@ -23,20 +23,26 @@
                 </select>
             </div>
 
-            <H2>Typ av arbetsplats</H2>
+            <label for="workplace_type">@lang('Typ av arbetsplats')</label>
             <select class="custom-select d-block w-100" id="workplace_type" name="workplace_type" required="">
                 @foreach($workplace_types as $workplace_type)
                     <option value="{{$workplace_type->id}}">{{$workplace_type->name}}</option>
                 @endforeach
             </select>
 
-            <H2>Obligatoriska spår</H2>
+            <br>
+
+            <label>@lang('Obligatoriska spår')</label>
             @if(count($tracks) > 0)
-                @foreach($tracks as $track)
-                    <div class="checkbox">
-                        <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}">{{$track->translateOrDefault(App::getLocale())->name}}</label>
+                <div class="card">
+                    <div class="card-body">
+                        @foreach($tracks as $track)
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}">{{$track->translateOrDefault(App::getLocale())->name}}</label>
+                            </div>
+                        @endforeach
                     </div>
-                @endforeach
+                </div>
             @endif
 
             <br><br>

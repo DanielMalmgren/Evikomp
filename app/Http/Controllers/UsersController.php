@@ -51,6 +51,22 @@ class UsersController extends Controller
         return Excel::download(new UsersExport, 'Deltagare_Evikomp.xlsx');
     }
 
+    //Return a json containing users matching a search string sent from a select2 object. See https://select2.org/data-sources/ajax
+    public function select2(Request $request) {
+        $users = User::where('name', 'like', '%'.$request->q.'%')->orWhere('email', 'like', '%'.$request->q.'%')->get();
+
+        $results = ['results' => []];
+
+        foreach($users as $key => $user) {
+            $results['results'][$key] = [
+                'id' => $user->id,
+                'text' => $user->name
+            ];
+        }
+
+        return $results;
+    }
+
     //The following function will not really delete a user, just remove it from the workplace
     public function destroy(User $user) {
         $user->workplace_id = null;

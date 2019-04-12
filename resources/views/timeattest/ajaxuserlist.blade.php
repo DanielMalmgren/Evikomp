@@ -18,19 +18,20 @@
     </div>
 </a>
 <a class="list-group-item list-group-item-action">
-        <div class="row">
-            <div class="col-lg-4 col-md-9 col-sm-7"></div>
-            <div class="col-lg-1 col-md-3 col-sm-5">
-                @lang('anställd')
-            </div>
-            <div class="col-lg-1 col-md-3 col-sm-5">
-                @lang('koordinator')
-            </div>
-            <div class="col-lg-1 col-md-3 col-sm-5">
-                @lang('chef')
-            </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-9 col-sm-7"></div>
+        <div class="col-lg-1 col-md-3 col-sm-5">
+            @lang('anställd')
         </div>
-    </a>
+        <div class="col-lg-1 col-md-3 col-sm-5">
+            @lang('koordinator')
+        </div>
+        <div class="col-lg-1 col-md-3 col-sm-5">
+            @lang('chef')
+        </div>
+    </div>
+</a>
+
 <br>
 
 @foreach($workplace->users->sortBy('name') as $user)

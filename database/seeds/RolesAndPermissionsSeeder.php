@@ -25,6 +25,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'manage announcements']);
         Permission::create(['name' => 'manage time attests']);
         Permission::create(['name' => 'export ESF report']);
+        Permission::create(['name' => 'manage permissions']);
 
         // create roles and assign created permissions
 

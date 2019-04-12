@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 use App\Workplace;
 use App\Track;
 use App\WorkplaceType;
@@ -34,9 +35,8 @@ class WorkplaceController extends Controller
         $workplace->workplace_type_id = $request->workplace_type;
         $workplace->municipality_id = $request->municipality;
         $workplace->save();
-        $workplace->tracks()->sync($request->tracks);
 
-        return redirect('/workplace')->with('success', 'Uppgifterna sparade');
+        return $this->update($request, $workplace);
     }
 
     public function edit() {
@@ -71,6 +71,30 @@ class WorkplaceController extends Controller
         $this->validate($request, [
             'workplace_type' => 'required'
         ]);
+
+        if($request->adminlevel) {
+            foreach($request->adminlevel as $user_id => $adminlevel) {
+                $user = User::find($user_id);
+                if(isset($user)) {
+                    logger('Ger '.$user->name.' adminbehörighet på nivå '.$adminlevel.' på '.$workplace->name);
+
+                    $user->admin_workplaces()->detach($workplace); //Detach first in case user already has another level role
+                    $user->admin_workplaces()->attach($workplace, ['attestlevel'=>$adminlevel]);
+                    $user->assignRole('Arbetsplatsadministratör');
+                }
+            }
+        }
+
+        if($request->remove_admin) {
+            foreach($request->remove_admin as $user_id => $remove_admin) {
+                $user = User::find($user_id);
+                logger('Tar bort '.$user->name.' ifrån adminbehörighet på '.$workplace->name);
+                $user->admin_workplaces()->detach($workplace);
+                if($user->admin_workplaces()->count() == 0) {
+                    $user->removeRole('Arbetsplatsadministratör');
+                }
+            }
+        }
 
         $workplace->tracks()->sync($request->tracks);
         $workplace->workplace_type_id = $request->workplace_type;

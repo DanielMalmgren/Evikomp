@@ -43,11 +43,11 @@
                             <div class="col-lg-4 col-md-9 col-sm-7">
                                 {{$admin->name}}
                             </div>
-                            <div class="col-lg-1 col-md-3 col-sm-5">
-                                <input type="checkbox" name="adminlevel2[{{$admin->id}}]" {{$admin->pivot->attestlevel == 2?"checked":""}}>
-                            </div>
-                            <div class="col-lg-1 col-md-3 col-sm-5">
-                                <input type="checkbox" name="adminlevel3[{{$admin->id}}]" {{$admin->pivot->attestlevel == 3?"checked":""}}>
+                            <div class="col-lg-3 col-md-3 col-sm-5 adminleveldiv">
+                                <select class="custom-select d-block w-100" name="adminlevel[{{$admin->id}}]">
+                                    <option value="2" {{$admin->pivot->attestlevel==2?"selected":""}}>@lang('Arbetsplatskoordinator')</option>
+                                    <option value="3" {{$admin->pivot->attestlevel==3?"selected":""}}>@lang('Chef')</option>
+                                </select>
                             </div>
                             <div class="col-lg-1 col-md-3 col-sm-5">
                                 <i class="fas fa-trash remove_field"></i>
@@ -69,18 +69,26 @@
 </form>
 
 <link href="/select2/select2.min.css" rel="stylesheet" />
+<link href="/select2/select2-bootstrap4.min.css" rel="stylesheet" />
 <script src="/select2/select2.min.js"></script>
+<script src="/select2/i18n/sv.js"></script>
 
 <script type="text/javascript">
 
     function addselect2() {
         $('.new_admins').select2({
+            width: '100%',
             ajax: {
                 url: '/select2users',
                 dataType: 'json'
-
             },
             minimumInputLength: 2
+        });
+
+        $('.new_admins').on('select2:select', function (e) {
+            var userid = e.params.data.id;
+            var adminlevel = $(this).parent('div').parent('div').find('.adminlevel');
+            adminlevel.attr('name', 'adminlevel[' + userid + ']');
         });
     }
 
@@ -90,14 +98,16 @@
 
         $(add_button).click(function(e){
             e.preventDefault();
-            $(wrapper).append('<a class="list-group-item list-group-item-action"><div class="row"><div class="col-lg-4 col-md-9 col-sm-7"><select class="new_admins" name="new_admins[]"></select></div><div class="col-lg-1 col-md-3 col-sm-5"><input type="checkbox"></div><div class="col-lg-1 col-md-3 col-sm-5"><input type="checkbox"></div><div class="col-lg-1 col-md-3 col-sm-5"><i class="fas fa-trash remove_field"></i></div></div></a>');
+            $(wrapper).append('<a class="list-group-item list-group-item-action"><div class="row"><div class="col-lg-4 col-md-9 col-sm-7"><select class="new_admins" name="new_admins[]"></select></div><div class="col-lg-3 col-md-3 col-sm-5 adminleveldiv"><select class="custom-select d-block w-100 adminlevel" name="adminlevel[]"><option value="2">@lang('Arbetsplatskoordinator')</option><option value="3">@lang('Chef')</option></select></div><div class="col-lg-1 col-md-3 col-sm-5"><i class="fas fa-trash remove_field"></i></div></div></a>');
             addselect2();
         });
 
         $(wrapper).on("click",".remove_field", function(e){
             e.preventDefault();
             var parentdiv = $(this).parent('div').parent('div').parent('a');
-            var adminid = $(this).parent('div').parent('div').find('.adminid')
+            var adminid = $(this).parent('div').parent('div').find('.adminid');
+            var adminleveldiv = $(this).parent('div').parent('div').find('.adminleveldiv');
+            adminleveldiv.remove();
             var oldname = adminid.attr('name');
             parentdiv.hide();
             adminid.attr('name', 'remove_' + oldname);

@@ -47,6 +47,7 @@ class SettingsController extends Controller
             'workplace' => 'required',
             'email' => 'required|email|unique:users,email,'.Auth::user()->id,
             'mobile' => 'required',
+            'title' => 'required',
             'terms_of_employment' => 'required',
             'full_or_part_time' => 'required'
             ],
@@ -56,6 +57,7 @@ class SettingsController extends Controller
             'email.required' => __('Du måste ange din e-postadress!'),
             'email.unique' => __('E-postadressen du har angett finns registrerad på en annan användare!'),
             'mobile.required' => __('Du måste ange ditt mobilnummer!'),
+            'title.required' => __('Du måste ange din befattning!'),
             'email.email' => __('vänligen ange en giltig e-postadress!')]);
 
         $user = $request->user();

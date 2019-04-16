@@ -13,7 +13,7 @@
             $titles.detach();
             var val = $(this).find('option:selected').attr("data-workplace-type");
             $titles.each(function() {
-                if($(this).is('[data-workplace_type="' + val + '"') || $(this).is('[data-workplace_type="' + -1 + '"')) {
+                if($(this).is('[data-workplace_type="' + val + '"') || !val && $(this).is('[data-workplace_type="' + -1 + '"')) {
                     $(this).appendTo($titleSelect);
                 }
             });
@@ -30,7 +30,7 @@
             $workplaces.detach();
             var val = $(this).val();
             $workplaces.each(function() {
-                if($(this).is('[data-municipality="' + val + '"')) {
+                if($(this).is('[data-municipality="' + val + '"') || !val && $(this).is('[data-municipality="-1"')) {
                     $(this).appendTo($workplaceSelect);
                 }
             });
@@ -41,37 +41,43 @@
         $("#municipality").change();
     });
 
-    $(function() {
+    {{--$(function() {
         $('#title').on('change', function() {
             document.settings.submit.disabled = false;
         });
-    });
+    });--}}
 </script>
 
 <div class="col-md-5 mb-3">
 
     @if(empty(Auth::user()["workplace_id"]))
-        <H1>@lang('Välkommen')</H1>
+        <H1>@lang('Välkommen!')</H1>
+        <div class="card">
+            <div class="card-body">
+                @lang('Du behöver göra vissa inställningar för att kunna börja använda plattformen. Notera att samtliga val nedan är obligatoriska!')
+            </div>
+        </div>
+        <br>
     @else
         <H1>@lang('Inställningar')</H1>
-
-        <form method="post" action="{{action('SettingsController@storeLanguage')}}" accept-charset="UTF-8">
-            @csrf
-
-            <div class="mb-3">
-                <label for="locale">@lang('Språk')</label>
-                <select class="custom-select d-block w-100" name="locale" id="locale" required="" onchange="this.form.submit()">
-                    @foreach($locales as $locale)
-                        @if($user->locale_id == $locale->id || (!$user->locale_id && $locale->default)) {{-- Om antingen denna locale matchar med användarens eller om användaren inte har någon och detta är default locale --}}
-                            <option value="{{$locale->id}}" selected>{{$locale->name}}</option>
-                        @else
-                            <option value="{{$locale->id}}">{{$locale->name}}</option>
-                        @endif
-                    @endforeach
-                </select>
-            </div>
-        </form>
     @endif
+
+    <form method="post" action="{{action('SettingsController@storeLanguage')}}" accept-charset="UTF-8">
+        @csrf
+
+        <div class="mb-3">
+            <label for="locale">@lang('Språk')</label>
+            <select class="custom-select d-block w-100" name="locale" id="locale" required="" onchange="this.form.submit()">
+                @foreach($locales as $locale)
+                    @if($user->locale_id == $locale->id || (!$user->locale_id && $locale->default)) {{-- Om antingen denna locale matchar med användarens eller om användaren inte har någon och detta är default locale --}}
+                        <option value="{{$locale->id}}" selected>{{$locale->name}}</option>
+                    @else
+                        <option value="{{$locale->id}}">{{$locale->name}}</option>
+                    @endif
+                @endforeach
+            </select>
+        </div>
+    </form>
 
     <form method="post" name="settings" action="{{action('SettingsController@store')}}" accept-charset="UTF-8">
         @csrf
@@ -103,12 +109,12 @@
 
         <div class="mb-3">
             <label for="municipality">@lang('Kommun')</label>
-            <select class="custom-select d-block w-100" id="municipality" required="">
-                @if(!$user->workplace)
+            <select class="custom-select d-block w-100" id="municipality" name="municipality" required="">
+                @if(!$user->workplace && !old('municipality'))
                     <option disabled selected value>@lang('Välj...')</option>
                 @endif
                 @foreach($municipalities as $municipality)
-                    @if($user->workplace && $user->workplace->municipality->id == $municipality->id)
+                    @if($user->workplace && $user->workplace->municipality->id == $municipality->id || !$user->workplace && old('municipality') == $municipality->id)
                         <option selected value="{{$municipality->id}}">{{$municipality->name}}</option>
                     @else
                         <option value="{{$municipality->id}}">{{$municipality->name}}</option>
@@ -119,10 +125,10 @@
 
         <div class="mb-3">
             <label for="workplace">@lang('Arbetsplats')</label>
-            @if($user->workplace)
+            @if($user->workplace || old('workplace'))
                 <select class="custom-select d-block w-100" id="workplace" name="workplace" required="">
                     @foreach($workplaces as $workplace)
-                        @if($user->workplace->id == $workplace->id)
+                        @if($user->workplace && $user->workplace->id == $workplace->id || !$user->workplace && old('workplace') == $workplace->id)
                             <option selected data-municipality="{{$workplace->municipality_id}}" data-workplace-type="{{$workplace->workplace_type_id}}" value="{{$workplace->id}}">{{$workplace->name}}</option>
                         @else
                             <option data-municipality="{{$workplace->municipality_id}}" data-workplace-type="{{$workplace->workplace_type_id}}" value="{{$workplace->id}}">{{$workplace->name}}</option>
@@ -131,7 +137,7 @@
                 </select>
             @else
                 <select class="custom-select d-block w-100" id="workplace" name="workplace" required="" disabled>
-                    <option>@lang('Välj kommun först')</option>
+                    <option disabled data-municipality="-1">@lang('Välj kommun först')</option>
                     @foreach($workplaces as $workplace)
                         <option data-municipality="{{$workplace->municipality_id}}" data-workplace-type="{{$workplace->workplace_type_id}}" value="{{$workplace->id}}">{{$workplace->name}}</option>
                     @endforeach
@@ -141,11 +147,11 @@
 
         <div class="mb-3">
             <label for="title">@lang('Befattning')</label>
-            @if($user->title)
+            @if($user->title || old('title'))
                 <select class="custom-select d-block w-100" id="title" name="title" required="">
                     <option disabled data-workplace_type="-1">@lang('Välj din befattning')</option>
                     @foreach($titles as $title)
-                        @if($user->title->id == $title->id)
+                        @if($user->title && $user->title->id == $title->id || !$user->title && old('title') == $title->id)
                             <option selected data-workplace_type="{{$title->workplace_type->id}}" value="{{$title->id}}">{{$title->name}}</option>
                         @else
                             <option data-workplace_type="{{$title->workplace_type->id}}" value="{{$title->id}}">{{$title->name}}</option>
@@ -155,11 +161,11 @@
             @else
                 <select class="custom-select d-block w-100" id="title" name="title" required="" disabled>
                     @if($user->workplace)
-                        <option>@lang('Välj arbetsplats först')</option>
+                        <option disabled>@lang('Välj arbetsplats först')</option>
                         <option disabled selected data-workplace_type="-1">@lang('Välj din befattning')</option>
                     @else
-                        <option selected>@lang('Välj arbetsplats först')</option>
-                        <option disabled data-workplace_type="-1">@lang('Välj din befattning')</option>
+                        <option selected disabled data-workplace_type="-1">@lang('Välj arbetsplats först')</option>
+                        <option disabled>@lang('Välj din befattning')</option>
                     @endif
                     @foreach($titles as $title)
                         <option data-workplace_type="{{$title->workplace_type->id}}" value="{{$title->id}}">{{$title->name}}</option>
@@ -181,24 +187,24 @@
         <div class="mb-3">
             <label for="terms_of_employment">@lang('Anställningsvillkor')</label>
             <select class="custom-select d-block w-100" name="terms_of_employment" required="">
-                @if(!$user->terms_of_employment)
+                @if(!$user->terms_of_employment && !old('terms_of_employment'))
                     <option disabled selected value>@lang('Välj...')</option>
                 @endif
-                <option value="1" {{$user->terms_of_employment==1?"selected":""}}>@lang('Tillsvidareanställning')</option>
-                <option value="2" {{$user->terms_of_employment==2?"selected":""}}>@lang('Tidsbegränsad anställning')</option>
-                <option value="3" {{$user->terms_of_employment==3?"selected":""}}>@lang('Vet ej')</option>
+                <option value="1" {{$user->terms_of_employment==1||old('terms_of_employment')==1?"selected":""}}>@lang('Tillsvidareanställning')</option>
+                <option value="2" {{$user->terms_of_employment==2||old('terms_of_employment')==2?"selected":""}}>@lang('Tidsbegränsad anställning')</option>
+                <option value="3" {{$user->terms_of_employment==3||old('terms_of_employment')==3?"selected":""}}>@lang('Vet ej')</option>
             </select>
         </div>
 
         <div class="mb-3">
             <label for="full_or_part_time">@lang('Anställningens omfattning')</label>
             <select class="custom-select d-block w-100" name="full_or_part_time" required="">
-                @if(!$user->full_or_part_time)
+                @if(!$user->full_or_part_time && !old('full_or_part_time'))
                     <option disabled selected value>@lang('Välj...')</option>
                 @endif
-                <option value="1" {{$user->full_or_part_time==1?"selected":""}}>@lang('Deltid')</option>
-                <option value="2" {{$user->full_or_part_time==2?"selected":""}}>@lang('Heltid')</option>
-                <option value="3" {{$user->full_or_part_time==3?"selected":""}}>@lang('Vet ej')</option>
+                <option value="1" {{$user->full_or_part_time==1||old('full_or_part_time')==1?"selected":""}}>@lang('Deltid')</option>
+                <option value="2" {{$user->full_or_part_time==2||old('full_or_part_time')==2?"selected":""}}>@lang('Heltid')</option>
+                <option value="3" {{$user->full_or_part_time==3||old('full_or_part_time')==3?"selected":""}}>@lang('Vet ej')</option>
             </select>
         </div>
 
@@ -224,7 +230,7 @@
 
         <br>
 
-        <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit" {{$user->title?"":"disabled"}}>@lang('Spara')</button>
+        <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">@lang('Spara')</button>
     </form>
 </div>
 

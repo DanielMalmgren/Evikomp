@@ -53,7 +53,7 @@ class UsersController extends Controller
 
     //Return a json containing users matching a search string sent from a select2 object. See https://select2.org/data-sources/ajax
     public function select2(Request $request) {
-        $users = User::where('name', 'like', '%'.$request->q.'%')->orWhere('email', 'like', '%'.$request->q.'%')->get();
+        $users = User::where('name', 'like', '%'.$request->q.'%')->orWhere('email', 'like', '%'.$request->q.'%')->orWhere('personid', 'like', '%'.$request->q.'%')->get();
 
         $results = ['results' => []];
 

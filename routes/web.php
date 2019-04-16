@@ -91,3 +91,6 @@ Route::get('/workplaceajax/{workplace}',        'WorkplaceController@ajax')->mid
 
 //AnnouncementsController
 Route::resource('announcements',                'AnnouncementsController');
+
+//SearchController
+Route::get('/select2search',                    'SearchController@select2');

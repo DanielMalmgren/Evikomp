@@ -15,14 +15,12 @@ class CreateLessonsTable extends Migration
     {
         Schema::create('lessons', function (Blueprint $table) {
             $table->increments('id');
-            //$table->string('name'); //Moved to lesson_translations to be localized
             $table->boolean('active')->default(true);
             $table->unsignedTinyInteger('order');
             $table->boolean('limited_by_title')->default(false);
             $table->unsignedInteger('times_started')->default(0);
             $table->unsignedInteger('times_test_started')->default(0);
             $table->unsignedInteger('times_finished')->default(0);
-            //$table->string('video_id', 10);
             $table->unsignedInteger('track_id');
             $table->foreign('track_id')->references('id')->on('tracks')->onDelete('cascade');
             $table->timestamps();
@@ -33,7 +31,6 @@ class CreateLessonsTable extends Migration
             $table->increments('id');
             $table->integer('lesson_id')->unsigned();
             $table->string('name');
-            //$table->string('description')->nullable();
             $table->string('locale')->index();
 
             $table->unique(['lesson_id','locale']);

@@ -42,6 +42,7 @@ class SettingsController extends Controller
     }
 
     public function store(Request $request) {
+        usleep(50000);
         $this->validate($request, [
             'workplace' => 'required',
             'email' => 'required|email|unique:users,email,'.Auth::user()->id,

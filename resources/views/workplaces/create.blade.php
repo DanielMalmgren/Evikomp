@@ -77,7 +77,7 @@
                         url: '/select2users',
                         dataType: 'json'
                     },
-                    minimumInputLength: 2
+                    minimumInputLength: 3
                 });
 
                 $('.new_admins').on('select2:select', function (e) {

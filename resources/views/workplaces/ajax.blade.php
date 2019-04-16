@@ -82,7 +82,9 @@
                 url: '/select2users',
                 dataType: 'json'
             },
-            minimumInputLength: 3
+            language: "sv",
+            minimumInputLength: 3,
+            theme: "bootstrap4"
         });
 
         $('.new_admins').on('select2:select', function (e) {

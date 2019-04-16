@@ -1,3 +1,8 @@
+<link href="/select2/select2.min.css" rel="stylesheet" />
+<link href="/select2/select2-bootstrap4.min.css" rel="stylesheet" />
+<script src="/select2/select2.min.js"></script>
+<script src="/select2/i18n/sv.js"></script>
+
 <script>
     $(function() {
         $( 'body').on( 'click', 'a#logout', function( event ) {
@@ -5,6 +10,30 @@
             var wnd = window.open("{{env('SAML2_IDP_HOST')}}/wa/logout");
             wnd.close();
             return false;
+        });
+
+        $('.global-search').select2({
+            width: '240px',
+            placeholder: "Sök",
+            ajax: {
+                url: '/select2search',
+                dataType: 'json'
+            },
+            language: "sv",
+            minimumInputLength: 3,
+            //https://stackoverflow.com/questions/46069939/select2-remove-inputtooshort-text
+            //TODO: Kolla upp hur jag får nedanstående att funka och samtidigt svenska...
+            language: {
+                inputTooShort: function(args) {
+                    return "";
+                }
+            },
+            theme: "bootstrap4"
+        });
+
+        $('.global-search').on('select2:select', function (e) {
+            var lesson_id = e.params.data.id;
+            window.location = "/lessons/"+lesson_id;
         });
     });
 </script>
@@ -53,19 +82,20 @@
                             <li aria-haspopup="false"><a href="#" id="logout">@lang('Logga ut')</a></li>
                         </ul>
                     </li>
-            @endhasanyrole
-            <li aria-haspopup="true"><a href="#"><i class="fa fa-angle-right"></i>@lang('Hjälp')</a>
-                <ul class="sub-menu">
-                    <li aria-haspopup="false"><a target="_blank" href="/pdf/Evikomp%20användarmanual.pdf">@lang('Användarmanual')</a></li>
-                    @can('use administration')
-                        <li aria-haspopup="false"><a target="_blank" href="/pdf/Evikomp%20administratörsmanual.pdf">@lang('Administratörsmanual')</a></li>
-                    @endcan
-                    @hasrole('Admin')
-                        <li aria-haspopup="false"><a target="_blank" href="/pdf/Evikomp%20intern%20manual.pdf">@lang('Intern manual')</a></li>
-                    @endhasrole
-                    <li aria-haspopup="false"><a target="_blank" href="https://www.linkoping.se/utforarwebben/vard-stod-och-omsorg/forskning-och-utveckling/pagaende-projekt/evikomp/">@lang('Om Evikomp')</a></li>
-                </ul>
-            </li>
+                @endhasanyrole
+                <li aria-haspopup="true"><a href="#"><i class="fa fa-angle-right"></i>@lang('Hjälp')</a>
+                    <ul class="sub-menu">
+                        <li aria-haspopup="false"><a target="_blank" href="/pdf/Evikomp%20användarmanual.pdf">@lang('Användarmanual')</a></li>
+                        @can('use administration')
+                            <li aria-haspopup="false"><a target="_blank" href="/pdf/Evikomp%20administratörsmanual.pdf">@lang('Administratörsmanual')</a></li>
+                        @endcan
+                        @hasrole('Admin')
+                            <li aria-haspopup="false"><a target="_blank" href="/pdf/Evikomp%20intern%20manual.pdf">@lang('Intern manual')</a></li>
+                        @endhasrole
+                        <li aria-haspopup="false"><a target="_blank" href="https://www.linkoping.se/utforarwebben/vard-stod-och-omsorg/forskning-och-utveckling/pagaende-projekt/evikomp/">@lang('Om Evikomp')</a></li>
+                    </ul>
+                </li>
+                {{--<li aria-haspopup="false"><select class="global-search"></select></li>--}}
             </ul>
         </nav>
         <!--Menu HTML Code-->

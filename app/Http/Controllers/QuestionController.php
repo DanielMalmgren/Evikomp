@@ -8,6 +8,7 @@ use App\ResponseOption;
 use App\TestSession;
 use App\TestResponse;
 use App\LessonResult;
+use App\Lesson;
 use App\Http\Requests\StoreTestResponse;
 
 class QuestionController extends Controller
@@ -45,9 +46,11 @@ class QuestionController extends Controller
             'lesson_id' => 'required'
         ]);
 
+        $lesson = Lesson::find($request->lesson_id);
+
         $question = new Question;
-        $question->lesson_id = $request->lesson_id;
-        $question->order = 100;
+        $question->lesson_id = $lesson->id;
+        $question->order = $lesson->questions->max('order')+1;
         $question->save();
 
         return $this->update($request, $question);

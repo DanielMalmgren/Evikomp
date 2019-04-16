@@ -35,13 +35,18 @@ class LessonController extends Controller
     }
 
     public function store(Request $request) {
+        usleep(50000);
         $this->validate($request, [
             'name' => 'required',
             'track_id' => 'required'
-        ]);
+        ],
+        ['name.required' => __('Du måste ange ett namn på lektionen!')]);
+
+        $currentLocale = \App::getLocale();
 
         $lesson = new Lesson;
         $lesson->track_id = $request->track_id;
+        $lesson->translateOrNew($currentLocale)->name = $request->name;
         $lesson->save();
 
         return $this->update($request, $lesson);
@@ -83,6 +88,7 @@ class LessonController extends Controller
     }
 
     public function update(Request $request, Lesson $lesson) {
+        usleep(50000);
         $this->validate($request, [
             'name' => 'required',
             'new_audio.*' => 'file|mimetypes:audio/mpeg|max:20000',

@@ -6,9 +6,13 @@
 <script>
     $(function() {
         $('body').on( 'click', 'a#logout', function( event ) {
-            window.location.replace("/logout");
+            //window.location.replace("/logout");
             var wnd = window.open("{{env('SAML2_IDP_HOST')}}/wa/logout");
-            wnd.close();
+            //wnd.close();
+            setTimeout(function() {
+                wnd.close(); // detta och raden under körs efter 3 sekunder
+                window.location.replace("/logout");
+            }, 100);
             return false;
         });
 

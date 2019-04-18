@@ -34,7 +34,7 @@
 <!-- Mobile Header -->
 <div class="wsmobileheader clearfix ">
     <a id="wsnavtoggle" class="wsanimated-arrow"><span></span></a>
-    <span class="smllogo"><a href="#"><img src="/images/Evikomp_logga_lab.png"></a></span>
+    <span class="smllogo"><a href="#"><img src="{{env('HEADER_LOGO')}}"></a></span>
 </div>
 <!-- Mobile Header -->
 

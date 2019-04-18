@@ -5,7 +5,7 @@
 
 <script>
     $(function() {
-        $( 'body').on( 'click', 'a#logout', function( event ) {
+        $('body').on( 'click', 'a#logout', function( event ) {
             window.location.replace("/logout");
             var wnd = window.open("{{env('SAML2_IDP_HOST')}}/wa/logout");
             wnd.close();
@@ -13,7 +13,7 @@
         });
 
         $('.global-search').select2({
-            width: '240px',
+            width: '200px',
             placeholder: "Sök",
             ajax: {
                 url: '/select2search',
@@ -21,13 +21,6 @@
             },
             language: "sv",
             minimumInputLength: 3,
-            //https://stackoverflow.com/questions/46069939/select2-remove-inputtooshort-text
-            //TODO: Kolla upp hur jag får nedanstående att funka och samtidigt svenska...
-            language: {
-                inputTooShort: function(args) {
-                    return "";
-                }
-            },
             theme: "bootstrap4"
         });
 
@@ -95,7 +88,7 @@
                         <li aria-haspopup="false"><a target="_blank" href="https://www.linkoping.se/utforarwebben/vard-stod-och-omsorg/forskning-och-utveckling/pagaende-projekt/evikomp/">@lang('Om Evikomp')</a></li>
                     </ul>
                 </li>
-                {{--<li aria-haspopup="false"><select class="global-search"></select></li>--}}
+                <li class="search-wrapper" aria-haspopup="false"><select class="global-search"></select></li>
             </ul>
         </nav>
         <!--Menu HTML Code-->

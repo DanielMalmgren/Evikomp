@@ -66,6 +66,19 @@ audio {
     width: 250px;
 }
 
+.wsmenu-list .select2-container {
+    padding-top:16px;
+    width: 240px;
+}
+
+@media (min-width: 992px) {
+    .wsmenu li.search-wrapper {
+      float: right !important;
+      margin-right: 20px !important;
+    }
+  }
+
+
 /*
 * ====================== Tracks ===========================
 */

@@ -13,7 +13,7 @@
             $titles.detach();
             var val = $(this).find('option:selected').attr("data-workplace-type");
             $titles.each(function() {
-                if($(this).is('[data-workplace_type="' + val + '"') || !val && $(this).is('[data-workplace_type="' + -1 + '"')) {
+                if($(this).is('[data-workplace_type="' + val + '"]') || !val && $(this).is('[data-workplace_type="' + -1 + '"]')) {
                     $(this).appendTo($titleSelect);
                 }
             });
@@ -30,7 +30,7 @@
             $workplaces.detach();
             var val = $(this).val();
             $workplaces.each(function() {
-                if($(this).is('[data-municipality="' + val + '"') || !val && $(this).is('[data-municipality="-1"')) {
+                if($(this).is('[data-municipality="' + val + '"]') || !val && $(this).is('[data-municipality="-1"]')) {
                     $(this).appendTo($workplaceSelect);
                 }
             });

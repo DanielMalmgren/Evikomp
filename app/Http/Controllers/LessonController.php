@@ -44,8 +44,11 @@ class LessonController extends Controller
 
         $currentLocale = \App::getLocale();
 
+        $track = Track::find($request->track_id);
+
         $lesson = new Lesson;
         $lesson->track_id = $request->track_id;
+        $lesson->order = $track->lessons->max('order')+1;
         $lesson->translateOrNew($currentLocale)->name = $request->name;
         $lesson->save();
 
@@ -195,13 +198,15 @@ class LessonController extends Controller
 
         //Fix sort order of all contents
         $i = 0;
-        foreach(explode(",", $content_order) as $order) {
-            preg_match('#\[(.*?)\]#', $order, $match); //Exctract the id, which is between []
-            $id = $match[1];
-            $content = Content::find($id);
-            if($content) {
-                $content->order = $i++;
-                $content->save();
+        if(strlen($content_order) > 0) {
+            foreach(explode(",", $content_order) as $order) {
+                preg_match('#\[(.*?)\]#', $order, $match); //Exctract the id, which is between []
+                $id = $match[1];
+                $content = Content::find($id);
+                if($content) {
+                    $content->order = $i++;
+                    $content->save();
+                }
             }
         }
 

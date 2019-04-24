@@ -16,14 +16,16 @@ class Feedback extends Mailable
      *
      * @return void
      */
-    public function __construct($content, $name)
+    public function __construct($content, $name, $email)
     {
         $this->content = $content;
         $this->name = $name;
+        $this->email = $email;
     }
 
     public $content;
     public $name;
+    public $email;
 
     /**
      * Build the message.
@@ -32,6 +34,6 @@ class Feedback extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.feedback');
+        return $this->from($this->$email, $this->$name)->view('emails.feedback');
     }
 }

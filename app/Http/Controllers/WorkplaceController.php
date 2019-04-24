@@ -97,6 +97,7 @@ class WorkplaceController extends Controller
         }
 
         $workplace->tracks()->sync($request->tracks);
+        $workplace->name = $request->name;
         $workplace->workplace_type_id = $request->workplace_type;
         $workplace->save();
 

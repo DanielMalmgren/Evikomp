@@ -4,6 +4,11 @@
 
     <br>
 
+    <div class="mb-3">
+        <label for="name">@lang('Namn')</label>
+        <input name="name" class="form-control" id="name" value="{{$workplace->name}}">
+    </div>
+
     <label for="workplace_type">@lang('Typ av arbetsplats')</label>
     <select class="custom-select d-block w-100" id="workplace_type" name="workplace_type" required="">
         @foreach($workplace_types as $workplace_type)

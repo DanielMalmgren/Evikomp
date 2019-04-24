@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class AnnouncementsController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:manage announcements', ['except' => ['index','show']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -76,7 +80,10 @@ class AnnouncementsController extends Controller
      */
     public function edit(Announcement $announcement)
     {
-        //
+        $data = array(
+            'announcement' => $announcement
+        );
+        return view('announcements.edit')->with($data);
     }
 
     /**
@@ -88,7 +95,17 @@ class AnnouncementsController extends Controller
      */
     public function update(Request $request, Announcement $announcement)
     {
-        //
+        $this->validate($request, [
+            'heading' => 'required',
+            'bodytext' => 'required'
+        ]);
+
+        $announcement->heading = $request->heading;
+        $announcement->bodytext = $request->bodytext;
+        $announcement->preamble = $request->preamble;
+        $announcement->save();
+
+        return redirect('/')->with('success', 'Meddelandet sparat');
     }
 
     /**
@@ -99,6 +116,10 @@ class AnnouncementsController extends Controller
      */
     public function destroy(Announcement $announcement)
     {
-        //
+        usleep(50000);
+
+        $announcement->delete();
+
+        return redirect('/')->with('success', 'Meddelandet raderat');
     }
 }

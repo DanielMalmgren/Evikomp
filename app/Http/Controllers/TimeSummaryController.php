@@ -22,7 +22,6 @@ class TimeSummaryController extends Controller
         $year = date('Y', $time);
         $month = date('n', $time);
 
-        //TODO: Tilldela en variabel här som säger om månaden är stängd. Typ MonthClosed::all()->where->isnotempty()
         $month_closed = ClosedMonth::all()->where('month', $month)->where('year', $year)->isNotEmpty();
 
         $data = array(

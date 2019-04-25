@@ -8,6 +8,7 @@ use App\User;
 use App\Workplace;
 use App\ProjectTime;
 use App\ProjectTimeType;
+use App\ClosedMonth;
 
 class ProjectTimeController extends Controller
 {
@@ -31,7 +32,9 @@ class ProjectTimeController extends Controller
         $user = Auth::user();
 
         //If last month is already attested, no further time may be registered on it, so start the calendar picker on first day of this month
-        if($user->time_attests->where('month', date("m", strtotime("first day of previous monthh")))->where('year', date("Y", strtotime("first day of previous month")))->count() > 0) {
+        //The same goes if last month is closed by administrator
+        if($user->time_attests->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty() ||
+           ClosedMonth::all()->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty()) {
             $mindate = date("Y-m")."-01";
         } else {
             $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
@@ -48,9 +51,18 @@ class ProjectTimeController extends Controller
 
     public function ajax(Workplace $workplace) {
         $project_time_types = ProjectTimeType::all();
+
+        //If last month is closed, start the calendar picker on first day of this month
+        if(ClosedMonth::all()->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty()) {
+            $mindate = date("Y-m")."-01";
+        } else {
+            $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
+        }
+
         $data = array(
             'workplace' => $workplace,
-            'project_time_types' => $project_time_types
+            'project_time_types' => $project_time_types,
+            'mindate' => $mindate
         );
         return view('projecttime.ajax')->with($data);
     }

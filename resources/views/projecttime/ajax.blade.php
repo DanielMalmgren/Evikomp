@@ -1,3 +1,28 @@
+<script type="text/javascript">
+    $(function() {
+        $('.time').focusout(function(){
+            var selectedValue = $(this).val();
+            if(selectedValue.length == 4) {
+                if(isNaN(selectedValue)) {
+                    $(this).val('0'.concat(selectedValue));
+                } else {
+                    $(this).val(selectedValue.substring(0,2).concat(':', selectedValue.substring(2,4)));
+                }
+                selectedValue = $(this).val();
+            }
+            if(selectedValue != '' && selectedValue.substring(2,3) != ':') {
+                alert('Ange tidpunkterna i formatet hh:mm!');
+                $(this).val('');
+            }
+            if(selectedValue.substring(0,2) == '00') {
+                if(!confirm('Den tid du försöker ange är mitt i natten.\nÄr du säker på att det är detta du vill?')) {
+                    $(this).val('');
+                }
+            }
+        });
+    });
+</script>
+
 <form method="post" name="question" action="{{action('ProjectTimeController@store', $workplace->id)}}" accept-charset="UTF-8">
     @csrf
 
@@ -18,11 +43,11 @@
         <div class="row container">
             <div class="mb-3">
                 <label for="starttime">@lang('Från')</label>
-                <input type="time" name="starttime" class="form-control" value="{{old('starttime')}}">
+                <input type="time" name="starttime" class="form-control time" value="{{old('starttime')}}">
             </div>
             <div class="mb-3">
                 <label for="endtime">@lang('Till')</label>
-                <input type="time" name="endtime" class="form-control" value="{{old('endtime')}}">
+                <input type="time" name="endtime" class="form-control time" value="{{old('endtime')}}">
             </div>
         </div>
     </div>

@@ -77,14 +77,17 @@ class ProjectTimeController extends Controller
 
     public function store(Request $request, Workplace $workplace) {
         usleep(50000);
-        $request->validate(['starttime' => 'required',
-                            'endtime' => 'required|after:starttime',
-                            'date' => 'required',
+        $request->validate(['starttime' => 'required|date_format:H:i',
+                            'endtime' => 'required|date_format:H:i|after:starttime',
+                            'date' => 'required|date',
                             'users' => 'required',
                             'workplace_id' => 'required'],
                             ['starttime.required' => __('Du måste ange en starttid!'),
                             'endtime.required' => __('Du måste ange en sluttid!'),
                             'date.required' => __('Du måste ange ett datum!'),
+                            'date.date' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
+                            'starttime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
+                            'endtime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
                             'users.required' => __('Du måste ange minst en användare som tid ska registreras på!'),
                             'endtime.after' => __('Sluttiden får inte inträffa före starttiden!')]);
 

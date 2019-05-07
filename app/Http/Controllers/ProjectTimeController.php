@@ -80,10 +80,12 @@ class ProjectTimeController extends Controller
         $request->validate(['starttime' => 'required',
                             'endtime' => 'required|after:starttime',
                             'date' => 'required',
+                            'users' => 'required',
                             'workplace_id' => 'required'],
                             ['starttime.required' => __('Du måste ange en starttid!'),
                             'endtime.required' => __('Du måste ange en sluttid!'),
                             'date.required' => __('Du måste ange ett datum!'),
+                            'users.required' => __('Du måste ange minst en användare som tid ska registreras på!'),
                             'endtime.after' => __('Sluttiden får inte inträffa före starttiden!')]);
 
         $year = substr($request->date, 0, 4);

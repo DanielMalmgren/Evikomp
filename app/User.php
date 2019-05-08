@@ -23,64 +23,82 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
+    //Get this users workplace
     public function workplace()
     {
         return $this->belongsTo('App\Workplace');
     }
 
+    //Get this users title
     public function title()
     {
         return $this->belongsTo('App\Title');
     }
 
+    //Get all workplaces for which this user is admin
     public function admin_workplaces()
     {
         return $this->belongsToMany('App\Workplace', 'workplace_admins')->withPivot('attestlevel');
     }
 
+    //Get this users locale
     public function locale()
     {
         return $this->belongsTo('App\Locale');
     }
 
+    //Get all this users test sessions
     public function test_sessions()
     {
         return $this->hasMany('App\TestSession');
     }
 
+    //Get all months that this user has closed (probably not very useful, just here for completeness)
     public function closed_months()
     {
         return $this->hasMany('App\ClosedMonth');
     }
 
+    //Get all time attests made for this user
     public function time_attests()
     {
         return $this->hasMany('App\TimeAttest');
     }
 
+    //Get all time attests made by this user
     public function time_attests_as_attestant()
     {
         return $this->hasMany('App\TimeAttest', 'attestant_id');
     }
 
+    //Get all this users active times (ie times spent in this web platform)
     public function active_times()
     {
         return $this->hasMany('App\ActiveTime');
     }
 
+    //Get all this users lesson results
     public function lesson_results()
     {
         return $this->hasMany('App\LessonResult');
     }
 
+    //Get this users tracks
     public function tracks()
     {
         return $this->belongsToMany('App\Track');
     }
 
+    //Get all project times registered on this user
     public function project_times()
     {
         return $this->belongsToMany('App\ProjectTime');
+    }
+
+    //Get all project times that this user has registered
+    public function project_times_registered_by()
+    {
+        return $this->hasMany('App\ProjectTime', 'registered_by');
     }
 
     public function active_time_today()

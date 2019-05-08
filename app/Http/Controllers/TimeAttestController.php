@@ -61,8 +61,8 @@ class TimeAttestController extends Controller
         if(isset($request->level3attest)) {
             foreach($request->level3attest as $user_id) {
                 $time_attest = new TimeAttest;
-                $time_attest->year = $year;
-                $time_attest->month = $month;
+                $time_attest->year = $request->year;
+                $time_attest->month = $request->month;
                 $time_attest->user_id = $user_id;
                 $time_attest->attestant_id = $user->id;
                 $time_attest->attestlevel = 3;

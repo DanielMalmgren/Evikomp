@@ -57,9 +57,12 @@ Route::get('/timesummaryajax/{rel_month}',      'TimeSummaryController@ajax')->m
 Route::get('/exporttimesummary',                'TimeSummaryController@export')->middleware('permission:export ESF report');
 
 //ProjectTimeController
+Route::get('/projecttime',                      'ProjectTimeController@index');
 Route::get('/projecttime/create',               'ProjectTimeController@create')->middleware('permission:edit workplaces');
 Route::get('/projecttime/createsingleuser',     'ProjectTimeController@createsingleuser');
-Route::post('/projecttime/{workplace}',         'ProjectTimeController@store');
+Route::post('/projecttime',                     'ProjectTimeController@store');
+Route::get('/projecttime/{project_time}/edit',  'ProjectTimeController@edit');
+Route::put('/projecttime/{project_time}',       'ProjectTimeController@update');
 Route::get('/projecttimeajax/{workplace}',      'ProjectTimeController@ajax');
 
 //TimeAttestController

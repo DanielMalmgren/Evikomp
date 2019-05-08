@@ -23,7 +23,7 @@
     });
 </script>
 
-<form method="post" name="question" action="{{action('ProjectTimeController@store', $workplace->id)}}" accept-charset="UTF-8">
+<form method="post" name="question" action="{{action('ProjectTimeController@store')}}" accept-charset="UTF-8">
     @csrf
 
     <input type="hidden" name="workplace_id" value="{{$workplace->id}}">

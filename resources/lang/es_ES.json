@@ -1,3 +1,12 @@
 {
-    "Spår": "Pista"
+    "Anonym användare": "Usuario anónimo",
+    "Du måste ange ett namn på lektionen!": "Debes ingresar un nombre para la lección!",
+    "Din ljudfil måste vara i mp3-format!": "¡Tu archivo de audio debe estar en formato mp3!",
+    "Du måste välja en fil add ladda upp!": "Debes seleccionar un archivo subir subir!",
+    "Din fil är för stor! Max-storleken är 20MB!": "¡Tu archivo es demasiado grande! ¡El tamaño máximo es 20MB!",
+    "Du måste skriva någon text i textrutan!": "Debes ingresar cualquier texto en el cuadro de texto!",
+    "Ett giltigt Vimeo-id har bara siffror!": "¡Una identificación válida de Vimeo solo tiene números!",
+    "Ändringar sparade": "Cambios guardados",
+    "Du måste ange en starttid!": "Debes ingresar una hora de inicio!",
+    "Du måste ange en sluttid!": "Debes introducir un tiempo de finalización!"
 }

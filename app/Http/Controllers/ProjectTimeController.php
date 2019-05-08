@@ -75,7 +75,7 @@ class ProjectTimeController extends Controller
         return view('projecttime.ajax')->with($data);
     }
 
-    public function store(Request $request, Workplace $workplace) {
+    public function store(Request $request) {
         usleep(50000);
         $request->validate(['starttime' => 'required|date_format:H:i',
                             'endtime' => 'required|date_format:H:i|after:starttime',
@@ -128,16 +128,76 @@ class ProjectTimeController extends Controller
             return back()->withInput();
         }
 
+        $workplace = Workplace::find($request->workplace_id);
+
         $project_time = new ProjectTime;
         $project_time->date = $request->date;
         $project_time->starttime = $request->starttime;
         $project_time->endtime = $request->endtime;
         $project_time->workplace_id = $workplace->id;
         $project_time->project_time_type_id = $request->type;
+        $project_time->registered_by = Auth::user()->id;
         $project_time->save();
         $project_time->users()->sync($request->users);
 
         return redirect('/')->with('success', __('Projekttiden har registrerats'));
     }
 
+    public function index(Request $request) {
+        if (Auth::user()->hasRole('Admin')) {
+            $workplaces = Workplace::all();
+        } else if (Auth::user()->hasRole('Arbetsplatsadministratör')) {
+            $workplaces = Auth::user()->admin_workplaces;
+            //TODO: De behöver kunna se både arbetsplatsernas tid och "sin egen" tid
+        } else {
+            $workplaces = collect([Auth::user()->workplace]);
+        }
+
+        $data = array(
+            'workplaces' => $workplaces
+        );
+
+        return view('projecttime.index')->with($data);
+    }
+
+    public function edit(Request $request, ProjectTime $project_time) {
+        $project_time_types = ProjectTimeType::all();
+        $user = Auth::user();
+
+        //If last month is already attested, no further time may be registered on it, so start the calendar picker on first day of this month
+        //The same goes if last month is closed by administrator
+        if($user->time_attests->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty() ||
+           ClosedMonth::all()->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty()) {
+            $mindate = date("Y-m")."-01";
+        } else {
+            $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
+        }
+
+        $data = array(
+            'project_time_types' => $project_time_types,
+            'user' => $user,
+            'workplace' => $user->workplace,
+            'mindate' => $mindate,
+            'project_time' => $project_time
+        );
+        return view('projecttime.edit')->with($data);
+    }
+
+    public function update(Request $request, ProjectTime $project_time) {
+        usleep(50000);
+        //TODO: A whole lot of validation stuff here!
+
+        $workplace = Workplace::find($request->workplace_id);
+
+        $project_time->date = $request->date;
+        $project_time->starttime = $request->starttime;
+        $project_time->endtime = $request->endtime;
+        $project_time->workplace_id = $workplace->id;
+        $project_time->project_time_type_id = $request->type;
+        $project_time->registered_by = Auth::user()->id;
+        $project_time->save();
+        $project_time->users()->sync($request->users);
+
+        return redirect('/projecttime')->with('success', __('Projekttiden har ändrats'));
+    }
 }

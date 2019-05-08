@@ -21,6 +21,11 @@ class ProjectTime extends Model
         return $this->belongsToMany('App\User');
     }
 
+    public function registered_by()
+    {
+        return $this->belongsTo('App\User', 'id', 'registered_by');
+    }
+
     public function minutes()
     {
         return ((new \DateTime($this->endtime))->getTimestamp() - (new \DateTime($this->starttime))->getTimestamp()) / 60;

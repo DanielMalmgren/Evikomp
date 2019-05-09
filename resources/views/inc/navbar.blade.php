@@ -1,7 +1,7 @@
 <link href="/select2/select2.min.css" rel="stylesheet" />
 <link href="/select2/select2-bootstrap4.min.css" rel="stylesheet" />
 <script src="/select2/select2.min.js"></script>
-<script src="/select2/i18n/sv.js"></script>
+<script src="/select2/i18n/{{substr(App::getLocale(), 0, 2)}}.js"></script>
 
 <script>
     $(function() {
@@ -18,12 +18,12 @@
 
         $('.global-search').select2({
             width: '200px',
-            placeholder: "Sök",
+            placeholder: "@lang('Sök')",
             ajax: {
                 url: '/select2search',
                 dataType: 'json'
             },
-            language: "sv",
+            language: "{{substr(App::getLocale(), 0, 2)}}",
             minimumInputLength: 3,
             theme: "bootstrap4"
         });
@@ -92,7 +92,9 @@
                         <li aria-haspopup="false"><a target="_blank" href="https://www.linkoping.se/utforarwebben/vard-stod-och-omsorg/forskning-och-utveckling/pagaende-projekt/evikomp/">@lang('Om Evikomp')</a></li>
                     </ul>
                 </li>
-                <li class="search-wrapper" aria-haspopup="false"><select class="global-search"></select></li>
+                @hasanyrole('Registrerad|Admin')
+                    <li class="search-wrapper" aria-haspopup="false"><select class="global-search"></select></li>
+                @endhasanyrole
             </ul>
         </nav>
         <!--Menu HTML Code-->

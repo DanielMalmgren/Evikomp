@@ -46,7 +46,6 @@ class TimeSummaryController extends Controller
         $month = date('n', $time);
         $monthstr = strftime('%B', $time);
 
-        //TODO: Nu har jag fixat så månaden blir låst, återstår att fixa så att låsningen verkligen låser någonting också...
         if($request->close_month) {
             $closed_month = new ClosedMonth();
             $closed_month->user_id = Auth::user()->id;

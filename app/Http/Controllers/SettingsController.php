@@ -14,9 +14,12 @@ use App\Title;
 class SettingsController extends Controller
 {
     public function edit(User $user = null) {
-        //TODO: Check permissions here! Needs to be either Admin or workplaceadmin over the user's workplace
         if(!$user) {
             $user = Auth::user();
+        }
+
+        if($user != Auth::user() && !Auth::user()->hasRole('Admin') && !$user->workplace->workplace_admins->contains('id', Auth::user()->id)) {
+            abort(403);
         }
 
         $tracks = Track::all();
@@ -47,7 +50,10 @@ class SettingsController extends Controller
     }
 
     public function store(Request $request, User $user) {
-        //TODO: Check permissions here! Needs to be either Admin or workplaceadmin over the user's workplace
+        if($user != Auth::user() && !Auth::user()->hasRole('Admin') && !$user->workplace->workplace_admins->contains('id', Auth::user()->id)) {
+            abort(403);
+        }
+
         usleep(50000);
         $this->validate($request, [
             'workplace' => 'required',

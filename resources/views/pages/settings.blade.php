@@ -40,12 +40,6 @@
         });
         $("#municipality").change();
     });
-
-    {{--$(function() {
-        $('#title').on('change', function() {
-            document.settings.submit.disabled = false;
-        });
-    });--}}
 </script>
 
 <div class="col-md-5 mb-3">
@@ -79,7 +73,7 @@
         </div>
     </form>
 
-    <form method="post" name="settings" action="{{action('SettingsController@store')}}" accept-charset="UTF-8">
+    <form method="post" name="settings" action="{{action('SettingsController@store', $user->id)}}" accept-charset="UTF-8">
         @csrf
 
         <div class="mb-3">

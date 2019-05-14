@@ -62,7 +62,8 @@ class WorkplaceController extends Controller
         $data = array(
             'workplace' => $workplace,
             'tracks' => $tracks,
-            'workplace_types' => $workplace_types
+            'workplace_types' => $workplace_types,
+            'deleteable' => $workplace->users->isEmpty() && $workplace->workplace_admins->isEmpty()
         );
         return view('workplaces.ajax')->with($data);
     }
@@ -102,5 +103,20 @@ class WorkplaceController extends Controller
         $workplace->save();
 
         return redirect('/workplace')->with('success', 'Uppgifterna sparade');
+    }
+
+    public function destroy(Request $request, Workplace $workplace) {
+        if(!$workplace->project_times->isEmpty()) {
+            logger('Relocating registered project time for '.$workplace->name);
+            foreach($workplace->project_times as $project_time) {
+                logger("Relocating project time on ".$project_time->date);
+                $alternative_workplace = $project_time->users->first()->workplace;
+                logger("Relocating project time to ".$alternative_workplace->name);
+                $project_time->workplace_id = $alternative_workplace->id;
+                $project_time->save();
+            }
+        }
+        logger('Destroying workplace '.$workplace->name);
+        $workplace->delete();
     }
 }

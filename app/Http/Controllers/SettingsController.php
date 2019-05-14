@@ -13,13 +13,18 @@ use App\Title;
 
 class SettingsController extends Controller
 {
-    public function edit() {
+    public function edit(User $user = null) {
+        //TODO: Check permissions here! Needs to be either Admin or workplaceadmin over the user's workplace
+        if(!$user) {
+            $user = Auth::user();
+        }
+
         $tracks = Track::all();
 
         $data = array(
             'municipalities' => Municipality::orderBy('name')->get(),
             'workplaces' => Workplace::orderBy('name')->get(),
-            'user' => Auth::user(),
+            'user' => $user,
             'locales' => Locale::All(),
             'titles' => Title::All(),
             'tracks' => $tracks
@@ -41,11 +46,12 @@ class SettingsController extends Controller
         return redirect('/settings');
     }
 
-    public function store(Request $request) {
+    public function store(Request $request, User $user) {
+        //TODO: Check permissions here! Needs to be either Admin or workplaceadmin over the user's workplace
         usleep(50000);
         $this->validate($request, [
             'workplace' => 'required',
-            'email' => 'required|email|unique:users,email,'.Auth::user()->id,
+            'email' => 'required|email|unique:users,email,'.$user->id,
             'mobile' => 'required',
             'title' => 'required',
             'terms_of_employment' => 'required',
@@ -60,7 +66,6 @@ class SettingsController extends Controller
             'title.required' => __('Du måste ange din befattning!'),
             'email.email' => __('vänligen ange en giltig e-postadress!')]);
 
-        $user = $request->user();
         $user->tracks()->sync($request->tracks);
         $user->email = $request->input('email');
         $user->mobile = $request->input('mobile');

@@ -37,6 +37,28 @@
 
     <br>
 
+    <label>@lang('Registrerade personer')</label>
+    @if(count($workplace->users) > 0)
+        @foreach($workplace->users->sortBy('name') as $user)
+            <a class="list-group-item list-group-item-action">
+                <div class="row">
+                    <div class="col-lg-4 col-md-9 col-sm-7">
+                        {{$user->name}}
+                    </div>
+                    <div class="col-lg-1 col-md-3 col-sm-5">
+                        <i class="fas fa-user-edit" onClick="window.location='/settings/{{$user->id}}'"></i>
+                    </div>
+                </div>
+            </a>
+        @endforeach
+    @else
+        <br>
+        @lang('Inga personer har registrerat sig på denna arbetsplats')
+        <br>
+    @endif
+
+    <br>
+
     @can('manage permissions')
         <label>@lang('Administratörer')</label>
         <div id="admins_wrap">
@@ -70,7 +92,10 @@
 
     <br><br>
 
-    <button class="btn btn-primary btn-lg btn-block" id="submit" name="submit" type="submit">@lang('Spara')</button>
+    <button class="btn btn-primary btn-lg" id="submit" name="submit" type="submit">@lang('Spara')</button>
+    @can('add workplaces')
+        <button type="button" class="btn btn-lg btn-danger" onclick="deleteworkplace()" {{$deleteable?'':'disabled'}}>@lang('Radera arbetsplats')</button>
+    @endcan
 </form>
 
 <link href="/select2/select2.min.css" rel="stylesheet" />
@@ -79,6 +104,23 @@
 <script src="/select2/i18n/sv.js"></script>
 
 <script type="text/javascript">
+
+    function deleteworkplace() {
+        if(confirm('Vill du verkligen radera {{$workplace->name}}?')) {
+            var token = "{{ csrf_token() }}";
+            $.ajax({
+                url: '/workplace/{{$workplace->id}}',
+                data : {_token:token},
+                type: 'DELETE',
+                success: function(result) {
+                    console.log(result)
+                }
+            })
+            .always(function() {
+                location.reload();
+            });
+        }
+    }
 
     function addselect2() {
         $('.new_admins').select2({

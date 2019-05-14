@@ -29,17 +29,17 @@
 
         <div class="mb-5">
             <label for="heading">@lang('Rubrik')</label>
-            <input name="heading" class="form-control" id="heading">
+            <input name="heading" class="form-control" id="heading" required>
         </div>
 
         <div class="mb-5">
             <label for="preamble">@lang('Ingress')</label>
-            <input name="preamble" class="form-control" id="preamble">
+            <input name="preamble" class="form-control" id="preamble" required>
         </div>
 
         <div class="mb-5">
                 <label for="bodytext">@lang('Text')</label>
-                <textarea rows=5 name="bodytext" class="form-control" id="bodytext"></textarea>
+                <textarea rows=5 name="bodytext" class="form-control" id="bodytext" required></textarea>
             </div>
 
         <br>

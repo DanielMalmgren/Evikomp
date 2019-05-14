@@ -15,9 +15,9 @@ class ProjectTimeController extends Controller
     public function create(Request $request) {
         $project_time_types = ProjectTimeType::all();
         if (Auth::user()->hasRole('Admin')) {
-            $workplaces = Workplace::all();
+            $workplaces = Workplace::all()->sortBy('name');
         } else {
-            $workplaces = Auth::user()->admin_workplaces;
+            $workplaces = Auth::user()->admin_workplaces->sortBy('name');
         }
 
         //If last month is closed, start the calendar picker on first day of this month

@@ -81,8 +81,8 @@ Route::post('storefirstloginlanguage',          'FirstLoginController@storeLangu
 Route::post('storegdpraccept',                  'FirstLoginController@storeGdprAccept');
 
 //SettingsController
-Route::get('/settings',                         'SettingsController@edit');
-Route::post('storesettings',                    'SettingsController@store');
+Route::get('/settings/{user?}',                 'SettingsController@edit');
+Route::post('storesettings/{user}',             'SettingsController@store');
 Route::post('storelanguage',                    'SettingsController@storeLanguage');
 
 //WorkplaceController
@@ -91,6 +91,7 @@ Route::post('/workplace',                       'WorkplaceController@store')->mi
 Route::get('/workplace',                        'WorkplaceController@edit')->middleware('permission:edit workplaces');
 Route::put('/workplace/{workplace}',            'WorkplaceController@update')->middleware('permission:edit workplaces');
 Route::get('/workplaceajax/{workplace}',        'WorkplaceController@ajax')->middleware('permission:edit workplaces');
+Route::delete('/workplace/{workplace}',         'WorkplaceController@destroy')->middleware('permission:add workplaces');
 
 //AnnouncementsController
 Route::resource('announcements',                'AnnouncementsController');

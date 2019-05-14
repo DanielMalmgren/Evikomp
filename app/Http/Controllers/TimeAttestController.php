@@ -18,9 +18,9 @@ class TimeAttestController extends Controller
 
         $project_time_types = ProjectTimeType::all();
         if ($user->hasRole('Admin')) {
-            $workplaces = Workplace::all();
+            $workplaces = Workplace::all()->sortBy('name');
         } else {
-            $workplaces = Auth::user()->admin_workplaces;
+            $workplaces = Auth::user()->admin_workplaces->sortBy('name');
         }
 
         $year = date('Y', strtotime("-1 month"));

@@ -19,6 +19,8 @@ return [
         'ti_ER', //Tigrinja
         'fa_IR', //Persiska
         'so_SO', //Somaliska
+        'pt_PT', //Portugisiska
+        'it_IT', //Italienska
     ],
 
     /*

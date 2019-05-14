@@ -51,5 +51,15 @@ class LocaleSeeder extends Seeder
             'id' => 'so_SO',
             'default' => false
         ]);
+        DB::table('locales')->insert([
+            'name' => 'italiano',
+            'id' => 'it_IT',
+            'default' => false
+        ]);
+        DB::table('locales')->insert([
+            'name' => 'português',
+            'id' => 'pt_PT',
+            'default' => false
+        ]);
     }
 }

@@ -19,7 +19,7 @@ class SearchController extends Controller
             $q->where('content', 'like', '%'.$request->q.'%')->orWhereTranslationLike('text', '%'.$request->q.'%');
         })->get();
         if($lessons->isNotEmpty()) {
-            $results['results'][++$i]['text'] = _('Lektioner');
+            $results['results'][++$i]['text'] = __('Lektioner');
             foreach($lessons as $key => $lesson) {
                 $results['results'][$i]['children'][$key] = [
                     'id' => $lesson->id,
@@ -31,7 +31,7 @@ class SearchController extends Controller
 
         $tracks = Track::whereTranslationLike('name', '%'.$request->q.'%')->orWhereTranslationLike('subtitle', '%'.$request->q.'%')->get();
         if($tracks->isNotEmpty()) {
-            $results['results'][++$i]['text'] = _('Spår');
+            $results['results'][++$i]['text'] = __('Spår');
             foreach($tracks as $key => $track) {
                 $results['results'][$i]['children'][$key] = [
                     'id' => $track->id,
@@ -43,7 +43,7 @@ class SearchController extends Controller
 
         $announcements = Announcement::where('heading', 'like', '%'.$request->q.'%')->orWhere('preamble', 'like', '%'.$request->q.'%')->get();
         if($announcements->isNotEmpty()) {
-            $results['results'][++$i]['text'] = _('Nyheter');
+            $results['results'][++$i]['text'] = __('Nyheter');
             foreach($announcements as $key => $announcement) {
                 $results['results'][$i]['children'][$key] = [
                     'id' => $announcement->id,

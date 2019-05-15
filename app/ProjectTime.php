@@ -21,9 +21,9 @@ class ProjectTime extends Model
         return $this->belongsToMany('App\User');
     }
 
-    public function registered_by()
+    public function registered_by_user()
     {
-        return $this->belongsTo('App\User', 'id', 'registered_by');
+        return $this->belongsTo('App\User', 'registered_by');
     }
 
     public function minutes()

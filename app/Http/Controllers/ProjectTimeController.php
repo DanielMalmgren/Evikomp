@@ -144,13 +144,13 @@ class ProjectTimeController extends Controller
     }
 
     public function index(Request $request) {
+
+        $workplaces = null;
+
         if (Auth::user()->hasRole('Admin')) {
             $workplaces = Workplace::all();
         } else if (Auth::user()->hasRole('Arbetsplatsadministratör')) {
-            $workplaces = Auth::user()->admin_workplaces;
-            //TODO: De behöver kunna se både arbetsplatsernas tid och "sin egen" tid
-        } else {
-            $workplaces = collect([Auth::user()->workplace]);
+            $workplaces = Auth::user()->admin_workplaces->prepend(Auth::user()->workplace);
         }
 
         $data = array(
@@ -164,6 +164,10 @@ class ProjectTimeController extends Controller
         $project_time_types = ProjectTimeType::all();
         $user = Auth::user();
 
+        if($project_time->registered_by_user != $user && !$user->hasRole('Admin') && !$project_time->workplace->workplace_admins->contains('id', $user->id)) {
+            abort(403);
+        }
+
         //If last month is already attested, no further time may be registered on it, so start the calendar picker on first day of this month
         //The same goes if last month is closed by administrator
         if($user->time_attests->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty() ||
@@ -176,7 +180,7 @@ class ProjectTimeController extends Controller
         $data = array(
             'project_time_types' => $project_time_types,
             'user' => $user,
-            'workplace' => $user->workplace,
+            'workplace' => $project_time->workplace,
             'mindate' => $mindate,
             'project_time' => $project_time
         );
@@ -184,8 +188,25 @@ class ProjectTimeController extends Controller
     }
 
     public function update(Request $request, ProjectTime $project_time) {
+        $user = Auth::user();
+        if($project_time->registered_by_user != $user && !$user->hasRole('Admin') && !$project_time->workplace->workplace_admins->contains('id', $user->id)) {
+            abort(403);
+        }
+
         usleep(50000);
-        //TODO: A whole lot of validation stuff here!
+        $request->validate(['starttime' => 'required|date_format:H:i',
+                            'endtime' => 'required|date_format:H:i|after:starttime',
+                            'date' => 'required|date',
+                            'users' => 'required',
+                            'workplace_id' => 'required'],
+                            ['starttime.required' => __('Du måste ange en starttid!'),
+                            'endtime.required' => __('Du måste ange en sluttid!'),
+                            'date.required' => __('Du måste ange ett datum!'),
+                            'date.date' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
+                            'starttime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
+                            'endtime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
+                            'users.required' => __('Du måste ange minst en användare som tid ska registreras på!'),
+                            'endtime.after' => __('Sluttiden får inte inträffa före starttiden!')]);
 
         $workplace = Workplace::find($request->workplace_id);
 

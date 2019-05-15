@@ -55,16 +55,25 @@
             <div class="row container">
                 <div class="mb-3">
                     <label for="starttime">@lang('Från')</label>
-                    <input type="time" name="starttime" class="form-control time" value="{{$project_time->starttime}}">
+                    <input type="time" name="starttime" class="form-control time" value="{{substr($project_time->starttime, 0, 5)}}">
                 </div>
                 <div class="mb-3">
                     <label for="endtime">@lang('Till')</label>
-                    <input type="time" name="endtime" class="form-control time" value="{{$project_time->endtime}}">
+                    <input type="time" name="endtime" class="form-control time" value="{{substr($project_time->endtime, 0, 5)}}">
                 </div>
             </div>
         </div>
 
-        <input type="hidden" name="users[]" value="{{$user->id}}" id="{{$user->id}}">
+        @if($project_time->workplace->workplace_admins->contains('id', Auth::user()->id))
+            <H2>@lang('Närvarande personer')</H2>
+            @foreach($workplace->users->sortBy('name') as $user)
+                <div class="checkbox">
+                    <label><input type="checkbox" name="users[]" {{$project_time->users->contains('id',$user->id) ? 'checked' : '' }} value="{{$user->id}}" id="{{$user->id}}">{{$user->name}}</label>
+                </div>
+            @endforeach
+        @else
+            <input type="hidden" name="users[]" value="{{$user->id}}" id="{{$user->id}}">
+        @endif
 
         <br>
 

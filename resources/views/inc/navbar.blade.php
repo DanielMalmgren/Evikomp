@@ -29,8 +29,7 @@
         });
 
         $('.global-search').on('select2:select', function (e) {
-            var lesson_id = e.params.data.id;
-            window.location = "/lessons/"+lesson_id;
+            window.location = e.params.data.url;
         });
     });
 </script>

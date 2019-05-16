@@ -50,16 +50,16 @@
                     </div>
                     <div class="col-lg-1 col-md-3 col-sm-5">
                         @if($user->time_attests->where('attestlevel', 2)->where('month', $month)->where('year', $year)->count() > 0)
-                            <input checked disabled type="checkbox" id="level2attest-{{$user->id}}" name="level2attest[]" value="{{$user->id}}" {{$attestlevel >= 2?"":"disabled"}} onclick="togglesubmit(2)">
+                            <input checked disabled type="checkbox" id="level2attest-{{$user->id}}" name="level2attest[]" value="{{$user->id}}" {{$attestlevel>=2&&!$month_is_closed?"":"disabled"}} onclick="togglesubmit(2)">
                         @else
-                            <input type="checkbox" id="level2attest-{{$user->id}}" name="level2attest[]" value="{{$user->id}}" {{$attestlevel >= 2?"":"disabled"}} onclick="togglesubmit(2)">
+                            <input type="checkbox" id="level2attest-{{$user->id}}" name="level2attest[]" value="{{$user->id}}" {{$attestlevel>=2&&!$month_is_closed?"":"disabled"}} onclick="togglesubmit(2)">
                         @endif
                     </div>
                     <div class="col-lg-1 col-md-3 col-sm-5">
                         @if($user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->count() > 0)
-                            <input checked disabled type="checkbox" name="level3attest[]" value="{{$user->id}}" {{$attestlevel >= 3?"":"disabled"}} onclick="togglesubmit(3)">
+                            <input checked disabled type="checkbox" name="level3attest[]" value="{{$user->id}}" {{$attestlevel>=3&&!$month_is_closed?"":"disabled"}} onclick="togglesubmit(3)">
                         @else
-                            <input type="checkbox" name="level3attest[]" value="{{$user->id}}" {{$attestlevel >= 3?"":"disabled"}} onclick="togglesubmit(3)">
+                            <input type="checkbox" name="level3attest[]" value="{{$user->id}}" {{$attestlevel>=3&&!$month_is_closed?"":"disabled"}} onclick="togglesubmit(3)">
                         @endif
                     </div>
                 @else
@@ -87,15 +87,19 @@
         @lang('Markera alla')
     </div>
     <div class="col-lg-1 col-md-1 col-sm-1">
-        <input type="checkbox" id="selectall_level2" {{$attestlevel >= 2?"":"disabled"}} onclick="toggleattests(2)">
+        <input type="checkbox" id="selectall_level2" {{$attestlevel>=2&&!$month_is_closed?"":"disabled"}} onclick="toggleattests(2)">
     </div>
     <div class="col-lg-1 col-md-1 col-sm-1">
-        <input type="checkbox" id="selectall_level3" {{$attestlevel >= 3?"":"disabled"}} onclick="toggleattests(3)">
+        <input type="checkbox" id="selectall_level3" {{$attestlevel>=3&&!$month_is_closed?"":"disabled"}} onclick="toggleattests(3)">
     </div>
 </div>
 
 <br>
-<button class="btn btn-primary btn-lg btn-block" disabled id="submit" name="submit" type="submit">@lang('Attestera')</button>
+@if($month_is_closed)
+    <button class="btn btn-primary btn-lg btn-block" disabled id="submit" name="submit" type="submit">@lang('Månaden är stängd för attestering')</button>
+@else
+    <button class="btn btn-primary btn-lg btn-block" disabled id="submit" name="submit" type="submit">@lang('Attestera')</button>
+@endif
 
 <script type="text/javascript">
 

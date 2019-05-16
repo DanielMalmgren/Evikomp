@@ -39,7 +39,7 @@
 
     <H1>@lang('Redigera frågor för lektion') {{$lesson->translateOrDefault(App::getLocale())->name}}</H1>
 
-    @if(count($lesson->questions) > 0)
+    @if($questions->isNotEmpty())
         @lang('Frågor')
         <div id="questionlist">
             @foreach($questions as $question)

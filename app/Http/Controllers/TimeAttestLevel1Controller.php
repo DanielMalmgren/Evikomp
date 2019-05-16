@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use App\TimeAttest;
+use App\ClosedMonth;
 
 class TimeAttestLevel1Controller extends Controller
 {
@@ -38,6 +39,12 @@ class TimeAttestLevel1Controller extends Controller
         $user = Auth::user();
         setlocale(LC_TIME, $user->locale_id);
 
+        if(ClosedMonth::all()->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty()) {
+            $month_is_closed = true;
+        } else {
+            $month_is_closed = false;
+        }
+
         $year = date('Y', strtotime("first day of previous month"));
         $month = date('n', strtotime("first day of previous month"));
         $monthstr = strftime('%B', strtotime("first day of previous month"));
@@ -52,7 +59,8 @@ class TimeAttestLevel1Controller extends Controller
             'month' => $month,
             'monthstr' => $monthstr,
             'days_in_month' => cal_days_in_month(CAL_GREGORIAN, $month, $year),
-            'already_attested' => $user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->isNotEmpty()
+            'already_attested' => $user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->isNotEmpty(),
+            'month_is_closed' => $month_is_closed
         );
 
         logger("Månad: ".$month);

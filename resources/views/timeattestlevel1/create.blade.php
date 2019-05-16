@@ -56,14 +56,18 @@
                 <input type="hidden" name="month" value="{{$month}}">
                 <input type="hidden" name="year" value="{{$year}}">
 
-                <label><input {{$already_attested?"disabled checked":""}} type="checkbox" name="attest" value="attest" id="attest">@lang('Jag intygar härmed att ovanstående tidsregistrering är korrekt.')</label><br>
+                <label><input {{$already_attested?"disabled checked":""}} {{$month_is_closed?"disabled":""}} type="checkbox" name="attest" value="attest" id="attest">@lang('Jag intygar härmed att ovanstående tidsregistrering är korrekt.')</label><br>
 
             </div>
         </div>
 
         <br>
 
-        <button class="btn btn-primary btn-lg btn-block" disabled id="submit" name="submit" type="submit">@lang('Attestera')</button>
+        @if($month_is_closed)
+            <button class="btn btn-primary btn-lg btn-block" disabled id="submit" name="submit" type="submit">@lang('Månaden är stängd för attestering')</button>
+        @else
+            <button class="btn btn-primary btn-lg btn-block" disabled id="submit" name="submit" type="submit">@lang('Attestera')</button>
+        @endif
 
     </form>
 </div>

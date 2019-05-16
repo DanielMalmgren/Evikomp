@@ -59,6 +59,12 @@ class QuestionController extends Controller
     public function destroy(Question $question) {
         logger('Destroying question '.$question->id);
         $question->delete();
+
+        $following_questions = Question::where('order', '>', $question->order)->where('lesson_id', $question->lesson_id)->get();
+        foreach($following_questions as $following_question) {
+            $following_question->order--;
+            $following_question->save();
+        }
     }
 
     public function edit(Question $question) {
@@ -106,7 +112,6 @@ class QuestionController extends Controller
                 ResponseOption::destroy($response_option_id);
             }
         }
-
 
         //Loop through all added response options
         if($request->new_response_option_text) {

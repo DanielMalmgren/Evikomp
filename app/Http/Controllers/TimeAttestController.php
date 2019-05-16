@@ -9,6 +9,7 @@ use App\ActiveTime;
 use App\ProjectTimeType;
 use App\TimeAttest;
 use App\Workplace;
+use App\ClosedMonth;
 
 class TimeAttestController extends Controller
 {
@@ -88,11 +89,18 @@ class TimeAttestController extends Controller
             }
         }
 
+        if(ClosedMonth::all()->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty()) {
+            $month_is_closed = true;
+        } else {
+            $month_is_closed = false;
+        }
+
         $data = array(
             'workplace' => $workplace,
             'attestlevel' => $attestlevel,
             'year' => $year,
-            'month' => $month
+            'month' => $month,
+            'month_is_closed' => $month_is_closed
         );
 
         return view('timeattest.ajaxuserlist')->with($data);

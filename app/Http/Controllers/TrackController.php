@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Track;
-use App\User;
-use App\Lesson;
 
 class TrackController extends Controller
 {
@@ -17,10 +15,10 @@ class TrackController extends Controller
             $tracks = Auth::user()->tracks->merge(Auth::user()->workplace->tracks)->sort();
         }
 
-        $data = array(
+        $data = [
             'tracks' => $tracks,
-            'showall' => $request->showall
-        );
+            'showall' => $request->showall,
+        ];
         return view('tracks.index')->with($data);
     }
 
@@ -34,19 +32,19 @@ class TrackController extends Controller
             //->whereHas('tracks', function ($query) use ($track) {
             //    $query->where('id', $track->id);
             //})
-            ->where(function ($query) use ($title) {
-                $query->whereHas('titles', function ($query) use ($title) {
-                    $query->where('id', $title->id);
-                })
+                ->where(static function ($query) use ($title) {
+                    $query->whereHas('titles', static function ($query) use ($title) {
+                        $query->where('id', $title->id);
+                    })
                 ->orWhere('limited_by_title', false);
-            })
-            ->orderBy('order')->get();
+                })
+                ->orderBy('order')->get();
 
         }
-        $data = array(
+        $data = [
             'track' => $track,
-            'lessons' => $lessons
-        );
+            'lessons' => $lessons,
+        ];
         return view('tracks.show')->with($data);
     }
 }

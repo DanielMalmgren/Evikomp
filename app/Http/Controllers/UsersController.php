@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\ActiveTime;
 use App\User;
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -40,15 +39,15 @@ class UsersController extends Controller
         //$users = User::all();
         $workplaces = Auth::user()->admin_workplaces;
         $users = User::all()->whereIn('workplace_id', $workplaces->pluck('id'));
-        $data = array(
+        $data = [
             'users' => $users,
-            'workplaces' => $workplaces
-        );
+            'workplaces' => $workplaces,
+        ];
         return view('pages.listusers')->with($data);
     }
 
     public function export() {
-        return Excel::download(new UsersExport, 'Deltagare_Evikomp.xlsx');
+        return Excel::download(new UsersExport(), 'Deltagare_Evikomp.xlsx');
     }
 
     //Return a json containing users matching a search string sent from a select2 object. See https://select2.org/data-sources/ajax
@@ -60,7 +59,7 @@ class UsersController extends Controller
         foreach($users as $key => $user) {
             $results['results'][$key] = [
                 'id' => $user->id,
-                'text' => $user->name
+                'text' => $user->name,
             ];
         }
 

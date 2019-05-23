@@ -6,18 +6,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Municipality;
 use App\Workplace;
-use App\User;
 use App\Locale;
 
 class FirstLoginController extends Controller
 {
-    public function show(Request $request) {
-        $data = array(
+    public function show() {
+        $data = [
             'municipalities' => Municipality::orderBy('name')->get(),
             'workplaces' => Workplace::orderBy('name')->get(),
             'locales' => Locale::All(),
-            'user' => Auth::user()
-        );
+            'user' => Auth::user(),
+        ];
         if(Auth::user()->accepted_gdpr) {
             return redirect('/settings');
         } else {
@@ -28,7 +27,7 @@ class FirstLoginController extends Controller
     public function storeLanguage(Request $request) {
 
         $this->validate($request, [
-            'locale' => 'required'
+            'locale' => 'required',
         ]);
 
         $user = $request->user();

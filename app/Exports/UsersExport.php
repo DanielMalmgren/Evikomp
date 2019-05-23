@@ -4,7 +4,6 @@ namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use App\User;
 
@@ -23,7 +22,7 @@ class UsersExport implements FromCollection, ShouldAutoSize, WithHeadings
         return [
             'Personnr',
             'Namn',
-            'E-post'
+            'E-post',
         ];
     }
 

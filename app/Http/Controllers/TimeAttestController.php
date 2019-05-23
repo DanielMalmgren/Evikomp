@@ -5,19 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use App\ActiveTime;
-use App\ProjectTimeType;
 use App\TimeAttest;
 use App\Workplace;
 use App\ClosedMonth;
 
 class TimeAttestController extends Controller
 {
-    public function create(Request $request) {
+    public function create() {
         $user = Auth::user();
         setlocale(LC_TIME, $user->locale_id);
 
-        $project_time_types = ProjectTimeType::all();
         if ($user->hasRole('Admin')) {
             $workplaces = Workplace::all()->sortBy('name');
         } else {
@@ -27,11 +24,11 @@ class TimeAttestController extends Controller
         $year = date('Y', strtotime("-1 month"));
         $month = date('n', strtotime("-1 month"));
 
-        $data = array(
+        $data = [
             'year' => $year,
             'month' => $month,
-            'workplaces' => $workplaces
-        );
+            'workplaces' => $workplaces,
+        ];
         return view('timeattest.create')->with($data);
     }
 
@@ -39,14 +36,14 @@ class TimeAttestController extends Controller
         $this->validate($request, [
             'month' => 'required',
             'year' => 'required',
-            'workplace' => 'required'
+            'workplace' => 'required',
         ]);
 
         $user = Auth::user();
 
         if(isset($request->level2attest)) {
             foreach($request->level2attest as $user_id) {
-                $time_attest = new TimeAttest;
+                $time_attest = new TimeAttest();
                 $time_attest->year = $request->year;
                 $time_attest->month = $request->month;
                 $time_attest->user_id = $user_id;
@@ -61,7 +58,7 @@ class TimeAttestController extends Controller
 
         if(isset($request->level3attest)) {
             foreach($request->level3attest as $user_id) {
-                $time_attest = new TimeAttest;
+                $time_attest = new TimeAttest();
                 $time_attest->year = $request->year;
                 $time_attest->month = $request->month;
                 $time_attest->user_id = $user_id;
@@ -77,13 +74,13 @@ class TimeAttestController extends Controller
         return redirect('/')->with('success', 'Attesteringen har sparats');
     }
 
-    public function ajaxuserlist(Workplace $workplace, $year, $month, Request $request) {
+    public function ajaxuserlist(Workplace $workplace, $year, $month) {
         if (Auth::user()->hasRole('Admin')) {
             $attestlevel = 100;
         } else {
             //TODO: Det här är inget snyggt, måste komma på hur man gör det på ett bättre sätt!
             foreach(Auth::user()->admin_workplaces as $admin_workplace) {
-                if($admin_workplace->id == $workplace->id) {
+                if($admin_workplace->id === $workplace->id) {
                     $attestlevel = $admin_workplace->pivot->attestlevel;
                 }
             }
@@ -95,13 +92,13 @@ class TimeAttestController extends Controller
             $month_is_closed = false;
         }
 
-        $data = array(
+        $data = [
             'workplace' => $workplace,
             'attestlevel' => $attestlevel,
             'year' => $year,
             'month' => $month,
-            'month_is_closed' => $month_is_closed
-        );
+            'month_is_closed' => $month_is_closed,
+        ];
 
         return view('timeattest.ajaxuserlist')->with($data);
     }
@@ -110,11 +107,11 @@ class TimeAttestController extends Controller
 
         $time_rows = $user->time_rows($year, $month);
 
-        $data = array(
+        $data = [
             'time_rows' => $time_rows,
             'year' => $year,
-            'month' => $month
-        );
+            'month' => $month,
+        ];
 
         return view('timeattest.ajaxuserdetails')->with($data);
     }

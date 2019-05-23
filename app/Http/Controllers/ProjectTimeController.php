@@ -12,7 +12,7 @@ use App\ClosedMonth;
 
 class ProjectTimeController extends Controller
 {
-    public function create(Request $request) {
+    public function create() {
         $project_time_types = ProjectTimeType::all();
         if (Auth::user()->hasRole('Admin')) {
             $workplaces = Workplace::all()->sortBy('name');
@@ -27,15 +27,15 @@ class ProjectTimeController extends Controller
             $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
         }
 
-        $data = array(
+        $data = [
             'workplaces' => $workplaces,
             'project_time_types' => $project_time_types,
-            'mindate' => $mindate
-        );
+            'mindate' => $mindate,
+        ];
         return view('projecttime.create')->with($data);
     }
 
-    public function createsingleuser(Request $request) {
+    public function createsingleuser() {
         $project_time_types = ProjectTimeType::all();
         $user = Auth::user();
 
@@ -48,12 +48,12 @@ class ProjectTimeController extends Controller
             $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
         }
 
-        $data = array(
+        $data = [
             'project_time_types' => $project_time_types,
             'user' => $user,
             'workplace' => $user->workplace,
-            'mindate' => $mindate
-        );
+            'mindate' => $mindate,
+        ];
         return view('projecttime.createsingleuser')->with($data);
     }
 
@@ -67,29 +67,33 @@ class ProjectTimeController extends Controller
             $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
         }
 
-        $data = array(
+        $data = [
             'workplace' => $workplace,
             'project_time_types' => $project_time_types,
-            'mindate' => $mindate
-        );
+            'mindate' => $mindate,
+        ];
         return view('projecttime.ajax')->with($data);
     }
 
     public function store(Request $request) {
         usleep(50000);
-        $request->validate(['starttime' => 'required|date_format:H:i',
-                            'endtime' => 'required|date_format:H:i|after:starttime',
-                            'date' => 'required|date',
-                            'users' => 'required',
-                            'workplace_id' => 'required'],
-                            ['starttime.required' => __('Du måste ange en starttid!'),
-                            'endtime.required' => __('Du måste ange en sluttid!'),
-                            'date.required' => __('Du måste ange ett datum!'),
-                            'date.date' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
-                            'starttime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
-                            'endtime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
-                            'users.required' => __('Du måste ange minst en användare som tid ska registreras på!'),
-                            'endtime.after' => __('Sluttiden får inte inträffa före starttiden!')]);
+        $request->validate([
+            'starttime' => 'required|date_format:H:i',
+            'endtime' => 'required|date_format:H:i|after:starttime',
+            'date' => 'required|date',
+            'users' => 'required',
+            'workplace_id' => 'required',
+        ],
+        [
+            'starttime.required' => __('Du måste ange en starttid!'),
+            'endtime.required' => __('Du måste ange en sluttid!'),
+            'date.required' => __('Du måste ange ett datum!'),
+            'date.date' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
+            'starttime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
+            'endtime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
+            'users.required' => __('Du måste ange minst en användare som tid ska registreras på!'),
+            'endtime.after' => __('Sluttiden får inte inträffa före starttiden!'),
+        ]);
 
         $year = substr($request->date, 0, 4);
         $month = substr($request->date, 5, 2);
@@ -101,12 +105,14 @@ class ProjectTimeController extends Controller
             $user = User::find($user_id);
 
             //Checking for colliding attests
-             if($user->time_attests->where('month', $month)->where('year', $year)->count() > 0) {
+            if($user->time_attests->where('month', $month)->where('year', $year)->count() > 0) {
                 //return back()->with('error', $user->name.' har redan attesterat denna månad!')->withInput();
-                add_flash_message([
-                    'message' => __(':name har redan attesterat denna månad!', ['name' => $user->name]),
-                    'type' => 'danger'
-                ]);
+                add_flash_message(
+                    [
+                        'message' => __(':name har redan attesterat denna månad!', ['name' => $user->name]),
+                        'type' => 'danger',
+                    ]
+                );
             }
 
             //Checking for colliding registration
@@ -118,19 +124,19 @@ class ProjectTimeController extends Controller
                     //return back()->with('error', $user->name.' har redan ett tillfälle inlagt mellan '.$occasion->startstr().' och '.$occasion->endstr().'!')->withInput();
                     add_flash_message([
                         'message' => __('Detta krockar med en registrering som :name har gjort mellan klockan :from och :to samma dag!', ['name' => $user->name, 'from' => $occasion->startstr(), 'to' =>$occasion->endstr()]),
-                        'type' => 'danger'
+                        'type' => 'danger',
                     ]);
                 }
             }
         }
 
-        if(!empty(Session('notification_collection'))) {
+        if(! empty(Session('notification_collection'))) {
             return back()->withInput();
         }
 
         $workplace = Workplace::find($request->workplace_id);
 
-        $project_time = new ProjectTime;
+        $project_time = new ProjectTime();
         $project_time->date = $request->date;
         $project_time->starttime = $request->starttime;
         $project_time->endtime = $request->endtime;
@@ -143,28 +149,28 @@ class ProjectTimeController extends Controller
         return redirect('/')->with('success', __('Projekttiden har registrerats'));
     }
 
-    public function index(Request $request) {
+    public function index() {
 
         $workplaces = null;
 
         if (Auth::user()->hasRole('Admin')) {
             $workplaces = Workplace::all();
-        } else if (Auth::user()->hasRole('Arbetsplatsadministratör')) {
+        } elseif (Auth::user()->hasRole('Arbetsplatsadministratör')) {
             $workplaces = Auth::user()->admin_workplaces->prepend(Auth::user()->workplace);
         }
 
-        $data = array(
-            'workplaces' => $workplaces
-        );
+        $data = [
+            'workplaces' => $workplaces,
+        ];
 
         return view('projecttime.index')->with($data);
     }
 
-    public function edit(Request $request, ProjectTime $project_time) {
+    public function edit(ProjectTime $project_time) {
         $project_time_types = ProjectTimeType::all();
         $user = Auth::user();
 
-        if($project_time->registered_by_user != $user && !$user->hasRole('Admin') && !$project_time->workplace->workplace_admins->contains('id', $user->id)) {
+        if($project_time->registered_by_user !== $user && ! $user->hasRole('Admin') && ! $project_time->workplace->workplace_admins->contains('id', $user->id)) {
             abort(403);
         }
 
@@ -177,36 +183,40 @@ class ProjectTimeController extends Controller
             $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
         }
 
-        $data = array(
+        $data = [
             'project_time_types' => $project_time_types,
             'user' => $user,
             'workplace' => $project_time->workplace,
             'mindate' => $mindate,
-            'project_time' => $project_time
-        );
+            'project_time' => $project_time,
+        ];
         return view('projecttime.edit')->with($data);
     }
 
     public function update(Request $request, ProjectTime $project_time) {
         $user = Auth::user();
-        if($project_time->registered_by_user != $user && !$user->hasRole('Admin') && !$project_time->workplace->workplace_admins->contains('id', $user->id)) {
+        if($project_time->registered_by_user !== $user && ! $user->hasRole('Admin') && ! $project_time->workplace->workplace_admins->contains('id', $user->id)) {
             abort(403);
         }
 
         usleep(50000);
-        $request->validate(['starttime' => 'required|date_format:H:i',
-                            'endtime' => 'required|date_format:H:i|after:starttime',
-                            'date' => 'required|date',
-                            'users' => 'required',
-                            'workplace_id' => 'required'],
-                            ['starttime.required' => __('Du måste ange en starttid!'),
-                            'endtime.required' => __('Du måste ange en sluttid!'),
-                            'date.required' => __('Du måste ange ett datum!'),
-                            'date.date' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
-                            'starttime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
-                            'endtime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
-                            'users.required' => __('Du måste ange minst en användare som tid ska registreras på!'),
-                            'endtime.after' => __('Sluttiden får inte inträffa före starttiden!')]);
+        $request->validate([
+            'starttime' => 'required|date_format:H:i',
+            'endtime' => 'required|date_format:H:i|after:starttime',
+            'date' => 'required|date',
+            'users' => 'required',
+            'workplace_id' => 'required',
+        ],
+        [
+            'starttime.required' => __('Du måste ange en starttid!'),
+            'endtime.required' => __('Du måste ange en sluttid!'),
+            'date.required' => __('Du måste ange ett datum!'),
+            'date.date' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
+            'starttime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
+            'endtime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
+            'users.required' => __('Du måste ange minst en användare som tid ska registreras på!'),
+            'endtime.after' => __('Sluttiden får inte inträffa före starttiden!'),
+        ]);
 
         $workplace = Workplace::find($request->workplace_id);
 

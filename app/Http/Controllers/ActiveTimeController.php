@@ -5,24 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\ActiveTime;
-use App\User;
-use DateInterval;
-use App\ProjectTime;
-use App\ProjectTimeType;
-use App\Exports\ActiveTimeExport;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ActiveTimeController extends Controller
 {
     public function store(Request $request) {
         $this->validate($request, [
-            'time' => 'required'
+            'time' => 'required',
         ]);
 
-        $activetime = ActiveTime::firstOrNew(
-            ['user_id' => Auth::user()->id,
-            'date' => date('Y-m-d')]
-        );
+        $activetime = ActiveTime::firstOrNew([
+            'user_id' => Auth::user()->id,
+            'date' => date('Y-m-d'),
+        ]);
 
         $activetime->seconds += $request->time;
         $activetime->save();

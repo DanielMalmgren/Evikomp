@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Municipality;
 use App\User;
-use App\ActiveTime;
 use App\ClosedMonth;
 use App\Workplace;
 
@@ -25,13 +23,13 @@ class TimeSummaryController extends Controller
 
         $month_closed = ClosedMonth::all()->where('month', $month)->where('year', $year)->isNotEmpty();
 
-        $data = array(
+        $data = [
             'year' => $year,
             'month' => $month,
             'monthstr' => strftime('%B', $time),
             'month_closed' => $month_closed,
-            'workplaces' => Workplace::all()
-        );
+            'workplaces' => Workplace::all(),
+        ];
 
         return view('timesummary.ajax')->with($data);
     }
@@ -40,7 +38,7 @@ class TimeSummaryController extends Controller
         setlocale(LC_TIME, 'sv_SE');
 
         $this->validate($request, [
-            'rel_month' => 'required'
+            'rel_month' => 'required',
         ]);
 
         $time = strtotime($request->rel_month." month");
@@ -66,11 +64,11 @@ class TimeSummaryController extends Controller
         $row = 9;
         $municipalities = collect([]);
         $total_hours = 0;
-        foreach(User::all()->where('workplace_id', '!=', NULL)->sortBy('name') as $user) {
+        foreach(User::all()->where('workplace_id', '!=', null)->sortBy('name') as $user) {
             if($user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->count() > 0) {
                 $totaltime = $user->time_attests->where('month', $month)->where('year', $year)->first()->hours;
                 if($totaltime > 0) {
-                    $age = date_diff(date_create(substr($user->personid,0,8)), date_create('now'))->y;
+                    $age = date_diff(date_create(substr($user->personid, 0, 8)), date_create('now'))->y;
                     $gender = substr($user->personid, 10, 1)%2?"M":"K";
                     $total_hours += $totaltime;
                     if($municipalities->contains('id', $user->workplace->municipality->id)) {
@@ -80,21 +78,21 @@ class TimeSummaryController extends Controller
                         $municipalities->push($user->workplace->municipality);
                     }
 
-                    $worksheet->setCellValueByColumnAndRow(1,$row,$user->name);                                 //Kolumn A, namn
-                    $worksheet->setCellValueByColumnAndRow(2,$row,substr_replace($user->personid, '-', 8, 0));  //Kolumn B, personnummer
-                    $worksheet->setCellValueByColumnAndRow(3,$row,$age);                                        //Kolumn C, ålder
-                    $worksheet->setCellValueByColumnAndRow(4,$row,$gender);                                     //Kolumn D, kön
-                    $worksheet->setCellValueByColumnAndRow(5,$row,$gender);                                     //Kolumn E, kön
-                    $worksheet->setCellValueByColumnAndRow(6,$row,$user->workplace->municipality->name);        //Kolumn F, organisationsnamn
-                    $worksheet->setCellValueByColumnAndRow(7,$row,$user->workplace->municipality->orgnummer);   //Kolumn G, organisationsnummer
-                    $worksheet->setCellValueByColumnAndRow(8,$row,$totaltime);                                  //Kolumn H, kompetensutvecklingstimmar
-                    $worksheet->setCellValueByColumnAndRow(12,$row,substr_replace($user->personid, '-', 8, 0)); //Kolumn L, personnummer
-                    $worksheet->setCellValueByColumnAndRow(13,$row,$totaltime);                                 //Kolumn H, antal timmar
-                    $worksheet->setCellValueByColumnAndRow(14,$row,substr($user->created_at, 0, 10));           //Kolumn N, Startdatum
-                    $worksheet->setCellValueByColumnAndRow(21,$row,$user->terms_of_employment);                 //Kolumn U, anställningsvillkor
-                    $worksheet->setCellValueByColumnAndRow(22,$row,$user->full_or_part_time);                   //Kolumn V, anställningens omfattning
-                    $worksheet->setCellValueByColumnAndRow(23,$row,$user->email);                               //Kolumn W, e-postadress
-                    $worksheet->setCellValueByColumnAndRow(24,$row,$user->mobile);                              //Kolumn X, mobilnummer
+                    $worksheet->setCellValueByColumnAndRow(1, $row, $user->name);                                 //Kolumn A, namn
+                    $worksheet->setCellValueByColumnAndRow(2, $row, substr_replace($user->personid, '-', 8, 0));  //Kolumn B, personnummer
+                    $worksheet->setCellValueByColumnAndRow(3, $row, $age);                                        //Kolumn C, ålder
+                    $worksheet->setCellValueByColumnAndRow(4, $row, $gender);                                     //Kolumn D, kön
+                    $worksheet->setCellValueByColumnAndRow(5, $row, $gender);                                     //Kolumn E, kön
+                    $worksheet->setCellValueByColumnAndRow(6, $row, $user->workplace->municipality->name);        //Kolumn F, organisationsnamn
+                    $worksheet->setCellValueByColumnAndRow(7, $row, $user->workplace->municipality->orgnummer);   //Kolumn G, organisationsnummer
+                    $worksheet->setCellValueByColumnAndRow(8, $row, $totaltime);                                  //Kolumn H, kompetensutvecklingstimmar
+                    $worksheet->setCellValueByColumnAndRow(12, $row, substr_replace($user->personid, '-', 8, 0)); //Kolumn L, personnummer
+                    $worksheet->setCellValueByColumnAndRow(13, $row, $totaltime);                                 //Kolumn H, antal timmar
+                    $worksheet->setCellValueByColumnAndRow(14, $row, substr($user->created_at, 0, 10));           //Kolumn N, Startdatum
+                    $worksheet->setCellValueByColumnAndRow(21, $row, $user->terms_of_employment);                 //Kolumn U, anställningsvillkor
+                    $worksheet->setCellValueByColumnAndRow(22, $row, $user->full_or_part_time);                   //Kolumn V, anställningens omfattning
+                    $worksheet->setCellValueByColumnAndRow(23, $row, $user->email);                               //Kolumn W, e-postadress
+                    $worksheet->setCellValueByColumnAndRow(24, $row, $user->mobile);                              //Kolumn X, mobilnummer
                     $row++;
                 }
             }
@@ -104,9 +102,9 @@ class TimeSummaryController extends Controller
         $row = 6;
         foreach($municipalities->sortBy('name') as $municipality) {
             //logger("Timmar för ".$municipality->name.": ".$municipality->time);
-            $worksheet->setCellValueByColumnAndRow(1,$row,$municipality->name);
-            $worksheet->setCellValueByColumnAndRow(2,$row,$municipality->orgnummer);
-            $worksheet->setCellValueByColumnAndRow(3,$row,'Kommun');
+            $worksheet->setCellValueByColumnAndRow(1, $row, $municipality->name);
+            $worksheet->setCellValueByColumnAndRow(2, $row, $municipality->orgnummer);
+            $worksheet->setCellValueByColumnAndRow(3, $row, 'Kommun');
             $row++;
         }
 

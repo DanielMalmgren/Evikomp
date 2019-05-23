@@ -36,21 +36,19 @@ class Workplace extends Model
         return $this->hasMany('App\ProjectTime');
     }
 
-    public function month_active_time($month) {
+    public function month_active_time($month, $year) {
         $active_time = 0;
         foreach($this->users as $user) {
-            //logger('User '.$user->name.' has '.$user->active_time_minutes_month($month).' active minutes');
-            $active_time += $user->active_time_minutes_month($month);
+            //logger('User '.$user->name.' has '.$user->active_time_minutes_month($month, $year).' active minutes');
+            $active_time += $user->active_time_minutes_month($month, $year);
         }
         return $active_time;
     }
 
-    public function month_attested_time($month) {
+    public function month_attested_time($month, $year, $level) {
         $attested_time = 0;
-        logger('Looping through users');
         foreach($this->users as $user) {
-            logger('User '.$user->name.' has '.$user->attested_time_month($month).' attested hours');
-            $attested_time += $user->attested_time_month($month);
+            $attested_time += $user->attested_time_month($month, $year, $level);
         }
         return $attested_time;
 

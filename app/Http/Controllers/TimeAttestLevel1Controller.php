@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
 use Illuminate\Support\Facades\Auth;
 use App\TimeAttest;
 use App\ClosedMonth;
@@ -16,12 +15,12 @@ class TimeAttestLevel1Controller extends Controller
         $this->validate($request, [
             'month' => 'required',
             'year' => 'required',
-            'attest' => 'required'
+            'attest' => 'required',
         ]);
 
         $user = Auth::user();
 
-        $time_attest = new TimeAttest;
+        $time_attest = new TimeAttest();
         $time_attest->year = $request->year;
         $time_attest->month = $request->month;
         $time_attest->user_id = $user->id;
@@ -51,15 +50,15 @@ class TimeAttestLevel1Controller extends Controller
 
         $time_rows = $user->time_rows($year, $month);
 
-        $data = array(
+        $data = [
             'time_rows' => $time_rows,
             'year' => $year,
             'month' => $month,
             'monthstr' => $monthstr,
             'days_in_month' => cal_days_in_month(CAL_GREGORIAN, $month, $year),
             'already_attested' => $user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->isNotEmpty(),
-            'month_is_closed' => $month_is_closed
-        );
+            'month_is_closed' => $month_is_closed,
+        ];
 
         return view('timeattestlevel1.create')->with($data);
     }

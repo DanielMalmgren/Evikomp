@@ -32,7 +32,7 @@ class StoreTestResponse extends FormRequest
 
         return [
             'singleresponse' => Rule::in($correctoptions->pluck('id')),
-            'multiresponse.*' => Rule::in($correctoptions->pluck('id'))
+            'multiresponse.*' => Rule::in($correctoptions->pluck('id')),
         ];
     }
 
@@ -44,7 +44,7 @@ class StoreTestResponse extends FormRequest
     public function messages()
     {
         return [
-            'in' => __('Fel svar, försök igen!')
+            'in' => __('Fel svar, försök igen!'),
         ];
     }
 

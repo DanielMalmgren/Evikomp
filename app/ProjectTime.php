@@ -41,6 +41,11 @@ class ProjectTime extends Model
         return date("n", strtotime($this->date));
     }
 
+    public function getYearAttribute()
+    {
+        return date("Y", strtotime($this->date));
+    }
+
     public function startstr() {
         return substr($this->starttime, 0, 5);
     }

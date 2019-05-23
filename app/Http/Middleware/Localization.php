@@ -16,7 +16,7 @@ class Localization
     public function handle($request, Closure $next)
     {
         //logger('Users locale: '.\Auth::user()["locale_id"]);
-        if(!empty(\Auth::user()["locale_id"])) {
+        if(isset(\Auth::user()["locale_id"])) {
             \App::setLocale(\Auth::user()["locale_id"]);
         }
 

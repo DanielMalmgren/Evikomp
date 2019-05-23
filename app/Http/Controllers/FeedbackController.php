@@ -7,16 +7,16 @@ use Illuminate\Support\Facades\Auth;
 
 class FeedbackController extends Controller
 {
-    public function create(Request $request) {
+    public function create() {
         return view('feedback.create');
     }
 
     public function post(Request $request) {
         $this->validate($request, [
-            'content' => 'required'
+            'content' => 'required',
         ]);
 
-        if(!isset($request->anonymous)) {
+        if(! isset($request->anonymous)) {
             $name = Auth::user()->name;
             $email = Auth::user()->email;
             $mobile = Auth::user()->mobile;
@@ -28,7 +28,8 @@ class FeedbackController extends Controller
             $workplace = '';
         }
 
-        $to[] = array('email' => env('FEEDBACK_RECIPIENT_ADDRESS'), 'name' => env('FEEDBACK_RECIPIENT_NAME'));
+        $to = [];
+        $to[] = ['email' => env('FEEDBACK_RECIPIENT_ADDRESS'), 'name' => env('FEEDBACK_RECIPIENT_NAME')];
 
         \Mail::to($to)->send(new \App\Mail\Feedback($request->content, $name, $email, $mobile, $workplace));
 

@@ -12,14 +12,14 @@ use App\Municipality;
 
 class WorkplaceController extends Controller
 {
-    public function create(Request $request) {
+    public function create() {
         $tracks = Track::all();
         $workplace_types = WorkplaceType::all();
-        $data = array(
+        $data = [
             'municipalities' => Municipality::orderBy('name')->get(),
             'tracks' => $tracks,
-            'workplace_types' => $workplace_types
-        );
+            'workplace_types' => $workplace_types,
+        ];
         return view('workplaces.create')->with($data);
     }
 
@@ -27,10 +27,10 @@ class WorkplaceController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'workplace_type' => 'required',
-            'municipality' => 'required'
+            'municipality' => 'required',
         ]);
 
-        $workplace = new Workplace;
+        $workplace = new Workplace();
         $workplace->name = $request->name;
         $workplace->workplace_type_id = $request->workplace_type;
         $workplace->municipality_id = $request->municipality;
@@ -47,11 +47,11 @@ class WorkplaceController extends Controller
         }
         $tracks = Track::all();
         $workplace_types = WorkplaceType::all();
-        $data = array(
+        $data = [
             'workplaces' => $workplaces,
             'tracks' => $tracks,
-            'workplace_types' => $workplace_types
-        );
+            'workplace_types' => $workplace_types,
+        ];
 
         return view('workplaces.edit')->with($data);
     }
@@ -59,18 +59,18 @@ class WorkplaceController extends Controller
     public function ajax(Workplace $workplace) {
         $tracks = Track::all();
         $workplace_types = WorkplaceType::all();
-        $data = array(
+        $data = [
             'workplace' => $workplace,
             'tracks' => $tracks,
             'workplace_types' => $workplace_types,
-            'deleteable' => $workplace->users->isEmpty() && $workplace->workplace_admins->isEmpty()
-        );
+            'deleteable' => $workplace->users->isEmpty() && $workplace->workplace_admins->isEmpty(),
+        ];
         return view('workplaces.ajax')->with($data);
     }
 
     public function update(Request $request, Workplace $workplace) {
         $this->validate($request, [
-            'workplace_type' => 'required'
+            'workplace_type' => 'required',
         ]);
 
         if($request->adminlevel) {
@@ -87,11 +87,11 @@ class WorkplaceController extends Controller
         }
 
         if($request->remove_admin) {
-            foreach($request->remove_admin as $user_id => $remove_admin) {
+            foreach(array_keys($request->remove_admin) as $user_id) {
                 $user = User::find($user_id);
                 logger('Tar bort '.$user->name.' ifrån adminbehörighet på '.$workplace->name);
                 $user->admin_workplaces()->detach($workplace);
-                if($user->admin_workplaces()->count() == 0) {
+                if($user->admin_workplaces()->count() === 0) {
                     $user->removeRole('Arbetsplatsadministratör');
                 }
             }
@@ -105,8 +105,8 @@ class WorkplaceController extends Controller
         return redirect('/workplace')->with('success', 'Uppgifterna sparade');
     }
 
-    public function destroy(Request $request, Workplace $workplace) {
-        if(!$workplace->project_times->isEmpty()) {
+    public function destroy(Workplace $workplace) {
+        if(! $workplace->project_times->isEmpty()) {
             logger('Relocating registered project time for '.$workplace->name);
             foreach($workplace->project_times as $project_time) {
                 logger("Relocating project time on ".$project_time->date);

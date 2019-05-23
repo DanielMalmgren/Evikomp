@@ -13,25 +13,25 @@ use App\Title;
 
 class SettingsController extends Controller
 {
-    public function edit(User $user = null) {
-        if(!$user) {
+    public function edit(?User $user = null) {
+        if(! $user) {
             $user = Auth::user();
         }
 
-        if($user != Auth::user() && !Auth::user()->hasRole('Admin') && !$user->workplace->workplace_admins->contains('id', Auth::user()->id)) {
+        if($user !== Auth::user() && ! Auth::user()->hasRole('Admin') && ! $user->workplace->workplace_admins->contains('id', Auth::user()->id)) {
             abort(403);
         }
 
         $tracks = Track::all();
 
-        $data = array(
+        $data = [
             'municipalities' => Municipality::orderBy('name')->get(),
             'workplaces' => Workplace::orderBy('name')->get(),
             'user' => $user,
             'locales' => Locale::All(),
             'titles' => Title::All(),
-            'tracks' => $tracks
-        );
+            'tracks' => $tracks,
+        ];
 
         return view('pages.settings')->with($data);
     }
@@ -39,7 +39,7 @@ class SettingsController extends Controller
     public function storeLanguage(Request $request) {
 
         $this->validate($request, [
-            'locale' => 'required'
+            'locale' => 'required',
         ]);
 
         $user = $request->user();
@@ -50,7 +50,7 @@ class SettingsController extends Controller
     }
 
     public function store(Request $request, User $user) {
-        if($user != Auth::user() && !Auth::user()->hasRole('Admin') && !$user->workplace->workplace_admins->contains('id', Auth::user()->id)) {
+        if($user !== Auth::user() && ! Auth::user()->hasRole('Admin') && ! $user->workplace->workplace_admins->contains('id', Auth::user()->id)) {
             abort(403);
         }
 
@@ -61,16 +61,18 @@ class SettingsController extends Controller
             'mobile' => 'required',
             'title' => 'required',
             'terms_of_employment' => 'required',
-            'full_or_part_time' => 'required'
-            ],
-            ['workplace.required' => __('Du måste ange din arbetsplats!'),
+            'full_or_part_time' => 'required',
+        ],
+        [
+            'workplace.required' => __('Du måste ange din arbetsplats!'),
             'terms_of_employment.required' => __('Du måste ange anställningsvillkor!'),
             'full_or_part_time.required' => __('Du måste ange anställningens omfattning!'),
             'email.required' => __('Du måste ange din e-postadress!'),
             'email.unique' => __('E-postadressen du har angett finns registrerad på en annan användare!'),
             'mobile.required' => __('Du måste ange ditt mobilnummer!'),
             'title.required' => __('Du måste ange din befattning!'),
-            'email.email' => __('vänligen ange en giltig e-postadress!')]);
+            'email.email' => __('vänligen ange en giltig e-postadress!'),
+        ]);
 
         $user->tracks()->sync($request->tracks);
         $user->email = $request->input('email');

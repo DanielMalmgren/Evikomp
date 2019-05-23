@@ -21,6 +21,11 @@ class ActiveTime extends Model
         return date("n", strtotime($this->date));
     }
 
+    public function getYearAttribute()
+    {
+        return date("Y", strtotime($this->date));
+    }
+
     protected $fillable = ['user_id', 'date'];
 
     //protected $dates = ['created_at', 'updated_at', 'time'];

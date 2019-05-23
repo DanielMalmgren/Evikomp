@@ -18,19 +18,19 @@ class LessonController extends Controller
         $question = Question::where('lesson_id', $lesson->id)->first();
         $lesson->times_started++;
         $lesson->save();
-        $data = array(
+        $data = [
             'question' => $question,
-            'lesson' => $lesson
-        );
+            'lesson' => $lesson,
+        ];
         return view('lessons.show')->with($data);
     }
 
-    public function create(Request $request, Track $track) {
+    public function create(Track $track) {
         $titles = Title::all();
-        $data = array(
+        $data = [
             'track' => $track,
-            'titles' => $titles
-        );
+            'titles' => $titles,
+        ];
         return view('lessons.create')->with($data);
     }
 
@@ -38,7 +38,7 @@ class LessonController extends Controller
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',
-            'track_id' => 'required'
+            'track_id' => 'required',
         ],
         ['name.required' => __('Du måste ange ett namn på lektionen!')]);
 
@@ -46,7 +46,7 @@ class LessonController extends Controller
 
         $track = Track::find($request->track_id);
 
-        $lesson = new Lesson;
+        $lesson = new Lesson();
         $lesson->track_id = $request->track_id;
         $lesson->order = $track->lessons->max('order')+1;
         $lesson->translateOrNew($currentLocale)->name = $request->name;
@@ -74,19 +74,19 @@ class LessonController extends Controller
 
     public function edit(Lesson $lesson) {
         $titles = Title::all();
-        $data = array(
+        $data = [
             'lesson' => $lesson,
-            'titles' => $titles
-        );
+            'titles' => $titles,
+        ];
         return view('lessons.edit')->with($data);
     }
 
     public function editquestions(Lesson $lesson) {
         $questions = $lesson->questions->sortBy('order');
-        $data = array(
+        $data = [
             'lesson' => $lesson,
-            'questions' => $questions
-        );
+            'questions' => $questions,
+        ];
         return view('lessons.editquestions')->with($data);
     }
 
@@ -98,16 +98,18 @@ class LessonController extends Controller
             'new_html.*' => 'string',
             'html.*' => 'string',
             'new_vimeo.*' => 'integer',
-            'vimeo.*' => 'integer'
+            'vimeo.*' => 'integer',
         ],
-        ['name.required' => __('Du måste ange ett namn på lektionen!'),
-        'new_audio.*.mimetypes' => __('Din ljudfil måste vara i mp3-format!'),
-        'new_audio.*.file' => __('Du måste välja en fil add ladda upp!'),
-        'new_audio.*.max' => __('Din fil är för stor! Max-storleken är 20MB!'),
-        'new_html.*.string' => __('Du måste skriva någon text i textrutan!'),
-        'html.*.string' => __('Du måste skriva någon text i textrutan!'),
-        'new_vimeo.*.integer' => __('Ett giltigt Vimeo-id har bara siffror!'),
-        'vimeo.*.integer' => __('Ett giltigt Vimeo-id har bara siffror!')]);
+        [
+            'name.required' => __('Du måste ange ett namn på lektionen!'),
+            'new_audio.*.mimetypes' => __('Din ljudfil måste vara i mp3-format!'),
+            'new_audio.*.file' => __('Du måste välja en fil add ladda upp!'),
+            'new_audio.*.max' => __('Din fil är för stor! Max-storleken är 20MB!'),
+            'new_html.*.string' => __('Du måste skriva någon text i textrutan!'),
+            'html.*.string' => __('Du måste skriva någon text i textrutan!'),
+            'new_vimeo.*.integer' => __('Ett giltigt Vimeo-id har bara siffror!'),
+            'vimeo.*.integer' => __('Ett giltigt Vimeo-id har bara siffror!'),
+        ]);
 
         $currentLocale = \App::getLocale();
 
@@ -138,7 +140,7 @@ class LessonController extends Controller
 
         //Loop through all deleted html contents
         if($request->remove_html) {
-            foreach($request->remove_html as $remove_html_id => $remove_html) {
+            foreach(array_keys($request->remove_html) as $remove_html_id) {
                 Content::destroy($remove_html_id);
             }
         }
@@ -167,11 +169,10 @@ class LessonController extends Controller
 
         //Loop through all deleted vimeo contents
         if($request->remove_vimeo) {
-            foreach($request->remove_vimeo as $remove_vimeo_id => $remove_vimeo) {
+            foreach(array_keys($request->remove_vimeo) as $remove_vimeo_id) {
                 Content::destroy($remove_vimeo_id);
             }
         }
-
 
         //Loop through all added audio contents
         if($request->new_audio) {
@@ -189,7 +190,7 @@ class LessonController extends Controller
 
         //Loop through all deleted audio contents
         if($request->remove_audio) {
-            foreach($request->remove_audio as $remove_audio_id => $remove_audio) {
+            foreach(array_keys($request->remove_audio) as $remove_audio_id) {
                 $content = Content::find($remove_audio_id);
                 Storage::delete("public/pods/".$content->content);
                 Content::destroy($remove_audio_id);
@@ -204,8 +205,9 @@ class LessonController extends Controller
                 $id = $match[1];
                 $content = Content::find($id);
                 if($content) {
-                    $content->order = $i++;
+                    $content->order = $i;
                     $content->save();
+                    $i++;
                 }
             }
         }

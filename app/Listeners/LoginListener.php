@@ -2,10 +2,7 @@
 
 namespace App\Listeners;
 
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Aacotroneo\Saml2\Events\Saml2LoginEvent;
-//use Illuminate\Support\Facades\Auth;
 use App\User;
 
 class LoginListener
@@ -28,7 +25,7 @@ class LoginListener
      */
     public function handle(Saml2LoginEvent $event)
     {
-        $messageId = $event->getSaml2Auth()->getLastMessageId();
+        //$messageId = $event->getSaml2Auth()->getLastMessageId();
         //TODO: Logga message-id och förhindra att det återanvänds för att förhindra replay attacks
         //logger(print_r($event->getSaml2User(), true));
         $samluser = $event->getSaml2User();
@@ -50,13 +47,13 @@ class LoginListener
         $user = User::where('personid', $personnr)->first();
         if(empty($user)) {
             logger("Ny användare!");
-            $user = new User;
+            $user = new User();
             if(isset($userattr["urn:oid:0.9.2342.19200300.100.1.3"])) {
                 $user->email = $userattr["urn:oid:0.9.2342.19200300.100.1.3"][0];
                 logger("SAML Mailadress: ".$userattr["urn:oid:0.9.2342.19200300.100.1.3"][0]);
             }
             $user->personid = $personnr;
-            if(str_word_count($firstname) == 1) {
+            if(str_word_count($firstname) === 1) {
                 $user->firstname = $firstname;
             } else {
                 $user->firstname = str_word_count($firstname, 1)[0];

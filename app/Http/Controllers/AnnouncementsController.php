@@ -20,9 +20,9 @@ class AnnouncementsController extends Controller
     {
         $announcements = Announcement::All()->sort()->reverse();
 
-        $data = array(
-            'announcements' => $announcements
-        );
+        $data = [
+            'announcements' => $announcements,
+        ];
         return view('announcements.index')->with($data);
     }
 
@@ -46,10 +46,10 @@ class AnnouncementsController extends Controller
     {
         $this->validate($request, [
             'heading' => 'required',
-            'bodytext' => 'required'
+            'bodytext' => 'required',
         ]);
 
-        $announcement = new Announcement;
+        $announcement = new Announcement();
         $announcement->heading = $request->heading;
         $announcement->bodytext = $request->bodytext;
         $announcement->preamble = $request->preamble;
@@ -66,9 +66,9 @@ class AnnouncementsController extends Controller
      */
     public function show(Announcement $announcement)
     {
-        $data = array(
-            'announcement' => $announcement
-        );
+        $data = [
+            'announcement' => $announcement,
+        ];
         return view('announcements.show')->with($data);
     }
 
@@ -80,9 +80,9 @@ class AnnouncementsController extends Controller
      */
     public function edit(Announcement $announcement)
     {
-        $data = array(
-            'announcement' => $announcement
-        );
+        $data = [
+            'announcement' => $announcement,
+        ];
         return view('announcements.edit')->with($data);
     }
 
@@ -97,7 +97,7 @@ class AnnouncementsController extends Controller
     {
         $this->validate($request, [
             'heading' => 'required',
-            'bodytext' => 'required'
+            'bodytext' => 'required',
         ]);
 
         $announcement->heading = $request->heading;

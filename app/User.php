@@ -3,11 +3,8 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
-use App\ActiveTime;
-use App\ProjectTimeType;
 
 class User extends Authenticatable
 {
@@ -111,12 +108,12 @@ class User extends Authenticatable
         return date("H:i:s", $this->active_times->sum('seconds')+59);
     }
 
-    public function active_time_minutes_month($month) {
-        return ($this->active_times->where('month', $month)->sum('seconds'))/60;
+    public function active_time_minutes_month($month, $year) {
+        return ($this->active_times->where('month', $month)->where('year', $year)->sum('seconds'))/60;
     }
 
-    public function attested_time_month($month) {
-        return ($this->time_attests->where('month', $month)->sum('hours'));
+    public function attested_time_month($month, $year, $level) {
+        return $this->time_attests->where('attestlevel', '>=', $level)->where('month', $month)->where('year', $year)->sum('hours');
     }
 
     //Get the last lesson that this user did
@@ -175,7 +172,7 @@ class User extends Authenticatable
     public function next_lesson()
     {
         $last_lesson = $this->last_lesson();
-        if(!$last_lesson) {
+        if(! $last_lesson) {
             return Track::find(1)->first_lesson(); //If the user hasn't done any lessons yet, return the very first one
         }
 

@@ -7,9 +7,7 @@ use App\Question;
 use App\ResponseOption;
 use App\TestSession;
 use App\TestResponse;
-use App\LessonResult;
 use App\Lesson;
-use App\Http\Requests\StoreTestResponse;
 
 class QuestionController extends Controller
 {
@@ -17,25 +15,27 @@ class QuestionController extends Controller
         $test_session = TestSession::find($request->query('testsession_id'));
 
         $test_response = TestResponse::firstOrCreate(
-            ['test_session_id' => $test_session->id,
-            'question_id' => $question->id]
+            [
+                'test_session_id' => $test_session->id,
+                'question_id' => $question->id,
+            ]
         );
 
         $request->session()->put('test_response_id', $test_response->id);
 
-        $data = array(
+        $data = [
             'question' => $question,
             'test_session' => $test_session,
-            'test_response' => $test_response
-        );
+            'test_response' => $test_response,
+        ];
         return view('questions.show')->with($data);
     }
 
     public function create(Request $request) {
         $lesson_id = $request->input('lesson_id');
-        $data = array(
-            'lesson_id' => $lesson_id
-        );
+        $data = [
+            'lesson_id' => $lesson_id,
+        ];
         return view('questions.create')->with($data);
     }
 
@@ -43,12 +43,12 @@ class QuestionController extends Controller
         $this->validate($request, [
             'text' => 'required',
             'correctAnswers' => 'required|integer',
-            'lesson_id' => 'required'
+            'lesson_id' => 'required',
         ]);
 
         $lesson = Lesson::find($request->lesson_id);
 
-        $question = new Question;
+        $question = new Question();
         $question->lesson_id = $lesson->id;
         $question->order = $lesson->questions->max('order')+1;
         $question->save();
@@ -68,9 +68,9 @@ class QuestionController extends Controller
     }
 
     public function edit(Question $question) {
-        $data = array(
-            'question' => $question
-        );
+        $data = [
+            'question' => $question,
+        ];
         return view('questions.edit')->with($data);
     }
 
@@ -88,7 +88,7 @@ class QuestionController extends Controller
     public function update(Request $request, Question $question) {
         $this->validate($request, [
             'text' => 'required',
-            'correctAnswers' => 'required|integer'
+            'correctAnswers' => 'required|integer',
         ]);
 
         $currentLocale = \App::getLocale();
@@ -116,7 +116,7 @@ class QuestionController extends Controller
         //Loop through all added response options
         if($request->new_response_option_text) {
             foreach($request->new_response_option_text as $response_option_id => $response_option_text) {
-                $response_option = new ResponseOption;
+                $response_option = new ResponseOption();
                 $response_option->text = $response_option_text;
                 if($request->new_response_option_correct) {
                     $response_option->isCorrectAnswer = in_array($response_option_id, $request->new_response_option_correct);

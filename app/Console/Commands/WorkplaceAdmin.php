@@ -27,16 +27,6 @@ class WorkplaceAdmin extends Command
     protected $description = 'Make an user workplaceadmin';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
@@ -47,7 +37,7 @@ class WorkplaceAdmin extends Command
         $workplace = Workplace::where('name', $this->argument('workplace'))->get()->first();
         if($this->option('remove')) {
             $user->admin_workplaces()->detach($workplace);
-            if($user->admin_workplaces()->count() == 0) {
+            if($user->admin_workplaces()->count() === 0) {
                 $this->info('Removing '.$user->name.' from role Arbetsplatsadministratör');
                 $user->removeRole('Arbetsplatsadministratör');
             }

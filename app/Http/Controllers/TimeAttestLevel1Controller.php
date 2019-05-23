@@ -49,8 +49,6 @@ class TimeAttestLevel1Controller extends Controller
         $month = date('n', strtotime("first day of previous month"));
         $monthstr = strftime('%B', strtotime("first day of previous month"));
 
-        logger(strtotime("first day of previous month"));
-
         $time_rows = $user->time_rows($year, $month);
 
         $data = array(
@@ -62,9 +60,6 @@ class TimeAttestLevel1Controller extends Controller
             'already_attested' => $user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->isNotEmpty(),
             'month_is_closed' => $month_is_closed
         );
-
-        logger("Månad: ".$month);
-        logger("Tidigare attesteringar: ".$user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->count());
 
         return view('timeattestlevel1.create')->with($data);
     }

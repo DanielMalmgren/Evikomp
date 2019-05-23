@@ -111,6 +111,14 @@ class User extends Authenticatable
         return date("H:i:s", $this->active_times->sum('seconds')+59);
     }
 
+    public function active_time_minutes_month($month) {
+        return ($this->active_times->where('month', $month)->sum('seconds'))/60;
+    }
+
+    public function attested_time_month($month) {
+        return ($this->time_attests->where('month', $month)->sum('hours'));
+    }
+
     //Get the last lesson that this user did
     public function last_lesson()
     {
@@ -147,7 +155,7 @@ class User extends Authenticatable
                 $occasions = $this->project_times()->where('project_time_type_id', $type)->where('date', $date)->get();
                 $minutes = 0;
                 foreach($occasions as $occasion) {
-                     $minutes += $occasion->minutes();
+                     $minutes += $occasion->minutes;
                 }
                 $day = date('j', strtotime($date));
                 $time_rows[$rowtitle][$day] = round($minutes/60, 1);

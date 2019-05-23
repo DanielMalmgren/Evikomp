@@ -16,6 +16,11 @@ class ActiveTime extends Model
         return new \DateTime('0000-00-00 ' . $value);
     }
 
+    public function getMonthAttribute()
+    {
+        return date("n", strtotime($this->date));
+    }
+
     protected $fillable = ['user_id', 'date'];
 
     //protected $dates = ['created_at', 'updated_at', 'time'];

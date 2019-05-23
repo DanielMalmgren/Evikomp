@@ -13,7 +13,7 @@
         });
     </script>
 
-    <div class="col-md-5 mb-3">
+    <div class="col-md-8 mb-3">
 
         <H1>@lang('Sammanställning till ESF')</H1>
         <form method="get" name="settings" action="{{action('TimeSummaryController@export')}}" accept-charset="UTF-8">

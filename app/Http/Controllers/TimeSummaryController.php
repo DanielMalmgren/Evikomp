@@ -8,6 +8,7 @@ use App\Municipality;
 use App\User;
 use App\ActiveTime;
 use App\ClosedMonth;
+use App\Workplace;
 
 class TimeSummaryController extends Controller
 {
@@ -28,7 +29,8 @@ class TimeSummaryController extends Controller
             'year' => $year,
             'month' => $month,
             'monthstr' => strftime('%B', $time),
-            'month_closed' => $month_closed
+            'month_closed' => $month_closed,
+            'workplaces' => Workplace::all()
         );
 
         return view('timesummary.ajax')->with($data);
@@ -71,9 +73,13 @@ class TimeSummaryController extends Controller
                     $age = date_diff(date_create(substr($user->personid,0,8)), date_create('now'))->y;
                     $gender = substr($user->personid, 10, 1)%2?"M":"K";
                     $total_hours += $totaltime;
-                    if(!$municipalities->contains('id', $user->workplace->municipality->id)) {
+                    if($municipalities->contains('id', $user->workplace->municipality->id)) {
+                        //$municipalities->firstWhere('id', $user->workplace->municipality->id)->time += $totaltime;
+                    } else {
+                        //$user->workplace->municipality->time = $totaltime;
                         $municipalities->push($user->workplace->municipality);
                     }
+
                     $worksheet->setCellValueByColumnAndRow(1,$row,$user->name);                                 //Kolumn A, namn
                     $worksheet->setCellValueByColumnAndRow(2,$row,substr_replace($user->personid, '-', 8, 0));  //Kolumn B, personnummer
                     $worksheet->setCellValueByColumnAndRow(3,$row,$age);                                        //Kolumn C, ålder
@@ -97,6 +103,7 @@ class TimeSummaryController extends Controller
         $worksheet = $spreadsheet->getSheetByName('Register_deltag_organisationer');
         $row = 6;
         foreach($municipalities->sortBy('name') as $municipality) {
+            //logger("Timmar för ".$municipality->name.": ".$municipality->time);
             $worksheet->setCellValueByColumnAndRow(1,$row,$municipality->name);
             $worksheet->setCellValueByColumnAndRow(2,$row,$municipality->orgnummer);
             $worksheet->setCellValueByColumnAndRow(3,$row,'Kommun');

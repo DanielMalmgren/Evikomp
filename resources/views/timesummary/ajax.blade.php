@@ -3,7 +3,24 @@
 
         Sammanställning över {{$monthstr.' '.$year}}<br>
 
-        Här kommer det att stå en massa info om vilka arbetsplatser som har skött sig och vilka som har slarvat...
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Arbetsplats</th>
+                <th scope="col">Upparbetad tid</th>
+                <th scope="col">Attesterad tid</th>
+              </tr>
+            </thead>
+            <tbody>
+            @foreach($workplaces->sortBy('name') as $workplace)
+              <tr>
+                <th scope="row">{{$workplace->name}}</th>
+                <td>{{round($workplace->project_times->where('month', $month)->sum('minutes')/60, 1)}} + {{round($workplace->month_active_time($month)/60, 1)}}</td> {{--TODO: Why doesn't the active time sum up exactly with the one on attest page?--}}
+                <td>{{$workplace->month_attested_time($month)}}</td>
+              </tr>
+            @endforeach
+            </tbody>
+          </table>
 
     </div>
 </div>

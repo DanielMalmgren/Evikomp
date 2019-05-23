@@ -26,9 +26,19 @@ class ProjectTime extends Model
         return $this->belongsTo('App\User', 'registered_by');
     }
 
-    public function minutes()
+    /*public function minutes()
     {
         return ((new \DateTime($this->endtime))->getTimestamp() - (new \DateTime($this->starttime))->getTimestamp()) / 60;
+    }*/
+
+    public function getMinutesAttribute()
+    {
+        return ((new \DateTime($this->endtime))->getTimestamp() - (new \DateTime($this->starttime))->getTimestamp()) / 60;
+    }
+
+    public function getMonthAttribute()
+    {
+        return date("n", strtotime($this->date));
     }
 
     public function startstr() {

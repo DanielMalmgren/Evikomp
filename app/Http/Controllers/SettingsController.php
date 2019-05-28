@@ -86,6 +86,7 @@ class SettingsController extends Controller
         } else {
             $user->firstname = $user->saml_firstname;
         }
+        $user->name = $user->firstname." ".$user->lastname;
         $user->title_id = $request->input('title');
         $user->terms_of_employment = $request->input('terms_of_employment');
         $user->full_or_part_time = $request->input('full_or_part_time');

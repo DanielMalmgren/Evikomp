@@ -170,7 +170,7 @@ class ProjectTimeController extends Controller
         $project_time_types = ProjectTimeType::all();
         $user = Auth::user();
 
-        if($project_time->registered_by_user !== $user && ! $user->hasRole('Admin') && ! $project_time->workplace->workplace_admins->contains('id', $user->id)) {
+        if($project_time->registered_by_user != $user && ! $user->hasRole('Admin') && ! $project_time->workplace->workplace_admins->contains('id', $user->id)) {
             abort(403);
         }
 
@@ -195,7 +195,7 @@ class ProjectTimeController extends Controller
 
     public function update(Request $request, ProjectTime $project_time) {
         $user = Auth::user();
-        if($project_time->registered_by_user !== $user && ! $user->hasRole('Admin') && ! $project_time->workplace->workplace_admins->contains('id', $user->id)) {
+        if($project_time->registered_by_user != $user && ! $user->hasRole('Admin') && ! $project_time->workplace->workplace_admins->contains('id', $user->id)) {
             abort(403);
         }
 

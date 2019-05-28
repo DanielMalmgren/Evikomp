@@ -80,9 +80,9 @@
             <div class="row container">
                 <div>
                     <label for="firstname">@lang('Förnamn')</label>
-                    @if (str_word_count($user->saml_firstname) > 1)
+                    @if (str_word_count_utf8($user->saml_firstname) > 1)
                         <select class="custom-select d-block w-200" name="firstname">
-                            @foreach(str_word_count($user->saml_firstname, 1) as $firstname)
+                            @foreach(str_word_count_utf8($user->saml_firstname, 1) as $firstname)
                                 @if($user->firstname == $firstname)
                                     <option selected value="{{$firstname}}">{{$firstname}}</option>
                                 @else

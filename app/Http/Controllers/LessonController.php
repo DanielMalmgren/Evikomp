@@ -128,7 +128,6 @@ class LessonController extends Controller
         //Loop through all added html contents
         if($request->new_html) {
             foreach($request->new_html as $temp_key => $new_html) {
-                logger("Ny html-content med följande innehåll: ".$new_html);
                 $content = new Content();
                 $content->type = 'html';
                 $content->translateOrNew($currentLocale)->text = $new_html;
@@ -157,7 +156,6 @@ class LessonController extends Controller
         //Loop through all added vimeo contents
         if($request->new_vimeo) {
             foreach($request->new_vimeo as $temp_key => $new_vimeo) {
-                logger("Ny Vimeo-content med följande innehåll: ".$new_vimeo);
                 $content = new Content();
                 $content->type = 'vimeo';
                 $content->content = $new_vimeo;

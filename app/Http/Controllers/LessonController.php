@@ -103,7 +103,7 @@ class LessonController extends Controller
         [
             'name.required' => __('Du måste ange ett namn på lektionen!'),
             'new_audio.*.mimetypes' => __('Din ljudfil måste vara i mp3-format!'),
-            'new_audio.*.file' => __('Du måste välja en fil add ladda upp!'),
+            'new_audio.*.file' => __('Du måste välja en fil att ladda upp!'),
             'new_audio.*.max' => __('Din fil är för stor! Max-storleken är 20MB!'),
             'new_html.*.string' => __('Du måste skriva någon text i textrutan!'),
             'html.*.string' => __('Du måste skriva någon text i textrutan!'),

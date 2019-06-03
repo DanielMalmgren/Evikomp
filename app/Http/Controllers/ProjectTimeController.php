@@ -146,7 +146,7 @@ class ProjectTimeController extends Controller
         $project_time->save();
         $project_time->users()->sync($request->users);
 
-        return redirect('/')->with('success', __('Projekttiden har registrerats'));
+        return redirect($request->return_url)->with('success', __('Projekttiden har registrerats'));
     }
 
     public function index() {

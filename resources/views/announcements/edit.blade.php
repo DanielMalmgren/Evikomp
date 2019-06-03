@@ -15,7 +15,9 @@
                 ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
                 ['unorderedList', 'orderedList']
             ],
-            lang: 'sv'
+            lang: 'sv',
+            removeformatPasted: true,
+            minimalLinks: true
         });
     });
 </script>

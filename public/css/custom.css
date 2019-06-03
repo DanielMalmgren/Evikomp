@@ -2,6 +2,10 @@
 * ====================== Various ===========================
 */
 
+input[type="radio"] {
+    margin-right: 10px;
+}
+
 .wsmenucontainer {
     min-height: 100vh;
     background-position: 50% 50%;
@@ -59,12 +63,8 @@ small a {
     color: #000;
 }
 
-a {
+.list-group-item a {
     color: #000;
-}
-
-audio {
-    width: 250px;
 }
 
 .wsmenu-list .select2-container {
@@ -72,10 +72,18 @@ audio {
     width: 240px;
 }
 
+audio {
+    width: 250px;
+}
+
 @media (min-width: 992px) {
     .wsmenu li.search-wrapper {
       float: right !important;
       margin-right: 20px !important;
+    }
+
+    audio {
+        width: 500px;
     }
   }
 

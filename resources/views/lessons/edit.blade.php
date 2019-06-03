@@ -20,7 +20,9 @@
                 ['justifyLeft', 'justifyCenter'],
                 ['unorderedList', 'orderedList']
             ],
-            lang: 'sv'
+            lang: 'sv',
+            removeformatPasted: true,
+            minimalLinks: true
         });
     }
 

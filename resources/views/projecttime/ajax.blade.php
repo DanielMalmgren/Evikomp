@@ -27,6 +27,7 @@
     @csrf
 
     <input type="hidden" name="workplace_id" value="{{$workplace->id}}">
+    <input type="hidden" name="return_url" value="/projecttime/create">
 
     <select class="custom-select d-block w-100" id="type" name="type" required="">
         @foreach($project_time_types as $type)

@@ -18,7 +18,9 @@
                 ['strong', 'em', 'del'],
                 ['link'],
                 ['justifyLeft', 'justifyCenter'],
-                ['unorderedList', 'orderedList']
+                ['unorderedList', 'orderedList'],
+                ['horizontalRule'],
+                ['fullscreen']
             ],
             lang: 'sv',
             removeformatPasted: true,

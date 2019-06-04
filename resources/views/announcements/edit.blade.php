@@ -12,8 +12,10 @@
                 ['formatting'],
                 ['strong', 'em', 'del'],
                 ['link'],
-                ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
-                ['unorderedList', 'orderedList']
+                ['justifyLeft', 'justifyCenter'],
+                ['unorderedList', 'orderedList'],
+                ['horizontalRule'],
+                ['fullscreen']
             ],
             lang: 'sv',
             removeformatPasted: true,

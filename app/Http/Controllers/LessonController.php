@@ -90,6 +90,10 @@ class LessonController extends Controller
         return view('lessons.editquestions')->with($data);
     }
 
+    private function add_target_to_link($text) {
+        return str_replace('<a href=', '<a target="_blank" href=', $text);
+    }
+
     public function update(Request $request, Lesson $lesson) {
         usleep(50000);
         $this->validate($request, [
@@ -120,7 +124,7 @@ class LessonController extends Controller
         if($request->html) {
             foreach($request->html as $html_id => $html_text) {
                 $content = Content::find($html_id);
-                $content->translateOrNew($currentLocale)->text = $html_text;
+                $content->translateOrNew($currentLocale)->text = $this->add_target_to_link($html_text);
                 $content->save();
             }
         }
@@ -130,7 +134,7 @@ class LessonController extends Controller
             foreach($request->new_html as $temp_key => $new_html) {
                 $content = new Content();
                 $content->type = 'html';
-                $content->translateOrNew($currentLocale)->text = $new_html;
+                $content->translateOrNew($currentLocale)->text = $this->add_target_to_link($new_html);
                 $content->lesson_id = $lesson->id;
                 $content->save();
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);

@@ -119,7 +119,7 @@ class QuestionController extends Controller
                 $response_option = new ResponseOption();
                 $response_option->text = $response_option_text;
                 if($request->new_response_option_correct) {
-                    $response_option->isCorrectAnswer = isset($request->response_option_correct) && in_array($response_option_id, $request->new_response_option_correct);
+                    $response_option->isCorrectAnswer = isset($request->new_response_option_correct) && in_array($response_option_id, $request->new_response_option_correct);
                 } else {
                     $response_option->isCorrectAnswer = false;
                 }

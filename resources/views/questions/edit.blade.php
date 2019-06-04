@@ -28,8 +28,8 @@
 
         <div id="response_options_div">
             @lang('Svarsalternativ')
-                @if(count($question->response_options) > 0)
-                <div id="input_fields_wrap">
+            <div id="input_fields_wrap">
+            @if(count($question->response_options) > 0)
                 @foreach($question->response_options as $response_option)
                     <div class="mb-3">
                         <input name="response_option_text[{{$response_option->id}}]" id="response{{$response_option->id}}" class="form-control w-100" value="{{$response_option->translateOrDefault(App::getLocale())->text}}">
@@ -41,8 +41,8 @@
                         <button class="btn btn-default btn-danger remove_field" type="button">X</button>
                     </div>
                 @endforeach
-                </div>
             @endif
+            </div>
 
             <div id="add_alternative_button" class="btn btn-primary" style="margin-bottom:15px" type="text">@lang('Lägg till ett svarsalternativ')</div>
         </div>

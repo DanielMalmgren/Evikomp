@@ -27,6 +27,10 @@ class TestController extends Controller
 
     public function store(StoreTestResponse $request) {
         $test_response = TestResponse::find($request->session()->get('test_response_id'));
+        if(! isset($test_response)) {
+            logger("Something went wrong while storing test response!");
+            logger("Test response id: ".$request->session()->get('test_response_id'));
+        }
         $question = $test_response->question;
         $test_session = $test_response->test_session;
         $lesson = $test_session->lesson;

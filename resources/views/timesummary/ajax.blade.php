@@ -14,7 +14,7 @@
             <tbody>
             @foreach($workplaces->sortBy('name') as $workplace)
               <tr>
-                <th scope="row">{{$workplace->name}}</th>
+                <th scope="row">{{$workplace->name}} ({{$workplace->municipality->name}})</th>
                 <td>{{round($workplace->project_times->where('month', $month)->where('year', $year)->sum('minutes')/60, 1)}} + {{round($workplace->month_active_time($month, $year)/60, 1)}}</td> {{--TODO: Why doesn't the active time sum up exactly with the one on attest page?--}}
                 <td>{{$workplace->month_attested_time($month, $year, 3)}}</td>
               </tr>

@@ -56,7 +56,7 @@ class CheckLinksInLessons extends Command
     public function handle()
     {
         $mailtext = '';
-        //$this->info("The following links have problems:");
+        $this->info("The following links have problems:");
         $contents = Content::where('type', 'html')->get();
         foreach($contents as $content) {
             $translations = $content->translations()->get();
@@ -65,8 +65,8 @@ class CheckLinksInLessons extends Command
                 if(isset($links[1])) {
                     foreach($links[1] as $link) {
                         if(!$this->testurl($link)) {
-                            //$this->info("URL: ".$link." in lesson ".$content->lesson->translateOrDefault($translation->locale)->name." (".$translation->locale.")");
-                            $mailtext .= "URL: ".$link." i lektionen ".$content->lesson->translateOrDefault($translation->locale)->name." (".$translation->locale.")<br>";
+                            $this->info("URL: ".$link." in lesson ".$content->lesson->translateOrDefault($translation->locale)->name." (".$translation->locale.")");
+                            $mailtext .= $link." i lektionen ".$content->lesson->translateOrDefault($translation->locale)->name." (".$translation->locale.")\n";
                         }
                     }
                 }

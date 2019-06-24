@@ -161,7 +161,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         //Dimsav Translatable
-        Dimsav\Translatable\TranslatableServiceProvider::class,
+        Astrotomic\Translatable\TranslatableServiceProvider::class,
     ],
 
     /*

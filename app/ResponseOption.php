@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ResponseOption extends Model
 {
-    use \Dimsav\Translatable\Translatable;
+    use \Astrotomic\Translatable\Translatable;
 
     public $translatedAttributes = ['text'];
 

@@ -66,7 +66,7 @@ class CheckLinksInLessons extends Command
                     foreach($links[1] as $link) {
                         if(!$this->testurl($link)) {
                             $this->info("URL: ".$link." in lesson ".$content->lesson->translateOrDefault($translation->locale)->name." (".$translation->locale.")");
-                            $mailtext .= $link." i lektionen ".$content->lesson->translateOrDefault($translation->locale)->name." (".$translation->locale.")\n";
+                            $mailtext .= $link." i lektionen ".$content->lesson->translateOrDefault($translation->locale)->name." (".$translation->locale.")<br>";
                         }
                     }
                 }

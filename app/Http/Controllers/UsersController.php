@@ -59,7 +59,7 @@ class UsersController extends Controller
         foreach($users as $key => $user) {
             $results['results'][$key] = [
                 'id' => $user->id,
-                'text' => $user->name,
+                'text' => $user->name.' ('.$user->email.')',
             ];
         }
 

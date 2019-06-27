@@ -89,6 +89,13 @@ class QuestionController extends Controller
         $this->validate($request, [
             'text' => 'required',
             'correctAnswers' => 'required|integer',
+            'new_response_option_text.*' => 'string',
+            'response_option_text.*' => 'string',
+        ],
+        [
+            'text.required' => __('Du glömde skriva i själva frågan!'),
+            'new_response_option_text.*.string' => __('Du kan inte ange tomma svarsalternativ!'),
+            'response_option_text.*.string' => __('Du kan inte ange tomma svarsalternativ!'),
         ]);
 
         $currentLocale = \App::getLocale();

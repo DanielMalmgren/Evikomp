@@ -14,6 +14,10 @@ class QuestionController extends Controller
     public function show(Request $request, Question $question) {
         $test_session = TestSession::find($request->query('testsession_id'));
 
+        if(!isset($test_session)) {
+            logger("No test session found for session id ".$request->query('testsession_id'));
+        }
+
         $test_response = TestResponse::firstOrCreate(
             [
                 'test_session_id' => $test_session->id,

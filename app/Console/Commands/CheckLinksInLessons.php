@@ -55,6 +55,7 @@ class CheckLinksInLessons extends Command
      */
     public function handle()
     {
+        logger("Checking all links for errors");
         $mailtext = '';
         $this->info("The following links have problems:");
         $contents = Content::where('type', 'html')->get();

@@ -18,10 +18,6 @@
                                 <iframe src="https://player.vimeo.com/video/{{$content->content}}" width="0" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
                             </div>
                         </div>
-                        {{--@php
-                            $hash = unserialize(file_get_contents("http://vimeo.com/api/v2/video/".$content->content.".php"));
-                        @endphp
-                        <img src="{{$hash[0]['thumbnail_medium']}}">--}}
                         @break
 
                     @case('html')
@@ -33,6 +29,16 @@
                         <audio controls controlsList="nodownload">
                             <source src="/storage/pods/{{$content->content}}" type="audio/mpeg">
                         </audio>
+                        @break
+
+                    @case('office')
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="https://view.officeapps.live.com/op/embed.aspx?src={{env('APP_URL')}}/storage/office/{{$content->content}}"></iframe>
+                        </div>
+                        @break
+
+                    @case('file')
+                        <a href="/storage/files/{{$content->content}}">{{$content->content}}</a>
                         @break
 
                     @default

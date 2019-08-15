@@ -99,6 +99,8 @@ class LessonController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'new_audio.*' => 'file|mimetypes:audio/mpeg|max:20000',
+            'new_office.*' => 'file|mimetypes:application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation|max:20000',
+            'new_file.*' => 'file|max:20000',
             'new_html.*' => 'string',
             'html.*' => 'string',
             'new_vimeo.*' => 'integer',
@@ -107,8 +109,13 @@ class LessonController extends Controller
         [
             'name.required' => __('Du måste ange ett namn på lektionen!'),
             'new_audio.*.mimetypes' => __('Din ljudfil måste vara i mp3-format!'),
+            'new_office.*.mimetypes' => __('Din file måste vara antingen ett Word-dokument, en Excel-fil eller en Powerpoint-presentation!'),
             'new_audio.*.file' => __('Du måste välja en fil att ladda upp!'),
+            'new_office.*.file' => __('Du måste välja en fil att ladda upp!'),
+            'new_file.*.file' => __('Du måste välja en fil att ladda upp!'),
             'new_audio.*.max' => __('Din fil är för stor! Max-storleken är 20MB!'),
+            'new_office.*.max' => __('Din fil är för stor! Max-storleken är 20MB!'),
+            'new_file.*.max' => __('Din fil är för stor! Max-storleken är 20MB!'),
             'new_html.*.string' => __('Du måste skriva någon text i textrutan!'),
             'html.*.string' => __('Du måste skriva någon text i textrutan!'),
             'new_vimeo.*.integer' => __('Ett giltigt Vimeo-id har bara siffror!'),
@@ -196,6 +203,52 @@ class LessonController extends Controller
                 $content = Content::find($remove_audio_id);
                 Storage::delete("public/pods/".$content->content);
                 Content::destroy($remove_audio_id);
+            }
+        }
+
+        //Loop through all added office contents
+        if($request->new_office) {
+            foreach($request->new_office as $temp_key => $new_office) {
+                $filename = $new_office->getClientOriginalName();
+                $new_office->storeAs('public/office', $filename);
+                $content = new Content();
+                $content->type = 'office';
+                $content->content = $filename;
+                $content->lesson_id = $lesson->id;
+                $content->save();
+                $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+            }
+        }
+
+        //Loop through all deleted office contents
+        if($request->remove_office) {
+            foreach(array_keys($request->remove_office) as $remove_office_id) {
+                $content = Content::find($remove_office_id);
+                Storage::delete("public/office/".$content->content);
+                Content::destroy($remove_office_id);
+            }
+        }
+
+        //Loop through all added file contents
+        if($request->new_file) {
+            foreach($request->new_file as $temp_key => $new_file) {
+                $filename = $new_file->getClientOriginalName();
+                $new_file->storeAs('public/files', $filename);
+                $content = new Content();
+                $content->type = 'file';
+                $content->content = $filename;
+                $content->lesson_id = $lesson->id;
+                $content->save();
+                $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+            }
+        }
+
+        //Loop through all deleted file contents
+        if($request->remove_file) {
+            foreach(array_keys($request->remove_file) as $remove_file_id) {
+                $content = Content::find($remove_file_id);
+                Storage::delete("public/files/".$content->content);
+                Content::destroy($remove_file_id);
             }
         }
 

@@ -53,7 +53,7 @@
         var add_button = $("#add_content_button");
         var new_id = 0;
 
-        $(add_button).click(function(e){
+        $(content_to_add).change(function(e){
             e.preventDefault();
             new_id = getfreeid();
             switch($("#content_to_add").val()) {
@@ -67,9 +67,16 @@
                 case 'audio':
                     $(wrapper).append('<div id="new_audio['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_audio['+new_id+']">@lang('Pod (ljudfil)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_audio['+new_id+']" class="form-control" type="file" accept="audio/mpeg"></div></div>');
                     break;
+                case 'office':
+                    $(wrapper).append('<div id="new_office['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_office['+new_id+']">@lang('Office-fil (Word, Excel, Powerpoint)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_office['+new_id+']" class="form-control" type="file" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation"></div></div>');
+                    break;
+                case 'file':
+                    $(wrapper).append('<div id="new_file['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_file['+new_id+']">@lang('Övrig fil')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_file['+new_id+']" class="form-control" type="file"></div></div>');
+                    break;
             }
             document.lesson.submit.disabled = false;
             update_content_order();
+            $("#content_to_add").val('select');
         });
 
         $(wrapper).on("click",".remove_field", function(e){
@@ -134,15 +141,13 @@
             <div class="col-lg-4">
                 <label for="locale">@lang('Typ av innehåll att lägga till')</label>
                 <select class="custom-select d-block w-100" name="content_to_add" id="content_to_add">
-                    <option value="vimeo">Film (Vimeo)</option>
-                    <option value="html">Text</option>
-                    <option value="audio">Pod (ljudfil)</option>
+                    <option selected disabled value="select">@lang('Välj typ av innehåll')</option>>
+                    <option value="vimeo">@lang('Vimeo-film')</option>
+                    <option value="html">@lang('Text')</option>
+                    <option value="audio">@lang('Pod (ljudfil)')</option>
+                    <option value="office">@lang('Office-fil (Word, Excel, Powerpoint)')</option>
+                    <option value="file">@lang('Övrig fil')</option>
                 </select>
-            </div>
-
-            <div class="col-lg-4">
-                <br>
-                <div id="add_content_button" class="btn btn-primary" style="margin-bottom:15px" type="text">@lang('Lägg till innehåll')</div>
             </div>
         </div>
 

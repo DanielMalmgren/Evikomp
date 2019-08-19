@@ -8,12 +8,11 @@
                 @endif
             </h5>
         </div>
-        <div class="col-lg-1 col-md-2 col-sm-2">
+        {{--<div class="col-lg-1 col-md-2 col-sm-2">
             <small>@lang('Betyg'): {{$lesson->rating()}}</small>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-5 test-stars">
                 @if($lesson->lesson_results->where('user_id', Auth::user()->id)->first())
-                {{--<small class="text-muted">{{$lesson->lesson_results->where('user_id', Auth::user()->id)->first()->personal_best_percent}}</small>--}}
                 @php
                     $percent = $lesson->lesson_results->where('user_id', Auth::user()->id)->first()->personal_best_percent;
                 @endphp
@@ -33,7 +32,7 @@
                     <img src="/images/Star_unhappy_small.png">
                 @endif
             @endif
-        </div>
+        </div>--}}
     </div>
 
 </a>

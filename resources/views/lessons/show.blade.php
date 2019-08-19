@@ -35,10 +35,12 @@
                         <div class="embed-responsive embed-responsive-16by9">
                             <iframe class="embed-responsive-item" src="https://view.officeapps.live.com/op/embed.aspx?src={{env('APP_URL')}}/storage/office/{{$content->content}}"></iframe>
                         </div>
+                        <br>
                         @break
 
                     @case('file')
-                        <a href="/storage/files/{{$content->content}}">{{$content->content}}</a>
+                        <a target="_blank" href="/storage/files/{{$content->content}}">{{$content->content}}</a>
+                        <br>
                         @break
 
                     @default

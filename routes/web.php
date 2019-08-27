@@ -18,6 +18,7 @@ Route::get('/lessons/{lesson}/edit',            'LessonController@edit')->middle
 Route::put('/lessons/{lesson}',                 'LessonController@update')->middleware('permission:manage lessons');
 Route::get('/lessons/{lesson}/editquestions',   'LessonController@editquestions')->middleware('permission:manage lessons');
 Route::put('/lessons/{lesson}/vote',            'LessonController@vote');
+Route::get('/lessons/{lesson}/finish',          'LessonController@finish');
 Route::post('/lessons/reorder',                 'LessonController@reorder')->middleware('permission:manage lessons');
 
 //TestController

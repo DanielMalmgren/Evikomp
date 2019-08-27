@@ -94,6 +94,13 @@ class LessonController extends Controller
         return str_replace('<a href=', '<a target="_blank" href=', $text);
     }
 
+    public function finish(Lesson $lesson) {
+        LessonResult::updateOrCreate(
+            ['user_id' => Auth::user()->id, 'lesson_id' => $lesson->id]
+        );
+        return redirect('/');
+    }
+
     public function update(Request $request, Lesson $lesson) {
         usleep(50000);
         $this->validate($request, [
@@ -201,8 +208,11 @@ class LessonController extends Controller
         if($request->remove_audio) {
             foreach(array_keys($request->remove_audio) as $remove_audio_id) {
                 $content = Content::find($remove_audio_id);
-                Storage::delete("public/pods/".$content->content);
                 Content::destroy($remove_audio_id);
+                if(Content::where('content', $content->content)->where('type', 'audio')->get()->isEmpty()) {
+                    logger("Deleting public/pods/".$content->content." from disk");
+                    Storage::delete("public/pods/".$content->content);
+                }
             }
         }
 
@@ -224,8 +234,11 @@ class LessonController extends Controller
         if($request->remove_office) {
             foreach(array_keys($request->remove_office) as $remove_office_id) {
                 $content = Content::find($remove_office_id);
-                Storage::delete("public/office/".$content->content);
                 Content::destroy($remove_office_id);
+                if(Content::where('content', $content->content)->where('type', 'office')->get()->isEmpty()) {
+                    logger("Deleting public/office/".$content->content." from disk");
+                    Storage::delete("public/office/".$content->content);
+                }
             }
         }
 
@@ -247,8 +260,11 @@ class LessonController extends Controller
         if($request->remove_file) {
             foreach(array_keys($request->remove_file) as $remove_file_id) {
                 $content = Content::find($remove_file_id);
-                Storage::delete("public/files/".$content->content);
                 Content::destroy($remove_file_id);
+                if(Content::where('content', $content->content)->where('type', 'file')->get()->isEmpty()) {
+                    logger("Deleting public/files/".$content->content." from disk");
+                    Storage::delete("public/files/".$content->content);
+                }
             }
         }
 

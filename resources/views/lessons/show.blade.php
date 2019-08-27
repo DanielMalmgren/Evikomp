@@ -61,6 +61,8 @@
         <a href="/test/{{$lesson->id}}" class="btn btn-primary disabled">@lang('Fortsätt till testet')</a>
     @endif--}}
 
+    <a href="/lessons/{{$lesson->id}}/finish" class="btn btn-primary">@lang('Färdig med denna lektion')</a>
+
     @can ('manage lessons')
         <a href="/lessons/{{$lesson->id}}/edit" class="btn btn-primary">@lang('Redigera lektionen')</a>
         {{--<a href="/lessons/{{$lesson->id}}/editquestions" class="btn btn-primary">@lang('Redigera frågor för lektion')</a>--}}

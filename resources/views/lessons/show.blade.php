@@ -27,19 +27,19 @@
 
                     @case('audio')
                         <audio controls controlsList="nodownload">
-                            <source src="/storage/pods/{{$content->content}}" type="audio/mpeg">
+                            <source src="{{$content->url()}}" type="audio/mpeg">
                         </audio>
                         @break
 
                     @case('office')
                         <div class="embed-responsive embed-responsive-16by9">
-                            <iframe class="embed-responsive-item" src="https://view.officeapps.live.com/op/embed.aspx?src={{env('APP_URL')}}/storage/office/{{$content->content}}"></iframe>
+                            <iframe class="embed-responsive-item" src="https://view.officeapps.live.com/op/embed.aspx?src={{env('APP_URL').$content->url()}}"></iframe>
                         </div>
                         <br>
                         @break
 
                     @case('file')
-                        <a target="_blank" href="/storage/files/{{$content->content}}">{{$content->content}}</a>
+                        <a target="_blank" href="{{$content->url()}}">{{$content->content}}</a>
                         <br>
                         @break
 

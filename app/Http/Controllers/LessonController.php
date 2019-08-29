@@ -90,10 +90,6 @@ class LessonController extends Controller
         return view('lessons.editquestions')->with($data);
     }
 
-    private function add_target_to_link($text) {
-        return str_replace('<a href=', '<a target="_blank" href=', $text);
-    }
-
     public function finish(Lesson $lesson) {
         LessonResult::updateOrCreate(
             ['user_id' => Auth::user()->id, 'lesson_id' => $lesson->id]
@@ -138,7 +134,7 @@ class LessonController extends Controller
         if($request->html) {
             foreach($request->html as $html_id => $html_text) {
                 $content = Content::find($html_id);
-                $content->translateOrNew($currentLocale)->text = $this->add_target_to_link($html_text);
+                $content->translateOrNew($currentLocale)->text = $content->add_target_to_links($html_text);
                 $content->save();
             }
         }
@@ -146,11 +142,7 @@ class LessonController extends Controller
         //Loop through all added html contents
         if($request->new_html) {
             foreach($request->new_html as $temp_key => $new_html) {
-                $content = new Content();
-                $content->type = 'html';
-                $content->translateOrNew($currentLocale)->text = $this->add_target_to_link($new_html);
-                $content->lesson_id = $lesson->id;
-                $content->save();
+                $content = new Content('html', $lesson->id, null, $new_html);
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
             }
         }
@@ -174,11 +166,7 @@ class LessonController extends Controller
         //Loop through all added vimeo contents
         if($request->new_vimeo) {
             foreach($request->new_vimeo as $temp_key => $new_vimeo) {
-                $content = new Content();
-                $content->type = 'vimeo';
-                $content->content = $new_vimeo;
-                $content->lesson_id = $lesson->id;
-                $content->save();
+                $content = new Content('vimeo', $lesson->id, $new_vimeo);
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
             }
         }
@@ -193,13 +181,8 @@ class LessonController extends Controller
         //Loop through all added audio contents
         if($request->new_audio) {
             foreach($request->new_audio as $temp_key => $new_audio) {
-                $filename = $new_audio->getClientOriginalName();
-                $new_audio->storeAs('public/pods', $filename); //TODO: Måste kolla varför denna bara skapar helt tomma filer i labmiljön, funkar bra i dev
-                $content = new Content();
-                $content->type = 'audio';
-                $content->content = $filename;
-                $content->lesson_id = $lesson->id;
-                $content->save();
+                $content = new Content('audio', $lesson->id, $new_audio->getClientOriginalName());
+                $new_audio->storeAs("public/files/", $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
             }
         }
@@ -209,23 +192,16 @@ class LessonController extends Controller
             foreach(array_keys($request->remove_audio) as $remove_audio_id) {
                 $content = Content::find($remove_audio_id);
                 Content::destroy($remove_audio_id);
-                if(Content::where('content', $content->content)->where('type', 'audio')->get()->isEmpty()) {
-                    logger("Deleting public/pods/".$content->content." from disk");
-                    Storage::delete("public/pods/".$content->content);
-                }
+                logger("Deleting public/files/".$content->filename()." from disk");
+                Storage::delete("public/files/".$content->filename());
             }
         }
 
         //Loop through all added office contents
         if($request->new_office) {
             foreach($request->new_office as $temp_key => $new_office) {
-                $filename = $new_office->getClientOriginalName();
-                $new_office->storeAs('public/office', $filename);
-                $content = new Content();
-                $content->type = 'office';
-                $content->content = $filename;
-                $content->lesson_id = $lesson->id;
-                $content->save();
+                $content = new Content('office', $lesson->id, $new_office->getClientOriginalName());
+                $new_office->storeAs("public/files/", $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
             }
         }
@@ -235,23 +211,16 @@ class LessonController extends Controller
             foreach(array_keys($request->remove_office) as $remove_office_id) {
                 $content = Content::find($remove_office_id);
                 Content::destroy($remove_office_id);
-                if(Content::where('content', $content->content)->where('type', 'office')->get()->isEmpty()) {
-                    logger("Deleting public/office/".$content->content." from disk");
-                    Storage::delete("public/office/".$content->content);
-                }
+                logger("Deleting public/files/".$content->filename()." from disk");
+                Storage::delete("public/files/".$content->filename());
             }
         }
 
         //Loop through all added file contents
         if($request->new_file) {
             foreach($request->new_file as $temp_key => $new_file) {
-                $filename = $new_file->getClientOriginalName();
-                $new_file->storeAs('public/files', $filename);
-                $content = new Content();
-                $content->type = 'file';
-                $content->content = $filename;
-                $content->lesson_id = $lesson->id;
-                $content->save();
+                $content = new Content('file', $lesson->id, $new_file->getClientOriginalName());
+                $new_file->storeAs("public/files/", $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
             }
         }
@@ -261,10 +230,8 @@ class LessonController extends Controller
             foreach(array_keys($request->remove_file) as $remove_file_id) {
                 $content = Content::find($remove_file_id);
                 Content::destroy($remove_file_id);
-                if(Content::where('content', $content->content)->where('type', 'file')->get()->isEmpty()) {
-                    logger("Deleting public/files/".$content->content." from disk");
-                    Storage::delete("public/files/".$content->content);
-                }
+                logger("Deleting public/files/".$content->filename()." from disk");
+                Storage::delete("public/files/".$content->filename());
             }
         }
 

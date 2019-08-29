@@ -10,9 +10,35 @@ class Content extends Model
 
     public $translatedAttributes = ['text'];
 
+    function __construct($type=null, $lesson_id=null, $content=null, $text=null) {
+        parent::__construct();
+        if($type != null) {
+            $currentLocale = \App::getLocale();
+            $this->type = $type;
+            $this->lesson_id = $lesson_id;
+            $this->content = $content;
+            if($text != null) {
+                $this->translateOrNew($currentLocale)->text = $this->add_target_to_links($text);
+            }
+            $this->save();
+        }
+    }
+
     public function lesson()
     {
         return $this->belongsTo('App\Lesson');
+    }
+
+    public function url() {
+        return "/storage/files/".$this->id.'.'.pathinfo($this->content, PATHINFO_EXTENSION);
+    }
+
+    public function filename() {
+        return $this->id.'.'.pathinfo($this->content, PATHINFO_EXTENSION);
+    }
+
+    public static function add_target_to_links($text) {
+        return str_replace('<a href=', '<a target="_blank" href=', $text);
     }
 }
 

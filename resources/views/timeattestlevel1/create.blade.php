@@ -74,7 +74,7 @@
     @else
         @lang('Du är inte inloggad med e-legitimation och kan därför inte attestera din tid digitalt.<br> Logga in med e-legitimation eller klicka nedan för att attestera din tid via papper.')
         <br><br>
-        <a href="/manualattestpdf" class="btn btn-primary">@lang('Hämta tid som pdf-fil')</a>
+        <a href="/manualattestxls" class="btn btn-primary">@lang('Hämta tid som Excel-fil för utskrift')</a>
     @endif
 </div>
 

@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\TimeAttest;
 use App\ClosedMonth;
-use App\ActiveTime;
-use App\ProjectTimeType;
 
 class TimeAttestLevel1Controller extends Controller
 {
@@ -65,7 +63,7 @@ class TimeAttestLevel1Controller extends Controller
         return view('timeattestlevel1.create')->with($data);
     }
 
-    public function manualattestpdf(Request $request) {
+    public function manualattestxls(Request $request) {
         $user = Auth::user();
         setlocale(LC_TIME, 'sv_SE');
 

@@ -78,7 +78,7 @@ Route::get('/timeattestajaxuserdetails/{user}/{year}/{month}', 'TimeAttestContro
 //TimeAttestLevel1Controller
 Route::get('/timeattestlevel1/create',          'TimeAttestLevel1Controller@create');
 Route::post('/timeattestlevel1',                'TimeAttestLevel1Controller@store');
-Route::get('/manualattestpdf',                  'TimeAttestLevel1Controller@manualattestpdf');
+Route::get('/manualattestxls',                  'TimeAttestLevel1Controller@manualattestxls');
 
 //FirstLoginController
 Route::get('/firstlogin',                       'FirstLoginController@show');

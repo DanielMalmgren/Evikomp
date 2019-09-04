@@ -12,6 +12,6 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function __construct() {
-        $this->middleware('auth', ['except' => 'logout']);
+        $this->middleware('auth', ['except' => ['logout', 'unsecurelogin']]);
     }
 }

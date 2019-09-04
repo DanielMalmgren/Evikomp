@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('saml_firstname')->nullable();
             $table->string('lastname')->nullable();
             $table->string('email')->unique()->nullable();
+            $table->string('password')->nullable();
             $table->string('mobile')->nullable();
             $table->unsignedTinyInteger('terms_of_employment')->nullable();
             $table->unsignedTinyInteger('full_or_part_time')->nullable();

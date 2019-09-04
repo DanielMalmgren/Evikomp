@@ -2,6 +2,8 @@
 
 Auth::routes();
 
+Route::get('/unsecurelogin',                    'HomeController@unsecurelogin');
+
 Route::get('/',                                 'HomeController@index');
 Route::get('/about',                            'HomeController@about');
 Route::get('/logout',                           'HomeController@logout');
@@ -43,14 +45,15 @@ Route::post('/feedback',                        'FeedbackController@post');
 
 //UsersControler
 //Route::get('/userinfo/{user?}',                 'UsersController@show');
-Route::get('/listusers',                        'UsersController@index')->middleware('permission:manage users');
+Route::get('/users/create',                     'UsersController@create')->middleware('permission:manage users');
+Route::post('/users',                           'UsersController@store')->middleware('permission:manage users');
+Route::get('/users',                            'UsersController@index')->middleware('permission:manage users');
 Route::get('/exportusers',                      'UsersController@export')->middleware('permission:manage users');
 Route::delete('/user/{user}',                   'UsersController@destroy')->middleware('permission:manage users');
 Route::get('/select2users',                     'UsersController@select2');
 
 //ActiveTimeController
 Route::post('/activetime',                      'ActiveTimeController@store');
-//Route::get('/exportactivetime/{user?}',         'ActiveTimeController@export');
 
 //TimeSummaryController
 Route::get('/timesummary',                      'TimeSummaryController@show')->middleware('permission:export ESF report');
@@ -75,6 +78,7 @@ Route::get('/timeattestajaxuserdetails/{user}/{year}/{month}', 'TimeAttestContro
 //TimeAttestLevel1Controller
 Route::get('/timeattestlevel1/create',          'TimeAttestLevel1Controller@create');
 Route::post('/timeattestlevel1',                'TimeAttestLevel1Controller@store');
+Route::get('/manualattestpdf',                  'TimeAttestLevel1Controller@manualattestpdf');
 
 //FirstLoginController
 Route::get('/firstlogin',                       'FirstLoginController@show');

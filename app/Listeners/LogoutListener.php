@@ -22,6 +22,7 @@ class LogoutListener
      */
     public function handle($event)
     {
+        session()->flush();
         \Auth::logout();
     }
 }

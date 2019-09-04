@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -43,7 +44,7 @@ class UsersController extends Controller
             'users' => $users,
             'workplaces' => $workplaces,
         ];
-        return view('pages.listusers')->with($data);
+        return view('users.index')->with($data);
     }
 
     public function export() {
@@ -70,5 +71,61 @@ class UsersController extends Controller
     public function destroy(User $user) {
         $user->workplace_id = null;
         $user->save();
+    }
+
+    private static function randomPassword() {
+        $alphabet = 'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        $pass = array(); //remember to declare $pass as an array
+        $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+        for ($i = 0; $i < 10; $i++) {
+            $n = rand(0, $alphaLength);
+            $pass[] = $alphabet[$n];
+        }
+        return implode($pass); //turn the array into a string
+    }
+
+    public function create() {
+        $password = $this->randomPassword();
+        $data = [
+            'password' => $password,
+        ];
+        return view('users.create')->with($data);
+    }
+
+    public function store(Request $request) {
+        usleep(50000);
+        //TODO: Mycket kvar att fixa med den här valideringen!
+        $this->validate($request, [
+            'firstname' => 'required|string|between:2,255',
+            'lastname' => 'required|string|between:2,255',
+            'personid' => 'required|numeric|between:190001010000,203012319999|unique:users',
+            'email' => 'required|string|email|unique:users',
+            'password' => 'required|string|between:8,255',
+        ],
+        [
+            'firstname.required' => __('Du måste ange ett förnamn!'),
+            'firstname.between' => __('Du måste ange ett förnamn!'),
+            'lastname.required' => __('Du måste ange ett efternamn!'),
+            'lastname.between' => __('Du måste ange ett efternamn!'),
+            'personid.required' => __('Du måste ange ett personnummer!'),
+            'personid.numeric' => __('Du måste ange ett giltigt personnummer i rätt format!'),
+            'personid.between' => __('Du måste ange ett giltigt personnummer i rätt format!'),
+            'personid.unique' => __('En användare med detta personnummer finns redan registrerad!'),
+            'email.required' => __('Du måste ange en e-postadress!'),
+            'email.unique' => __('En användare med denna e-postadress finns redan registrerad!'),
+            'password.required' => __('Du måste ange ett lösenord!'),
+        ]);
+
+        $user = new User();
+        $user->firstname = $request->firstname;
+        $user->saml_firstname = $request->firstname;
+        $user->lastname = $request->lastname;
+        $user->name = $request->firstname.' '.$request->lastname;
+        $user->personid = $request->personid;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect('/')->with('success', __('Användaren har skapats'));
     }
 }

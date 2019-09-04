@@ -52,23 +52,25 @@
                 @hasanyrole('Registrerad|Admin')
                     <li aria-haspopup="false"><a href="/" class="menuhomeicon {{ request()->is('/') ? 'active' : '' }}"><i class="fa fa-home"></i><span class="hometext">&nbsp;&nbsp;@lang('Hem')</span></a></li>
                     <li aria-haspopup="false"><a href="/tracks" class="{{ request()->is('tracks') ? 'active' : '' }}"></i>@lang('Spår')</a></li>
-                    @can('use administration')
-                        <li aria-haspopup="true"><a href="#"><i class="fa fa-angle-right"></i>@lang('Administration')</a>
-                            <ul class="sub-menu">
-                                @can('manage users')
-                                    <li aria-haspopup="false"><a href="/listusers">@lang('Användare')</a></li>
-                                @endcan
-                                @canany(['add workplaces','edit workplaces'])
-                                    <li aria-haspopup="false"><a href="/workplace">@lang('Arbetsplatsinställningar')</a></li>
-                                @endcanany
-                                <li aria-haspopup="false"><a href="/projecttime/create">@lang('Registrera projekttid')</a></li>
-                                <li aria-haspopup="false"><a href="/timeattest/create">@lang('Attestera projekttid')</a></li>
-                                @can('export ESF report')
-                                    <li aria-haspopup="false"><a href="/timesummary">@lang('Sammanställning till ESF')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcan
+                    @if (session()->has('authnissuer'))
+                        @can('use administration')
+                            <li aria-haspopup="true"><a href="#"><i class="fa fa-angle-right"></i>@lang('Administration')</a>
+                                <ul class="sub-menu">
+                                    @can('manage users')
+                                        <li aria-haspopup="false"><a href="/users">@lang('Användare')</a></li>
+                                    @endcan
+                                    @canany(['add workplaces','edit workplaces'])
+                                        <li aria-haspopup="false"><a href="/workplace">@lang('Arbetsplatsinställningar')</a></li>
+                                    @endcanany
+                                    <li aria-haspopup="false"><a href="/projecttime/create">@lang('Registrera projekttid')</a></li>
+                                    <li aria-haspopup="false"><a href="/timeattest/create">@lang('Attestera projekttid')</a></li>
+                                    @can('export ESF report')
+                                        <li aria-haspopup="false"><a href="/timesummary">@lang('Sammanställning till ESF')</a></li>
+                                    @endcan
+                                </ul>
+                            </li>
+                        @endcan
+                    @endif
                     <li aria-haspopup="true"><a href="#"><i class="fa fa-angle-right"></i>{{Auth::user()->firstname}}</a>
                         <ul class="sub-menu">
                             <li aria-haspopup="false"><a href="/settings">@lang('Inställningar')</a></li>

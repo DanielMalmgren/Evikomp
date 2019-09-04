@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\TimeAttest;
 use App\ClosedMonth;
+use App\ActiveTime;
+use App\ProjectTimeType;
 
 class TimeAttestLevel1Controller extends Controller
 {
@@ -61,5 +63,53 @@ class TimeAttestLevel1Controller extends Controller
         ];
 
         return view('timeattestlevel1.create')->with($data);
+    }
+
+    public function manualattestpdf(Request $request) {
+        $user = Auth::user();
+        setlocale(LC_TIME, 'sv_SE');
+
+        $year = date('Y', strtotime("first day of previous month"));
+        $month = date('n', strtotime("first day of previous month"));
+        $monthstr = strftime('%B', strtotime("first day of previous month"));
+        $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./xls-template/Närvarorapport_deltagare.xlsx');
+
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $worksheet->setCellValue('C6', $user->name); //Namn på deltagare
+        $worksheet->setCellValue('C7', substr_replace($user->personid, '-', 8, 0)); //Personnummer
+        $worksheet->setCellValue('C8', $user->workplace->municipality->name); //Namn på deltagarens arbetsgivare
+        $worksheet->setCellValue('C9', $user->workplace->municipality->orgnummer); //Organisationsnummer
+
+        $worksheet->setCellValue('W3', '2018/00079'); //Diarienummer
+        $worksheet->setCellValue('W4', 'Evikomp'); //Projektnamn
+
+        $worksheet->setCellValue('W6', ucfirst($monthstr)); //Redovisningsmånad
+        $worksheet->setCellValue('W7', $year); //År
+
+        $time_rows = $user->time_rows($year, $month);
+
+        $excelrow = 13;
+
+        foreach($time_rows as $title => $time_row) {
+            if($time_row != end($time_rows)) { //Skip the last row which contains sum, not needed in Excel
+                $worksheet->setCellValueByColumnAndRow(1,$excelrow,$title);
+                for($day = 1; $day <= $days_in_month; $day++) {
+                    if(isset($time_row[$day])) {
+                        $worksheet->setCellValueByColumnAndRow($day+4,$excelrow,$time_row[$day]);
+                    }
+                }
+                $excelrow++;
+            }
+        }
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+
+        $filename = "Närvaro Evikomp ".$monthstr." ".$year." ".$user->name.".xlsx";
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . addslashes(utf8_decode($filename)) . '";filename*=utf-8\'\'' . rawurlencode($filename));
+        $writer->save("php://output");
     }
 }

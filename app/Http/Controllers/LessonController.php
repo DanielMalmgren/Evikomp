@@ -103,6 +103,7 @@ class LessonController extends Controller
             'name' => 'required',
             'new_audio.*' => 'file|mimetypes:audio/mpeg|max:20000',
             'new_office.*' => 'file|mimetypes:application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation|max:20000',
+            'new_image.*' => 'file|image|max:20000',
             'new_file.*' => 'file|max:20000',
             'new_html.*' => 'string',
             'html.*' => 'string',
@@ -113,11 +114,14 @@ class LessonController extends Controller
             'name.required' => __('Du måste ange ett namn på lektionen!'),
             'new_audio.*.mimetypes' => __('Din ljudfil måste vara i mp3-format!'),
             'new_office.*.mimetypes' => __('Din file måste vara antingen ett Word-dokument, en Excel-fil eller en Powerpoint-presentation!'),
+            'new_image.*.image' => __('Felaktigt bildformat!'),
             'new_audio.*.file' => __('Du måste välja en fil att ladda upp!'),
             'new_office.*.file' => __('Du måste välja en fil att ladda upp!'),
+            'new_image.*.file' => __('Du måste välja en fil att ladda upp!'),
             'new_file.*.file' => __('Du måste välja en fil att ladda upp!'),
             'new_audio.*.max' => __('Din fil är för stor! Max-storleken är 20MB!'),
             'new_office.*.max' => __('Din fil är för stor! Max-storleken är 20MB!'),
+            'new_image.*.max' => __('Din fil är för stor! Max-storleken är 20MB!'),
             'new_file.*.max' => __('Din fil är för stor! Max-storleken är 20MB!'),
             'new_html.*.string' => __('Du måste skriva någon text i textrutan!'),
             'html.*.string' => __('Du måste skriva någon text i textrutan!'),
@@ -211,6 +215,25 @@ class LessonController extends Controller
             foreach(array_keys($request->remove_office) as $remove_office_id) {
                 $content = Content::find($remove_office_id);
                 Content::destroy($remove_office_id);
+                logger("Deleting public/files/".$content->filename()." from disk");
+                Storage::delete("public/files/".$content->filename());
+            }
+        }
+
+        //Loop through all added image files
+        if($request->new_image) {
+            foreach($request->new_image as $temp_key => $new_image) {
+                $content = new Content('image', $lesson->id, $new_image->getClientOriginalName());
+                $new_image->storeAs("public/files/", $content->filename());
+                $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+            }
+        }
+
+        //Loop through all deleted image files
+        if($request->remove_image) {
+            foreach(array_keys($request->remove_image) as $remove_image_id) {
+                $content = Content::find($remove_image_id);
+                Content::destroy($remove_image_id);
                 logger("Deleting public/files/".$content->filename()." from disk");
                 Storage::delete("public/files/".$content->filename());
             }

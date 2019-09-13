@@ -70,6 +70,9 @@
                 case 'office':
                     $(wrapper).append('<div id="new_office['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_office['+new_id+']">@lang('Office-fil (Word, Excel, Powerpoint)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_office['+new_id+']" class="form-control" type="file" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation"></div></div>');
                     break;
+                case 'image':
+                    $(wrapper).append('<div id="new_image['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_image['+new_id+']">@lang('Bild')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_image['+new_id+']" class="form-control" type="file" accept="image/jpeg,image/png,image/gif"></div></div>');
+                    break;
                 case 'file':
                     $(wrapper).append('<div id="new_file['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_file['+new_id+']">@lang('Övrig fil')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_file['+new_id+']" class="form-control" type="file"></div></div>');
                     break;
@@ -146,6 +149,7 @@
                     <option value="html">@lang('Text')</option>
                     <option value="audio">@lang('Pod (ljudfil)')</option>
                     <option value="office">@lang('Office-fil (Word, Excel, Powerpoint)')</option>
+                    <option value="image">@lang('Bild')</option>
                     <option value="file">@lang('Övrig fil')</option>
                 </select>
             </div>

@@ -76,6 +76,10 @@ audio {
     width: 250px;
 }
 
+.lessonimage {
+    max-width: 90%;
+}
+
 @media (min-width: 992px) {
     .wsmenu li.search-wrapper {
       float: right !important;

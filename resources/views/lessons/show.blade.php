@@ -38,6 +38,11 @@
                         <br>
                         @break
 
+                    @case('image')
+                        <img class="lessonimage" src="{{$content->url()}}">
+                        <br>
+                        @break
+
                     @case('file')
                         <a target="_blank" href="{{$content->url()}}">{{$content->content}}</a>
                         <br>

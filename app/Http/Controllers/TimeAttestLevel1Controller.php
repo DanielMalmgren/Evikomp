@@ -90,6 +90,7 @@ class TimeAttestLevel1Controller extends Controller
         $time_rows = $user->time_rows($year, $month);
 
         $excelrow = 13;
+        $hours = 0;
 
         foreach($time_rows as $title => $time_row) {
             if($time_row != end($time_rows)) { //Skip the last row which contains sum, not needed in Excel
@@ -97,6 +98,7 @@ class TimeAttestLevel1Controller extends Controller
                 for($day = 1; $day <= $days_in_month; $day++) {
                     if(isset($time_row[$day])) {
                         $worksheet->setCellValueByColumnAndRow($day+4,$excelrow,$time_row[$day]);
+                        $hours += $time_row[$day];
                     }
                 }
                 $excelrow++;
@@ -109,5 +111,18 @@ class TimeAttestLevel1Controller extends Controller
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . addslashes(utf8_decode($filename)) . '";filename*=utf-8\'\'' . rawurlencode($filename));
         $writer->save("php://output");
+
+        TimeAttest::updateOrCreate([
+            'year' => $year,
+            'month' => $month,
+            'user_id' => $user->id,
+            'attestant_id' => $user->id,
+            'attestlevel' => 0,
+            'authnissuer' => 'Manuell attestering',
+        ],
+        [
+            'hours' => $hours,
+            'clientip' => $request->ip(),
+        ]);
     }
 }

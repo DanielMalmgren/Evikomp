@@ -41,7 +41,15 @@
                 <h5 class="mb-0">{{$user->name}}</h5>
             </div>
 
-                @if($user->time_attests->where('month', $month)->where('year', $year)->count() > 0)
+                @if($user->time_attests->where('month', $month)->where('year', $year)->isEmpty()) {{-- Det finns ingen attest alls för denna person --}}
+                    <div class="col-lg-4 col-md-2 col-sm-2">
+                        <div class="text-danger">@lang('Ej attesterad')</div>
+                    </div>
+                @elseif($user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->isEmpty()) {{-- Det finns endast attest level 0 för denna person, dvs attestering sker på papper--}}
+                    <div class="col-lg-4 col-md-2 col-sm-2">
+                        <div class="text-danger">@lang('Attesteras manuellt på papper')</div>
+                    </div>
+                @else
                     <div class="col-lg-1 col-md-2 col-sm-2">
                         <small>{{$user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->first()->hours}}</small>
                     </div>
@@ -61,10 +69,6 @@
                         @else
                             <input type="checkbox" name="level3attest[]" value="{{$user->id}}" {{$attestlevel>=3&&!$month_is_closed?"":"disabled"}} onclick="togglesubmit(3)">
                         @endif
-                    </div>
-                @else
-                    <div class="col-lg-4 col-md-2 col-sm-2">
-                        <div class="text-danger">Ej attesterad</div>
                     </div>
                 @endif
 

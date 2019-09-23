@@ -94,26 +94,32 @@ class UsersController extends Controller
 
     public function store(Request $request) {
         usleep(50000);
-        //TODO: Mycket kvar att fixa med den här valideringen!
+
         $this->validate($request, [
             'firstname' => 'required|string|between:2,255',
             'lastname' => 'required|string|between:2,255',
             'personid' => 'required|numeric|between:190001010000,203012319999|unique:users',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|between:8,255',
+            'pwd_cleartext' => 'required|string|between:8,255',
         ],
         [
             'firstname.required' => __('Du måste ange ett förnamn!'),
+            'firstname.string' => __('Du måste ange ett förnamn!'),
             'firstname.between' => __('Du måste ange ett förnamn!'),
             'lastname.required' => __('Du måste ange ett efternamn!'),
+            'lastname.string' => __('Du måste ange ett efternamn!'),
             'lastname.between' => __('Du måste ange ett efternamn!'),
             'personid.required' => __('Du måste ange ett personnummer!'),
             'personid.numeric' => __('Du måste ange ett giltigt personnummer i rätt format!'),
             'personid.between' => __('Du måste ange ett giltigt personnummer i rätt format!'),
             'personid.unique' => __('En användare med detta personnummer finns redan registrerad!'),
             'email.required' => __('Du måste ange en e-postadress!'),
+            'email.string' => __('Du måste ange en e-postadress!'),
+            'email.email' => __('Du måste ange en e-postadress!'),
             'email.unique' => __('En användare med denna e-postadress finns redan registrerad!'),
-            'password.required' => __('Du måste ange ett lösenord!'),
+            'pwd_cleartext.required' => __('Du måste ange ett lösenord!'),
+            'pwd_cleartext.string' => __('Du måste ange ett lösenord!'),
+            'pwd_cleartext.between' => __('Lösenordet du anger måste vara minst 8 tecken!'),
         ]);
 
         $user = new User();
@@ -123,7 +129,7 @@ class UsersController extends Controller
         $user->name = $request->firstname.' '.$request->lastname;
         $user->personid = $request->personid;
         $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        $user->password = Hash::make($request->pwd_cleartext);
         $user->save();
 
         return redirect('/')->with('success', __('Användaren har skapats'));

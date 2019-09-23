@@ -35,9 +35,9 @@
         </div>
 
         <div class="mb-3">
-            <label for="password">@lang('Lösenord')</label>
-            <input type="text" class="form-control" disabled value="{{$password}}">
-            <input type="hidden" name="password" class="form-control" id="password" value="{{$password}}">
+            <label for="pwd_cleartext">@lang('Lösenord')</label>
+            <input type="text" class="form-control" disabled value="{{old('pwd_cleartext')?old('pwd_cleartext'):$password}}">
+            <input type="hidden" name="pwd_cleartext" class="form-control" id="pwd_cleartext" value="{{old('pwd_cleartext')?old('pwd_cleartext'):$password}}">
         </div>
 
         <br>

@@ -40,13 +40,16 @@
     <label>@lang('Registrerade personer')</label>
     @if(count($workplace->users) > 0)
         @foreach($workplace->users->sortBy('name') as $user)
-            <a class="list-group-item list-group-item-action">
+            <a class="list-group-item list-group-item-action" id="user-{{$user->id}}">
                 <div class="row">
                     <div class="col-lg-4 col-md-9 col-sm-7">
                         {{$user->name}}
                     </div>
                     <div class="col-lg-1 col-md-3 col-sm-5">
                         <i class="fas fa-user-edit" onClick="window.location='/settings/{{$user->id}}'"></i>
+                    </div>
+                    <div class="col-lg-1 col-md-3 col-sm-5" onclick="deleteuser({{$user->id}}, '{{$user->name}}')">
+                        <i class="fas fa-trash"></i>
                     </div>
                 </div>
             </a>
@@ -104,6 +107,18 @@
 <script src="/select2/i18n/sv.js"></script>
 
 <script type="text/javascript">
+
+    function deleteuser(user_id, user_name) {
+        if(confirm('Vill du verkligen radera '+user_name+' ifrån {{$workplace->name}}?')) {
+            $("#user-"+user_id).remove();
+            var token = "{{ csrf_token() }}";
+            $.ajax({
+                url: '/user/'+user_id,
+                data : {_token:token},
+                type: 'DELETE'
+            });
+        }
+    }
 
     function deleteworkplace() {
         if(confirm('Vill du verkligen radera {{$workplace->name}}?')) {

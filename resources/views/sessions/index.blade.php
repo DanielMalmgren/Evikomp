@@ -20,8 +20,13 @@
             </thead>
             <tbody>
             @foreach($sessions as $session)
+                @php
+                    $dt = new DateTime($session->updated_at);
+                    $tz = new DateTimeZone('Europe/Stockholm');
+                    $dt->setTimezone($tz);
+                @endphp
                 <tr>
-                    <td>{{$session->updated_at}}</td>
+                    <td>{{$dt->format('H:i:s')}}</td>
                     <td>{{$session->user->name}}</td>
                 </tr>
             @endforeach

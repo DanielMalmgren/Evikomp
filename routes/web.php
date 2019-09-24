@@ -98,6 +98,9 @@ Route::put('/workplace/{workplace}',            'WorkplaceController@update')->m
 Route::get('/workplaceajax/{workplace}',        'WorkplaceController@ajax')->middleware('permission:edit workplaces');
 Route::delete('/workplace/{workplace}',         'WorkplaceController@destroy')->middleware('permission:add workplaces');
 
+//SessionController
+Route::get('/sessions',                         'SessionController@index')->middleware('permission:manage users');
+
 //AnnouncementsController
 Route::resource('announcements',                'AnnouncementsController');
 

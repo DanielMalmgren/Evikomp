@@ -53,13 +53,15 @@ class LoginListener
                 logger("SAML Mailadress: ".$userattr["urn:oid:0.9.2342.19200300.100.1.3"][0]);
             }
             $user->personid = $personnr;
-            if(str_word_count($firstname) === 1) {
+            if(str_word_count_utf8($firstname) === 1) {
                 $user->firstname = $firstname;
             } else {
-                $user->firstname = str_word_count($firstname, 1)[0];
+                $user->firstname = str_word_count_utf8($firstname, 1)[0];
             }
+
+            $user->name = $firstname." ".$lastname;
         }
-        $user->name = $firstname." ".$lastname;
+
         $user->saml_firstname = $firstname;
         $user->lastname = $lastname;
         $user->save();

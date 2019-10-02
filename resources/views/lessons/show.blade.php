@@ -15,9 +15,13 @@
                     @case('vimeo')
                         <div style="max-width:250px">
                             <div class="vimeo-container">
-                                <iframe src="https://player.vimeo.com/video/{{$content->content}}" width="0" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                                <iframe id="vimeo_{{$content->id}}" src="https://player.vimeo.com/video/{{$content->content}}" width="0" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
                             </div>
                         </div>
+                        {{--<script type="text/javascript">
+                            var iframePlayer = new Vimeo.Player(document.querySelector('#vimeo_{{$content->id}}'));
+                            iframePlayer.enableTextTrack('sv');
+                        </script>--}}
                         @break
 
                     @case('html')

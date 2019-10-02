@@ -41,7 +41,7 @@ class CheckLinksInLessons extends Command
             return false;
         }
         foreach($file_headers as $file_header) {
-            if($file_header == 'HTTP/1.1 404 Not Found') {
+            if(strpos($file_header, 'HTTP/1.1 404') !== false) {
                 return false;
             }
         }

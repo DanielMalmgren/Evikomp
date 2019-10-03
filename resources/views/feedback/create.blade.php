@@ -10,6 +10,16 @@
         @csrf
 
         <div class="mb-3">
+            <label for="lesson">@lang('Min feedback gäller lektion')</label>
+            <select class="custom-select d-block w-100" name="lesson" id="lesson">
+                <option selected value="null">@lang('Ingen specifik lektion')</option>
+                @foreach($lessons as $lesson)
+                    <option value="{{$lesson->name}}">{{$lesson->name}}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="mb-3">
             <label for="content">@lang('Meddelande')</label>
             <textarea rows=5 name="content" class="form-control"></textarea>
         </div>

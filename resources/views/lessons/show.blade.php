@@ -4,6 +4,8 @@
 
 @section('content')
 
+<script src="https://player.vimeo.com/api/player.js"></script>
+
     <H1>{{$lesson->translateOrDefault(App::getLocale())->name}}</H1>
 
     <div class="card">
@@ -18,10 +20,10 @@
                                 <iframe id="vimeo_{{$content->id}}" src="https://player.vimeo.com/video/{{$content->content}}" width="0" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
                             </div>
                         </div>
-                        {{--<script type="text/javascript">
+                        <script type="text/javascript">
                             var iframePlayer = new Vimeo.Player(document.querySelector('#vimeo_{{$content->id}}'));
-                            iframePlayer.enableTextTrack('sv');
-                        </script>--}}
+                            iframePlayer.enableTextTrack('{{substr(App::getLocale(), 0, 2)}}').catch(function(error) {/*Do nothing if subtitle is missing*/});
+                        </script>
                         @break
 
                     @case('html')

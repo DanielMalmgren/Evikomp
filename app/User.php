@@ -129,7 +129,7 @@ class User extends Authenticatable
 
     public function time_rows($year, $month) {
         $time_rows = [];
-        $rowtitle = __('Tid i webappen');
+        $rowtitle = __('Tid i lärplattformen');
         $monthtotal = 0;
 
         $total = 0;

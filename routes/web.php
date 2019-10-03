@@ -101,6 +101,9 @@ Route::delete('/workplace/{workplace}',         'WorkplaceController@destroy')->
 //SessionController
 Route::get('/sessions',                         'SessionController@index')->middleware('permission:manage users');
 
+//StatisticsController
+Route::get('/statistics',                       'StatisticsController@index');
+
 //AnnouncementsController
 Route::resource('announcements',                'AnnouncementsController');
 

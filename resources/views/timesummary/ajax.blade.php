@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-body">
 
-        @lang('Sammanställning över {{$monthstr.' '.$year}}')<br>
+        @lang('Sammanställning över '){{$monthstr.' '.$year}}<br>
 
         <table class="table">
             <thead>

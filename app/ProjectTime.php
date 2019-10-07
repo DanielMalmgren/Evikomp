@@ -26,14 +26,16 @@ class ProjectTime extends Model
         return $this->belongsTo('App\User', 'registered_by');
     }
 
-    /*public function minutes()
-    {
-        return ((new \DateTime($this->endtime))->getTimestamp() - (new \DateTime($this->starttime))->getTimestamp()) / 60;
-    }*/
-
+    //Return the number of minutes for this project time
     public function getMinutesAttribute()
     {
         return ((new \DateTime($this->endtime))->getTimestamp() - (new \DateTime($this->starttime))->getTimestamp()) / 60;
+    }
+
+    //Return the number of minutes for this project time multiplied with the number of users affected by it
+    public function getMinutesTotalAttribute()
+    {
+        return ((new \DateTime($this->endtime))->getTimestamp() - (new \DateTime($this->starttime))->getTimestamp()) / 60 * $this->users->count();
     }
 
     public function getMonthAttribute()

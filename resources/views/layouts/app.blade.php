@@ -8,7 +8,7 @@
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('css/footer.css')}}">
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('css/custom.css')}}">
 
-        <script type="text/javascript" language="javascript" src="{{asset('js/jquery.min.js')}}"></script>
+        <script type="text/javascript" language="javascript" src="{{asset('js/jquery-3.4.1.min.js')}}"></script>
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('font-awesome/css/font-awesome.min.css')}}">
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('webslidemenu/dropdown-effects/fade-down.css')}}" />
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('webslidemenu/webslidemenu.css')}}">
@@ -37,21 +37,15 @@
                 });
             };
 
-            jQuery(document).ready(function ($) {
-                console.log('Nu är jquery ready');
-                $(window).on('load scroll load', function() {
-                    console.log('Nu är webbläsaren större/mindre (resize), eller så har man scrollat (scroll) eller så är sidan laddad och just detta körs alltid en gång (load)');
-                    if ($('footer').isInViewport()) {
-                        console.log('footer är synlig i webbläsare så lägg till en class');
-                        $('.feedback').addClass("visible-footer");
-                    } else {
-                        console.log('footer är inte synlig så plocka bort classen');
-                        $('.feedback').removeClass("visible-footer");
-                    }
-                    console.log('Nu när ovan kod har körts en gång så visar vi footern');
-                    $('.feedback').show();
-                });
+            jQuery(window).on('load resize scroll ajaxComplete', function () {
+                if ($('footer').isInViewport()) {
+                    $('.feedback').addClass("visible-footer");
+                } else {
+                    $('.feedback').removeClass("visible-footer");
+                }
+                $('.feedback').show();
             });
+
 
             jQuery.fn.isInViewport = function() {
                 var elementTop = jQuery(this).offset().top;

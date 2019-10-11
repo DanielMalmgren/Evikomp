@@ -97,6 +97,7 @@ audio {
 
 .feedback {
     position:relative;
+    display:none;
 }
 
 .feedback a {

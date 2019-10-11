@@ -16,7 +16,7 @@
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('webslidemenu/color-skins/black-orange.css')}}" />
         <link rel="stylesheet" href="/trumbowyg/ui/trumbowyg.min.css">
 
-        <script src="/js/timeme2.js"></script>
+        <script src="/js/timeme.min.js"></script>
         <script type="text/javascript">
             TimeMe.initialize({
                 idleTimeoutInSeconds: 300 // seconds
@@ -33,6 +33,7 @@
             };
 
             jQuery(document).ready(function ($) {
+                $('.feedback').show();
                 $(window).on('resize scroll load', function() {
                     if ($('footer').isInViewport()) {
                         $('.feedback').addClass("visible-footer");

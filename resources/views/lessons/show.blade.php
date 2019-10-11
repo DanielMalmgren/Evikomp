@@ -23,6 +23,10 @@
                         <script type="text/javascript">
                             var iframePlayer = new Vimeo.Player(document.querySelector('#vimeo_{{$content->id}}'));
                             iframePlayer.enableTextTrack('{{substr(App::getLocale(), 0, 2)}}').catch(function(error) {/*Do nothing if subtitle is missing*/});
+                            iframePlayer.on('timeupdate', function(data){
+                                window.focus();
+                                TimeMe.resetIdleCountdown();
+                            });
                         </script>
                         @break
 

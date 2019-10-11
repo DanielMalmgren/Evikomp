@@ -31,6 +31,24 @@
                     type: 'POST'
                 });
             };
+
+            jQuery(document).ready(function ($) {
+                $(window).on('resize scroll load', function() {
+                    if ($('footer').isInViewport()) {
+                        $('.feedback').addClass("visible-footer");
+                    } else {
+                        $('.feedback').removeClass("visible-footer");
+                    }
+                });
+            });
+
+            jQuery.fn.isInViewport = function() {
+                var elementTop = jQuery(this).offset().top;
+                var elementBottom = elementTop + jQuery(this).outerHeight();
+                var viewportTop = jQuery(window).scrollTop();
+                var viewportBottom = viewportTop + jQuery(window).height();
+                return elementBottom > viewportTop && elementTop < viewportBottom;
+            };
         </script>
 
         <title>@yield('title') - Evikomp</title>
@@ -42,6 +60,9 @@
             @include('inc.messages')
             @yield('content')
         </div>
+        @if(!\Request::is('feedback'))
+            <div class="feedback"><a href="/feedback"><img src="/images/Speech_balloon.png"></a></div>
+        @endif
         @include('inc.footer')
     </body>
 </html>

@@ -91,6 +91,29 @@ audio {
     }
   }
 
+  /*
+* ====================== Feedback link ===========================
+*/
+
+.feedback {
+    position:relative;
+}
+
+.feedback a {
+    position:fixed;
+    bottom:0;
+    right:0
+}
+
+.feedback.visible-footer a {
+    position:absolute;
+}
+
+@media (max-width: 991px)  {
+    .feedback {
+        display:none;
+    }
+}
 
 /*
 * ====================== Tracks ===========================

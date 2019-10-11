@@ -17,6 +17,11 @@
         <link rel="stylesheet" href="/trumbowyg/ui/trumbowyg.min.css">
 
         <script src="/js/timeme.min.js"></script>
+        <link href="/select2/select2.min.css" rel="stylesheet" />
+        <link href="/select2/select2-bootstrap4.min.css" rel="stylesheet" />
+        <script src="/select2/select2.min.js"></script>
+        <script src="/select2/i18n/{{substr(App::getLocale(), 0, 2)}}.js"></script>
+
         <script type="text/javascript">
             TimeMe.initialize({
                 idleTimeoutInSeconds: 300 // seconds
@@ -33,13 +38,18 @@
             };
 
             jQuery(document).ready(function ($) {
-                $('.feedback').show();
-                $(window).on('resize scroll load', function() {
+                console.log('Nu är jquery ready');
+                $(window).on('load scroll load', function() {
+                    console.log('Nu är webbläsaren större/mindre (resize), eller så har man scrollat (scroll) eller så är sidan laddad och just detta körs alltid en gång (load)');
                     if ($('footer').isInViewport()) {
+                        console.log('footer är synlig i webbläsare så lägg till en class');
                         $('.feedback').addClass("visible-footer");
                     } else {
+                        console.log('footer är inte synlig så plocka bort classen');
                         $('.feedback').removeClass("visible-footer");
                     }
+                    console.log('Nu när ovan kod har körts en gång så visar vi footern');
+                    $('.feedback').show();
                 });
             });
 

@@ -15,7 +15,7 @@ class Feedback extends Mailable
      *
      * @return void
      */
-    public function __construct($content, $lesson, $name, $email, $mobile, $workplace)
+    public function __construct($content, $lesson, $name, $email, $mobile, $workplace, $contacted)
     {
         $this->content = $content;
         $this->lesson = $lesson;
@@ -23,6 +23,7 @@ class Feedback extends Mailable
         $this->email = $email;
         $this->mobile = $mobile;
         $this->workplace = $workplace;
+        $this->contacted = $contacted;
     }
 
     public $content;
@@ -31,6 +32,7 @@ class Feedback extends Mailable
     public $email;
     public $mobile;
     public $workplace;
+    public $contacted;
 
     /**
      * Build the message.

@@ -11,5 +11,8 @@
 <p>E-post: {{$email}}</p>
 <p>Mobilnummer: {{$mobile}}</p>
 <p>Arbetsplats: {{$workplace}}</p>
+@if($contacted)
+    Personen önskar bli kontaktad gällande detta!
+@endif
 </body>
 </html>

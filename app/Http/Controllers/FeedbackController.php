@@ -39,7 +39,7 @@ class FeedbackController extends Controller
         $to = [];
         $to[] = ['email' => env('FEEDBACK_RECIPIENT_ADDRESS'), 'name' => env('FEEDBACK_RECIPIENT_NAME')];
 
-        \Mail::to($to)->send(new \App\Mail\Feedback($request->content, $request->lesson, $name, $email, $mobile, $workplace));
+        \Mail::to($to)->send(new \App\Mail\Feedback($request->content, $request->lesson, $name, $email, $mobile, $workplace, $request->contacted));
 
         return redirect('/')->with('success', 'Din feedback har skickats!');
     }

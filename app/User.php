@@ -113,7 +113,7 @@ class User extends Authenticatable
     }
 
     public function attested_time_month($month, $year, $level) {
-        return $this->time_attests->where('attestlevel', '>=', $level)->where('month', $month)->where('year', $year)->sum('hours');
+        return $this->time_attests->where('attestlevel', $level)->where('month', $month)->where('year', $year)->sum('hours');
     }
 
     //Get the last lesson that this user did

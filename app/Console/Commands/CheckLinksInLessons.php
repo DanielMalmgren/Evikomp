@@ -33,9 +33,6 @@ class CheckLinksInLessons extends Command
     }
 
     private function testurl($url) {
-        if(filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
-            return false;
-        }
         $file_headers = @get_headers($url);
         if(!is_array($file_headers)) {
             return false;

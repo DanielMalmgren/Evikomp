@@ -15,7 +15,7 @@ class StatisticsController extends Controller
 
         $chart = new SessionChart();
         $chartdata = ActiveTime::groupBy('date')->get();
-        logger(print_r($chartdata, true));
+        //logger(print_r($chartdata, true));
         $chart->labels($chartdata->keys());
         $chart->dataset('Sessioner', 'line', $chartdata->values());
 

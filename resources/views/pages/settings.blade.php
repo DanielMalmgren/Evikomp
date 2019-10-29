@@ -202,24 +202,32 @@
             </select>
         </div>
 
-        @if(count($tracks) > 0 && $user->workplace)
-            <label>@lang('Valda spår')</label><br>
-            <div class="card">
-                <div class="card-body">
-                    <small>@lang('De spår som är utgråade är förvalda av din arbetsplats och går inte att välja bort')</small>
-                    @foreach($tracks as $track)
-                        <div class="checkbox">
-                            @if($user->workplace->tracks->contains('id', $track->id))
-                                <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}" checked disabled>{{$track->translateOrDefault(App::getLocale())->name}}</label>
-                            @elseif($user->tracks->contains('id', $track->id))
-                                <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}" checked>{{$track->translateOrDefault(App::getLocale())->name}}</label>
-                            @else
-                                <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}">{{$track->translateOrDefault(App::getLocale())->name}}</label>
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
+        @if($user->workplace) {{--Settings that are not essential and that is not forced on first login settings--}}
+
+            <div class="mb-3">
+                <input type="hidden" name="use_subtitles" value="0">
+                <label><input type="checkbox" name="use_subtitles" value="1" {{$user->use_subtitles?"checked":""}}>@lang('Visa undertexter i filmer')</label>
             </div>
+
+            @if(count($tracks) > 0)
+                <label>@lang('Valda spår')</label><br>
+                <div class="card">
+                    <div class="card-body">
+                        <small>@lang('De spår som är utgråade är förvalda av din arbetsplats och går inte att välja bort')</small>
+                        @foreach($tracks as $track)
+                            <div class="checkbox">
+                                @if($user->workplace->tracks->contains('id', $track->id))
+                                    <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}" checked disabled>{{$track->translateOrDefault(App::getLocale())->name}}</label>
+                                @elseif($user->tracks->contains('id', $track->id))
+                                    <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}" checked>{{$track->translateOrDefault(App::getLocale())->name}}</label>
+                                @else
+                                    <label><input type="checkbox" name="tracks[]" value="{{$track->id}}" id="{{$track->id}}">{{$track->translateOrDefault(App::getLocale())->name}}</label>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         @endif
 
         <br>

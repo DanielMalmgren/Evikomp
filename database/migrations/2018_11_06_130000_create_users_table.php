@@ -32,6 +32,7 @@ class CreateUsersTable extends Migration
             $table->foreign('workplace_id')->references('id')->on('workplaces');
             $table->unsignedInteger('title_id')->nullable();
             $table->foreign('title_id')->references('id')->on('titles');
+            $table->boolean('use_subtitles')->default(true);
             $table->timestamps();
         });
     }

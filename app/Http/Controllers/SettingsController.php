@@ -91,6 +91,7 @@ class SettingsController extends Controller
         $user->terms_of_employment = $request->input('terms_of_employment');
         $user->full_or_part_time = $request->input('full_or_part_time');
         $user->workplace_id = $request->input('workplace');
+        $user->use_subtitles = $request->input('use_subtitles');
         $user->save();
 
         $user->assignRole('Registrerad');

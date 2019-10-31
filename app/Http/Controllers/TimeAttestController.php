@@ -21,8 +21,8 @@ class TimeAttestController extends Controller
             $workplaces = Auth::user()->admin_workplaces->sortBy('name');
         }
 
-        $year = date('Y', strtotime("-1 month"));
-        $month = date('n', strtotime("-1 month"));
+        $year = date('Y', strtotime("first day of previous month"));
+        $month = date('n', strtotime("first day of previous month"));
 
         $data = [
             'year' => $year,

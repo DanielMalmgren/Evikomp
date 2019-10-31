@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Announcement;
+use App\ClosedMonth;
 
 class HomeController extends Controller
 {
@@ -12,6 +13,13 @@ class HomeController extends Controller
             return redirect('/firstlogin');
         } else {
             $announcements = Announcement::All()->sort()->reverse()->take(5);
+
+            $last_month_is_closed = ClosedMonth::all()->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty();
+            /*if($last_month_is_closed) {
+                logger('Föregående månad är stängd');
+            } else {
+                logger('Föregående månad är fortfarande öppen');
+            }*/
 
             $data = [
                 'announcements' => $announcements,

@@ -156,11 +156,18 @@ class ProjectTimeController extends Controller
         if (Auth::user()->hasRole('Admin')) {
             $workplaces = Workplace::all();
         } elseif (Auth::user()->hasRole('Arbetsplatsadministratör')) {
-            $workplaces = Auth::user()->admin_workplaces->prepend(Auth::user()->workplace);
+            $workplaces = Auth::user()->admin_workplaces; //->prepend(Auth::user()->workplace);
+        }
+
+        if(ClosedMonth::all()->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty()) {
+            $mindate = date("Y-m")."-01";
+        } else {
+            $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
         }
 
         $data = [
             'workplaces' => $workplaces,
+            'mindate' => $mindate,
         ];
 
         return view('projecttime.index')->with($data);

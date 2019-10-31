@@ -47,7 +47,7 @@
             @endforeach
         </ul>
 
-        <a href="/exportusers" class="btn btn-primary">@lang('Hämta som Excel-fil')</a>
+        {{--<a href="/exportusers" class="btn btn-primary">@lang('Hämta som Excel-fil')</a>--}}
     @endif
 
     <a href="/users/create" class="btn btn-primary">@lang('Skapa användare manuellt')</a>

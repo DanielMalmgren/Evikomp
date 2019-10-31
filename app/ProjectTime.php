@@ -48,6 +48,16 @@ class ProjectTime extends Model
         return date("Y", strtotime($this->date));
     }
 
+    public function getIsAttestedAttribute()
+    {
+        foreach($this->users as $user) {
+            if($user->time_attests->where('year', $this->year)->where('month', $this->month)->isNotEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function startstr() {
         return substr($this->starttime, 0, 5);
     }

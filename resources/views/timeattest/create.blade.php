@@ -29,7 +29,7 @@
         });
     </script>
 
-    <H1>@lang('Attestera projekttid') - {{strftime('%B %Y',strtotime("-1 month"))}}</H1>
+    <H1>@lang('Attestera projekttid') - {{strftime('%B %Y', strtotime("first day of previous month"))}}</H1>
     <form method="post" name="settings" action="{{action('TimeAttestController@store')}}" accept-charset="UTF-8">
         @csrf
 

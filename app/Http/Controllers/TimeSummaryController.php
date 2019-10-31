@@ -17,7 +17,7 @@ class TimeSummaryController extends Controller
 
     public function ajax($rel_month) {
         setlocale(LC_TIME, \Auth::user()->locale_id);
-        $time = strtotime($rel_month." month");
+        $time = incrementDate($rel_month);
         $year = date('Y', $time);
         $month = date('n', $time);
 

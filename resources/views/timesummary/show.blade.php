@@ -25,7 +25,7 @@
                 <label for="rel_month">@lang('Månad')</label>
                 <select class="custom-select d-block w-100" id="rel_month" name="rel_month" required="">
                     @for ($i = -6; $i <= 0; $i++)
-                        <option value="{{$i}}" {{$i==-1?'selected':''}}>{{strftime('%B %Y',strtotime($i." month"))}}</option>
+                        <option value="{{$i}}" {{$i==-1?'selected':''}}>{{strftime('%B %Y',incrementDate($i))}}</option>
                     @endfor
                 </select>
             </div>

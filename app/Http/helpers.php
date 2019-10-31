@@ -20,3 +20,22 @@ function str_word_count_utf8(string $str, int $format = 0) {
     }
     return count(preg_split('~[^\p{L}\p{N}\'-]+~u',$str));
 }
+
+/*
+Handles month/year increment calculations in a safe way,
+avoiding the pitfall of 'fuzzy' month units.
+
+Returns a DateTime object with incremented month values, and a date value == 1.
+*/
+function incrementDate($monthIncrement = 0) {
+    // Get the month value of the current date:
+    $monthString = date('Y-m');
+    // Create a date string corresponding to the 1st of the give month,
+    // making it safe for monthly calculations:
+    $safeDateString = "first day of $monthString";
+    // Increment date by given month increments:
+    $incrementedDateString = "$safeDateString $monthIncrement month";
+    $newTimeStamp = strtotime($incrementedDateString);
+    //$newDate = DateTime::createFromFormat('U', $newTimeStamp);
+    return $newTimeStamp;
+}

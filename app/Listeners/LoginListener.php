@@ -27,7 +27,7 @@ class LoginListener
     {
         //$messageId = $event->getSaml2Auth()->getLastMessageId();
         //TODO: Logga message-id och förhindra att det återanvänds för att förhindra replay attacks
-        //logger(print_r($event->getSaml2User(), true));
+        logger(print_r($event->getSaml2User(), true));
         $samluser = $event->getSaml2User();
         $userattr = $samluser->getAttributes();
         $personnr = $userattr["urn:oid:1.3.6.1.4.1.2428.90.1.5"][0];

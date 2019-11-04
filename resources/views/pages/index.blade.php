@@ -4,6 +4,17 @@
 
 @section('content')
 
+@if($should_attest)
+    <div class="new border border-danger importantnotification">
+        <h1>@lang('Du har tid att attestera för') {{$monthstr}}!</h1>
+
+        <a href="/timeattestlevel1/create" class="btn btn-primary">@lang('Gå till attesteringen')</a>
+        <br>
+
+    </div>
+    <br>
+@endif
+
 @if($lesson)
     <h1>@lang('Nästa lektion')</h1>
     @include('inc.listlesson')

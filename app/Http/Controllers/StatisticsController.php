@@ -23,7 +23,7 @@ class StatisticsController extends Controller
         for ($days_backwards = 14; $days_backwards >= 0; $days_backwards--) {
             // Could also be an array_push if using an array rather than a collection.
             $data->push(ActiveTime::whereDate('date', today()->subDays($days_backwards))->count());
-            $labels->push(date(today()->subDays($days_backwards)));
+            $labels->push(today()->subDays($days_backwards)->toDateString());
         }
         //logger(print_r($data, true));
         $chart->labels($labels);

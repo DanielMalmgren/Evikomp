@@ -8,16 +8,27 @@ use App\User;
 use App\Workplace;
 use App\Lesson;
 use App\Charts\SessionChart;
+use Carbon\Carbon;
 
 class StatisticsController extends Controller
 {
     public function index() {
 
         $chart = new SessionChart();
-        $chartdata = ActiveTime::groupBy('date')->get();
-        //logger(print_r($chartdata, true));
-        $chart->labels($chartdata->keys());
-        $chart->dataset('Sessioner', 'line', $chartdata->values());
+        //$chartdata = ActiveTime::whereDate('date', '>',Carbon::now()->subDays(3))->groupBy('date')->get();
+
+        $data = collect([]);
+        $labels = collect([]);
+
+        for ($days_backwards = 14; $days_backwards >= 0; $days_backwards--) {
+            // Could also be an array_push if using an array rather than a collection.
+            $data->push(ActiveTime::whereDate('date', today()->subDays($days_backwards))->count());
+            $labels->push(date(today()->subDays($days_backwards)));
+        }
+        //logger(print_r($data, true));
+        $chart->labels($labels);
+        $chart->dataset('Inloggningar per dag', 'line', $data);
+        $chart->height(100);
 
         $data = [
             'sessions' => ActiveTime::whereDate('date', '=', date('Y-m-d'))->count(),

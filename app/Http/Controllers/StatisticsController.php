@@ -48,11 +48,14 @@ class StatisticsController extends Controller
         $labels = collect([]);
 
         foreach(Workplace::all() as $workplace) {
-            $time->push($workplace->total_attested_time(3));
+            $time->round(push($workplace->total_attested_time(3)), 1);
             $labels->push($workplace->name);
         }
         $timeperworkplacechart->labels($labels);
         $timeperworkplacechart->dataset('Tid per arbetsplats', 'pie', $time);
+        $timeperworkplacechart->options([
+            'legend' => ['display' => false]
+        ]);
 
         $data = [
             'sessions' => ActiveTime::whereDate('date', '=', date('Y-m-d'))->count(),

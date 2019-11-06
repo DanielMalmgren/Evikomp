@@ -10,15 +10,14 @@ use App\User;
 use App\Workplace;
 use App\Lesson;
 use App\Charts\SessionChart;
+use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 
 class StatisticsController extends Controller
 {
     public function index() {
         setlocale(LC_NUMERIC, \Auth::user()->locale_id);
 
-        $chart = new SessionChart();
-        //$chartdata = ActiveTime::whereDate('date', '>',Carbon::now()->subDays(3))->groupBy('date')->get();
-
+        $loginshistorychart = new Chart();
         $logins = collect([]);
         $time = collect([]);
         $labels = collect([]);
@@ -29,50 +28,31 @@ class StatisticsController extends Controller
             $labels->push(today()->subDays($days_backwards)->toDateString());
         }
 
-        /*$chart->options([
-            'maintainAspectRatio' => false,
-            'scales'              => [
-                'xAxes' => [],
-                'yAxes' => [ [
-                            'type' => 'linear',
-                            'display' => true,
-                            'position' => 'left',
-                            'id' => 'y-logins'],
-                             [
-                            'type' => 'linear',
-                            'display' => true,
-                            'position' => 'right',
-                             'id' => 'y-time'],
-                            [
-                            'ticks' => [
-                                'beginAtZero' => true,
-                            ],
-                        'position' => 'right'],
-                ],
-            ],
-        ]);*/
-
-        //logger(print_r($data, true));
-        $chart->labels($labels);
-        $chart->dataset('Antal inloggade personer per dag', 'line', $logins)->options([
+        $loginshistorychart->labels($labels);
+        $loginshistorychart->dataset('Antal inloggade personer per dag', 'line', $logins)->options([
             'borderColor' => 'rgba(255, 0, 0, 0.3)',
             'backgroundColor' => 'rgba(255, 0, 0, 0.1)',
             'borderWidth' => '3',
-            //'yAxisID' => 'y-logins'
         ]);
-        $chart->dataset('Totalt inloggade timmar per dag', 'line', $time)->options([
+        $loginshistorychart->dataset('Totalt inloggade timmar per dag', 'line', $time)->options([
             'borderColor' => 'rgba(0, 255, 0, 0.3)',
             'backgroundColor' => 'rgba(0, 255, 0, 0.1)',
             'borderWidth' => '3',
-            //'yAxisID' => 'y-time'
         ]);
-        $chart->height(350);
+        $loginshistorychart->height(350);
 
         $projectTime = ProjectTime::all();
 
-        //$attestedLevel1 = TimeAttest::where('level', 1)->sum('hours');
-        //$attestedLevel2 = TimeAttest::where('level', 2)->sum('hours');
-        //$attestedLevel3 = TimeAttest::where('level', 3)->sum('hours');
+        $timeperworkplacechart = new Chart();
+        $time = collect([]);
+        $labels = collect([]);
+
+        foreach(Workplace::all() as $workplace) {
+            $time->push($workplace->total_attested_time(3));
+            $labels->push($workplace->name);
+        }
+        $timeperworkplacechart->labels($labels);
+        $timeperworkplacechart->dataset('Tid per arbetsplats', 'pie', $time);
 
         $data = [
             'sessions' => ActiveTime::whereDate('date', '=', date('Y-m-d'))->count(),
@@ -80,11 +60,12 @@ class StatisticsController extends Controller
             'workplaces' => Workplace::count(),
             'lessons' => Lesson::count(),
             'totalactivehours' => round(ActiveTime::sum('seconds')/3600, 1),
-            'totalprojecthours' => round($projectTime->sum('minutes')/60, 1),
-            'chart' => $chart,
+            'totalprojecthours' => round($projectTime->sum('minutes_total')/60, 1),
             'attestedhourslevel1' => TimeAttest::where('attestlevel', 1)->sum('hours'),
             'attestedhourslevel2' => TimeAttest::where('attestlevel', 2)->sum('hours'),
             'attestedhourslevel3' => TimeAttest::where('attestlevel', 3)->sum('hours'),
+            'loginshistorychart' => $loginshistorychart,
+            'timeperworkplacechart' => $timeperworkplacechart,
         ];
 
         return view('statistics.index')->with($data);

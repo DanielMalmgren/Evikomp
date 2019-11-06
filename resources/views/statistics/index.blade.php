@@ -14,13 +14,16 @@
 <p>@lang('Antal timmar attesterade av arbetsplatskoordinatorer hittills: ') {{$attestedhourslevel2}}</p>
 <p>@lang('Antal timmar attesterade av chefer hittills: ') {{$attestedhourslevel3}} ({{round($attestedhourslevel3/100, 1)}} @lang('procent av') 10 000)</p>
 
-<div>
-{!! $chart->container() !!}
-</div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
-{{--<script src="/js/highcharts.js"></script>--}}
-{!! $chart->script() !!}
 
+<div>
+    {!! $loginshistorychart->container() !!}
+</div>
+{!! $loginshistorychart->script() !!}
+
+<div>
+    {!! $timeperworkplacechart->container() !!}
+</div>
+{!! $timeperworkplacechart->script() !!}
 
 @endsection

@@ -54,4 +54,12 @@ class Workplace extends Model
 
         //return $this->users->collapse()->time_attests->where('month', $month)->sum('hours');
     }
+
+    public function total_attested_time($level) {
+        $attested_time = 0;
+        foreach($this->users as $user) {
+            $attested_time += $user->attested_time_total($level);
+        }
+        return $attested_time;
+    }
 }

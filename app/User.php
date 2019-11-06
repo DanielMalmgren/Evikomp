@@ -116,6 +116,10 @@ class User extends Authenticatable
         return $this->time_attests->where('attestlevel', $level)->where('month', $month)->where('year', $year)->sum('hours');
     }
 
+    public function attested_time_total($level) {
+        return $this->time_attests->where('attestlevel', $level)->sum('hours');
+    }
+
     //Get the last lesson that this user did
     public function last_lesson()
     {

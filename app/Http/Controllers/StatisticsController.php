@@ -24,11 +24,11 @@ class StatisticsController extends Controller
 
         for ($days_backwards = 14; $days_backwards >= 0; $days_backwards--) {
             $logins->push(ActiveTime::whereDate('date', today()->subDays($days_backwards))->count());
-            $time->push(ActiveTime::whereDate('date', today()->subDays($days_backwards))->sum('seconds')/60);
+            $time->push(round(ActiveTime::whereDate('date', today()->subDays($days_backwards))->sum('seconds')/3600), 1);
             $labels->push(today()->subDays($days_backwards)->toDateString());
         }
 
-        $chart->options([
+        /*$chart->options([
             'maintainAspectRatio' => false,
             'scales'              => [
                 'xAxes' => [],
@@ -49,7 +49,7 @@ class StatisticsController extends Controller
                         'position' => 'right'],
                 ],
             ],
-        ]);
+        ]);*/
 
         //logger(print_r($data, true));
         $chart->labels($labels);
@@ -57,13 +57,13 @@ class StatisticsController extends Controller
             'borderColor' => 'rgba(255, 0, 0, 0.3)',
             'backgroundColor' => 'rgba(255, 0, 0, 0.1)',
             'borderWidth' => '3',
-            'yAxisID' => 'y-logins'
+            //'yAxisID' => 'y-logins'
         ]);
-        $chart->dataset('Totalt inloggade minuter per dag', 'line', $time)->options([
+        $chart->dataset('Totalt inloggade timmar per dag', 'line', $time)->options([
             'borderColor' => 'rgba(0, 255, 0, 0.3)',
             'backgroundColor' => 'rgba(0, 255, 0, 0.1)',
             'borderWidth' => '3',
-            'yAxisID' => 'y-time'
+            //'yAxisID' => 'y-time'
         ]);
         $chart->height(100);
 

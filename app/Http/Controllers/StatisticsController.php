@@ -48,7 +48,7 @@ class StatisticsController extends Controller
         $labels = collect([]);
 
         foreach(Workplace::all() as $workplace) {
-            $time->round(push($workplace->total_attested_time(3)), 1);
+            $time->push(round($workplace->total_attested_time(3), 1));
             $labels->push($workplace->name);
         }
         $timeperworkplacechart->labels($labels);

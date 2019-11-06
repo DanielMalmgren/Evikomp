@@ -14,6 +14,7 @@ use App\Charts\SessionChart;
 class StatisticsController extends Controller
 {
     public function index() {
+        setlocale(LC_NUMERIC, \Auth::user()->locale_id);
 
         $chart = new SessionChart();
         //$chartdata = ActiveTime::whereDate('date', '>',Carbon::now()->subDays(3))->groupBy('date')->get();
@@ -65,7 +66,7 @@ class StatisticsController extends Controller
             'borderWidth' => '3',
             //'yAxisID' => 'y-time'
         ]);
-        $chart->height(100);
+        $chart->height(350);
 
         $projectTime = ProjectTime::all();
 

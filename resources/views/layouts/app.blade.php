@@ -37,7 +37,7 @@
                 });
             };
 
-            jQuery(window).on('load resize scroll ajaxComplete', function () {
+            jQuery(window).on('load resize scroll ajaxComplete mousewheel touchstart touchend', function () {
                 if ($('footer').isInViewport()) {
                     $('.feedback').addClass("visible-footer");
                 } else {
@@ -66,7 +66,7 @@
             @yield('content')
         </div>
         @if(!\Request::is('feedback'))
-            <div class="feedback"><a href="/feedback"><img src="/images/Speech_balloon.png"></a></div>
+            <div class="feedback"><a href="/feedback"><img src="/images/Speech_balloons/Speech_balloon_{{App::getLocale()}}.png"></a></div>
         @endif
         @include('inc.footer')
     </body>

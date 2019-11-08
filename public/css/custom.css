@@ -118,9 +118,15 @@ audio {
     position:absolute;
 }
 
-@media (max-width: 991px)  {
-    .feedback {
-        display:none;
+@media (max-width: 767px)  {
+    .feedback img {
+        width:120px;
+    }
+}
+
+@media (max-width: 600px)  {
+    .feedback img {
+        width:80px;
     }
 }
 

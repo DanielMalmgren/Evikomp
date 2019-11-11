@@ -54,20 +54,20 @@
                         <small>{{$user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->first()->hours}}</small>
                     </div>
                     <div class="col-lg-1 col-md-3 col-sm-5">
-                        <input checked disabled type="checkbox">
+                        <input checked disabled data-toggle="tooltip" title="@lang('Attesterat av') {{$user->name}}" type="checkbox">
                     </div>
                     <div class="col-lg-1 col-md-3 col-sm-5">
                         @if($user->time_attests->where('attestlevel', 2)->where('month', $month)->where('year', $year)->count() > 0)
-                            <input checked disabled type="checkbox" id="level2attest-{{$user->id}}" name="level2attest[]" value="{{$user->id}}" {{$attestlevel>=2&&!$month_is_closed?"":"disabled"}} onclick="togglesubmit(2)">
+                            <input checked disabled type="checkbox" data-toggle="tooltip" title="@lang('Attesterat av') {{$user->time_attests->where('attestlevel', 2)->where('month', $month)->where('year', $year)->first()->user->name}}">
                         @else
                             <input type="checkbox" id="level2attest-{{$user->id}}" name="level2attest[]" value="{{$user->id}}" {{$attestlevel>=2&&!$month_is_closed?"":"disabled"}} onclick="togglesubmit(2)">
                         @endif
                     </div>
                     <div class="col-lg-1 col-md-3 col-sm-5">
                         @if($user->id == Auth::user()->id)
-                            <input disabled type="checkbox" name="level3attest[]" value="{{$user->id}}" {{$attestlevel>=3&&!$month_is_closed?"":"disabled"}} onclick="togglesubmit(3)">
+                            <input disabled type="checkbox">
                         @elseif($user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->count() > 0)
-                            <input checked disabled type="checkbox" name="level3attest[]" value="{{$user->id}}" {{$attestlevel>=3&&!$month_is_closed?"":"disabled"}} onclick="togglesubmit(3)">
+                            <input checked disabled type="checkbox" data-toggle="tooltip" title="@lang('Attesterat av') {{$user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->first()->user->name}}">
                         @else
                             <input type="checkbox" name="level3attest[]" value="{{$user->id}}" {{$attestlevel>=3&&!$month_is_closed?"":"disabled"}} onclick="togglesubmit(3)">
                         @endif

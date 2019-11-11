@@ -16,8 +16,18 @@
                 @php
                     $pt = round($workplace->project_times->where('month', $month)->where('year', $year)->sum('minutes_total')/60, 1);
                     $at = round($workplace->month_active_time($month, $year)/60, 1);
+                    $attested = $workplace->month_attested_time($month, $year, 3)+$workplace->month_attested_time($month, $year, 0);
+                    if($pt+$at-$attested > 10) {
+                        $tableclass = "table-danger";
+                    } elseif($pt+$at-$attested > 2) {
+                        $tableclass = "table-warning";
+                    } elseif ($pt+$at > 0) {
+                        $tableclass = "table-success";
+                    } else {
+                        $tableclass = "";
+                    }
                 @endphp
-                <tr {{$pt+$at-1 > $workplace->month_attested_time($month, $year, 3)+$workplace->month_attested_time($month, $year, 0)?'class=table-danger':''}}> {{--If generated time differs more than one hour from attested time something is wrong--}}
+                <tr class="{{$tableclass}}"> {{--If generated time differs more than one hour from attested time something is wrong--}}
                     <th scope="row">{{$workplace->name}} ({{$workplace->municipality->name}})</th>
                     <td>{{$pt}} + {{$at}}</td> {{--TODO: Why doesn't the active time sum up exactly with the one on attest page?--}}
                     <td>

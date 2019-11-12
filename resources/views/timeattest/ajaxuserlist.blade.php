@@ -65,7 +65,7 @@
                     </div>
                     <div class="col-lg-1 col-md-3 col-sm-5">
                         @if($user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->count() > 0)
-                            <input checked disabled type="checkbox" data-toggle="tooltip" title="@lang('Attesterat av') {{$user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->first()->user->name}}">
+                            <input checked disabled type="checkbox" data-toggle="tooltip" title="@lang('Attesterat av') {{$user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->first()->attestant->name}}">
                         @elseif($user->id == Auth::user()->id)
                             <input disabled type="checkbox">
                         @else

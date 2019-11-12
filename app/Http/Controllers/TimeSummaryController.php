@@ -28,7 +28,7 @@ class TimeSummaryController extends Controller
             'month' => $month,
             'monthstr' => strftime('%B', $time),
             'month_closed' => $month_closed,
-            'workplaces' => Workplace::all(),
+            'workplaces' => Workplace::filter()->get(),
         ];
 
         return view('timesummary.ajax')->with($data);

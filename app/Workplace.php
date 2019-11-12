@@ -62,4 +62,9 @@ class Workplace extends Model
         }
         return $attested_time;
     }
+
+    public function scopeFilter($query)
+    {
+        return $query->where('includetimeinreports', true);
+    }
 }

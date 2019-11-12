@@ -23,8 +23,8 @@ class StatisticsController extends Controller
         $labels = collect([]);
 
         for ($days_backwards = 14; $days_backwards >= 0; $days_backwards--) {
-            $logins->push(ActiveTime::whereDate('date', today()->subDays($days_backwards))->count());
-            $time->push(round(ActiveTime::whereDate('date', today()->subDays($days_backwards))->sum('seconds')/3600), 1);
+            $logins->push(ActiveTime::filter()->whereDate('date', today()->subDays($days_backwards))->count());
+            $time->push(round(ActiveTime::filter()->whereDate('date', today()->subDays($days_backwards))->sum('seconds')/3600), 1);
             $labels->push(today()->subDays($days_backwards)->toDateString());
         }
 
@@ -47,7 +47,7 @@ class StatisticsController extends Controller
         $time = collect([]);
         $labels = collect([]);
 
-        foreach(Workplace::all() as $workplace) {
+        foreach(Workplace::filter()->get() as $workplace) {
             $time->push(round($workplace->total_attested_time(3), 1));
             $labels->push($workplace->name);
         }
@@ -58,11 +58,11 @@ class StatisticsController extends Controller
         ]);
 
         $data = [
-            'sessions' => ActiveTime::whereDate('date', '=', date('Y-m-d'))->count(),
-            'users' => User::count(),
-            'workplaces' => Workplace::count(),
+            'sessions' => ActiveTime::filter()->whereDate('date', '=', date('Y-m-d'))->count(),
+            'users' => User::filter()->count(),
+            'workplaces' => Workplace::filter()->count(),
             'lessons' => Lesson::count(),
-            'totalactivehours' => round(ActiveTime::sum('seconds')/3600, 1),
+            'totalactivehours' => round(ActiveTime::filter()->sum('seconds')/3600, 1),
             'totalprojecthours' => round($projectTime->sum('minutes_total')/60, 1),
             'attestedhourslevel1' => TimeAttest::where('attestlevel', 1)->sum('hours'),
             'attestedhourslevel2' => TimeAttest::where('attestlevel', 2)->sum('hours'),

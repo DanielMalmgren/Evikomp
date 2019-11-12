@@ -16,9 +16,9 @@ class TimeAttestController extends Controller
         setlocale(LC_TIME, $user->locale_id);
 
         if ($user->hasRole('Admin')) {
-            $workplaces = Workplace::all()->sortBy('name');
+            $workplaces = Workplace::filter()->get()->sortBy('name');
         } else {
-            $workplaces = Auth::user()->admin_workplaces->sortBy('name');
+            $workplaces = Auth::user()->admin_workplaces->filter()->sortBy('name');
         }
 
         $year = date('Y', strtotime("first day of previous month"));

@@ -18,6 +18,11 @@
 
     <br>
 
+    <div class="mb-3">
+        <input type="hidden" name="includetimeinreports" value="0">
+        <label><input type="checkbox" name="includetimeinreports" value="1" {{$workplace->includetimeinreports?"checked":""}}>@lang('Inkludera i tidrapporter')</label>
+    </div>
+
     <label>@lang('Obligatoriska spår')</label>
     @if(count($tracks) > 0)
     <div class="card">

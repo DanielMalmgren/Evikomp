@@ -28,5 +28,17 @@ class ActiveTime extends Model
 
     protected $fillable = ['user_id', 'date'];
 
+    public function scopeFilter($query)
+    {
+        return $query->join('users', function($join)
+            {
+                $join->on('users.id', '=', 'active_times.user_id');
+            })->join('workplaces', function($join)
+            {
+                $join->on('workplaces.id', '=', 'users.workplace_id')
+                ->where('includetimeinreports', true);
+            });
+    }
+
     //protected $dates = ['created_at', 'updated_at', 'time'];
 }

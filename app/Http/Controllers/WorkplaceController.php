@@ -34,6 +34,7 @@ class WorkplaceController extends Controller
         $workplace->name = $request->name;
         $workplace->workplace_type_id = $request->workplace_type;
         $workplace->municipality_id = $request->municipality;
+        $workplace->includetimeinreports = $request->includetimeinreports;
         $workplace->save();
 
         return $this->update($request, $workplace);
@@ -100,6 +101,7 @@ class WorkplaceController extends Controller
         $workplace->tracks()->sync($request->tracks);
         $workplace->name = $request->name;
         $workplace->workplace_type_id = $request->workplace_type;
+        $workplace->includetimeinreports = $request->includetimeinreports;
         $workplace->save();
 
         return redirect('/workplace')->with('success', 'Uppgifterna sparade');

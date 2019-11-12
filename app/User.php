@@ -191,6 +191,15 @@ class User extends Authenticatable
         return null; //Seems this user has done all lessons there is
     }
 
+    public function scopeFilter($query)
+    {
+        return $query->join('workplaces', function($join)
+            {
+                $join->on('workplaces.id', '=', 'users.workplace_id')
+                ->where('includetimeinreports', true);
+            });
+    }
+
     public function setRememberToken($value)
     {
         //Override this function, doing noop since we don't use remember tokens

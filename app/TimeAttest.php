@@ -13,7 +13,7 @@ class TimeAttest extends Model
 
     public function attestant()
     {
-        return $this->belongsTo('App\User', 'id', 'attestant_id');
+        return $this->belongsTo('App\User', 'attestant_id', 'id');
     }
 
     protected $fillable = ['year', 'month', 'user_id', 'attestant_id', 'attestlevel', 'authnissuer', 'hours', 'clientip'];

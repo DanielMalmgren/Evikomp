@@ -56,6 +56,14 @@ class CheckLinksInLessons extends Command
         $mailtext = '';
         $this->info("The following links have problems:");
         $contents = Content::where('type', 'html')->get();
+
+        stream_context_set_default( [
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+            ],
+        ]);
+
         foreach($contents as $content) {
             $translations = $content->translations()->get();
             foreach($translations as $translation) {

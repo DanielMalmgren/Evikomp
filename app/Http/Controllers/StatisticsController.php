@@ -59,7 +59,7 @@ class StatisticsController extends Controller
 
         $data = [
             'sessions' => ActiveTime::filter()->whereDate('date', '=', date('Y-m-d'))->count(),
-            'users' => User::filter()->count(),
+            'users' => User::gdpraccepted()->count(),
             'workplaces' => Workplace::filter()->count(),
             'lessons' => Lesson::count(),
             'totalactivehours' => round(ActiveTime::filter()->sum('seconds')/3600, 1),

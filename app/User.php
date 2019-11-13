@@ -200,6 +200,11 @@ class User extends Authenticatable
             });
     }
 
+    public function scopeGdpraccepted($query)
+    {
+        return $query->where('accepted_gdpr', true);
+    }
+
     public function setRememberToken($value)
     {
         //Override this function, doing noop since we don't use remember tokens

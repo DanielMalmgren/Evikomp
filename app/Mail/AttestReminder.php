@@ -32,6 +32,6 @@ class AttestReminder extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.attestreminder');
+        return $this->subject(_('Påminnelse om tidsattestering'))->view('emails.attestreminder');
     }
 }

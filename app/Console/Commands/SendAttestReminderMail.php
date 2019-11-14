@@ -63,11 +63,15 @@ class SendAttestReminderMail extends Command
 
             $this->info("Preparing email to ".$user->name." (".$user->email.")");
             if($this->option('forreal') || $this->argument('onlysendto')==$user->email) {
-                $this->info("Sending mail!");
                 $to = [];
                 $to[] = ['email' => $user->email, 'name' => $user->name];
 
-                \Mail::to($to)->send(new \App\Mail\AttestReminder($time, $monthstr));
+                try {
+                    \Mail::to($to)->send(new \App\Mail\AttestReminder($time, $monthstr));
+                    $this->info("  Mail sent");
+                } catch(\Swift_TransportException $e) {
+                    $this->info("  Sending failed!");
+                }
             }
         }
     }

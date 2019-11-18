@@ -53,9 +53,8 @@ class StatisticsController extends Controller
         }
         $timeperworkplacechart->labels($labels);
         $timeperworkplacechart->dataset('Tid per arbetsplats', 'pie', $time);
-        $timeperworkplacechart->options([
-            'legend' => ['display' => false]
-        ]);
+        $timeperworkplacechart->displayLegend(false);
+        $timeperworkplacechart->displayAxes(false);
 
         $data = [
             'sessions' => ActiveTime::filter()->whereDate('date', '=', date('Y-m-d'))->count(),

@@ -63,9 +63,7 @@
                                     @can('export ESF report')
                                         <li aria-haspopup="false"><a href="/timesummary">@lang('Sammanställning till ESF')</a></li>
                                     @endcan
-                                    @hasrole('Admin')
-                                        <li aria-haspopup="false"><a href="/statistics">@lang('Statistik')</a></li>
-                                    @endhasrole
+                                    <li aria-haspopup="false"><a href="/statistics">@lang('Statistik')</a></li>
                                 </ul>
                             </li>
                         @endcan

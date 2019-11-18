@@ -9,7 +9,6 @@ use App\TimeAttest;
 use App\User;
 use App\Workplace;
 use App\Lesson;
-use App\Charts\SessionChart;
 use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 
 class StatisticsController extends Controller
@@ -41,8 +40,6 @@ class StatisticsController extends Controller
         ]);
         $loginshistorychart->height(350);
 
-        $projectTime = ProjectTime::all();
-
         $timeperworkplacechart = new Chart();
         $time = collect([]);
         $labels = collect([]);
@@ -61,11 +58,11 @@ class StatisticsController extends Controller
             'users' => User::gdpraccepted()->count(),
             'workplaces' => Workplace::filter()->count(),
             'lessons' => Lesson::count(),
-            'totalactivehours' => round(ActiveTime::filter()->sum('seconds')/3600, 1),
-            'totalprojecthours' => round($projectTime->sum('minutes_total')/60, 1),
-            'attestedhourslevel1' => TimeAttest::where('attestlevel', 1)->sum('hours'),
-            'attestedhourslevel2' => TimeAttest::where('attestlevel', 2)->sum('hours'),
-            'attestedhourslevel3' => TimeAttest::where('attestlevel', 3)->sum('hours'),
+            'totalactivehours' => round(ActiveTime::filter()->sum('seconds')/3600),
+            'totalprojecthours' => round(ProjectTime::all()->sum('minutes_total')/60),
+            'attestedhourslevel1' => round(TimeAttest::where('attestlevel', 1)->sum('hours')),
+            'attestedhourslevel2' => round(TimeAttest::where('attestlevel', 2)->sum('hours')),
+            'attestedhourslevel3' => round(TimeAttest::where('attestlevel', 3)->sum('hours')),
             'loginshistorychart' => $loginshistorychart,
             'timeperworkplacechart' => $timeperworkplacechart,
         ];

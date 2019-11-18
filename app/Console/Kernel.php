@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('custom:checklinks')->weekly();
-        $schedule->command('custom:attestreminder')->cron('0 7 5,10,15,20 * *');
+        $schedule->command('custom:attestreminder --forreal')->cron('0 7 * * 1,4')->environments(['prod']);
     }
 
     /**

@@ -18,7 +18,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
 
 <br>
-<h2>@lang('Inloggningar senaste två veckorna')</h2>
+<h2>@lang('Aktivitet senaste två veckorna')</h2>
 <div>
     {!! $loginshistorychart->container() !!}
 </div>

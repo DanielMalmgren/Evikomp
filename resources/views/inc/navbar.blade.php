@@ -49,9 +49,9 @@
                     <li aria-haspopup="false"><a href="/" class="menuhomeicon {{ request()->is('/') ? 'active' : '' }}"><i class="fa fa-home"></i><span class="hometext">&nbsp;&nbsp;@lang('Hem')</span></a></li>
                     <li aria-haspopup="false"><a href="/tracks" class="{{ request()->is('tracks') ? 'active' : '' }}"></i>@lang('Spår')</a></li>
                     @if (session()->has('authnissuer'))
-                        @can('use administration')
-                            <li aria-haspopup="true"><a href="#"><i class="fa fa-angle-right"></i>@lang('Administration')</a>
-                                <ul class="sub-menu">
+                        <li aria-haspopup="true"><a href="#"><i class="fa fa-angle-right"></i>@lang('Administration')</a>
+                            <ul class="sub-menu">
+                                @can('use administration')
                                     @can('manage users')
                                         <li aria-haspopup="false"><a href="/users">@lang('Användare')</a></li>
                                     @endcan
@@ -63,10 +63,10 @@
                                     @can('export ESF report')
                                         <li aria-haspopup="false"><a href="/timesummary">@lang('Sammanställning till ESF')</a></li>
                                     @endcan
-                                    <li aria-haspopup="false"><a href="/statistics">@lang('Statistik')</a></li>
-                                </ul>
-                            </li>
-                        @endcan
+                                @endcan
+                                <li aria-haspopup="false"><a href="/statistics">@lang('Statistik')</a></li>
+                            </ul>
+                        </li>
                     @endif
                     <li aria-haspopup="true"><a href="#"><i class="fa fa-angle-right"></i>{{Auth::user()->firstname}}</a>
                         <ul class="sub-menu">

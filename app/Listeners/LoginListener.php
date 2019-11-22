@@ -39,18 +39,11 @@ class LoginListener
             session(['authnissuer' => "Verisec Freja eID AB"]); //TODO: Remove this! It is a HIGHLY temporary because our IdP provider doesn't always sent this attribute
         }
 
-        logger("SAML Personnr: ".$personnr);
-        logger("SAML Förnamn: ".$firstname);
-        logger("SAML Efternamn: ".$lastname);
-        logger("SAML Utfärdare: ".session('authnissuer'));
-
         $user = User::where('personid', $personnr)->first();
         if(empty($user)) {
-            logger("Ny användare!");
             $user = new User();
             if(isset($userattr["urn:oid:0.9.2342.19200300.100.1.3"])) {
                 $user->email = $userattr["urn:oid:0.9.2342.19200300.100.1.3"][0];
-                logger("SAML Mailadress: ".$userattr["urn:oid:0.9.2342.19200300.100.1.3"][0]);
             }
             $user->personid = $personnr;
             if(str_word_count_utf8($firstname) === 1) {
@@ -65,6 +58,8 @@ class LoginListener
         $user->saml_firstname = $firstname;
         $user->lastname = $lastname;
         $user->save();
+
+        logger($user->name." (".$user->personid.") logged in");
 
         //Behövs senare för SLO
         session(['sessionIndex' => $samluser->getSessionIndex()]);

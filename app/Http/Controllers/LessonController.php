@@ -130,6 +130,8 @@ class LessonController extends Controller
         ]);
 
         $currentLocale = \App::getLocale();
+        $user = Auth::user();
+        logger("Lesson ".$lesson->id." is being edited by ".$user->name);
 
         //Store this in a local variable. We'll have to replace all the temporary id's in it for real ones before we do the ordering
         $content_order = $request->content_order;
@@ -140,6 +142,7 @@ class LessonController extends Controller
                 $content = Content::find($html_id);
                 $content->translateOrNew($currentLocale)->text = $content->add_target_to_links($html_text);
                 $content->save();
+                logger("HTML content ".$html_id." is being changed");
             }
         }
 
@@ -148,6 +151,7 @@ class LessonController extends Controller
             foreach($request->new_html as $temp_key => $new_html) {
                 $content = new Content('html', $lesson->id, null, $new_html);
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+                logger("HTML content ".$content->id." is being added");
             }
         }
 
@@ -155,6 +159,7 @@ class LessonController extends Controller
         if($request->remove_html) {
             foreach(array_keys($request->remove_html) as $remove_html_id) {
                 Content::destroy($remove_html_id);
+                logger("HTML content ".$remove_html_id." is being removed");
             }
         }
 
@@ -164,6 +169,7 @@ class LessonController extends Controller
                 $content = Content::find($vimeo_id);
                 $content->content = $vimeo_text;
                 $content->save();
+                logger("Vimeo content ".$vimeo_id." is being changed");
             }
         }
 
@@ -172,6 +178,7 @@ class LessonController extends Controller
             foreach($request->new_vimeo as $temp_key => $new_vimeo) {
                 $content = new Content('vimeo', $lesson->id, $new_vimeo);
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+                logger("Vimeo content ".$content->id." is being added");
             }
         }
 
@@ -179,6 +186,7 @@ class LessonController extends Controller
         if($request->remove_vimeo) {
             foreach(array_keys($request->remove_vimeo) as $remove_vimeo_id) {
                 Content::destroy($remove_vimeo_id);
+                logger("Vimeo content ".$remove_vimeo_id." is being removed");
             }
         }
 
@@ -188,6 +196,7 @@ class LessonController extends Controller
                 $content = new Content('audio', $lesson->id, $new_audio->getClientOriginalName());
                 $new_audio->storeAs("public/files/", $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+                logger("Audio content ".$content->id." is being added");
             }
         }
 
@@ -207,6 +216,7 @@ class LessonController extends Controller
                 $content = new Content('office', $lesson->id, $new_office->getClientOriginalName());
                 $new_office->storeAs("public/files/", $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+                logger("Office content ".$content->id." is being added");
             }
         }
 
@@ -226,6 +236,7 @@ class LessonController extends Controller
                 $content = new Content('image', $lesson->id, $new_image->getClientOriginalName());
                 $new_image->storeAs("public/files/", $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+                logger("Image content ".$content->id." is being added");
             }
         }
 
@@ -245,6 +256,7 @@ class LessonController extends Controller
                 $content = new Content('file', $lesson->id, $new_file->getClientOriginalName());
                 $new_file->storeAs("public/files/", $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+                logger("File content ".$content->id." is being added");
             }
         }
 

@@ -76,6 +76,7 @@ class SendAttestReminderMail extends Command
                     $amountsent++;
                 } catch(\Swift_TransportException $e) {
                     $this->info("  Sending failed!");
+                    logger("Couldn't send mail to ".$user->email);
                     $amountfailed++;
                 }
             }

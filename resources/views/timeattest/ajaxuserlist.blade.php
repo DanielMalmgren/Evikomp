@@ -127,15 +127,7 @@
         var cb_length=cb.length;
         for(var i=0; i < cb_length; i++) {
             if(cb[i].disabled == false) {
-                if(level == 2 || !ca.checked) {
-                    cb[i].checked = ca.checked;
-                } else {
-                    var user_id=cb[i].value;
-                    var c2=document.getElementById("level2attest-"+user_id);
-                    if(c2.checked) {
-                        cb[i].checked = ca.checked;
-                    }
-                }
+                cb[i].checked = ca.checked;
             }
         }
         togglesubmit(level);

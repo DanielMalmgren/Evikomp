@@ -27,7 +27,7 @@ class HomeController extends Controller
             $data = [
                 'announcements' => $announcements,
                 'lesson' => Auth::user()->next_lesson(),
-                'should_attest' => !$last_month_is_closed && !$last_month_is_attested && $time>1.0,
+                'should_attest' => !$last_month_is_closed && !$last_month_is_attested && $time>=1.0,
                 'previous_month' => $previous_month,
                 'monthstr' => $monthstr,
             ];

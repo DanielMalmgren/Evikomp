@@ -57,7 +57,7 @@ class SendAttestReminderMail extends Command
             $last_month_is_attested = $user->time_attests->where('month', $previous_month)->where('year', $previous_month_year)->isNotEmpty();
             $time_rows = $user->time_rows($previous_month_year, $previous_month);
             $time = end($time_rows)[32];
-            if($last_month_is_attested || $time<=1.0 || !$user->workplace->includetimeinreports) {
+            if($last_month_is_attested || $time<1.0 || !$user->workplace->includetimeinreports) {
                 continue;
             }
 

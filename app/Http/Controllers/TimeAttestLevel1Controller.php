@@ -20,16 +20,18 @@ class TimeAttestLevel1Controller extends Controller
 
         $user = Auth::user();
 
-        $time_attest = new TimeAttest();
-        $time_attest->year = $request->year;
-        $time_attest->month = $request->month;
-        $time_attest->user_id = $user->id;
-        $time_attest->attestant_id = $user->id;
-        $time_attest->attestlevel = 1;
-        $time_attest->hours = $request->hours;
-        $time_attest->clientip = $request->ip();
-        $time_attest->authnissuer = session('authnissuer');
-        $time_attest->save();
+        TimeAttest::updateOrCreate([
+            'year' => $request->year,
+            'month' => $request->month,
+            'user_id' => $user->id,
+            'attestant_id' => $user->id,
+            'attestlevel' => 1,
+        ],
+        [
+            'authnissuer' => session('authnissuer'),
+            'hours' => $request->hours,
+            'clientip' => $request->ip(),
+        ]);
 
         return redirect('/')->with('success', 'Attesteringen har sparats');
     }

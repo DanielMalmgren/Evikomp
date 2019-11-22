@@ -43,31 +43,35 @@ class TimeAttestController extends Controller
 
         if(isset($request->level2attest)) {
             foreach($request->level2attest as $user_id) {
-                $time_attest = new TimeAttest();
-                $time_attest->year = $request->year;
-                $time_attest->month = $request->month;
-                $time_attest->user_id = $user_id;
-                $time_attest->attestant_id = $user->id;
-                $time_attest->attestlevel = 2;
-                $time_attest->hours = User::find($user_id)->time_attests->where('month', $request->month)->where('year', $request->year)->first()->hours;
-                $time_attest->clientip = $request->ip();
-                $time_attest->authnissuer = session('authnissuer');
-                $time_attest->save();
+                TimeAttest::updateOrCreate([
+                    'year' => $request->year,
+                    'month' => $request->month,
+                    'user_id' => $user_id,
+                    'attestlevel' => 2,
+                ],
+                [
+                    'attestant_id' => $user->id,
+                    'authnissuer' => session('authnissuer'),
+                    'hours' => User::find($user_id)->time_attests->where('month', $request->month)->where('year', $request->year)->first()->hours,
+                    'clientip' => $request->ip(),
+                ]);
             }
         }
 
         if(isset($request->level3attest)) {
             foreach($request->level3attest as $user_id) {
-                $time_attest = new TimeAttest();
-                $time_attest->year = $request->year;
-                $time_attest->month = $request->month;
-                $time_attest->user_id = $user_id;
-                $time_attest->attestant_id = $user->id;
-                $time_attest->attestlevel = 3;
-                $time_attest->hours = User::find($user_id)->time_attests->where('month', $request->month)->where('year', $request->year)->first()->hours;
-                $time_attest->clientip = $request->ip();
-                $time_attest->authnissuer = session('authnissuer');
-                $time_attest->save();
+                TimeAttest::updateOrCreate([
+                    'year' => $request->year,
+                    'month' => $request->month,
+                    'user_id' => $user_id,
+                    'attestlevel' => 3,
+                ],
+                [
+                    'attestant_id' => $user->id,
+                    'authnissuer' => session('authnissuer'),
+                    'hours' => User::find($user_id)->time_attests->where('month', $request->month)->where('year', $request->year)->first()->hours,
+                    'clientip' => $request->ip(),
+                ]);
             }
         }
 

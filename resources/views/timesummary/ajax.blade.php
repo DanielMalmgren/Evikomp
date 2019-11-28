@@ -27,7 +27,7 @@
                         $tableclass = "";
                     }
                 @endphp
-                <tr class="{{$tableclass}}"> {{--If generated time differs more than one hour from attested time something is wrong--}}
+                <tr class="{{$tableclass}}" onclick="togglewpdetails({{$workplace->id}})"> {{--If generated time differs more than one hour from attested time something is wrong--}}
                     <th scope="row">{{$workplace->name}} ({{$workplace->municipality->name}})</th>
                     <td>{{$pt}} + {{$at}}</td> {{--TODO: Why doesn't the active time sum up exactly with the one on attest page?--}}
                     <td>
@@ -37,6 +37,11 @@
                         @if($workplace->month_attested_time($month, $year, 0) > 0)
                             ({{$workplace->month_attested_time($month, $year, 0)}})
                         @endif
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="nopadding {{$tableclass}}">
+                        <div id="details-{{$workplace->id}}" class="bg-transparent"></div>
                     </td>
                 </tr>
             @endforeach
@@ -51,3 +56,15 @@
 <div class="mb-3">
     <label><input type="checkbox" {{$month_closed?'checked disabled':''}}  name="close_month">@lang('Stäng månad för attestering')</label>
 </div>
+
+<script type="text/javascript">
+
+    function togglewpdetails(workplace_id) {
+        if($("#details-"+workplace_id).is(':empty')) {
+            $("#details-"+workplace_id).load("/timesummarywpdetails/"+workplace_id+"/{{$year}}/{{$month}}");
+        } else {
+            $("#details-"+workplace_id).empty();
+        }
+    }
+
+</script>

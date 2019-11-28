@@ -58,6 +58,7 @@ Route::post('/activetime',                      'ActiveTimeController@store');
 //TimeSummaryController
 Route::get('/timesummary',                      'TimeSummaryController@show')->middleware('permission:export ESF report');
 Route::get('/timesummaryajax/{rel_month}',      'TimeSummaryController@ajax')->middleware('permission:export ESF report');
+Route::get('/timesummarywpdetails/{workplace}/{year}/{month}', 'TimeSummaryController@wpdetails')->middleware('permission:export ESF report');
 Route::get('/exporttimesummary',                'TimeSummaryController@export')->middleware('permission:export ESF report');
 
 //ProjectTimeController

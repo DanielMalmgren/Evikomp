@@ -34,6 +34,17 @@ class TimeSummaryController extends Controller
         return view('timesummary.ajax')->with($data);
     }
 
+    public function wpdetails(Workplace $workplace, $year, $month) {
+
+        $data = [
+            'year' => $year,
+            'month' => $month,
+            'workplace' => $workplace,
+        ];
+
+        return view('timesummary.wpdetails')->with($data);
+    }
+
     private static function generateExcelRowForUser($worksheet, $row, $user, $hours, $colour=null) {
         $age = date_diff(date_create(substr($user->personid, 0, 8)), date_create('now'))->y;
         $gender = substr($user->personid, 10, 1)%2?"M":"K";

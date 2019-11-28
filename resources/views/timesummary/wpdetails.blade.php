@@ -7,7 +7,9 @@
                 $time_rows = $user->time_rows($year, $month);
                 $time = end($time_rows)[32];
                 if($time > 0) {
-                    if($user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->isEmpty()) {
+                    if($user->time_attests->where('attestlevel', 0)->where('month', $month)->where('year', $year)->isNotEmpty()) {
+                        $bgclass = "bg-info";
+                    } elseif($user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->isEmpty()) {
                         $bgclass = "bg-danger";
                     } elseif($user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->isEmpty()) {
                         $bgclass = "bg-warning";
@@ -45,6 +47,9 @@
                             <small>{{$user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->first()->hours}}</small>
                         @else
                             <small>0</small>
+                        @endif
+                        @if($user->time_attests->where('attestlevel', 0)->where('month', $month)->where('year', $year)->isNotEmpty())
+                            <small>({{$user->time_attests->where('attestlevel', 0)->where('month', $month)->where('year', $year)->first()->hours}})</small>
                         @endif
                     </div>
 

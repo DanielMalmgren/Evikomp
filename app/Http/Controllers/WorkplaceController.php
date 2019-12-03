@@ -113,9 +113,14 @@ class WorkplaceController extends Controller
             foreach($workplace->project_times as $project_time) {
                 logger("Relocating project time on ".$project_time->date);
                 $alternative_workplace = $project_time->users->first()->workplace;
-                logger("Relocating project time to ".$alternative_workplace->name);
-                $project_time->workplace_id = $alternative_workplace->id;
-                $project_time->save();
+                if(isset($alternative_workplace)) {
+                    logger("Relocating project time to ".$alternative_workplace->name);
+                    $project_time->workplace_id = $alternative_workplace->id;
+                    $project_time->save();
+                } else {
+                    logger("Project time not relocatable, removing!");
+                    $project_time->delete();
+                }
             }
         }
         logger('Destroying workplace '.$workplace->name);

@@ -57,10 +57,10 @@ class StatisticsController extends Controller
         $attestedtime = collect([]);
         $labels = collect([]);
 
-        $firstattesteddate = TimeAttest::whereNotNull('created_at')->oldest()->first()->created_at;
+        $firstattesteddate = TimeAttest::whereNotNull('created_at')->where('attestlevel', 3)->oldest()->first()->created_at;
         $period = new \Carbon\CarbonPeriod($firstattesteddate, today());
         foreach ($period as $date) {
-            $attestedtime->push(TimeAttest::where('created_at', '<=', $date)->sum('hours'));
+            $attestedtime->push(TimeAttest::where('created_at', '<=', $date)->where('attestlevel', 3)->sum('hours'));
             $labels->push($date->format('Y-m-d'));
         }
         $attestedtimechart->labels($labels);

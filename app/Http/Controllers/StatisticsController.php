@@ -41,17 +41,31 @@ class StatisticsController extends Controller
         $loginshistorychart->height(350);
 
         $timeperworkplacechart = new Chart();
-        $time = collect([]);
+        $timeperwp = collect([]);
         $labels = collect([]);
 
         foreach(Workplace::filter()->get() as $workplace) {
-            $time->push(round($workplace->total_attested_time(3), 1));
+            $timeperwp->push(round($workplace->total_attested_time(3)));
             $labels->push($workplace->name);
         }
         $timeperworkplacechart->labels($labels);
-        $timeperworkplacechart->dataset('Tid per arbetsplats', 'pie', $time);
+        $timeperworkplacechart->dataset('Tid per arbetsplats', 'pie', $timeperwp);
         $timeperworkplacechart->displayLegend(false);
         $timeperworkplacechart->displayAxes(false);
+
+        $attestedtimechart = new Chart();
+        $attestedtime = collect([]);
+        $labels = collect([]);
+
+        $firstattesteddate = TimeAttest::whereNotNull('created_at')->oldest()->first()->created_at;
+        $period = new \Carbon\CarbonPeriod($firstattesteddate, today());
+        foreach ($period as $date) {
+            $attestedtime->push(TimeAttest::where('created_at', '<=', $date)->sum('hours'));
+            $labels->push($date->format('Y-m-d'));
+        }
+        $attestedtimechart->labels($labels);
+        $attestedtimechart->dataset('Attesterad tid', 'line', $attestedtime);
+        $attestedtimechart->displayLegend(false);
 
         $data = [
             'sessions' => ActiveTime::filter()->whereDate('date', '=', date('Y-m-d'))->count(),
@@ -61,10 +75,10 @@ class StatisticsController extends Controller
             'totalactivehours' => round(ActiveTime::filter()->sum('seconds')/3600),
             'totalprojecthours' => round(ProjectTime::all()->sum('minutes_total')/60),
             'attestedhourslevel1' => round(TimeAttest::where('attestlevel', 1)->sum('hours')),
-            'attestedhourslevel2' => round(TimeAttest::where('attestlevel', 2)->sum('hours')),
             'attestedhourslevel3' => round(TimeAttest::where('attestlevel', 3)->sum('hours')),
             'loginshistorychart' => $loginshistorychart,
             'timeperworkplacechart' => $timeperworkplacechart,
+            'attestedtimechart' => $attestedtimechart,
         ];
 
         return view('statistics.index')->with($data);

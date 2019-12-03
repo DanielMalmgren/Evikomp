@@ -28,12 +28,12 @@ class StatisticsController extends Controller
         }
 
         $loginshistorychart->labels($labels);
-        $loginshistorychart->dataset('Antal inloggade personer per dag', 'line', $logins)->options([
+        $loginshistorychart->dataset(_('Antal inloggade personer per dag'), 'line', $logins)->options([
             'borderColor' => 'rgba(255, 0, 0, 0.3)',
             'backgroundColor' => 'rgba(255, 0, 0, 0.1)',
             'borderWidth' => '3',
         ]);
-        $loginshistorychart->dataset('Totalt inloggade timmar per dag', 'line', $time)->options([
+        $loginshistorychart->dataset(_('Totalt inloggade timmar per dag'), 'line', $time)->options([
             'borderColor' => 'rgba(0, 255, 0, 0.3)',
             'backgroundColor' => 'rgba(0, 255, 0, 0.1)',
             'borderWidth' => '3',
@@ -49,7 +49,7 @@ class StatisticsController extends Controller
             $labels->push($workplace->name);
         }
         $timeperworkplacechart->labels($labels);
-        $timeperworkplacechart->dataset('Tid per arbetsplats', 'pie', $timeperwp);
+        $timeperworkplacechart->dataset(_('Tid per arbetsplats'), 'pie', $timeperwp);
         $timeperworkplacechart->displayLegend(false);
         $timeperworkplacechart->displayAxes(false);
 
@@ -58,13 +58,17 @@ class StatisticsController extends Controller
         $labels = collect([]);
 
         $firstattesteddate = TimeAttest::whereNotNull('created_at')->where('attestlevel', 3)->oldest()->first()->created_at;
-        $period = new \Carbon\CarbonPeriod($firstattesteddate, today());
+        $period = new \Carbon\CarbonPeriod($firstattesteddate, \Carbon\Carbon::tomorrow());
+        $currentlyattested = TimeAttest::where('attestlevel', 3)->sum('hours');
         foreach ($period as $date) {
-            $attestedtime->push(TimeAttest::where('created_at', '<=', $date)->where('attestlevel', 3)->sum('hours'));
-            $labels->push($date->format('Y-m-d'));
+            $attestedtodate = round(TimeAttest::where('created_at', '<=', $date)->where('attestlevel', 3)->sum('hours'));
+            if($attestedtodate > $currentlyattested*0.05) {
+                $attestedtime->push($attestedtodate);
+                $labels->push($date->format('Y-m-d'));
+            }
         }
         $attestedtimechart->labels($labels);
-        $attestedtimechart->dataset('Attesterad tid', 'line', $attestedtime);
+        $attestedtimechart->dataset(_('Attesterad tid'), 'line', $attestedtime);
         $attestedtimechart->displayLegend(false);
 
         $data = [

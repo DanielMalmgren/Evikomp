@@ -31,7 +31,7 @@
 {!! $timeperworkplacechart->script() !!}
 
 <br>
-<h2>@lang('Totalt slutattesterad tid')</h2>
+<h2>@lang('Totalt slutattesterad tid (ackumulerat)')</h2>
 <div>
     {!! $attestedtimechart->container() !!}
 </div>

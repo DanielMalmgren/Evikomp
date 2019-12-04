@@ -48,7 +48,11 @@ class TimeSummaryController extends Controller
     private static function generateExcelRowForUser($worksheet, $row, $user, $hours, $colour=null) {
         $age = date_diff(date_create(substr($user->personid, 0, 8)), date_create('now'))->y;
         $gender = substr($user->personid, 10, 1)%2?"M":"K";
-        $startdate = min(substr($user->created_at, 0, 10), $user->project_times->sortBy('date')->first()->date);
+        if($user->project_times->isEmpty()) {
+            $startdate = substr($user->created_at, 0, 10);
+        } else {
+            $startdate = min(substr($user->created_at, 0, 10), $user->project_times->sortBy('date')->first()->date);
+        }
 
         $worksheet->setCellValueByColumnAndRow(1, $row, $user->name);                                 //Kolumn A, namn
         $worksheet->setCellValueByColumnAndRow(2, $row, substr_replace($user->personid, '-', 8, 0));  //Kolumn B, personnummer

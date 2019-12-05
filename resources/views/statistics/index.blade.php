@@ -16,25 +16,31 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
 
-<br>
-<h2>@lang('Aktivitet senaste två veckorna')</h2>
-<div>
-    {!! $loginshistorychart->container() !!}
-</div>
-{!! $loginshistorychart->script() !!}
+<ul class="nav nav-tabs tabs-up" id="charts">
+    <li><a href="/statistics/ajaxchart/1" data-target="#chart1" class="media_node active span" id="charttab1" data-toggle="tabajax" rel="tooltip"> Chart 1 </a></li>
+    <li><a href="/statistics/ajaxchart/2" data-target="#chart2" class="media_node span" id="charttab2" data-toggle="tabajax" rel="tooltip"> Chart 2 </a></li>
+    <li><a href="/statistics/ajaxchart/3" data-target="#chart3" class="media_node span" id="charttab3" data-toggle="tabajax" rel="tooltip"> Chart 3 </a></li>
+</ul>
 
-<br>
-<h2>@lang('Totalt slutattesterad tid per arbetsplats')</h2>
-<div>
-    {!! $timeperworkplacechart->container() !!}
+<div class="tab-content">
+    <div class="tab-pane active" id="chart1"></div>
+    <div class="tab-pane" id="chart2"></div>
+    <div class="tab-pane" id="chart3"></div>
 </div>
-{!! $timeperworkplacechart->script() !!}
 
-<br>
-<h2>@lang('Totalt slutattesterad tid (ackumulerat)')</h2>
-<div>
-    {!! $attestedtimechart->container() !!}
-</div>
-{!! $attestedtimechart->script() !!}
+<script type="text/javascript">
+    $('[data-toggle="tabajax"]').click(function(e) {
+        var $this = $(this),
+            loadurl = $this.attr('href'),
+            targ = $this.attr('data-target');
+
+        $.get(loadurl, function(data) {
+            $(targ).html(data);
+        });
+
+        $this.tab('show');
+        return false;
+    });
+</script>
 
 @endsection

@@ -16,6 +16,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.2/js/bootstrap.bundle.min.js"></script>
+
 <ul class="nav nav-tabs tabs-up" id="charts">
     <li><a href="/statistics/ajaxchart/1" data-target="#chart1" class="media_node active span" id="charttab1" data-toggle="tabajax" rel="tooltip"> Chart 1 </a></li>
     <li><a href="/statistics/ajaxchart/2" data-target="#chart2" class="media_node span" id="charttab2" data-toggle="tabajax" rel="tooltip"> Chart 2 </a></li>

@@ -28,9 +28,9 @@
             });
 
             var isOnIOS = navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i);
-            var eventName = isOnIOS ? "pagehide" : "beforeunload";
+            //var eventName = isOnIOS ? "pagehide" : "beforeunload";
 
-            window.addEventListener(eventName, function (event) {
+            /*window.addEventListener(eventName, function (event) {
                 var time = Math.ceil(TimeMe.getTimeOnCurrentPageInSeconds());
                 var token = "{{ csrf_token() }}";
                 $.ajax({
@@ -38,17 +38,28 @@
                     data : {_token:token,time:time},
                     type: 'POST'
                 });
-            });
+            });*/
 
-            /*window.onbeforeunload = function(){
-                var time = Math.ceil(TimeMe.getTimeOnCurrentPageInSeconds());
+            function sendActiveTime(time) {
                 var token = "{{ csrf_token() }}";
                 $.ajax({
                     url: '/activetime',
                     data : {_token:token,time:time},
                     type: 'POST'
                 });
-            };*/
+
+            }
+
+            if(isOnIOS) {
+                setInterval(function() {
+                    sendActiveTime(10);
+                }, 10 * 1000);
+            } else {
+                window.onbeforeunload = function(){
+                    var time = Math.ceil(TimeMe.getTimeOnCurrentPageInSeconds());
+                    sendActiveTime(time);
+                };
+            }
 
             jQuery(window).on('load resize scroll ajaxComplete mousewheel touchstart touchend', function () {
                 if ($('footer').isInViewport()) {

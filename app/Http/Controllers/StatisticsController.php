@@ -58,6 +58,7 @@ class StatisticsController extends Controller
                     'backgroundColor' => 'rgba(0, 255, 0, 0.1)',
                     'borderWidth' => '3',
                 ]);
+
                 $chart->height(350);
 
                 break;

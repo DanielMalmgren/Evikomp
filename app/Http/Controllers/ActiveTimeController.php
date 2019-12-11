@@ -18,6 +18,10 @@ class ActiveTimeController extends Controller
             'date' => date('Y-m-d'),
         ]);
 
+        if (!\App::environment('prod')) {
+            logger('Storing '.$request->time.' seconds for '.Auth::user()->name.'.');
+        }
+
         $activetime->seconds += $request->time;
         $activetime->save();
     }

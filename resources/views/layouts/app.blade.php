@@ -27,19 +27,6 @@
                 idleTimeoutInSeconds: 300 // seconds
             });
 
-            var isOnIOS = navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i);
-            //var eventName = isOnIOS ? "pagehide" : "beforeunload";
-
-            /*window.addEventListener(eventName, function (event) {
-                var time = Math.ceil(TimeMe.getTimeOnCurrentPageInSeconds());
-                var token = "{{ csrf_token() }}";
-                $.ajax({
-                    url: '/activetime',
-                    data : {_token:token,time:time},
-                    type: 'POST'
-                });
-            });*/
-
             function sendActiveTime(time) {
                 var token = "{{ csrf_token() }}";
                 $.ajax({
@@ -47,17 +34,15 @@
                     data : {_token:token,time:time},
                     type: 'POST'
                 });
-
             }
 
-            if(isOnIOS) {
+            if(navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/Safari/i)) {
                 setInterval(function() {
                     sendActiveTime(10);
-                }, 10 * 1000);
+                }, 10000);
             } else {
                 window.onbeforeunload = function(){
-                    var time = Math.ceil(TimeMe.getTimeOnCurrentPageInSeconds());
-                    sendActiveTime(time);
+                    sendActiveTime(Math.ceil(TimeMe.getTimeOnCurrentPageInSeconds()));
                 };
             }
 

@@ -19,15 +19,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.2/js/bootstrap.bundle.min.js"></script>
 
 <ul class="nav nav-tabs tabs-up" id="charts">
-    <li class="nav-item"><a href="/statistics/ajaxchart/1" data-target="#chart1" class="nav-link active" id="charttab1" data-toggle="tabajax" rel="tooltip"> Chart 1 </a></li>
-    <li class="nav-item"><a href="/statistics/ajaxchart/2" data-target="#chart2" class="nav-link" id="charttab2" data-toggle="tabajax" rel="tooltip"> Chart 2 </a></li>
-    <li class="nav-item"><a href="/statistics/ajaxchart/3" data-target="#chart3" class="nav-link" id="charttab3" data-toggle="tabajax" rel="tooltip"> Chart 3 </a></li>
+    <li class="nav-item"><a href="/statistics/ajaxchart/1" data-target="#chart1" class="nav-link active" id="charttab1" data-toggle="tabajax" rel="tooltip"> @lang('Aktivitet i lärplattformen') </a></li>
+    <li class="nav-item"><a href="/statistics/ajaxchart/2" data-target="#chart2" class="nav-link" id="charttab2" data-toggle="tabajax" rel="tooltip"> @lang('Tid per arbetsplats') </a></li>
+    <li class="nav-item"><a href="/statistics/ajaxchart/3" data-target="#chart3" class="nav-link" id="charttab3" data-toggle="tabajax" rel="tooltip"> @lang('Tid totalt') </a></li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane show active" id="chart1"></div>
-    <div class="tab-pane" id="chart2"></div>
-    <div class="tab-pane" id="chart3"></div>
+    <div style="min-height:400px;" class="tab-pane show active" id="chart1"></div>
+    <div style="min-height:400px;" class="tab-pane" id="chart2"></div>
+    <div style="min-height:400px;" class="tab-pane" id="chart3"></div>
 </div>
 
 <script type="text/javascript">
@@ -46,7 +46,6 @@
 
         $this.tab('show');
 
-        console.log('RELOADAR!');
         dispatchEvent(new Event('load'));
 
         return false;

@@ -46,8 +46,6 @@
 
         $this.tab('show');
 
-        dispatchEvent(new Event('load'));
-
         return false;
     });
 </script>

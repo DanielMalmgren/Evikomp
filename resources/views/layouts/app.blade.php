@@ -27,9 +27,12 @@
                 idleTimeoutInSeconds: 300 // seconds
             });
 
-            function sendActiveTime(time) {
+            function sendActiveTime() {
+                var time = Math.ceil(TimeMe.getTimeOnCurrentPageInSeconds());
+                if(isNaN(time)) {
+                    return;
+                }
                 var token = "{{ csrf_token() }}";
-                console.log('Skickar tid '+time);
                 $.ajax({
                     url: '/activetime',
                     data : {_token:token,time:time},
@@ -37,17 +40,17 @@
                 });
             }
 
-            if(navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/Firefox/i) || navigator.userAgent.match(/Macintosh/i)) {
-                setInterval(function() {
-                    if(!document.hidden) {
-                        sendActiveTime(10);
-                    }
-                }, 10000);
-            } else {
-                window.onbeforeunload = function(){
-                    sendActiveTime(Math.ceil(TimeMe.getTimeOnCurrentPageInSeconds()));
-                };
-            }
+            setInterval(function() {
+                if(!document.hidden) {
+                    sendActiveTime();
+                    TimeMe.resetAllRecordedPageTimes();
+                    TimeMe.startTimer();
+                }
+            }, 10000);
+
+            window.onbeforeunload = function(){
+                sendActiveTime();
+            };
 
             jQuery(window).on('load resize scroll ajaxComplete mousewheel touchstart touchend', function () {
                 if ($('footer').isInViewport()) {

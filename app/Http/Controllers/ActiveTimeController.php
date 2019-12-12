@@ -10,7 +10,7 @@ class ActiveTimeController extends Controller
 {
     public function store(Request $request) {
         $this->validate($request, [
-            'time' => 'required',
+            'time' => 'required|integer',
         ]);
 
         $activetime = ActiveTime::firstOrNew([

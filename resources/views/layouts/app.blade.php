@@ -29,6 +29,7 @@
 
             function sendActiveTime(time) {
                 var token = "{{ csrf_token() }}";
+                console.log('Skickar tid '+time);
                 $.ajax({
                     url: '/activetime',
                     data : {_token:token,time:time},
@@ -36,9 +37,11 @@
                 });
             }
 
-            if(navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/Safari/i)) {
+            if(navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/Firefox/i) || navigator.userAgent.match(/Macintosh/i)) {
                 setInterval(function() {
-                    sendActiveTime(10);
+                    if(!document.hidden) {
+                        sendActiveTime(10);
+                    }
                 }, 10000);
             } else {
                 window.onbeforeunload = function(){
@@ -54,7 +57,6 @@
                 }
                 $('.feedback').show();
             });
-
 
             jQuery.fn.isInViewport = function() {
                 var elementTop = jQuery(this).offset().top;

@@ -11,8 +11,10 @@ class TrackController extends Controller
     public function index(Request $request) {
         if($request->showall) {
             $tracks = Track::all();
-        } else {
+        } else if(isset(Auth::user()->workplace)){
             $tracks = Auth::user()->tracks->merge(Auth::user()->workplace->tracks)->sort();
+        } else {
+            $tracks = collect([]);
         }
 
         $data = [

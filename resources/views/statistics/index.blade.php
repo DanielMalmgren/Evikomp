@@ -31,7 +31,7 @@
     <div style="min-height:400px;" class="tab-pane" id="chart4"></div>
     <div style="min-height:400px;" class="tab-pane" id="chart3"></div>
 </div>
-
+<br><br><br><br>
 <script type="text/javascript">
     $(document).ready(function(){
       $("#charttab1").trigger("click");

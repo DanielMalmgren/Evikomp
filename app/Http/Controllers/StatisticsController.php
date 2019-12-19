@@ -8,6 +8,7 @@ use App\ProjectTime;
 use App\TimeAttest;
 use App\User;
 use App\Workplace;
+use App\Municipality;
 use App\Lesson;
 use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 
@@ -70,7 +71,9 @@ class StatisticsController extends Controller
                     $timeperwp->push(round($workplace->total_attested_time(3)));
                     $labels->push($workplace->name);
                 }
-                $chart->dataset(_('Tid per arbetsplats'), 'pie', $timeperwp);
+                $chart->dataset(_('Tid per arbetsplats'), 'pie', $timeperwp)->options([
+                    'backgroundColor' => $this->generateColors($timeperwp),
+                ]);
                 $chart->displayLegend(false);
                 $chart->displayAxes(false);
                 break;
@@ -91,6 +94,20 @@ class StatisticsController extends Controller
                 $chart->dataset(_('Attesterad tid'), 'line', $attestedtime);
                 $chart->displayLegend(false);
                 break;
+            case 4: //Time per municipality chart
+                $heading = _('Totalt slutattesterad tid per kommun');
+                $time = collect([]);
+
+                foreach(Municipality::all() as $municipality) {
+                    $time->push(round($municipality->total_attested_time(3)));
+                    $labels->push($municipality->name);
+                }
+                $chart->dataset(_('Tid per kommun'), 'pie', $time)->options([
+                    'backgroundColor' => $this->generateColors($time),
+                ]);
+                $chart->displayLegend(false);
+                $chart->displayAxes(false);
+                break;
             default:
                 logger("Unknown chart id!");
         }
@@ -103,5 +120,14 @@ class StatisticsController extends Controller
         ];
 
         return view('statistics.ajaxchart')->with($data);
+    }
+
+    private function generateColors($collection): array
+    {
+        $colors = [];
+        for ($i = 0; $i < $collection->count(); $i++) {
+            $colors[] = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+        }
+        return $colors;
     }
 }

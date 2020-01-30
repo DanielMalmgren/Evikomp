@@ -21,7 +21,7 @@ class StatisticsController extends Controller
             'sessions' => ActiveTime::filter()->whereDate('date', '=', date('Y-m-d'))->count(),
             'users' => User::gdpraccepted()->count(),
             'workplaces' => Workplace::filter()->count(),
-            'lessons' => Lesson::count(),
+            'lessons' => Lesson::where('active', true)->count(),
             'totalactivehours' => round(ActiveTime::filter()->sum('seconds')/3600),
             'totalprojecthours' => round(ProjectTime::all()->sum('minutes_total')/60),
             'attestedhourslevel1' => round(TimeAttest::where('attestlevel', 1)->sum('hours')),

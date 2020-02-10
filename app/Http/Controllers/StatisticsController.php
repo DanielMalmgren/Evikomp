@@ -23,7 +23,7 @@ class StatisticsController extends Controller
         $femaleusers = User::gender('F')->filter()->count();
 
         $totalactivehours = round(ActiveTime::filter()->sum('seconds')/3600);
-        $averageactivehours = $totalactivehours/$filteredusers;
+        $averageactivehours = round($totalactivehours/$filteredusers, 2);
 
         $data = [
             'sessions' => ActiveTime::filter()->whereDate('date', '=', date('Y-m-d'))->count(),

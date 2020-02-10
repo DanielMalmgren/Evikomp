@@ -67,8 +67,8 @@ class TimeSummaryController extends Controller
         $worksheet->setCellValueByColumnAndRow(14, $row, $startdate);                                 //Kolumn N, Startdatum
         $worksheet->setCellValueByColumnAndRow(21, $row, $user->terms_of_employment);                 //Kolumn U, anställningsvillkor
         $worksheet->setCellValueByColumnAndRow(22, $row, $user->full_or_part_time);                   //Kolumn V, anställningens omfattning
-        $worksheet->setCellValueByColumnAndRow(23, $row, $user->email);                               //Kolumn W, e-postadress
-        $worksheet->setCellValueByColumnAndRow(24, $row, $user->mobile);                              //Kolumn X, mobilnummer
+        //$worksheet->setCellValueByColumnAndRow(23, $row, $user->email);                               //Kolumn W, e-postadress
+        //$worksheet->setCellValueByColumnAndRow(24, $row, $user->mobile);                              //Kolumn X, mobilnummer
 
         if(isset($colour)) {
             $worksheet->getStyle('A'.$row.':H'.$row)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($colour);
@@ -148,9 +148,9 @@ class TimeSummaryController extends Controller
         $worksheet->setCellValue('B9', 'Evikomp');          //Projektnamn
         $worksheet->setCellValue('D8', ucfirst($monthstr)); //Redovisningsmånad
         $worksheet->setCellValue('D9', $year);              //År
-        $worksheet->setCellValue('C14', $total_hours);      //Totalt antal närvarotimmar under månaden
+        //$worksheet->setCellValue('C14', $total_hours);      //Totalt antal närvarotimmar under månaden
         $worksheet->setCellValue('C18', $municipalities->count()); //Totalt antal deltagande organisationer under månaden
-        $worksheet->setCellValue('C19', $total_hours);      //Totalt antal utbildningstimmar under månaden
+        //$worksheet->setCellValue('C19', $total_hours);      //Totalt antal utbildningstimmar under månaden
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
 

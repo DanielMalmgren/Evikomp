@@ -6,10 +6,10 @@
 
 <H1>@lang('Statistik')</H1>
 <p>@lang('Antal personer inloggade idag: ') {{$sessions}}</p>
-<p>@lang('Antal registrerade användare: ') {{$users}}</p>
+<p>@lang('Antal registrerade användare: ') {{$users}} (Varav {{$maleusers}} män och {{$femaleusers}} kvinnor)</p>
 <p>@lang('Antal arbetsplatser: ') {{$workplaces}}</p>
 <p>@lang('Antal upplagda lektioner: ') {{$lessons}}</p>
-<p>@lang('Antal timmar i plattformen hittills: ') {{$totalactivehours}}</p>
+<p>@lang('Antal timmar i plattformen hittills: ') {{$totalactivehours}} (I snitt {{$averageactivehours}} timmar per deltagare)</p>
 <p>@lang('Antal timmar manuellt registrerade hittills: ') {{$totalprojecthours}}</p>
 <p>@lang('Antal timmar attesterade av deltagare hittills: ') {{$attestedhourslevel1}}</p>
 <p>@lang('Antal timmar attesterade av chefer hittills: ') {{$attestedhourslevel3}} ({{round($attestedhourslevel3/100, 1)}} @lang('procent av') 10 000)</p>

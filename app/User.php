@@ -98,6 +98,15 @@ class User extends Authenticatable
         return $this->hasMany('App\ProjectTime', 'registered_by');
     }
 
+    /*public function gender()
+    {
+        logger('Namn: '.$this->name.', personnummer: '.$this->personid);
+        logger('Näst sista siffran: '.substr($this->personid, 10, 1));
+        logger('Modulo: '.substr($this->personid, 10, 1)%2);
+        $gender=substr($this->personid, 10, 1)%2==0?'F':'M';
+        logger('Gender: '.$gender);
+    }*/
+
     public function active_time_today()
     {
         return date("H:i:s", $this->active_times->last()->seconds);
@@ -198,6 +207,17 @@ class User extends Authenticatable
                 $join->on('workplaces.id', '=', 'users.workplace_id')
                 ->where('includetimeinreports', true);
             });
+    }
+
+    public function scopeGender($query, $gender)
+    {
+        if($gender == 'M') {
+            return $query->whereRaw('mod(substr(personid, 11, 1), 2)=1');
+        } elseif($gender == 'F') {
+            return $query->whereRaw('mod(substr(personid, 11, 1), 2)=0');
+        } else {
+            return null;
+        }
     }
 
     public function scopeGdpraccepted($query)

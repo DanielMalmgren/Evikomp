@@ -18,6 +18,8 @@ class SettingsController extends Controller
             $user = Auth::user();
         }
 
+        $user->gender();
+
         if($user != Auth::user() && ! Auth::user()->hasRole('Admin') && (! isset($user->workplace) || ! $user->workplace->workplace_admins->contains('id', Auth::user()->id))) {
             abort(403);
         }

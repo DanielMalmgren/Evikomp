@@ -17,12 +17,23 @@ class StatisticsController extends Controller
     public function index() {
         setlocale(LC_NUMERIC, \Auth::user()->locale_id);
 
+        $allusers = User::gdpraccepted()->count();
+        $filteredusers = User::filter()->count();
+        $maleusers = User::gender('M')->filter()->count();
+        $femaleusers = User::gender('F')->filter()->count();
+
+        $totalactivehours = round(ActiveTime::filter()->sum('seconds')/3600);
+        $averageactivehours = $totalactivehours/$filteredusers;
+
         $data = [
             'sessions' => ActiveTime::filter()->whereDate('date', '=', date('Y-m-d'))->count(),
-            'users' => User::gdpraccepted()->count(),
+            'users' => $allusers,
+            'maleusers' => $maleusers,
+            'femaleusers' => $femaleusers,
             'workplaces' => Workplace::filter()->count(),
             'lessons' => Lesson::where('active', true)->count(),
-            'totalactivehours' => round(ActiveTime::filter()->sum('seconds')/3600),
+            'totalactivehours' => $totalactivehours,
+            'averageactivehours' => $averageactivehours,
             'totalprojecthours' => round(ProjectTime::all()->sum('minutes_total')/60),
             'attestedhourslevel1' => round(TimeAttest::where('attestlevel', 1)->sum('hours')),
             'attestedhourslevel3' => round(TimeAttest::where('attestlevel', 3)->sum('hours')),

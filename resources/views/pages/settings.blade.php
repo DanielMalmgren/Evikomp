@@ -228,6 +228,8 @@
                     </div>
                 </div>
             @endif
+        @else
+            <input type="hidden" name="use_subtitles" value="1">
         @endif
 
         <br>

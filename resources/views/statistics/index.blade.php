@@ -11,8 +11,8 @@
 <p>@lang('Antal upplagda lektioner: ') {{$lessons}}</p>
 <p>@lang('Antal timmar i plattformen hittills: ') {{$totalactivehours}} (I snitt {{$averageactivehours}} timmar per deltagare)</p>
 <p>@lang('Antal timmar manuellt registrerade hittills: ') {{$totalprojecthours}}</p>
-<p>@lang('Antal timmar attesterade av deltagare hittills: ') {{$attestedhourslevel1}}</p>
-<p>@lang('Antal timmar attesterade av chefer hittills: ') {{$attestedhourslevel3}} ({{round($attestedhourslevel3/100, 1)}} @lang('procent av') 10 000)</p>
+<p>@lang('Antal timmar attesterade av deltagare hittills: ') {{$attestedhourslevel1}} (I snitt {{$attestedhourslevel1peruser}} timmar per deltagare, {{$attestedhourslevel1permale}} för män och {{$attestedhourslevel1perfemale}} för kvinnor)</p>
+<p>@lang('Antal timmar attesterade av chefer hittills: ') {{$attestedhourslevel3}} (I snitt {{$attestedhourslevel3peruser}} timmar per deltagare, {{$attestedhourslevel3permale}} för män och {{$attestedhourslevel3perfemale}} för kvinnor)</p>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
 

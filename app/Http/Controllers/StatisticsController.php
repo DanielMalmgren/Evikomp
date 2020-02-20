@@ -25,6 +25,13 @@ class StatisticsController extends Controller
         $totalactivehours = round(ActiveTime::filter()->sum('seconds')/3600);
         $averageactivehours = round($totalactivehours/$filteredusers, 2);
 
+        $attestedhourslevel1 = round(TimeAttest::where('attestlevel', 1)->sum('hours'));
+        $maleattestedhourslevel1 = round(TimeAttest::gender('M')->where('attestlevel', 1)->sum('hours'));
+        $femaleattestedhourslevel1 = round(TimeAttest::gender('F')->where('attestlevel', 1)->sum('hours'));
+        $attestedhourslevel3 = round(TimeAttest::where('attestlevel', 3)->sum('hours'));
+        $maleattestedhourslevel3 = round(TimeAttest::gender('M')->where('attestlevel', 3)->sum('hours'));
+        $femaleattestedhourslevel3 = round(TimeAttest::gender('F')->where('attestlevel', 3)->sum('hours'));
+
         $data = [
             'sessions' => ActiveTime::filter()->whereDate('date', '=', date('Y-m-d'))->count(),
             'users' => $allusers,
@@ -35,8 +42,14 @@ class StatisticsController extends Controller
             'totalactivehours' => $totalactivehours,
             'averageactivehours' => $averageactivehours,
             'totalprojecthours' => round(ProjectTime::all()->sum('minutes_total')/60),
-            'attestedhourslevel1' => round(TimeAttest::where('attestlevel', 1)->sum('hours')),
-            'attestedhourslevel3' => round(TimeAttest::where('attestlevel', 3)->sum('hours')),
+            'attestedhourslevel1' => $attestedhourslevel1,
+            'attestedhourslevel1peruser' => round($attestedhourslevel1/$allusers, 2),
+            'attestedhourslevel1permale' => round($maleattestedhourslevel1/$maleusers, 2),
+            'attestedhourslevel1perfemale' => round($femaleattestedhourslevel1/$femaleusers, 2),
+            'attestedhourslevel3' => $attestedhourslevel3,
+            'attestedhourslevel3peruser' => round($attestedhourslevel3/$allusers, 2),
+            'attestedhourslevel3permale' => round($maleattestedhourslevel3/$maleusers, 2),
+            'attestedhourslevel3perfemale' => round($femaleattestedhourslevel3/$femaleusers, 2),
         ];
 
         return view('statistics.index')->with($data);

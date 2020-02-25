@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\ClosedMonth;
 use App\Workplace;
+use App\ActiveTime;
+use App\ProjectTime;
+use App\TimeAttest;
 
 class TimeSummaryController extends Controller
 {
@@ -23,12 +26,23 @@ class TimeSummaryController extends Controller
 
         $month_closed = ClosedMonth::all()->where('month', $month)->where('year', $year)->isNotEmpty();
 
+        $projecthours = round(ActiveTime::filter()->whereYear('date', $year)->whereMonth('date', $month)->sum('seconds')/3600, 1) +
+                            ProjectTime::whereYear('date', $year)->whereMonth('date', $month)->get()->sum('minutes_total')/60;
+
+        $attestedhourslevel1 = round(TimeAttest::where('attestlevel', 1)->where('year', $year)->where('month', $month)->sum('hours'), 1);
+        $attestedhourslevel2 = round(TimeAttest::where('attestlevel', 2)->where('year', $year)->where('month', $month)->sum('hours'), 1);
+        $attestedhourslevel3 = round(TimeAttest::where('attestlevel', 3)->where('year', $year)->where('month', $month)->sum('hours'), 1);
+
         $data = [
             'year' => $year,
             'month' => $month,
             'monthstr' => strftime('%B', $time),
             'month_closed' => $month_closed,
             'workplaces' => Workplace::filter()->get(),
+            'projecthours' => $projecthours,
+            'attestedhourslevel1' => $attestedhourslevel1,
+            'attestedhourslevel2' => $attestedhourslevel2,
+            'attestedhourslevel3' => $attestedhourslevel3,
         ];
 
         return view('timesummary.ajax')->with($data);

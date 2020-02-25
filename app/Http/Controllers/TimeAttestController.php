@@ -75,7 +75,7 @@ class TimeAttestController extends Controller
             }
         }
 
-        return redirect('/')->with('success', 'Attesteringen har sparats');
+        return redirect('/timeattest/create')->with('success', 'Attesteringen har sparats');
     }
 
     public function ajaxuserlist(Workplace $workplace, $year, $month) {

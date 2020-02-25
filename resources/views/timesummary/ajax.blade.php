@@ -29,7 +29,7 @@
                 @endphp
                 <tr class="{{$tableclass}}" onclick="togglewpdetails({{$workplace->id}})"> {{--If generated time differs more than one hour from attested time something is wrong--}}
                     <th scope="row">{{$workplace->name}} ({{$workplace->municipality->name}})</th>
-                    <td>{{$pt}} + {{$at}}</td> {{--TODO: Why doesn't the active time sum up exactly with the one on attest page?--}}
+                    <td>{{$pt}} + {{$at}}</td>
                     <td>
                         {{$workplace->month_attested_time($month, $year, 1)}} <i class="fas fa-arrow-right"></i>
                         {{$workplace->month_attested_time($month, $year, 2)}} <i class="fas fa-arrow-right"></i>
@@ -46,6 +46,13 @@
                 </tr>
             @endforeach
             </tbody>
+            <tfoot>
+                <tr>
+                    <th>Totalt</th>
+                    <th>{{$projecthours}}</th>
+                    <th>{{$attestedhourslevel1}} <i class="fas fa-arrow-right"></i> {{$attestedhourslevel2}} <i class="fas fa-arrow-right"></i> {{$attestedhourslevel3}}</th>
+                </tr>
+            </tfoot>
           </table>
 
     </div>

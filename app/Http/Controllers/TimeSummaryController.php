@@ -26,8 +26,8 @@ class TimeSummaryController extends Controller
 
         $month_closed = ClosedMonth::all()->where('month', $month)->where('year', $year)->isNotEmpty();
 
-        $projecthours = round(ActiveTime::filter()->whereYear('date', $year)->whereMonth('date', $month)->sum('seconds')/3600, 1) +
-                            ProjectTime::whereYear('date', $year)->whereMonth('date', $month)->get()->sum('minutes_total')/60;
+        $projecthours = round(ActiveTime::filter()->whereYear('date', $year)->whereMonth('date', $month)->sum('seconds')/3600 +
+                            ProjectTime::whereYear('date', $year)->whereMonth('date', $month)->get()->sum('minutes_total')/60, 1);
 
         $attestedhourslevel1 = round(TimeAttest::where('attestlevel', 1)->where('year', $year)->where('month', $month)->sum('hours'), 1);
         $attestedhourslevel2 = round(TimeAttest::where('attestlevel', 2)->where('year', $year)->where('month', $month)->sum('hours'), 1);

@@ -59,7 +59,7 @@ class LoginListener
         $user->lastname = $lastname;
         $user->save();
 
-        logger($user->name." (".$user->personid.") logged in");
+        logger($user->name." (".$user->personid.") logged in, authenticated by ".session('authnissuer').'.');
 
         //Behövs senare för SLO
         session(['sessionIndex' => $samluser->getSessionIndex()]);

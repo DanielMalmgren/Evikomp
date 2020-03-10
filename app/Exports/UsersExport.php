@@ -2,12 +2,12 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+//use Maatwebsite\Excel\Concerns\FromCollection;
+//use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+//use Maatwebsite\Excel\Concerns\WithHeadings;
 use App\User;
 
-class UsersExport implements FromCollection, ShouldAutoSize, WithHeadings
+class UsersExport //implements FromCollection, ShouldAutoSize, WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection

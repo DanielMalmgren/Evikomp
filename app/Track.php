@@ -9,6 +9,7 @@ class Track extends Model
     use \Astrotomic\Translatable\Translatable;
 
     public $translatedAttributes = ['name'];
+    public $incrementing = false;
 
     public function workplaces()
     {

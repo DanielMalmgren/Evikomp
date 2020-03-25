@@ -22,7 +22,11 @@ class SettingsController extends Controller
             abort(403);
         }
 
-        $tracks = Track::all();
+        if($user->can('list all lessons')) {
+            $tracks = Track::all();
+        } else {
+            $tracks = Track::where('active', 1)->get();
+        }
 
         $data = [
             'municipalities' => Municipality::orderBy('name')->get(),

@@ -15,8 +15,12 @@
         <ul class="list-group mb-3 tracks">
             @foreach($tracks as $track)
                 <li class="list-group-item d-flex justify-content-between lh-condensed nopadding">
-                    <a href="/track/{{$track->id}}">
-                        <h6 class="my-0">{{$track->translateOrDefault(App::getLocale())->name}}</h6>
+                    <a href="/tracks/{{$track->id}}">
+                        <h6 class="my-0">{{$track->translateOrDefault(App::getLocale())->name}}
+                            @if($track->active == 0)
+                                - inaktiv
+                            @endif
+                        </h6>
                         <small class="text-muted">{{$track->translateOrDefault(App::getLocale())->subtitle}}</small>
                     </a>
                 </li>
@@ -26,5 +30,9 @@
         <br>
         @lang('Du har inga spår valda. Gå till dina inställningar för att välja vilka spår som ska visas här!')
     @endif
+
+    @can('manage lessons')
+        <a href="/tracks/create" class="btn btn-primary">@lang('Lägg till spår')</a>
+    @endcan
 
 @endsection

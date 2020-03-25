@@ -10,7 +10,11 @@ class TrackController extends Controller
 {
     public function index(Request $request) {
         if($request->showall) {
-            $tracks = Track::all();
+            if(Auth::user()->can('list all lessons')) {
+                $tracks = Track::all();
+            } else {
+                $tracks = Track::where('active', 1)->get();
+            }
         } else if(isset(Auth::user()->workplace)){
             $tracks = Auth::user()->tracks->merge(Auth::user()->workplace->tracks)->sort();
         } else {
@@ -48,5 +52,51 @@ class TrackController extends Controller
             'lessons' => $lessons,
         ];
         return view('tracks.show')->with($data);
+    }
+
+    public function create() {
+        return view('tracks.create');
+    }
+
+    public function store(Request $request) {
+        usleep(50000);
+        $this->validate($request, [
+            'name' => 'required',
+        ],
+        ['name.required' => __('Du måste ange ett namn på spåret!')]);
+
+        $track = new Track();
+        $track->id = $request->id;
+        $track->save();
+
+        return $this->update($request, $track);
+    }
+
+    public function edit(Track $track) {
+        $data = [
+            'track' => $track,
+        ];
+        return view('tracks.edit')->with($data);
+    }
+
+    public function update(Request $request, Track $track) {
+        usleep(50000);
+        $this->validate($request, [
+            'name' => 'required',
+        ],
+        [
+            'name.required' => __('Du måste ange ett namn på spåret!'),
+        ]);
+
+        $currentLocale = \App::getLocale();
+        $user = Auth::user();
+        logger("Track ".$track->id." is being edited by ".$user->name);
+
+        $track->translateOrNew($currentLocale)->name = $request->name;
+        $track->translateOrNew($currentLocale)->subtitle = $request->subtitle;
+        $track->active = $request->active;
+        $track->save();
+
+        return redirect('/tracks/'.$track->id)->with('success', __('Ändringar sparade'));
     }
 }

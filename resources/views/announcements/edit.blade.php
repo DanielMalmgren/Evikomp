@@ -26,7 +26,7 @@
 
 <div class="col-md-6">
 
-    <H1>@lang('Skapa meddelande')</H1>
+    <H1>@lang('Redigera meddelande')</H1>
 
     <form method="post" action="{{action('AnnouncementsController@update', $announcement->id)}}" accept-charset="UTF-8">
         @method('put')
@@ -43,13 +43,13 @@
         </div>
 
         <div class="mb-5">
-                <label for="bodytext">@lang('Text')</label>
-                <textarea rows=5 name="bodytext" class="form-control" id="bodytext">{{$announcement->bodytext}}</textarea>
-            </div>
+            <label for="bodytext">@lang('Text')</label>
+            <textarea rows=5 name="bodytext" class="form-control" id="bodytext">{{$announcement->bodytext}}</textarea>
+        </div>
 
         <br>
 
-        <button class="btn btn-primary btn-lg btn-block" type="submit">@lang('Skapa')</button>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">@lang('Spara')</button>
     </form>
 </div>
 

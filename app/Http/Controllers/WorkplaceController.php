@@ -46,7 +46,7 @@ class WorkplaceController extends Controller
         } else {
             $workplaces = Auth::user()->admin_workplaces;
         }
-        $tracks = Track::all();
+        $tracks = Track::where('active', 1)->get();
         $workplace_types = WorkplaceType::all();
         $data = [
             'workplaces' => $workplaces,
@@ -58,7 +58,7 @@ class WorkplaceController extends Controller
     }
 
     public function ajax(Workplace $workplace) {
-        $tracks = Track::all();
+        $tracks = Track::where('active', 1)->get();
         $workplace_types = WorkplaceType::all();
         $data = [
             'workplace' => $workplace,

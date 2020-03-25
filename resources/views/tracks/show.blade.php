@@ -35,4 +35,8 @@
         </script>
     @endcan
 
+    @can ('manage lessons')
+        <a href="/tracks/{{$track->id}}/edit" class="btn btn-primary">@lang('Redigera spåret')</a>
+    @endcan
+
 @endsection

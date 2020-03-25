@@ -126,6 +126,19 @@
         </div>
 
         <div class="mb-3">
+            <label for="track">@lang('Spår')</label>
+            <select class="custom-select d-block w-100" id="track" name="track" required="">
+                @foreach($tracks as $track)
+                    @if($lesson->track_id == $track->id)
+                        <option selected value="{{$track->id}}">{{$track->translateOrDefault(App::getLocale())->name}}</option>
+                    @else
+                        <option value="{{$track->id}}">{{$track->translateOrDefault(App::getLocale())->name}}</option>
+                    @endif
+                @endforeach
+            </select>
+        </div>
+
+        <div class="mb-3">
             <input type="hidden" name="active" value="0">
             <label><input type="checkbox" name="active" value="1" {{$lesson->active?"checked":""}}>@lang('Aktiv')</label>
         </div>

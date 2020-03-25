@@ -25,6 +25,26 @@ class LessonController extends Controller
         return view('lessons.show')->with($data);
     }
 
+    public function replicate(Lesson $lesson) {
+        $newLesson = $lesson->replicateWithTranslations();
+        $newLesson->times_started=0;
+        $newLesson->times_test_started=0;
+        $newLesson->times_finished=0;
+        $newLesson->active=0;
+        $newLesson->push();
+
+        foreach($lesson->contents as $content) {
+            $newContent = $content->replicateWithTranslations();
+            $newContent->lesson_id=$newLesson->id;
+            $newContent->push();
+            if($newContent->type=='file' || $newContent->type=='image' || $newContent->type=='office' || $newContent->type=='audio') {
+                Storage::copy("public/files/".$content->filename(), "public/files/".$newContent->id.'.'.$content->filesuffix());
+            }
+        }
+
+        return redirect('/lessons/'.$newLesson->id)->with('success', __('Lektionen har kopierats'));
+    }
+
     public function create(Track $track) {
         $titles = Title::all();
         $data = [
@@ -77,6 +97,7 @@ class LessonController extends Controller
         $data = [
             'lesson' => $lesson,
             'titles' => $titles,
+            'tracks' => Track::all(),
         ];
         return view('lessons.edit')->with($data);
     }
@@ -101,6 +122,7 @@ class LessonController extends Controller
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',
+            'track' => 'required',
             'new_audio.*' => 'file|mimetypes:audio/mpeg|max:20000',
             'new_office.*' => 'file|mimetypes:application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation|max:20000',
             'new_image.*' => 'file|image|max:20000',
@@ -287,6 +309,7 @@ class LessonController extends Controller
 
         $lesson->translateOrNew($currentLocale)->name = $request->name;
         $lesson->active = $request->active;
+        $lesson->track_id = $request->track;
         $lesson->limited_by_title = $request->limited_by_title;
         $lesson->save();
 

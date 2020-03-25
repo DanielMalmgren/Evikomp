@@ -62,8 +62,12 @@ class TrackController extends Controller
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',
+            'id' => 'integer',
         ],
-        ['name.required' => __('Du måste ange ett namn på spåret!')]);
+        [
+            'name.required' => __('Du måste ange ett namn på spåret!'),
+            'id.integer' => __('Du måste ange ett nummer för spåret!'),
+        ]);
 
         $track = new Track();
         $track->id = $request->id;
@@ -83,9 +87,11 @@ class TrackController extends Controller
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',
+            'id' => 'integer',
         ],
         [
             'name.required' => __('Du måste ange ett namn på spåret!'),
+            'id.integer' => __('Du måste ange ett nummer för spåret!'),
         ]);
 
         $currentLocale = \App::getLocale();

@@ -26,6 +26,7 @@ Route::get('/lessons/{lesson}/editquestions',   'LessonController@editquestions'
 Route::put('/lessons/{lesson}/vote',            'LessonController@vote');
 Route::get('/lessons/{lesson}/finish',          'LessonController@finish');
 Route::post('/lessons/reorder',                 'LessonController@reorder')->middleware('permission:manage lessons');
+Route::get('/lessons/{lesson}/replicate',       'LessonController@replicate');
 
 //TestController
 Route::get('/test/{lesson}',                    'TestController@show');

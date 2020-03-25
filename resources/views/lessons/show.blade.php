@@ -85,6 +85,7 @@
     @can ('manage lessons')
         <a href="/lessons/{{$lesson->id}}/edit" class="btn btn-primary">@lang('Redigera lektionen')</a>
         {{--<a href="/lessons/{{$lesson->id}}/editquestions" class="btn btn-primary">@lang('Redigera frågor för lektion')</a>--}}
+        <a href="/lessons/{{$lesson->id}}/replicate" class="btn btn-primary">@lang('Kopiera lektionen')</a>
     @endcan
 
 @endsection

@@ -37,6 +37,10 @@ class Content extends Model
         return $this->id.'.'.pathinfo($this->content, PATHINFO_EXTENSION);
     }
 
+    public function filesuffix() {
+        return pathinfo($this->content, PATHINFO_EXTENSION);
+    }
+
     public static function add_target_to_links($text) {
         return str_replace('<a href=', '<a target="_blank" href=', $text);
     }

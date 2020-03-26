@@ -317,4 +317,16 @@ class LessonController extends Controller
 
         return redirect('/lessons/'.$lesson->id)->with('success', __('Ändringar sparade'));
     }
+
+    public function destroy(Lesson $lesson) {
+        $user = Auth::user();
+        logger("Lesson ".$lesson->id." is being removed by ".$user->name);
+        foreach($lesson->contents as $content) {
+            if($content->type=='file' || $content->type=='image' || $content->type=='office' || $content->type=='audio') {
+                Storage::delete("public/files/".$content->filename());
+            }
+            $content->delete();
+        }
+        $lesson->delete();
+    }
 }

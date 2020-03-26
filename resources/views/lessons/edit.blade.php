@@ -50,6 +50,23 @@
         }
     }
 
+    function deletelesson() {
+        if(confirm('Vill du verkligen radera denna lektion?')) {
+            var token = "{{ csrf_token() }}";
+            $.ajax({
+                url: '/lessons/{{$lesson->id}}',
+                data : {_token:token},
+                type: 'DELETE',
+                success: function(result) {
+                    console.log(result)
+                }
+            })
+            .always(function() {
+                window.location='/tracks/{{$lesson->track_id}}';
+            });
+        }
+    }
+
     $(function() {
         var wrapper = $("#contents_wrap");
         var add_button = $("#add_content_button");
@@ -253,7 +270,9 @@
 
         <br><br>
 
-        <button class="btn btn-primary btn-lg btn-block" type="submit">@lang('Spara')</button>
+        <button class="btn btn-primary btn-lg btn-primary" type="submit">@lang('Spara')</button>
+        <button type="button" class="btn btn-lg btn-danger" onclick="deletelesson()">@lang('Radera lektion')</button>
+
     </form>
 
 @endsection

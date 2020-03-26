@@ -62,10 +62,11 @@ class TrackController extends Controller
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',
-            'id' => 'integer',
+            'id' => 'integer|unique:tracks',
         ],
         [
             'name.required' => __('Du måste ange ett namn på spåret!'),
+            'id.unique' => __('Spåret måste ha ett unikt nummer!'),
             'id.integer' => __('Du måste ange ett nummer för spåret!'),
         ]);
 

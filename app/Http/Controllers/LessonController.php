@@ -58,16 +58,16 @@ class LessonController extends Controller
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',
-            'track_id' => 'required',
+            'track' => 'required',
         ],
         ['name.required' => __('Du måste ange ett namn på lektionen!')]);
 
         $currentLocale = \App::getLocale();
 
-        $track = Track::find($request->track_id);
+        $track = Track::find($request->track);
 
         $lesson = new Lesson();
-        $lesson->track_id = $request->track_id;
+        $lesson->track_id = $request->track;
         $lesson->order = $track->lessons->max('order')+1;
         $lesson->translateOrNew($currentLocale)->name = $request->name;
         $lesson->save();

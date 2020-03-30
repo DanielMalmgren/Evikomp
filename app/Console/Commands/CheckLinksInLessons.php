@@ -35,10 +35,12 @@ class CheckLinksInLessons extends Command
     private function testurl($url) {
         $file_headers = @get_headers($url);
         if(!is_array($file_headers)) {
+            $this->info('Foo');
             return false;
         }
         foreach($file_headers as $file_header) {
             if(strpos($file_header, 'HTTP/1.1 404') !== false) {
+                $this->info('Bar: '.$file_header);
                 return false;
             }
         }

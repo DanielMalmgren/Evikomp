@@ -112,7 +112,7 @@
         @csrf
 
         <input type="hidden" id="content_order" name="content_order" value="" />
-        <input type="hidden" name="track_id" value="{{$track->id}}">
+        <input type="hidden" name="track" value="{{$track->id}}">
 
         <div class="mb-3">
             <label for="name">@lang('Namn')</label>

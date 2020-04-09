@@ -58,7 +58,7 @@
                         @break
 
                     @case('file')
-                        <a target="_blank" href="{{$content->url()}}">{{$content->content}}</a>
+                        <a target="_blank" href="{{$content->url()}}">{{$content->filename()}}</a>
                         <br>
                         @break
 

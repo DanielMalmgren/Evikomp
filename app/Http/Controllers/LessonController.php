@@ -38,7 +38,7 @@ class LessonController extends Controller
             $newContent->lesson_id=$newLesson->id;
             $newContent->push();
             if($newContent->type=='file' || $newContent->type=='image' || $newContent->type=='office' || $newContent->type=='audio') {
-                Storage::copy("public/files/".$content->filename(), "public/files/".$newContent->id.'.'.$content->filesuffix());
+                Storage::copy($content->filepath().$content->filename(), $newContent->filepath().$newContent->filename());
             }
         }
 
@@ -177,14 +177,6 @@ class LessonController extends Controller
             }
         }
 
-        //Loop through all deleted html contents
-        if($request->remove_html) {
-            foreach(array_keys($request->remove_html) as $remove_html_id) {
-                Content::destroy($remove_html_id);
-                logger("HTML content ".$remove_html_id." is being removed");
-            }
-        }
-
         //Loop through all changed vimeo contents
         if($request->vimeo) {
             foreach($request->vimeo as $vimeo_id => $vimeo_text) {
@@ -204,31 +196,13 @@ class LessonController extends Controller
             }
         }
 
-        //Loop through all deleted vimeo contents
-        if($request->remove_vimeo) {
-            foreach(array_keys($request->remove_vimeo) as $remove_vimeo_id) {
-                Content::destroy($remove_vimeo_id);
-                logger("Vimeo content ".$remove_vimeo_id." is being removed");
-            }
-        }
-
         //Loop through all added audio contents
         if($request->new_audio) {
             foreach($request->new_audio as $temp_key => $new_audio) {
                 $content = new Content('audio', $lesson->id, $new_audio->getClientOriginalName());
-                $new_audio->storeAs("public/files/", $content->filename());
+                $new_audio->storeAs($content->filepath(true), $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
                 logger("Audio content ".$content->id." is being added");
-            }
-        }
-
-        //Loop through all deleted audio contents
-        if($request->remove_audio) {
-            foreach(array_keys($request->remove_audio) as $remove_audio_id) {
-                $content = Content::find($remove_audio_id);
-                Content::destroy($remove_audio_id);
-                logger("Deleting public/files/".$content->filename()." from disk");
-                Storage::delete("public/files/".$content->filename());
             }
         }
 
@@ -236,19 +210,9 @@ class LessonController extends Controller
         if($request->new_office) {
             foreach($request->new_office as $temp_key => $new_office) {
                 $content = new Content('office', $lesson->id, $new_office->getClientOriginalName());
-                $new_office->storeAs("public/files/", $content->filename());
+                $new_office->storeAs($content->filepath(true), $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
                 logger("Office content ".$content->id." is being added");
-            }
-        }
-
-        //Loop through all deleted office contents
-        if($request->remove_office) {
-            foreach(array_keys($request->remove_office) as $remove_office_id) {
-                $content = Content::find($remove_office_id);
-                Content::destroy($remove_office_id);
-                logger("Deleting public/files/".$content->filename()." from disk");
-                Storage::delete("public/files/".$content->filename());
             }
         }
 
@@ -256,19 +220,9 @@ class LessonController extends Controller
         if($request->new_image) {
             foreach($request->new_image as $temp_key => $new_image) {
                 $content = new Content('image', $lesson->id, $new_image->getClientOriginalName());
-                $new_image->storeAs("public/files/", $content->filename());
+                $new_image->storeAs($content->filepath(true), $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
                 logger("Image content ".$content->id." is being added");
-            }
-        }
-
-        //Loop through all deleted image files
-        if($request->remove_image) {
-            foreach(array_keys($request->remove_image) as $remove_image_id) {
-                $content = Content::find($remove_image_id);
-                Content::destroy($remove_image_id);
-                logger("Deleting public/files/".$content->filename()." from disk");
-                Storage::delete("public/files/".$content->filename());
             }
         }
 
@@ -276,19 +230,30 @@ class LessonController extends Controller
         if($request->new_file) {
             foreach($request->new_file as $temp_key => $new_file) {
                 $content = new Content('file', $lesson->id, $new_file->getClientOriginalName());
-                $new_file->storeAs("public/files/", $content->filename());
+                $new_file->storeAs($content->filepath(true), $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
                 logger("File content ".$content->id." is being added");
             }
         }
 
-        //Loop through all deleted file contents
-        if($request->remove_file) {
-            foreach(array_keys($request->remove_file) as $remove_file_id) {
-                $content = Content::find($remove_file_id);
-                Content::destroy($remove_file_id);
-                logger("Deleting public/files/".$content->filename()." from disk");
-                Storage::delete("public/files/".$content->filename());
+        //Loop through all changed content files
+        if($request->replace_file) {
+            foreach($request->replace_file as $content_id => $new_file) {
+                logger("Image content ".$content_id." is being changed to ".$new_file);
+                $content = Content::find($content_id);
+                logger("Deleting ".$content->filepath().$content->filename()." from disk");
+                Storage::delete($content->filepath().$content->filename());
+                $content->translateOrNew($currentLocale)->text = $new_file->getClientOriginalName();
+                $content->save();
+                $new_file->storeAs($content->filepath(true), $content->filename());
+            }
+        }
+
+        //Loop through all deleted contents
+        if($request->remove_content) {
+            foreach(array_keys($request->remove_content) as $content_id) {
+                logger("Deleting content ".$content_id);
+                Content::destroy($content_id);
             }
         }
 
@@ -322,9 +287,6 @@ class LessonController extends Controller
         $user = Auth::user();
         logger("Lesson ".$lesson->id." is being removed by ".$user->name);
         foreach($lesson->contents as $content) {
-            if($content->type=='file' || $content->type=='image' || $content->type=='office' || $content->type=='audio') {
-                Storage::delete("public/files/".$content->filename());
-            }
             $content->delete();
         }
         $lesson->delete();

@@ -103,10 +103,11 @@
         $(wrapper).on("click",".remove_field", function(e){
             e.preventDefault();
             var parentdiv = $(this).parent('div').parent('div');
-            var textbox = $(this).parent('div').find('.form-control')
+            var textbox = $(this).parent('div').find('.original-file')
             var oldname = textbox.attr('name');
+            var id = oldname.substring(oldname.lastIndexOf("["), oldname.lastIndexOf("]")+1);
             parentdiv.hide();
-            textbox.attr('name', 'remove_' + oldname);
+            textbox.attr('name', 'remove_content'+id);
         })
 
         $('#limited_by_title').on('change', function() {
@@ -205,7 +206,8 @@
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
                                 <label class="handle" for="audio[{{$content->id}}]">@lang('Pod (ljudfil)')</label>
                                 <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
-                                <input readonly name="audio[{{$content->id}}]" class="form-control" value="{{$content->content}}">
+                                <input readonly name="audio[{{$content->id}}]" class="form-control" value="{{$content->filename()}}">
+                                <input name="replace_file[{{$content->id}}]" class="form-control" type="file" accept="audio/mpeg" value="{{$content->filename()}}">
                             </div>
                         </div>
                         @break
@@ -216,7 +218,8 @@
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
                                 <label class="handle" for="office[{{$content->id}}]">@lang('Office-fil (Word, Excel, Powerpoint)')</label>
                                 <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
-                                <input readonly name="office[{{$content->id}}]" class="form-control" value="{{$content->content}}">
+                                <input readonly name="office[{{$content->id}}]" class="form-control" value="{{$content->filename()}}">
+                                <input name="replace_file[{{$content->id}}]" class="form-control" type="file" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation" value="{{$content->filename()}}">
                             </div>
                         </div>
                         @break
@@ -227,11 +230,11 @@
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
                                 <label class="handle" for="image[{{$content->id}}]">@lang('Bild')</label>
                                 <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
-                                <input readonly name="image[{{$content->id}}]" class="form-control" value="{{$content->content}}">
+                                <input readonly name="image[{{$content->id}}]" class="form-control original-file" value="{{$content->filename()}}">
+                                <input name="replace_file[{{$content->id}}]" class="form-control" type="file" accept="image/jpeg,image/png,image/gif" value="{{$content->filename()}}">
                             </div>
                         </div>
                         @break
-
 
                     @case('file')
                         <div id="file[{{$content->id}}]" data-id="{{$content->id}}" class="card">
@@ -239,7 +242,8 @@
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
                                 <label class="handle" for="file[{{$content->id}}]">@lang('Övrig fil')</label>
                                 <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
-                                <input readonly name="file[{{$content->id}}]" class="form-control" value="{{$content->content}}">
+                                <input readonly name="file[{{$content->id}}]" class="form-control" value="{{$content->filename()}}">
+                                <input name="replace_file[{{$content->id}}]" class="form-control" type="file" value="{{$content->filename()}}">
                             </div>
                         </div>
                         @break

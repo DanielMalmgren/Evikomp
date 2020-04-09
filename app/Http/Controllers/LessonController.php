@@ -199,7 +199,7 @@ class LessonController extends Controller
         //Loop through all added audio contents
         if($request->new_audio) {
             foreach($request->new_audio as $temp_key => $new_audio) {
-                $content = new Content('audio', $lesson->id, $new_audio->getClientOriginalName());
+                $content = new Content('audio', $lesson->id, null, $new_audio->getClientOriginalName());
                 $new_audio->storeAs($content->filepath(true), $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
                 logger("Audio content ".$content->id." is being added");
@@ -209,7 +209,7 @@ class LessonController extends Controller
         //Loop through all added office contents
         if($request->new_office) {
             foreach($request->new_office as $temp_key => $new_office) {
-                $content = new Content('office', $lesson->id, $new_office->getClientOriginalName());
+                $content = new Content('office', $lesson->id, null, $new_office->getClientOriginalName());
                 $new_office->storeAs($content->filepath(true), $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
                 logger("Office content ".$content->id." is being added");
@@ -219,7 +219,7 @@ class LessonController extends Controller
         //Loop through all added image files
         if($request->new_image) {
             foreach($request->new_image as $temp_key => $new_image) {
-                $content = new Content('image', $lesson->id, $new_image->getClientOriginalName());
+                $content = new Content('image', $lesson->id, null, $new_image->getClientOriginalName());
                 $new_image->storeAs($content->filepath(true), $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
                 logger("Image content ".$content->id." is being added");
@@ -229,7 +229,7 @@ class LessonController extends Controller
         //Loop through all added file contents
         if($request->new_file) {
             foreach($request->new_file as $temp_key => $new_file) {
-                $content = new Content('file', $lesson->id, $new_file->getClientOriginalName());
+                $content = new Content('file', $lesson->id, null, $new_file->getClientOriginalName());
                 $new_file->storeAs($content->filepath(true), $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
                 logger("File content ".$content->id." is being added");

@@ -77,23 +77,23 @@
             new_id = getfreeid();
             switch($("#content_to_add").val()) {
                 case 'vimeo':
-                    $(wrapper).append('<div id="new_vimeo['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_vimeo['+new_id+']">@lang('Video-ID')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_vimeo['+new_id+']" class="form-control"></div></div>');
+                    $(wrapper).append('<div id="new_vimeo['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_vimeo['+new_id+']">@lang('Video-ID')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_vimeo['+new_id+']" class="form-control original-content"></div></div>');
                     break;
                 case 'html':
-                    $(wrapper).append('<div id="new_html['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_html['+new_id+']">@lang('Text')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><textarea rows=5 name="new_html['+new_id+']" class="form-control twe"></textarea></div></div>');
+                    $(wrapper).append('<div id="new_html['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_html['+new_id+']">@lang('Text')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><textarea rows=5 name="new_html['+new_id+']" class="form-control twe original-content"></textarea></div></div>');
                     addtwe();
                     break;
                 case 'audio':
-                    $(wrapper).append('<div id="new_audio['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_audio['+new_id+']">@lang('Pod (ljudfil)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_audio['+new_id+']" class="form-control" type="file" accept="audio/mpeg"></div></div>');
+                    $(wrapper).append('<div id="new_audio['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_audio['+new_id+']">@lang('Pod (ljudfil)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_audio['+new_id+']" class="form-control original-content" type="file" accept="audio/mpeg"></div></div>');
                     break;
                 case 'office':
-                    $(wrapper).append('<div id="new_office['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_office['+new_id+']">@lang('Office-fil (Word, Excel, Powerpoint)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_office['+new_id+']" class="form-control" type="file" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation"></div></div>');
+                    $(wrapper).append('<div id="new_office['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_office['+new_id+']">@lang('Office-fil (Word, Excel, Powerpoint)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_office['+new_id+']" class="form-control original-content" type="file" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation"></div></div>');
                     break;
                 case 'image':
-                    $(wrapper).append('<div id="new_image['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_image['+new_id+']">@lang('Bild')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_image['+new_id+']" class="form-control" type="file" accept="image/jpeg,image/png,image/gif"></div></div>');
+                    $(wrapper).append('<div id="new_image['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_image['+new_id+']">@lang('Bild')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_image['+new_id+']" class="form-control original-content" type="file" accept="image/jpeg,image/png,image/gif"></div></div>');
                     break;
                 case 'file':
-                    $(wrapper).append('<div id="new_file['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_file['+new_id+']">@lang('Övrig fil')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_file['+new_id+']" class="form-control" type="file"></div></div>');
+                    $(wrapper).append('<div id="new_file['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_file['+new_id+']">@lang('Övrig fil')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_file['+new_id+']" class="form-control original-content" type="file"></div></div>');
                     break;
             }
             update_content_order();
@@ -103,7 +103,7 @@
         $(wrapper).on("click",".remove_field", function(e){
             e.preventDefault();
             var parentdiv = $(this).parent('div').parent('div');
-            var textbox = $(this).parent('div').find('.original-file')
+            var textbox = $(this).parent('div').find('.original-content')
             var oldname = textbox.attr('name');
             var id = oldname.substring(oldname.lastIndexOf("["), oldname.lastIndexOf("]")+1);
             parentdiv.hide();
@@ -183,7 +183,7 @@
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
                                 <label class="handle" for="vimeo[{{$content->id}}]">@lang('Vimeo-film')</label>
                                 <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
-                                <input name="vimeo[{{$content->id}}]" class="form-control" value="{{$content->content}}">
+                                <input name="vimeo[{{$content->id}}]" class="form-control original-content" value="{{$content->content}}">
                             </div>
                         </div>
                         @break
@@ -194,7 +194,7 @@
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
                                 <label class="handle" for="html[{{$content->id}}]">@lang('Text')</label>
                                 <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
-                                <textarea rows="4" name="html[{{$content->id}}]" class="form-control twe">{!!$content->translateOrDefault(App::getLocale())->text!!}</textarea>
+                                <textarea rows="4" name="html[{{$content->id}}]" class="form-control twe original-content">{!!$content->translateOrDefault(App::getLocale())->text!!}</textarea>
                             </div>
                         </div>
                         @break
@@ -206,7 +206,7 @@
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
                                 <label class="handle" for="audio[{{$content->id}}]">@lang('Pod (ljudfil)')</label>
                                 <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
-                                <input readonly name="audio[{{$content->id}}]" class="form-control" value="{{$content->filename()}}">
+                                <input readonly name="audio[{{$content->id}}]" class="form-control original-content" value="{{$content->filename()}}">
                                 <input name="replace_file[{{$content->id}}]" class="form-control" type="file" accept="audio/mpeg" value="{{$content->filename()}}">
                             </div>
                         </div>
@@ -218,7 +218,7 @@
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
                                 <label class="handle" for="office[{{$content->id}}]">@lang('Office-fil (Word, Excel, Powerpoint)')</label>
                                 <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
-                                <input readonly name="office[{{$content->id}}]" class="form-control" value="{{$content->filename()}}">
+                                <input readonly name="office[{{$content->id}}]" class="form-control original-content" value="{{$content->filename()}}">
                                 <input name="replace_file[{{$content->id}}]" class="form-control" type="file" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation" value="{{$content->filename()}}">
                             </div>
                         </div>
@@ -230,7 +230,7 @@
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
                                 <label class="handle" for="image[{{$content->id}}]">@lang('Bild')</label>
                                 <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
-                                <input readonly name="image[{{$content->id}}]" class="form-control original-file" value="{{$content->filename()}}">
+                                <input readonly name="image[{{$content->id}}]" class="form-control original-content" value="{{$content->filename()}}">
                                 <input name="replace_file[{{$content->id}}]" class="form-control" type="file" accept="image/jpeg,image/png,image/gif" value="{{$content->filename()}}">
                             </div>
                         </div>
@@ -242,7 +242,7 @@
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
                                 <label class="handle" for="file[{{$content->id}}]">@lang('Övrig fil')</label>
                                 <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
-                                <input readonly name="file[{{$content->id}}]" class="form-control" value="{{$content->filename()}}">
+                                <input readonly name="file[{{$content->id}}]" class="form-control original-content" value="{{$content->filename()}}">
                                 <input name="replace_file[{{$content->id}}]" class="form-control" type="file" value="{{$content->filename()}}">
                             </div>
                         </div>

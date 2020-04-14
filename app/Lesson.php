@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class Lesson extends Model
 {
@@ -43,6 +45,13 @@ class Lesson extends Model
     public function rating()
     {
         return $this->lesson_results->sum('rating');
+    }
+
+    public function finished(User $user=null) {
+        if(!$user) {
+            $user = Auth::user();
+        }
+        return $this->lesson_results->where("user_id", $user->id)->isNotEmpty();
     }
 }
 

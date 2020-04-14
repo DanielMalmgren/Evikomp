@@ -101,13 +101,21 @@
         });
 
         $(wrapper).on("click",".remove_field", function(e){
-            e.preventDefault();
-            var parentdiv = $(this).parent('div').parent('div');
-            var textbox = $(this).parent('div').find('.original-content')
-            var oldname = textbox.attr('name');
-            var id = oldname.substring(oldname.lastIndexOf("["), oldname.lastIndexOf("]")+1);
-            parentdiv.hide();
-            textbox.attr('name', 'remove_content'+id);
+            var confirmquestion;
+            if($(this).data("translations") > 1) {
+                confirmquestion = '@lang('Vill du verkligen radera detta innehåll inklusive översättningar?')';
+            } else {
+                confirmquestion = '@lang('Vill du verkligen radera detta innehåll?')';
+            }
+            if(confirm(confirmquestion)) {
+                e.preventDefault();
+                var parentdiv = $(this).parent('div').parent('div');
+                var textbox = $(this).parent('div').find('.original-content')
+                var oldname = textbox.attr('name');
+                var id = oldname.substring(oldname.lastIndexOf("["), oldname.lastIndexOf("]")+1);
+                parentdiv.hide();
+                textbox.attr('name', 'remove_content'+id);
+            }
         })
 
         $('#limited_by_title').on('change', function() {
@@ -192,8 +200,13 @@
                         <div id="html[{{$content->id}}]" data-id="{{$content->id}}" class="card">
                             <div class="card-body">
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
-                                <label class="handle" for="html[{{$content->id}}]">@lang('Text')</label>
-                                <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
+                                <label class="handle" for="html[{{$content->id}}]">
+                                    @lang('Text')
+                                    @if(!$content->hasTranslation(\App::getLocale()))
+                                        (@lang('Översatt innehåll saknas - visar innehåll från standardspråk'))
+                                    @endif
+                                </label>
+                                <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
                                 <textarea rows="4" name="html[{{$content->id}}]" class="form-control twe original-content">{!!$content->translateOrDefault(App::getLocale())->text!!}</textarea>
                             </div>
                         </div>
@@ -204,8 +217,13 @@
                         <div id="audio[{{$content->id}}]" data-id="{{$content->id}}" class="card">
                             <div class="card-body">
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
-                                <label class="handle" for="audio[{{$content->id}}]">@lang('Pod (ljudfil)')</label>
-                                <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
+                                <label class="handle" for="audio[{{$content->id}}]">
+                                    @lang('Pod (ljudfil)')
+                                    @if(!$content->hasTranslation(\App::getLocale()))
+                                        (@lang('Översatt innehåll saknas - visar innehåll från standardspråk'))
+                                    @endif
+                                </label>
+                                <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
                                 <input readonly name="audio[{{$content->id}}]" class="form-control original-content" value="{{$content->filename()}}">
                                 <input name="replace_file[{{$content->id}}]" class="form-control" type="file" accept="audio/mpeg" value="{{$content->filename()}}">
                             </div>
@@ -216,8 +234,13 @@
                         <div id="office[{{$content->id}}]" data-id="{{$content->id}}" class="card">
                             <div class="card-body">
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
-                                <label class="handle" for="office[{{$content->id}}]">@lang('Office-fil (Word, Excel, Powerpoint)')</label>
-                                <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
+                                <label class="handle" for="office[{{$content->id}}]">
+                                    @lang('Office-fil (Word, Excel, Powerpoint)')
+                                    @if(!$content->hasTranslation(\App::getLocale()))
+                                        (@lang('Översatt innehåll saknas - visar innehåll från standardspråk'))
+                                    @endif
+                                </label>
+                                <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
                                 <input readonly name="office[{{$content->id}}]" class="form-control original-content" value="{{$content->filename()}}">
                                 <input name="replace_file[{{$content->id}}]" class="form-control" type="file" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation" value="{{$content->filename()}}">
                             </div>
@@ -228,8 +251,13 @@
                         <div id="image[{{$content->id}}]" data-id="{{$content->id}}" class="card">
                             <div class="card-body">
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
-                                <label class="handle" for="image[{{$content->id}}]">@lang('Bild')</label>
-                                <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
+                                <label class="handle" for="image[{{$content->id}}]">
+                                    @lang('Bild')
+                                    @if(!$content->hasTranslation(\App::getLocale()))
+                                        (@lang('Översatt innehåll saknas - visar innehåll från standardspråk'))
+                                    @endif
+                                </label>
+                                <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
                                 <input readonly name="image[{{$content->id}}]" class="form-control original-content" value="{{$content->filename()}}">
                                 <input name="replace_file[{{$content->id}}]" class="form-control" type="file" accept="image/jpeg,image/png,image/gif" value="{{$content->filename()}}">
                             </div>
@@ -240,8 +268,13 @@
                         <div id="file[{{$content->id}}]" data-id="{{$content->id}}" class="card">
                             <div class="card-body">
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
-                                <label class="handle" for="file[{{$content->id}}]">@lang('Övrig fil')</label>
-                                <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
+                                <label class="handle" for="file[{{$content->id}}]">
+                                    @lang('Övrig fil')
+                                    @if(!$content->hasTranslation(\App::getLocale()))
+                                        (@lang('Översatt innehåll saknas - visar innehåll från standardspråk'))
+                                    @endif
+                                </label>
+                                <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
                                 <input readonly name="file[{{$content->id}}]" class="form-control original-content" value="{{$content->filename()}}">
                                 <input name="replace_file[{{$content->id}}]" class="form-control" type="file" value="{{$content->filename()}}">
                             </div>

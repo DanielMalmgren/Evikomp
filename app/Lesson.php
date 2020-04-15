@@ -52,7 +52,7 @@ class Lesson extends Model
         if(!$user) {
             $user = Auth::user();
         }
-        return $query->join('lesson_results', function($join) use($user)
+        return $query->select('lessons.*')->join('lesson_results', function($join) use($user)
             {
                 $join->on('lesson_results.lesson_id', '=', 'lessons.id')
                 ->where("user_id", $user->id);

@@ -47,7 +47,20 @@ class Lesson extends Model
         return $this->lesson_results->sum('rating');
     }
 
-    public function finished(User $user=null) {
+    public function scopeFinished($query, User $user=null)
+    {
+        if(!$user) {
+            $user = Auth::user();
+        }
+        return $query->join('lesson_results', function($join) use($user)
+            {
+                $join->on('lesson_results.lesson_id', '=', 'lessons.id')
+                ->where("user_id", $user->id);
+            });
+    }
+
+    //Returns whether a particular user has finished this lesson.
+    public function isFinished(User $user=null) {
         if(!$user) {
             $user = Auth::user();
         }

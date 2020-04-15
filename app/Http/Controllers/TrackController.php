@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Track;
+use PDF;
 
 class TrackController extends Controller
 {
@@ -105,5 +106,22 @@ class TrackController extends Controller
         $track->save();
 
         return redirect('/tracks/'.$track->id)->with('success', __('Ändringar sparade'));
+    }
+
+    public function pdfdiploma(Track $track) {
+        $user = Auth::user();
+
+        $lessons = $track->lessons()->finished()->where('active', true)
+            ->orderBy('order')->get();
+
+        $data = [
+            'track' => $track,
+            'lessons' => $lessons,
+            'user' => $user,
+        ];
+
+        $pdf = PDF::loadView('tracks.pdfdiploma', $data);
+
+        return $pdf->download('diploma.pdf');
     }
 }

@@ -15,6 +15,7 @@ Route::get('/tracks',                           'TrackController@index');
 Route::get('/tracks/{track}',                   'TrackController@show');
 Route::get('/tracks/{track}/edit',              'TrackController@edit')->middleware('permission:manage lessons');
 Route::put('/tracks/{track}',                   'TrackController@update')->middleware('permission:manage lessons');
+Route::get('/tracks/{track}/pdfdiploma',        'TrackController@pdfdiploma');
 
 //LessonController
 Route::get('/lessons/create/{track}',           'LessonController@create')->middleware('permission:manage lessons');

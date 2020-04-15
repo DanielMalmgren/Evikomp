@@ -9,7 +9,7 @@
             </h5>
         </div>
         <div class="col-2">
-            @if($lesson->finished())
+            @if($lesson->isFinished())
                 <small data-toggle="tooltip" title="@lang('Markerad som färdig')"><i class="fas fa-check"></i></small>
             @endif
         </div>

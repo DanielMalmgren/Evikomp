@@ -34,10 +34,10 @@
                 });
             });
         </script>
-    @endcan
 
-    @can ('manage lessons')
         <a href="/tracks/{{$track->id}}/edit" class="btn btn-primary">@lang('Redigera spåret')</a>
+
+        <a href="/tracks/{{$track->id}}/pdfdiploma" class="btn btn-primary">@lang('Ge mig mitt diplom!')</a>
     @endcan
 
 @endsection

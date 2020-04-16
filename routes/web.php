@@ -76,6 +76,7 @@ Route::post('/projecttime',                     'ProjectTimeController@store');
 Route::get('/projecttime/{project_time}/edit',  'ProjectTimeController@edit');
 Route::put('/projecttime/{project_time}',       'ProjectTimeController@update');
 Route::get('/projecttimeajax/{workplace}',      'ProjectTimeController@ajax');
+Route::get('/projecttime/{year}/{month}',       'ProjectTimeController@show');
 
 //TimeAttestController
 Route::get('/timeattest/create',                'TimeAttestController@create')->middleware('permission:manage time attests');

@@ -59,6 +59,6 @@
 
     <a href="/test/question/create?lesson_id={{$lesson->id}}" class="btn btn-primary">@lang('Lägg till fråga')</a>
 
-    <a href="/lessons/{{$lesson->id}}" class="btn btn-primary">@lang('Tillaka till lektionen')</a>
+    <a href="/lessons/{{$lesson->id}}" class="btn btn-primary">@lang('Tillbaka till lektionen')</a>
 
 @endsection

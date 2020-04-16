@@ -12,6 +12,49 @@ use App\ClosedMonth;
 
 class ProjectTimeController extends Controller
 {
+    public function show($year, $month) {
+        $user = Auth::user();
+        setlocale(LC_TIME, $user->locale_id);
+
+        $monthstr = strftime('%B', mktime(0, 0, 0, $month));
+        if($month == 1) {
+            $previous_month = 12;
+            $previous_year = $year - 1;
+            $next_month = 2;
+            $next_year = $year;
+        } elseif($month == 12) {
+            $previous_month = 11;
+            $previous_year = $year;
+            $next_month = 1;
+            $next_year = $year + 1;
+        } else {
+            $previous_month = $month - 1;
+            $previous_year = $year;
+            $next_month = $month + 1;
+            $next_year = $year;
+        }
+        if($year == date('Y') && $month == date('n')) {
+            $next_year = null;
+            $next_month = null;
+        }
+
+        $time_rows = $user->time_rows($year, $month);
+
+        $data = [
+            'time_rows' => $time_rows,
+            'year' => $year,
+            'month' => $month,
+            'monthstr' => $monthstr,
+            'previous_month' => $previous_month,
+            'previous_year' => $previous_year,
+            'next_month' => $next_month,
+            'next_year' => $next_year,
+            'days_in_month' => cal_days_in_month(CAL_GREGORIAN, $month, $year),
+        ];
+
+        return view('projecttime.show')->with($data);
+    }
+
     public function create() {
         $project_time_types = ProjectTimeType::all();
         if (Auth::user()->hasRole('Admin')) {

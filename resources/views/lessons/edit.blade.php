@@ -110,7 +110,7 @@
             if(confirm(confirmquestion)) {
                 e.preventDefault();
                 var parentdiv = $(this).parent('div').parent('div');
-                var textbox = $(this).parent('div').find('.original-content')
+                var textbox = $(this).parent('div').find('.original-content');
                 var oldname = textbox.attr('name');
                 var id = oldname.substring(oldname.lastIndexOf("["), oldname.lastIndexOf("]")+1);
                 parentdiv.hide();

@@ -7,6 +7,7 @@
 <div class="col-md-12">
 
     <H1>@lang('Attestera närvaro') - {{$monthstr.' '.$year}}</H1>
+    <small><a class="black" href="/projecttime/{{date('Y')}}/{{date('n')}}">@lang('För att se din närvaro under innevarande månad, klicka här.')</a></small>
     @if (session()->has('authnissuer'))
         <form method="post" name="settings" action="{{action('TimeAttestLevel1Controller@store')}}" accept-charset="UTF-8">
             @csrf

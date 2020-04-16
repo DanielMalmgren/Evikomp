@@ -17,7 +17,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="correctAnswers">@lang('Antal möjliga svar')</label>
+            <label for="correctAnswers">@lang('Antal korrekta svar som krävs för att få rätt på frågan')</label>
             <select class="custom-select d-block w-100" name="correctAnswers" id="correctAnswers" required="">
                 <option value="0">0 (@lang('Reflektionsfråga'))</option>
                 <option value="1" selected>1</option>
@@ -32,6 +32,7 @@
             <div id="input_fields_wrap">
             </div>
 
+            <br>
             <div id="add_alternative_button" class="btn btn-primary" style="margin-bottom:15px" type="text">@lang('Lägg till ett svarsalternativ')</div>
         </div>
 
@@ -51,7 +52,8 @@
         $(add_button).click(function(e){
             e.preventDefault();
             new_id++;
-            $(wrapper).append('<div class="mb-3"><input name="new_response_option_text['+new_id+']" class="form-control"><input type="checkbox" name="new_response_option_correct['+new_id+']" value="'+new_id+'"><button class="btn btn-default btn-danger remove_field" type="button">X</button></div>');
+            //$(wrapper).append('<div class="mb-3"><input name="new_response_option_text['+new_id+']" class="form-control"><input type="checkbox" name="new_response_option_correct['+new_id+']" value="'+new_id+'"><button class="btn btn-default btn-danger remove_field" type="button">X</button></div>');
+            $(wrapper).append('<div class="card"><div class="card-body"><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_response_option_text['+new_id+']" class="form-control original-content"><label for="new_response_option_correct['+new_id+']">@lang("Är svarsalternativet rätt?")</label><input type="checkbox" name="new_response_option_correct['+new_id+']" value="'+new_id+'"></div></div>');
         });
 
         $(wrapper).on("click",".remove_field", function(e){

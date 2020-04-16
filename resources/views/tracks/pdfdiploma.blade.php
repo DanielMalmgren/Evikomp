@@ -4,6 +4,12 @@
 
 @section('content')
 
+    <style>
+        @page { margin: 100px 25px; }
+        header { position: fixed; top: -60px; left: 0px; right: 0px; height: 50px; }
+        footer { position: fixed; bottom: -60px; left: 0px; right: 0px; height: 50px; }
+        .completedlist { margin-left: 100px; }
+    </style>
 
     <center><H1>DIPLOM</H1>
 
@@ -12,20 +18,23 @@
     av Evikomps utbildning i {{$track->translateOrDefault(App::getLocale())->name}}</H2>
     </center>
 
-    Kursmoment:
+    <div class="completedlist">
 
-    @if(count($lessons) > 0)
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-        <div class="list-group mb-4 lessonslist" id="lessonslist">
+        Kursmoment:
+
+        @if(count($lessons) > 0)
+            <ul>
             @foreach($lessons as $lesson)
-                <h5 class="mb-0">
+                <li class="mb-0">
                     {{$lesson->translateOrDefault(App::getLocale())->name}}
-                </h5>
+                </li>
             @endforeach
-        </div>
-    @endif
+            </ul>
+        @endif
+    </div>
 
-    <br><br><br>
+    <footer>
     Loggor och skit här nere.
+    </footer>
 
 @endsection

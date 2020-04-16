@@ -37,7 +37,9 @@
 
         <a href="/tracks/{{$track->id}}/edit" class="btn btn-primary">@lang('Redigera spåret')</a>
 
-        <a href="/tracks/{{$track->id}}/pdfdiploma" class="btn btn-primary">@lang('Ge mig mitt diplom!')</a>
+        @if($track->lessons()->finished()->get()->isNotEmpty())
+            <a href="/tracks/{{$track->id}}/pdfdiploma" class="btn btn-primary">@lang('Ge mig mitt diplom!')</a>
+        @endif
     @endcan
 
 @endsection

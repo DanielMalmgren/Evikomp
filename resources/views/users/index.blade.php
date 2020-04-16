@@ -35,7 +35,7 @@
             @foreach($users as $user)
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                    <a href="/userinfo/{{$user->id}}">
+                    <a href="/settings/{{$user->id}}">
                         <h6 class="my-0">{{$user->name}}</h6>
                     </a>
                     @if($user->workplace)

@@ -80,7 +80,7 @@
         @else
             <a href="/lessons/{{$lesson->id}}/finish" class="btn btn-primary">@lang('Färdig med denna lektion')</a>
         @endif
-    @elsecan
+    @else
         <a href="/lessons/{{$lesson->id}}/finish" class="btn btn-primary">@lang('Färdig med denna lektion')</a>
     @endcan
 

@@ -39,6 +39,10 @@ class LoginListener
             session(['authnissuer' => "Verisec Freja eID AB"]); //TODO: Remove this! It is a HIGHLY temporary because our IdP provider doesn't always sent this attribute
         }
 
+        if(strpos(env('BLOCKED_USERS'), $personnr) !== false) {
+            abort(403);
+        }
+
         $user = User::where('personid', $personnr)->first();
         if(empty($user)) {
             $user = new User();

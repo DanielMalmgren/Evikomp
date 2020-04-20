@@ -63,12 +63,13 @@ class TrackController extends Controller
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',
-            'id' => 'integer|unique:tracks',
+            'id' => 'integer|unique:tracks|min:0',
         ],
         [
             'name.required' => __('Du måste ange ett namn på spåret!'),
             'id.unique' => __('Spåret måste ha ett unikt nummer!'),
-            'id.integer' => __('Du måste ange ett nummer för spåret!'),
+            'id.integer' => __('Du måste ange ett positivt nummer för spåret!'),
+            'id.min' => __('Du måste ange ett positivt nummer för spåret!'),
         ]);
 
         $track = new Track();
@@ -89,11 +90,12 @@ class TrackController extends Controller
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',
-            'id' => 'integer',
+            'id' => 'integer|min:0',
         ],
         [
             'name.required' => __('Du måste ange ett namn på spåret!'),
-            'id.integer' => __('Du måste ange ett nummer för spåret!'),
+            'id.integer' => __('Du måste ange ett positivt nummer för spåret!'),
+            'id.min' => __('Du måste ange ett positivt nummer för spåret!'),
         ]);
 
         $currentLocale = \App::getLocale();

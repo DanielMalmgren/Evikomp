@@ -32,14 +32,15 @@
             </div>
 
             <br><br>
-            <p>
+            <a href="/feedback">@lang('Vi vill gärna veta vad du tyckte om lektionen. Klicka här för att lämna din åsikt!')</a>
+            {{--<p>
                 @lang('Vad tyckte du om lektionen? Ge tumme upp eller ned. Ditt svar är helt anonymt och hjälper oss att utveckla bättre innehåll!')
             </p>
 
             <div>
                 <img id="upvote" class="votebutton" src="/images/upvote.png">
                 <img id="downvote" class="votebutton" src="/images/downvote.png">
-            </div>
+            </div>--}}
         </div>
     </div>
 

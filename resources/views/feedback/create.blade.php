@@ -36,7 +36,7 @@
             <select class="custom-select d-block w-100" name="lesson" id="lesson">
                 <option selected value="null">@lang('Ingen specifik lektion')</option>
                 @foreach($lessons as $lesson)
-                    @if(strpos(url()->previous(), '/lessons/') && $lesson->id == substr(url()->previous(), strrpos(url()->previous(), '/')+1))
+                    @if(isset($activelesson) && $lesson->id == $activelesson)
                         <option selected value="{{$lesson->name}}">{{$lesson->name}}</option>
                     @else
                         <option value="{{$lesson->name}}">{{$lesson->name}}</option>

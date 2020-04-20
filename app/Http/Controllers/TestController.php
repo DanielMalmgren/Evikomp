@@ -44,12 +44,14 @@ class TestController extends Controller
             $lesson->times_finished++;
             $lesson->save();
 
-            $lesson_result = LessonResult::updateOrCreate(
-                ['user_id' => $test_session->user_id, 'lesson_id' => $test_session->lesson_id]
-            );
-            if($test_session->percent() > $lesson_result->personal_best_percent) {
-                $lesson_result->personal_best_percent = $test_session->percent();
-                $lesson_result->save();
+            if($test_session->percent() == 100) {
+                $lesson_result = LessonResult::updateOrCreate(
+                    ['user_id' => $test_session->user_id, 'lesson_id' => $test_session->lesson_id]
+                );
+                if($test_session->percent() > $lesson_result->personal_best_percent) {
+                    $lesson_result->personal_best_percent = $test_session->percent();
+                    $lesson_result->save();
+                }
             }
 
             return redirect('/test/result/'.$test_session->id);

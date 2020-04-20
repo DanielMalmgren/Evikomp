@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Lesson;
+use App\TestSession;
 
 class FeedbackController extends Controller
 {
@@ -12,8 +13,18 @@ class FeedbackController extends Controller
 
         $lessons = Lesson::orderBy('track_id')->orderBy('order')->where('active', true)->get();
 
+        if(strpos(url()->previous(), '/lessons/')) {
+            $activelesson = substr(url()->previous(), strrpos(url()->previous(), '/')+1);
+        } elseif(strpos(url()->previous(), '/test/result/')) {
+            $testsession = TestSession::find(substr(url()->previous(), strrpos(url()->previous(), '/')+1));
+            $activelesson = $testsession->lesson_id;
+        } else {
+            $activelesson = null;
+        }
+
         $data = [
             'lessons' => $lessons,
+            'activelesson' => $activelesson,
         ];
 
         return view('feedback.create')->with($data);

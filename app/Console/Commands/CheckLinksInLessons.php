@@ -13,7 +13,7 @@ class CheckLinksInLessons extends Command
      *
      * @var string
      */
-    protected $signature = 'custom:checklinks';
+    protected $signature = 'custom:checklinks {--nomail}';
 
     /**
      * The console command description.
@@ -35,12 +35,12 @@ class CheckLinksInLessons extends Command
     private function testurl($url) {
         $file_headers = @get_headers($url);
         if(!is_array($file_headers)) {
-            $this->info('Foo');
+            $this->info('Got no headers at all for '.$url);
             return false;
         }
         foreach($file_headers as $file_header) {
             if(strpos($file_header, 'HTTP/1.1 404') !== false) {
-                $this->info('Bar: '.$file_header);
+                $this->info('Got header '.$file_header.' for '.$url);
                 return false;
             }
         }
@@ -81,7 +81,7 @@ class CheckLinksInLessons extends Command
             }
         }
 
-        if(strlen($mailtext) > 0) {
+        if(strlen($mailtext) > 0 && !$this->option('nomail')) {
             $to = [];
             $to[] = ['email' => env('FEEDBACK_RECIPIENT_ADDRESS'), 'name' => env('FEEDBACK_RECIPIENT_NAME')];
 

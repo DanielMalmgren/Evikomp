@@ -26,6 +26,7 @@ class TestController extends Controller
     }
 
     public function store(StoreTestResponse $request) {
+        usleep(50000);
         $test_response = TestResponse::find($request->session()->get('test_response_id'));
         if(! isset($test_response)) {
             logger("Something went wrong while storing test response!");

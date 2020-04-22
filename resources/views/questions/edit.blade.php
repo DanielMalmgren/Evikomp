@@ -34,7 +34,9 @@
 
                     <div id="response_toption[{{$response_option->id}}]" data-id="{{$response_option->id}}" class="card">
                         <div class="card-body">
-                            <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
+                            @if(locale_is_default())
+                                <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
+                            @endif
                             <input name="response_option_text[{{$response_option->id}}]" class="form-control original-content" value="{{$response_option->translateOrDefault(App::getLocale())->text}}">
                             <label for="response_option_correct[{{$response_option->id}}]">@lang('Är svarsalternativet rätt?')</label>
                             <input type="checkbox" {{$response_option->isCorrectAnswer?"checked":""}} name="response_option_correct[{{$response_option->id}}]" value="{{$response_option->id}}">
@@ -45,8 +47,10 @@
             @endif
             </div>
 
-            <br>
-            <div id="add_alternative_button" class="btn btn-primary" style="margin-bottom:15px" type="text">@lang('Lägg till ett svarsalternativ')</div>
+            @if(locale_is_default())
+                <br>
+                <div id="add_alternative_button" class="btn btn-primary" style="margin-bottom:15px" type="text">@lang('Lägg till ett svarsalternativ')</div>
+            @endif
         </div>
 
         <br>

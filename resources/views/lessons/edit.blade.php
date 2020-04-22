@@ -190,7 +190,9 @@
                             <div class="card-body">
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
                                 <label class="handle" for="vimeo[{{$content->id}}]">@lang('Vimeo-film')</label>
-                                <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
+                                @if(locale_is_default())
+                                    <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
+                                @endif
                                 <input name="vimeo[{{$content->id}}]" class="form-control original-content" value="{{$content->content}}">
                             </div>
                         </div>
@@ -206,7 +208,9 @@
                                         (@lang('Översatt innehåll saknas - visar innehåll från standardspråk'))
                                     @endif
                                 </label>
-                                <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
+                                @if(locale_is_default())
+                                    <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
+                                @endif
                                 <textarea rows="4" name="html[{{$content->id}}]" class="form-control twe original-content">{!!$content->translateOrDefault(App::getLocale())->text!!}</textarea>
                             </div>
                         </div>
@@ -223,7 +227,9 @@
                                         (@lang('Översatt innehåll saknas - visar innehåll från standardspråk'))
                                     @endif
                                 </label>
-                                <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
+                                @if(locale_is_default())
+                                    <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
+                                @endif
                                 <input readonly name="audio[{{$content->id}}]" class="form-control original-content" value="{{$content->filename()}}">
                                 <input name="replace_file[{{$content->id}}]" class="form-control" type="file" accept="audio/mpeg" value="{{$content->filename()}}">
                             </div>
@@ -240,7 +246,9 @@
                                         (@lang('Översatt innehåll saknas - visar innehåll från standardspråk'))
                                     @endif
                                 </label>
-                                <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
+                                @if(locale_is_default())
+                                    <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
+                                @endif
                                 <input readonly name="office[{{$content->id}}]" class="form-control original-content" value="{{$content->filename()}}">
                                 <input name="replace_file[{{$content->id}}]" class="form-control" type="file" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation" value="{{$content->filename()}}">
                             </div>
@@ -257,7 +265,9 @@
                                         (@lang('Översatt innehåll saknas - visar innehåll från standardspråk'))
                                     @endif
                                 </label>
-                                <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
+                                @if(locale_is_default())
+                                    <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
+                                @endif
                                 <input readonly name="image[{{$content->id}}]" class="form-control original-content" value="{{$content->filename()}}">
                                 <input name="replace_file[{{$content->id}}]" class="form-control" type="file" accept="image/jpeg,image/png,image/gif" value="{{$content->filename()}}">
                             </div>
@@ -274,7 +284,9 @@
                                         (@lang('Översatt innehåll saknas - visar innehåll från standardspråk'))
                                     @endif
                                 </label>
-                                <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
+                                @if(locale_is_default())
+                                    <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
+                                @endif
                                 <input readonly name="file[{{$content->id}}]" class="form-control original-content" value="{{$content->filename()}}">
                                 <input name="replace_file[{{$content->id}}]" class="form-control" type="file" value="{{$content->filename()}}">
                             </div>
@@ -290,20 +302,22 @@
 
         <br>
 
-        <div class="row">
-            <div class="col-lg-4">
-                <label for="locale">@lang('Typ av innehåll att lägga till')</label>
-                <select class="custom-select d-block w-100" name="content_to_add" id="content_to_add">
-                    <option selected disabled value="select">@lang('Välj typ av innehåll')</option>>
-                    <option value="vimeo">@lang('Vimeo-film')</option>
-                    <option value="html">@lang('Text')</option>
-                    <option value="audio">@lang('Pod (ljudfil)')</option>
-                    <option value="office">@lang('Office-fil (Word, Excel, Powerpoint)')</option>
-                    <option value="image">@lang('Bild')</option>
-                    <option value="file">@lang('Övrig fil')</option>
-                </select>
+        @if(locale_is_default())
+            <div class="row">
+                <div class="col-lg-4">
+                    <label for="locale">@lang('Typ av innehåll att lägga till')</label>
+                    <select class="custom-select d-block w-100" name="content_to_add" id="content_to_add">
+                        <option selected disabled value="select">@lang('Välj typ av innehåll')</option>>
+                        <option value="vimeo">@lang('Vimeo-film')</option>
+                        <option value="html">@lang('Text')</option>
+                        <option value="audio">@lang('Pod (ljudfil)')</option>
+                        <option value="office">@lang('Office-fil (Word, Excel, Powerpoint)')</option>
+                        <option value="image">@lang('Bild')</option>
+                        <option value="file">@lang('Övrig fil')</option>
+                    </select>
+                </div>
             </div>
-        </div>
+        @endif
 
         <br><br>
 

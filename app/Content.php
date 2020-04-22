@@ -44,7 +44,12 @@ class Content extends Model
     }
 
     public function filename() {
-        return $this->translateOrDefault(\App::getLocale())->text;
+        $translation = $this->translateOrDefault(\App::getLocale());
+        if(isset($translation)) {
+            return $translation->text;
+        } else {
+            return 'broken.png';
+        }
     }
 
     public function urlpath() {

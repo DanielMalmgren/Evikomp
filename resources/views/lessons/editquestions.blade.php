@@ -45,7 +45,9 @@
             @foreach($questions as $question)
                 <div class="card" id="id-{{$question->id}}" data-question_id="{{$question->id}}">
                     <div class="card-body">
-                        <a href="#" class="close remove_question" data-dismiss="alert" aria-label="close">&times;</a>
+                        @if(locale_is_default())
+                            <a href="#" class="close remove_question" data-dismiss="alert" aria-label="close">&times;</a>
+                        @endif
                         <a href="/test/question/{{$question->id}}/edit">
                             <h6 class="mb-3">{{$question->translateOrDefault(App::getLocale())->text}}</h6>
                         </a>
@@ -57,7 +59,9 @@
 
     <br>
 
-    <a href="/test/question/create?lesson_id={{$lesson->id}}" class="btn btn-primary">@lang('Lägg till fråga')</a>
+    @if(locale_is_default())
+        <a href="/test/question/create?lesson_id={{$lesson->id}}" class="btn btn-primary">@lang('Lägg till fråga')</a>
+    @endif
 
     <a href="/lessons/{{$lesson->id}}" class="btn btn-primary">@lang('Tillbaka till lektionen')</a>
 

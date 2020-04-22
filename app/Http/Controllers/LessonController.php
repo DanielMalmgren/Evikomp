@@ -241,8 +241,8 @@ class LessonController extends Controller
             foreach($request->replace_file as $content_id => $new_file) {
                 logger("Image content ".$content_id." is being changed to ".$new_file);
                 $content = Content::find($content_id);
-                logger("Deleting ".$content->filepath().$content->filename()." from disk");
-                Storage::delete($content->filepath().$content->filename());
+                //logger("Deleting ".$content->filepath().$content->filename()." from disk");
+                //Storage::delete($content->filepath().$content->filename());
                 $content->translateOrNew($currentLocale)->text = $new_file->getClientOriginalName();
                 $content->save();
                 $new_file->storeAs($content->filepath(true), $content->filename());

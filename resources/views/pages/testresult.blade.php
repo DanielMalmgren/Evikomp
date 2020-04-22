@@ -9,11 +9,17 @@
     <div class="card">
         <div class="card-body">
 
-            {{$resulttext}}
+            {{--{{$resulttext}}--}}
 
-            <br><br>
+            @for ($i = 10; $i <= 100; $i=$i+10)
+                @if($percent>=$i)
+                    <img class="resultstar" src="/images/Star_happy.png">
+                @else
+                    <img class="resultstar" src="/images/Star_unhappy.png">
+                @endif
+            @endfor
 
-            <div>
+            {{--<div>
                 @if($test_session->percent()>49)
                     <img class="resultstar" src="/images/Star_happy.png">
                 @else
@@ -29,7 +35,19 @@
                 @else
                     <img class="resultstar" src="/images/Star_unhappy.png">
                 @endif
-            </div>
+            </div>--}}
+
+            <br><br>
+
+            @if($percent==100)
+                @lang('Bra, alla rätt på första försöket! Klicka på knappen nedan för att fortsätta till nästa lektion.')
+                <br><br>
+                <a href="/lessons/{{$nextlesson->id}}" class="btn btn-primary">@lang('Nästa lektion')</a>
+            @else
+                @lang('Inte riktigt alla rätt rakt igenom. Klicka på knappen nedan för att gå tilbaka till lektionen och repetera.')
+                <br><br>
+                <a href="/lessons/{{$lesson->id}}" class="btn btn-primary">@lang('Tillbaka till lektionen')</a>
+            @endif
 
             <br><br>
             <a href="/feedback">@lang('Vi vill gärna veta vad du tyckte om lektionen. Klicka här för att lämna din åsikt!')</a>
@@ -44,14 +62,14 @@
         </div>
     </div>
 
-    <br>
-    @if($lesson)
+    {{--<br>
+    @if($nextlesson)
         <h1>@lang('Nästa lektion')</h1>
         @include('inc.listlesson')
         <br>
-    @endif
+    @endif--}}
 
-    <script type="text/javascript">
+    {{--<script type="text/javascript">
         function vote(vote) {
             var lessonId = "{{$test_session->lesson->id}}";
             var userId = "{{$test_session->user->id}}";
@@ -72,6 +90,6 @@
                 vote(-1);
             });
         });
-    </script>
+    </script>--}}
 
 @endsection

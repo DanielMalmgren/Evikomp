@@ -9,18 +9,20 @@ class TestResultController extends Controller
 {
     public function show(TestSession $test_session) {
 
-        if($test_session->percent() === 100) {
+        /*if($test_session->percent() === 100) {
             $resulttext = __('Grattis, du hade rätt på :percent% av frågorna på första försöket!', ['percent' => $test_session->percent()]);
         } elseif($test_session->percent() > 74) {
             $resulttext = __('Du hade rätt på :percent% av frågorna på första försöket!', ['percent' => $test_session->percent()]);
         } else {
             $resulttext = __('Du hade bara rätt på :percent% av frågorna på första försöket!', ['percent' => $test_session->percent()]);
-        }
+        }*/
 
         $data = [
-            'test_session' => $test_session,
-            'lesson' => Auth::user()->next_lesson(),
-            'resulttext' => $resulttext,
+            //'test_session' => $test_session,
+            'nextlesson' => Auth::user()->next_lesson(),
+            //'resulttext' => $resulttext,
+            'lesson' => $test_session->lesson,
+            'percent' => $test_session->percent(),
         ];
 
         return view('pages.testresult')->with($data);

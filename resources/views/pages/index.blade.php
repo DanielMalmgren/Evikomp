@@ -15,11 +15,11 @@
     <br>
 @endif
 
-@if($lesson)
+{{--@if($lesson)
     <h1>@lang('Nästa lektion')</h1>
     @include('inc.listlesson')
     <br>
-@endif
+@endif--}}
 
 <H1>@lang('Nyheter')</H1>
 

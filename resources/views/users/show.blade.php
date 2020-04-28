@@ -17,7 +17,7 @@
     <H2>@lang('Avklarade lektioner')</H2>
     @foreach($tracks as $track)
         <h3>{{$track->translateOrDefault(App::getLocale())->name}}</h3>
-        @foreach($track->lessons->sortBy('order') as $lesson)
+        @foreach($track->lessons->where('active', true)->sortBy('order') as $lesson)
             {{$lesson->translateOrDefault(App::getLocale())->name}}
             @if($lesson->isFinished())
                 <small data-toggle="tooltip" title="@lang('Markerad som färdig')"><i class="fas fa-check"></i></small>

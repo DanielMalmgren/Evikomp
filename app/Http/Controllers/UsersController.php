@@ -22,11 +22,12 @@ class UsersController extends Controller
             $tracks = collect([]);
         }
 
-        $total_active_time = date("H:i", $user->active_times->sum('seconds')+59);
-
         $data = array(
             'user' => $user,
-            'total_active_time' => $total_active_time,
+            'totalactivehours' => round($user->active_times->sum('seconds')/3600),
+            'totalprojecthours' => round($user->project_times->sum('minutes_total')/60),
+            'attestedhourslevel1' => round($user->time_attests->where('attestlevel', 1)->sum('hours')),
+            'attestedhourslevel3' => round($user->time_attests->where('attestlevel', 3)->sum('hours')),
             'tracks' => $tracks,
         );
 

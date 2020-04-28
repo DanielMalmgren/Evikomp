@@ -8,7 +8,11 @@
 
     <H1>@lang('Statistik och information för') {{$user->name}}</H1>
 
-    @lang('Antal timmar i plattformen totalt:') {{$total_active_time}} <br><br>
+    <p>@lang('Antal timmar i plattformen hittills: ') {{$totalactivehours}} </p>
+    <p>@lang('Antal timmar manuellt registrerade hittills: ') {{$totalprojecthours}}</p>
+    <p>@lang('Antal timmar attesterade av deltagare hittills: ') {{$attestedhourslevel1}}</p>
+    <p>@lang('Antal timmar attesterade av chef hittills: ') {{$attestedhourslevel3}}</p>
+    <br>
 
     <H2>@lang('Avklarade lektioner')</H2>
     @foreach($tracks as $track)
@@ -23,7 +27,7 @@
         <br>
     @endforeach
 
-    <br><br>
+    <br>
 
     <a href="/settings/{{$user->id}}" class="btn btn-primary">@lang('Inställningar')</a>
 

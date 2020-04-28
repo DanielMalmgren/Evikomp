@@ -11,30 +11,27 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class UsersController extends Controller
 {
-    /*public function show(User $user = null) {
-        if(!$user) {
-            $user = Auth::user();
+    public function show(User $user) {
+        if($user != Auth::user() && ! Auth::user()->hasRole('Admin') && (! isset($user->workplace) || ! $user->workplace->workplace_admins->contains('id', Auth::user()->id))) {
+            abort(403);
         }
 
-        $active_times = array();
-        for($i = 1; $i <= date("j"); $i++) {
-            $this_time = $active_times_db = ActiveTime::where('user_id', $user->id)->whereMonth('date', date("n"))->whereDay('date', $i)->first();
-            if($this_time) {
-                $active_times[$i] = date("H:i:s", $this_time->seconds);
-            } else {
-                $active_times[$i] = "00:00:00";
-            }
+        if($user->workplace){
+            $tracks = $user->tracks->merge($user->workplace->tracks)->sort();
+        } else {
+            $tracks = collect([]);
         }
+
         $total_active_time = date("H:i", $user->active_times->sum('seconds')+59);
 
         $data = array(
             'user' => $user,
-            'active_times' => $active_times,
-            'total_active_time' => $total_active_time
+            'total_active_time' => $total_active_time,
+            'tracks' => $tracks,
         );
 
-        return view('pages.userinfo')->with($data);
-    }*/
+        return view('users.show')->with($data);
+    }
 
     public function index() {
         //$users = User::all();

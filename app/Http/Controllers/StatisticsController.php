@@ -69,7 +69,7 @@ class StatisticsController extends Controller
 
                 for ($days_backwards = 14; $days_backwards >= 0; $days_backwards--) {
                     $logins->push(ActiveTime::filter()->whereDate('date', today()->subDays($days_backwards))->count());
-                    $time->push(round(ActiveTime::filter()->whereDate('date', today()->subDays($days_backwards))->sum('seconds')/3600), 1);
+                    $time->push(round(ActiveTime::filter()->whereDate('date', today()->subDays($days_backwards))->sum('seconds')/3600, 1));
                     $labels->push(today()->subDays($days_backwards)->toDateString());
                 }
 

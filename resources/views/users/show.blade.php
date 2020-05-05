@@ -19,7 +19,7 @@
         <h3>{{$track->translateOrDefault(App::getLocale())->name}}</h3>
         @foreach($track->lessons->where('active', true)->sortBy('order') as $lesson)
             {{$lesson->translateOrDefault(App::getLocale())->name}}
-            @if($lesson->isFinished())
+            @if($lesson->isFinished($user))
                 <small data-toggle="tooltip" title="@lang('Markerad som färdig')"><i class="fas fa-check"></i></small>
             @endif
             <br>

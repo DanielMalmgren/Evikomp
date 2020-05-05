@@ -27,18 +27,29 @@ class LessonController extends Controller
 
     public function replicate(Lesson $lesson) {
         $newLesson = $lesson->replicateWithTranslations();
-        $newLesson->times_started=0;
-        $newLesson->times_test_started=0;
-        $newLesson->times_finished=0;
-        $newLesson->active=0;
+        $newLesson->times_started = 0;
+        $newLesson->times_test_started = 0;
+        $newLesson->times_finished = 0;
+        $newLesson->active = 0;
         $newLesson->push();
 
         foreach($lesson->contents as $content) {
             $newContent = $content->replicateWithTranslations();
-            $newContent->lesson_id=$newLesson->id;
+            $newContent->lesson_id = $newLesson->id;
             $newContent->push();
             if($newContent->type=='file' || $newContent->type=='image' || $newContent->type=='office' || $newContent->type=='audio') {
                 Storage::copy($content->filepath().$content->filename(), $newContent->filepath().$newContent->filename());
+            }
+        }
+
+        foreach($lesson->questions as $question) {
+            $newQuestion = $question->replicateWithTranslations();
+            $newQuestion->lesson_id = $newLesson->id;
+            $newQuestion->push();
+            foreach($question->response_options as $response_option) {
+                $newOption = $response_option->replicateWithTranslations();
+                $newOption->question_id = $newQuestion->id;
+                $newOption->push();
             }
         }
 
@@ -104,11 +115,38 @@ class LessonController extends Controller
 
     public function editquestions(Lesson $lesson) {
         $questions = $lesson->questions->sortBy('order');
+
         $data = [
             'lesson' => $lesson,
             'questions' => $questions,
+            'lessonsWithQuestions' => Lesson::has('questions')->get(),
         ];
         return view('lessons.editquestions')->with($data);
+    }
+
+    public function replicateQuestions(Request $request) {
+        $this->validate($request, [
+            'sourcelesson' => 'required',
+            'targetlesson' => 'required',
+        ]);
+
+        $sourcelesson = Lesson::find($request->sourcelesson);
+        $targetlesson = Lesson::find($request->targetlesson);
+
+        logger("Replicating all questions from lesson ".$sourcelesson->id." to lesson ".$targetlesson->id.".");
+
+        foreach($sourcelesson->questions as $question) {
+            $newQuestion = $question->replicateWithTranslations();
+            $newQuestion->lesson_id = $targetlesson->id;
+            $newQuestion->push();
+            foreach($question->response_options as $response_option) {
+                $newOption = $response_option->replicateWithTranslations();
+                $newOption->question_id = $newQuestion->id;
+                $newOption->push();
+            }
+        }
+
+        return redirect('/lessons/'.$targetlesson->id.'/editquestions');
     }
 
     public function finish(Lesson $lesson) {

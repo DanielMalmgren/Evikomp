@@ -28,6 +28,7 @@ Route::put('/lessons/{lesson}/vote',            'LessonController@vote');
 Route::get('/lessons/{lesson}/finish',          'LessonController@finish');
 Route::post('/lessons/reorder',                 'LessonController@reorder')->middleware('permission:manage lessons');
 Route::get('/lessons/{lesson}/replicate',       'LessonController@replicate');
+Route::post('/lessons/replicateQuestions',      'LessonController@replicateQuestions');
 Route::delete('/lessons/{lesson}',              'LessonController@destroy')->middleware('permission:manage lessons');
 
 //TestController

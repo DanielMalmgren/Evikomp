@@ -39,7 +39,23 @@
 
     <H1>@lang('Redigera frågor för lektion') {{$lesson->translateOrDefault(App::getLocale())->name}}</H1>
 
-    @if($questions->isNotEmpty())
+    @if($questions->isEmpty())
+        @lang('Denna lektion har inga frågor. Du kan kopiera samtliga frågor ifrån en annan lektion genom att välja nedan.')
+
+        <form method="post" action="{{action('LessonController@replicateQuestions')}}" accept-charset="UTF-8">
+            @csrf
+            <input type="hidden" name="targetlesson" value="{{$lesson->id}}">
+            <div class="mb-3">
+                <select class="custom-select d-block w-100" name="sourcelesson" id="sourcelesson" required="" onchange="this.form.submit()">
+                    <option disabled selected>@lang('Välj lektion att kopiera ifrån')</option>
+                    @foreach($lessonsWithQuestions as $sourcelesson)
+                        <option value="{{$sourcelesson->id}}">{{$sourcelesson->translateOrDefault(App::getLocale())->name}} ({{$sourcelesson->track->translateOrDefault(App::getLocale())->name}})</option>
+                    @endforeach
+                </select>
+            </div>
+        </form>
+
+    @else
         @lang('Frågor')
         <div id="questionlist">
             @foreach($questions as $question)

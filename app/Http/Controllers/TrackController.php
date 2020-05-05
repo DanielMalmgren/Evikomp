@@ -12,12 +12,12 @@ class TrackController extends Controller
     public function index(Request $request) {
         if($request->showall) {
             if(Auth::user()->can('list all lessons')) {
-                $tracks = Track::all();
+                $tracks = Track::orderBy('order')->get();
             } else {
-                $tracks = Track::where('active', 1)->get();
+                $tracks = Track::where('active', 1)->orderBy('order')->get();
             }
         } else if(isset(Auth::user()->workplace)){
-            $tracks = Auth::user()->tracks->merge(Auth::user()->workplace->tracks)->sort();
+            $tracks = Auth::user()->tracks->merge(Auth::user()->workplace->tracks)->sortBy('order');
         } else {
             $tracks = collect([]);
         }

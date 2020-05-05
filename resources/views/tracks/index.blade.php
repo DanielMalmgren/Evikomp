@@ -12,9 +12,9 @@
     @endif
 
     @if(count($tracks) > 0)
-        <ul class="list-group mb-3 tracks">
+        <ul class="list-group mb-3 tracks" id="tracks">
             @foreach($tracks as $track)
-                <li class="list-group-item d-flex justify-content-between lh-condensed nopadding">
+                <li class="list-group-item d-flex justify-content-between lh-condensed nopadding" id="id-{{$track->id}}">
                     <a href="/tracks/{{$track->id}}">
                         <h6 class="my-0">{{$track->translateOrDefault(App::getLocale())->name}}
                             @if($track->active == 0)
@@ -32,6 +32,25 @@
     @endif
 
     @can('manage lessons')
+        @if($showall)
+            <script type="text/javascript" language="javascript" src="{{asset('vendor/jquery-ui-1.12.1.custom/jquery-ui.min.js')}}"></script>
+            <script type="text/javascript">
+                $(function() {
+                    $("#tracks").sortable({
+                    update: function (e, u) {
+                        var token = "{{ csrf_token() }}";
+                        var data = $(this).sortable('serialize');
+                        $.ajax({
+                            url: '/tracks/reorder',
+                            data : {_token:token,data:data},
+                            type: 'POST'
+                        });
+                    }
+                    });
+                });
+            </script>
+        @endif
+
         <a href="/tracks/create" class="btn btn-primary">@lang('Lägg till spår')</a>
     @endcan
 

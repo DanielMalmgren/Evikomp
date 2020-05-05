@@ -23,9 +23,9 @@ class SettingsController extends Controller
         }
 
         if($user->can('list all lessons')) {
-            $tracks = Track::all();
+            $tracks = Track::orderBy('order')->get();
         } else {
-            $tracks = Track::where('active', 1)->get();
+            $tracks = Track::where('active', 1)->orderBy('order')->get();
         }
 
         $data = [

@@ -11,11 +11,6 @@
         @csrf
 
         <div class="mb-3">
-            <label for="id">@lang('Spår nummer')</label>
-            <input disabled value="{{$track->id}}" class="form-control" id="id">
-        </div>
-
-        <div class="mb-3">
             <label for="name">@lang('Namn')</label>
             <input name="name" class="form-control" id="name" value="{{$track->translateOrDefault(App::getLocale())->name}}">
         </div>

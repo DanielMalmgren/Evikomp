@@ -55,6 +55,17 @@ class TrackController extends Controller
         return view('tracks.show')->with($data);
     }
 
+    public function reorder(Request $request) {
+        parse_str($request->data, $data);
+        $ids = $data['id'];
+
+        foreach($ids as $order => $id){
+            $track = Track::findOrFail($id);
+            $track->order = $order+1;
+            $track->save();
+        }
+    }
+
     public function create() {
         return view('tracks.create');
     }
@@ -63,17 +74,13 @@ class TrackController extends Controller
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',
-            'id' => 'integer|unique:tracks|min:0',
         ],
         [
             'name.required' => __('Du måste ange ett namn på spåret!'),
-            'id.unique' => __('Spåret måste ha ett unikt nummer!'),
-            'id.integer' => __('Du måste ange ett positivt nummer för spåret!'),
-            'id.min' => __('Du måste ange ett positivt nummer för spåret!'),
         ]);
 
         $track = new Track();
-        $track->id = $request->id;
+        $track->id = Track::max('id')+1;
         $track->save();
 
         return $this->update($request, $track);

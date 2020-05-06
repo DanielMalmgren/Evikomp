@@ -53,8 +53,8 @@ Route::get('/feedback',                         'FeedbackController@create');
 Route::post('/feedback',                        'FeedbackController@post');
 
 //UsersControler
-Route::get('/users/{user}',                     'UsersController@show');
 Route::get('/users/create',                     'UsersController@create')->middleware('permission:manage users');
+Route::get('/users/{user}',                     'UsersController@show');
 Route::post('/users',                           'UsersController@store')->middleware('permission:manage users');
 Route::get('/users',                            'UsersController@index')->middleware('permission:manage users');
 Route::get('/exportusers',                      'UsersController@export')->middleware('permission:manage users');

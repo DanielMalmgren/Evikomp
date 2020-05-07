@@ -21,6 +21,16 @@
             }
         });
     });
+
+    function toggleall() {
+        var ca=document.getElementById("togglecb");
+        var cb=document.getElementsByName("users[]");
+        var cb_length=cb.length;
+        for(var i=0; i < cb_length; i++) {
+            cb[i].checked = ca.checked;
+        }
+    }
+
 </script>
 
 <form method="post" name="question" action="{{action('ProjectTimeController@store')}}" accept-charset="UTF-8">
@@ -54,6 +64,7 @@
     </div>
 
     <H2>@lang('Närvarande personer')</H2>
+    <label><input type="checkbox" id="togglecb" onclick="toggleall()">@lang('Markera alla')</label>
     @foreach($workplace->users->sortBy('name') as $user)
         <div class="checkbox">
             <label><input type="checkbox" name="users[]" {{(is_array(old('users')) && in_array($user->id, old('users'))) ? 'checked' : '' }} value="{{$user->id}}" id="{{$user->id}}">{{$user->name}}</label>

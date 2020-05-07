@@ -33,7 +33,14 @@
 
     <br>
 
-    <div id="settings"></div>
+    <div id="settings">
+        @if(count($workplaces) > 1 && old('workplace_id'))
+            @php
+                $workplace = \App\Workplace::find(old('workplace_id'))
+            @endphp
+            @include('projecttime.ajax')
+        @endif
+    </div>
 
 </div>
 

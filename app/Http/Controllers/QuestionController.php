@@ -16,6 +16,8 @@ class QuestionController extends Controller
 
         if(!isset($test_session)) {
             logger("No test session found for session id ".$request->query('testsession_id'));
+            logger("Current URL: ".url()->full());
+            logger("Previous URL: ".url()->previous());
         }
 
         $test_response = TestResponse::firstOrCreate(

@@ -200,9 +200,12 @@ class LessonController extends Controller
         if($request->html) {
             foreach($request->html as $html_id => $html_text) {
                 $content = Content::find($html_id);
-                $content->translateOrNew($currentLocale)->text = $content->add_target_to_links($html_text);
-                $content->save();
-                logger("HTML content ".$html_id." is being changed");
+                $newtext = $content->add_target_to_links($html_text);
+                if($content->translateOrNew($currentLocale)->text != $newtext) {
+                    $content->translateOrNew($currentLocale)->text = $newtext;
+                    $content->save();
+                    logger("HTML content ".$html_id." is being changed");
+                }
             }
         }
 

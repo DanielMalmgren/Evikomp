@@ -79,6 +79,7 @@ class TimeAttestController extends Controller
     }
 
     public function ajaxuserlist(Workplace $workplace, $year, $month) {
+        $attestlevel = 0;
         if (Auth::user()->hasRole('Admin')) {
             $attestlevel = 100;
         } else {
@@ -90,7 +91,7 @@ class TimeAttestController extends Controller
             }
         }
 
-        if(ClosedMonth::all()->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty()) {
+        if(ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
             $month_is_closed = true;
         } else {
             $month_is_closed = false;

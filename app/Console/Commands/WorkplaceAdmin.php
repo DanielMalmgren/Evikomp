@@ -33,8 +33,8 @@ class WorkplaceAdmin extends Command
      */
     public function handle()
     {
-        $user = User::where('email', $this->argument('email'))->get()->first();
-        $workplace = Workplace::where('name', $this->argument('workplace'))->get()->first();
+        $user = User::where('email', $this->argument('email'))->first();
+        $workplace = Workplace::where('name', $this->argument('workplace'))->first();
         if($this->option('remove')) {
             $user->admin_workplaces()->detach($workplace);
             if($user->admin_workplaces()->count() === 0) {

@@ -60,6 +60,7 @@ class StatisticsController extends Controller
 
         $chart = new Chart();
         $labels = collect([]);
+        $heading = "";
 
         switch ($chartid) {
             case 1: //Logins history chart

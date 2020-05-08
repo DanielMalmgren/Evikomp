@@ -28,7 +28,7 @@ class GrantRole extends Command
      */
     public function handle()
     {
-        $user = User::where('email', $this->argument('email'))->get()->first();
+        $user = User::where('email', $this->argument('email'))->first();
         if($this->option('remove')) {
             $this->info('Removing '.$user->name.' from role '.$this->argument('role'));
             $user->removeRole($this->argument('role'));

@@ -57,7 +57,7 @@ Route::get('/users/create',                     'UsersController@create')->middl
 Route::get('/users/{user}',                     'UsersController@show');
 Route::post('/users',                           'UsersController@store')->middleware('permission:manage users');
 Route::get('/users',                            'UsersController@index')->middleware('permission:manage users');
-Route::get('/exportusers',                      'UsersController@export')->middleware('permission:manage users');
+//Route::get('/exportusers',                      'UsersController@export')->middleware('permission:manage users');
 Route::delete('/user/{user}',                   'UsersController@destroy')->middleware('permission:manage users');
 Route::get('/select2users',                     'UsersController@select2');
 

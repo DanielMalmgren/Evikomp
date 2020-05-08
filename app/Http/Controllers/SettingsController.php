@@ -10,10 +10,12 @@ use App\Municipality;
 use App\Workplace;
 use App\User;
 use App\Title;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class SettingsController extends Controller
 {
-    public function edit(?User $user = null) {
+    public function edit(?User $user = null): View {
         if(! $user) {
             $user = Auth::user();
         }
@@ -40,7 +42,7 @@ class SettingsController extends Controller
         return view('pages.settings')->with($data);
     }
 
-    public function storeLanguage(Request $request) {
+    public function storeLanguage(Request $request): RedirectResponse {
 
         $this->validate($request, [
             'locale' => 'required',
@@ -53,11 +55,7 @@ class SettingsController extends Controller
         return redirect('/settings');
     }
 
-    public function store(Request $request, User $user) {
-        if(! $user) {
-            $user = Auth::user();
-        }
-
+    public function store(Request $request, User $user): RedirectResponse {
         if($user != Auth::user() && ! Auth::user()->hasRole('Admin') && (! isset($user->workplace) || ! $user->workplace->workplace_admins->contains('id', Auth::user()->id))) {
             abort(403);
         }

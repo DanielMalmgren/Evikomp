@@ -44,7 +44,7 @@ class SendAttestReminderMail extends Command
         logger("Running job for sending attest mail reminders!");
         $previous_month = date("m", strtotime("first day of previous month"));
         $previous_month_year = date("Y", strtotime("first day of previous month"));
-        $last_month_is_closed = ClosedMonth::all()->where('month', $previous_month)->where('year', $previous_month_year)->isNotEmpty();
+        $last_month_is_closed = ClosedMonth::where('month', $previous_month)->where('year', $previous_month_year)->esists();
         if($last_month_is_closed) {
             $this->info("Last month is closed, skipping sending of reminder mail.");
             logger("Last month is closed, skipping sending of reminder mail.");

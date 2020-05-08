@@ -3,40 +3,44 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
 
 class Workplace extends Model
 {
-    public function users()
+    public function users(): HasMany
     {
         return $this->hasMany('App\User');
     }
 
-    public function workplace_admins()
+    public function workplace_admins(): BelongsToMany
     {
         return $this->belongsToMany('App\User', 'workplace_admins')->withPivot('attestlevel');
     }
 
-    public function municipality()
+    public function municipality(): BelongsTo
     {
         return $this->belongsTo('App\Municipality');
     }
 
-    public function workplace_type()
+    public function workplace_type(): BelongsTo
     {
         return $this->belongsTo('App\WorkplaceType');
     }
 
-    public function tracks()
+    public function tracks(): BelongsToMany
     {
         return $this->belongsToMany('App\Track');
     }
 
-    public function project_times()
+    public function project_times(): HasMany
     {
         return $this->hasMany('App\ProjectTime');
     }
 
-    public function month_active_time($month, $year) {
+    public function month_active_time(int $month, int $year): int {
         $active_time = 0;
         foreach($this->users as $user) {
             //logger('User '.$user->name.' has '.$user->active_time_minutes_month($month, $year).' active minutes');
@@ -45,7 +49,7 @@ class Workplace extends Model
         return $active_time;
     }
 
-    public function month_attested_time($month, $year, $level) {
+    public function month_attested_time(int $month, int $year, int $level): int {
         $attested_time = 0;
         foreach($this->users as $user) {
             $attested_time += $user->attested_time_month($month, $year, $level);
@@ -55,7 +59,7 @@ class Workplace extends Model
         //return $this->users->collapse()->time_attests->where('month', $month)->sum('hours');
     }
 
-    public function total_attested_time($level) {
+    public function total_attested_time(int $level): int {
         $attested_time = 0;
         foreach($this->users as $user) {
             $attested_time += $user->attested_time_total($level);
@@ -63,7 +67,7 @@ class Workplace extends Model
         return $attested_time;
     }
 
-    public function scopeFilter($query)
+    public function scopeFilter(Builder $query): Builder
     {
         return $query->where('includetimeinreports', true);
     }

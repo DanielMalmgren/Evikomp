@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Exports\UsersExport;
-use Maatwebsite\Excel\Facades\Excel;
 
 class UsersController extends Controller
 {
@@ -45,9 +44,9 @@ class UsersController extends Controller
         return view('users.index')->with($data);
     }
 
-    public function export() {
+    /*public function export() {
         return Excel::download(new UsersExport(), 'Deltagare_Evikomp.xlsx');
-    }
+    }*/
 
     //Return a json containing users matching a search string sent from a select2 object. See https://select2.org/data-sources/ajax
     public function select2(Request $request) {

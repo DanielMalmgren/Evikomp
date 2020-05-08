@@ -24,7 +24,7 @@ class TimeSummaryController extends Controller
         $year = date('Y', $time);
         $month = date('n', $time);
 
-        $month_closed = ClosedMonth::all()->where('month', $month)->where('year', $year)->isNotEmpty();
+        $month_closed = ClosedMonth::where('month', $month)->where('year', $year)->exists();
 
         $projecthours = round(ActiveTime::filter()->whereYear('date', $year)->whereMonth('date', $month)->sum('seconds')/3600 +
                             ProjectTime::whereYear('date', $year)->whereMonth('date', $month)->get()->sum('minutes_total')/60, 1);
@@ -119,7 +119,7 @@ class TimeSummaryController extends Controller
         $row = 9;
         $municipalities = collect([]);
         $total_hours = 0;
-        foreach(User::all()->where('workplace_id', '!=', null)->sortBy('name') as $user) {
+        foreach(User::where('workplace_id', '!=', null)->orderBy('name')->get() as $user) {
             if($user->time_attests->where('attestlevel', 0)->where('month', $month)->where('year', $year)->count() > 0) {
                 $totaltime = $user->time_attests->where('month', $month)->where('year', $year)->first()->hours;
                 if($totaltime > 0) {

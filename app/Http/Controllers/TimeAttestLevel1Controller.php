@@ -40,7 +40,7 @@ class TimeAttestLevel1Controller extends Controller
         $user = Auth::user();
         setlocale(LC_TIME, $user->locale_id);
 
-        if(ClosedMonth::all()->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty()) {
+        if(ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
             $month_is_closed = true;
         } else {
             $month_is_closed = false;

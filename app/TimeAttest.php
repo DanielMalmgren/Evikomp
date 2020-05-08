@@ -3,20 +3,22 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
 
 class TimeAttest extends Model
 {
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo('App\User');
     }
 
-    public function attestant()
+    public function attestant(): BelongsTo
     {
         return $this->belongsTo('App\User', 'attestant_id', 'id');
     }
 
-    public function scopeGender($query, $gender)
+    public function scopeGender(Builder $query, string $gender): ?Builder
     {
         if($gender == 'M') {
             return $query->join('users', function($join)

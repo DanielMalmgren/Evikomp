@@ -11,10 +11,12 @@ use App\LessonResult;
 use App\Content;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class LessonController extends Controller
 {
-    public function show(Lesson $lesson) {
+    public function show(Lesson $lesson): View {
         $question = Question::where('lesson_id', $lesson->id)->first();
         $lesson->times_started++;
         $lesson->save();
@@ -25,7 +27,7 @@ class LessonController extends Controller
         return view('lessons.show')->with($data);
     }
 
-    public function replicate(Lesson $lesson) {
+    public function replicate(Lesson $lesson): RedirectResponse {
         $newLesson = $lesson->replicateWithTranslations();
         $newLesson->times_started = 0;
         $newLesson->times_test_started = 0;
@@ -56,7 +58,7 @@ class LessonController extends Controller
         return redirect('/lessons/'.$newLesson->id)->with('success', __('Lektionen har kopierats'));
     }
 
-    public function create(Track $track) {
+    public function create(Track $track): View {
         $titles = Title::all();
         $data = [
             'track' => $track,
@@ -65,7 +67,7 @@ class LessonController extends Controller
         return view('lessons.create')->with($data);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request): RedirectResponse {
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',
@@ -86,13 +88,13 @@ class LessonController extends Controller
         return $this->update($request, $lesson);
     }
 
-    public function vote(Request $request, Lesson $lesson) {
+    public function vote(Request $request, Lesson $lesson): void {
         $lesson_result = LessonResult::where([['user_id', '=', Auth::user()->id],['lesson_id', '=', $lesson->id]])->first();
         $lesson_result->rating = $request->vote;
         $lesson_result->save();
     }
 
-    public function reorder(Request $request) {
+    public function reorder(Request $request): void {
         parse_str($request->data, $data);
         $ids = $data['id'];
 
@@ -103,7 +105,7 @@ class LessonController extends Controller
         }
     }
 
-    public function edit(Lesson $lesson) {
+    public function edit(Lesson $lesson): View {
         $titles = Title::all();
         $data = [
             'lesson' => $lesson,
@@ -113,7 +115,7 @@ class LessonController extends Controller
         return view('lessons.edit')->with($data);
     }
 
-    public function editquestions(Lesson $lesson) {
+    public function editquestions(Lesson $lesson): View {
         $questions = $lesson->questions->sortBy('order');
 
         $data = [
@@ -124,7 +126,7 @@ class LessonController extends Controller
         return view('lessons.editquestions')->with($data);
     }
 
-    public function replicateQuestions(Request $request) {
+    public function replicateQuestions(Request $request): RedirectResponse {
         $this->validate($request, [
             'sourcelesson' => 'required',
             'targetlesson' => 'required',
@@ -149,14 +151,14 @@ class LessonController extends Controller
         return redirect('/lessons/'.$targetlesson->id.'/editquestions');
     }
 
-    public function finish(Lesson $lesson) {
+    public function finish(Lesson $lesson):RedirectResponse {
         LessonResult::updateOrCreate(
             ['user_id' => Auth::user()->id, 'lesson_id' => $lesson->id]
         );
         return redirect('/');
     }
 
-    public function update(Request $request, Lesson $lesson) {
+    public function update(Request $request, Lesson $lesson): RedirectResponse {
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',
@@ -324,7 +326,7 @@ class LessonController extends Controller
         return redirect('/lessons/'.$lesson->id)->with('success', __('Ändringar sparade'));
     }
 
-    public function destroy(Lesson $lesson) {
+    public function destroy(Lesson $lesson): void {
         $user = Auth::user();
         logger("Lesson ".$lesson->id." is being removed by ".$user->name);
         foreach($lesson->contents as $content) {

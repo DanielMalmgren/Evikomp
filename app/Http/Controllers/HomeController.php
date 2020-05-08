@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Announcement;
 use App\ClosedMonth;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    public function index() {
+    public function index(): View {
         if(empty(Auth::user()["workplace_id"]) || ! Auth::user()->accepted_gdpr) {
             return redirect('/firstlogin');
         } else {
@@ -19,7 +20,7 @@ class HomeController extends Controller
             $previous_month_year = date("Y", strtotime("first day of previous month"));
             $monthstr = strftime('%B', strtotime("first day of previous month"));
 
-            $last_month_is_closed = ClosedMonth::all()->where('month', $previous_month)->where('year', $previous_month_year)->isNotEmpty();
+            $last_month_is_closed = ClosedMonth::where('month', $previous_month)->where('year', $previous_month_year)->exists();
             $last_month_is_attested = Auth::user()->time_attests->where('attestlevel', 1)->where('month', $previous_month)->where('year', $previous_month_year)->isNotEmpty();
             $time_rows = Auth::user()->time_rows($previous_month_year, $previous_month);
             $time = end($time_rows)[32];
@@ -35,15 +36,15 @@ class HomeController extends Controller
         }
     }
 
-    public function about() {
+    public function about(): View {
         return view('pages.about');
     }
 
-    public function unsecurelogin() {
+    public function unsecurelogin(): View {
         return view('pages.unsecurelogin');
     }
 
-    public function logout() {
+    public function logout(): View {
         session()->flush();
         Auth::logout();
         return view('pages.logout');

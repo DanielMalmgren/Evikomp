@@ -9,7 +9,7 @@ use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    public function index(): View {
+    public function index() {
         if(empty(Auth::user()["workplace_id"]) || ! Auth::user()->accepted_gdpr) {
             return redirect('/firstlogin');
         } else {

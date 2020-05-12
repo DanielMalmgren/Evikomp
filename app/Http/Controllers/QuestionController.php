@@ -46,6 +46,7 @@ class QuestionController extends Controller
     }
 
     public function store(Request $request) {
+        usleep(50000);
         $this->validate($request, [
             'text' => 'required',
             'correctAnswers' => 'required|integer',

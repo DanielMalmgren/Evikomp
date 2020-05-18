@@ -24,7 +24,7 @@ class UsersController extends Controller
         $data = array(
             'user' => $user,
             'totalactivehours' => round($user->active_times->sum('seconds')/3600),
-            'totalprojecthours' => round($user->project_times->sum('minutes_total')/60),
+            'totalprojecthours' => round($user->project_times->sum('minutes')/60),
             'attestedhourslevel1' => round($user->time_attests->where('attestlevel', 1)->sum('hours')),
             'attestedhourslevel3' => round($user->time_attests->where('attestlevel', 3)->sum('hours')),
             'tracks' => $tracks,

@@ -29,7 +29,7 @@ class Track extends Model
         return $this->belongsToMany('App\User');
     }
 
-    public function first_lesson(): Lesson
+    public function first_lesson(): ?Lesson
     {
         return $this->lessons()->orderBy('order')->where('active', true)->first();
     }

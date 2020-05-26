@@ -49,11 +49,13 @@ class TimeSummaryController extends Controller
     }
 
     public function wpdetails(Workplace $workplace, $year, $month) {
+        $users = $workplace->users->merge($workplace->ptusers($month))->sortBy('name');
 
         $data = [
             'year' => $year,
             'month' => $month,
             'workplace' => $workplace,
+            'users' => $users,
         ];
 
         return view('timesummary.wpdetails')->with($data);

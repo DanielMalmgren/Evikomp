@@ -40,6 +40,15 @@ class Workplace extends Model
         return $this->hasMany('App\ProjectTime');
     }
 
+    public function ptusers($month)
+    {
+        $users = collect();
+        foreach ($this->project_times->where('month', $month) as $project_time) {
+            $users = $users->merge($project_time->users);
+        }
+        return $users;
+    }
+
     public function month_active_time(int $month, int $year): int {
         $active_time = 0;
         foreach($this->users as $user) {

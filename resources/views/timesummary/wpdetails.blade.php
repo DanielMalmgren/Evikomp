@@ -2,7 +2,7 @@
 <div class="card bg-transparent">
     <div class="card-body bg-transparent">
 
-        @foreach($workplace->users->sortBy('name') as $user)
+        @foreach($users as $user)
             @php
                 $time_rows = $user->time_rows($year, $month);
                 $time = end($time_rows)[32];

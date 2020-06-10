@@ -68,55 +68,58 @@
     }
 
     $(function() {
-        var wrapper = $("#contents_wrap");
-        var add_button = $("#add_content_button");
-        var new_id = 0;
 
-        $(content_to_add).change(function(e){
-            e.preventDefault();
-            new_id = getfreeid();
-            switch($("#content_to_add").val()) {
-                case 'vimeo':
-                    $(wrapper).append('<div id="new_vimeo['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_vimeo['+new_id+']">@lang('Video-ID')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_vimeo['+new_id+']" class="form-control original-content"></div></div>');
-                    break;
-                case 'html':
-                    $(wrapper).append('<div id="new_html['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_html['+new_id+']">@lang('Text')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><textarea rows=5 name="new_html['+new_id+']" class="form-control twe original-content"></textarea></div></div>');
-                    addtwe();
-                    break;
-                case 'audio':
-                    $(wrapper).append('<div id="new_audio['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_audio['+new_id+']">@lang('Pod (ljudfil)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_audio['+new_id+']" class="form-control original-content" type="file" accept="audio/mpeg"></div></div>');
-                    break;
-                case 'office':
-                    $(wrapper).append('<div id="new_office['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_office['+new_id+']">@lang('Office-fil (Word, Excel, Powerpoint)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_office['+new_id+']" class="form-control original-content" type="file" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation"></div></div>');
-                    break;
-                case 'image':
-                    $(wrapper).append('<div id="new_image['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_image['+new_id+']">@lang('Bild')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_image['+new_id+']" class="form-control original-content" type="file" accept="image/jpeg,image/png,image/gif"></div></div>');
-                    break;
-                case 'file':
-                    $(wrapper).append('<div id="new_file['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_file['+new_id+']">@lang('Övrig fil')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_file['+new_id+']" class="form-control original-content" type="file"></div></div>');
-                    break;
-            }
-            update_content_order();
-            $("#content_to_add").val('select');
-        });
+        @if(locale_is_default())
+            var wrapper = $("#contents_wrap");
+            var add_button = $("#add_content_button");
+            var new_id = 0;
 
-        $(wrapper).on("click",".remove_field", function(e){
-            var confirmquestion;
-            if($(this).data("translations") > 1) {
-                confirmquestion = '@lang('Vill du verkligen radera detta innehåll inklusive översättningar?')';
-            } else {
-                confirmquestion = '@lang('Vill du verkligen radera detta innehåll?')';
-            }
-            if(confirm(confirmquestion)) {
+            $(content_to_add).change(function(e){
                 e.preventDefault();
-                var parentdiv = $(this).parent('div').parent('div');
-                var textbox = $(this).parent('div').find('.original-content');
-                var oldname = textbox.attr('name');
-                var id = oldname.substring(oldname.lastIndexOf("["), oldname.lastIndexOf("]")+1);
-                parentdiv.hide();
-                textbox.attr('name', 'remove_content'+id);
-            }
-        })
+                new_id = getfreeid();
+                switch($("#content_to_add").val()) {
+                    case 'vimeo':
+                        $(wrapper).append('<div id="new_vimeo['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_vimeo['+new_id+']">@lang('Video-ID')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_vimeo['+new_id+']" class="form-control original-content"></div></div>');
+                        break;
+                    case 'html':
+                        $(wrapper).append('<div id="new_html['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_html['+new_id+']">@lang('Text')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><textarea rows=5 name="new_html['+new_id+']" class="form-control twe original-content"></textarea></div></div>');
+                        addtwe();
+                        break;
+                    case 'audio':
+                        $(wrapper).append('<div id="new_audio['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_audio['+new_id+']">@lang('Pod (ljudfil)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_audio['+new_id+']" class="form-control original-content" type="file" accept="audio/mpeg"></div></div>');
+                        break;
+                    case 'office':
+                        $(wrapper).append('<div id="new_office['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_office['+new_id+']">@lang('Office-fil (Word, Excel, Powerpoint)')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_office['+new_id+']" class="form-control original-content" type="file" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation"></div></div>');
+                        break;
+                    case 'image':
+                        $(wrapper).append('<div id="new_image['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_image['+new_id+']">@lang('Bild')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_image['+new_id+']" class="form-control original-content" type="file" accept="image/jpeg,image/png,image/gif"></div></div>');
+                        break;
+                    case 'file':
+                        $(wrapper).append('<div id="new_file['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_file['+new_id+']">@lang('Övrig fil')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_file['+new_id+']" class="form-control original-content" type="file"></div></div>');
+                        break;
+                }
+                update_content_order();
+                $("#content_to_add").val('select');
+            });
+
+            $(wrapper).on("click",".remove_field", function(e){
+                var confirmquestion;
+                if($(this).data("translations") > 1) {
+                    confirmquestion = '@lang('Vill du verkligen radera detta innehåll inklusive översättningar?')';
+                } else {
+                    confirmquestion = '@lang('Vill du verkligen radera detta innehåll?')';
+                }
+                if(confirm(confirmquestion)) {
+                    e.preventDefault();
+                    var parentdiv = $(this).parent('div').parent('div');
+                    var textbox = $(this).parent('div').find('.original-content');
+                    var oldname = textbox.attr('name');
+                    var id = oldname.substring(oldname.lastIndexOf("["), oldname.lastIndexOf("]")+1);
+                    parentdiv.hide();
+                    textbox.attr('name', 'remove_content'+id);
+                }
+            })
+        @endif
 
         $('#limited_by_title').on('change', function() {
             var val = this.checked;

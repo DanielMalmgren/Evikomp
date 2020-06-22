@@ -121,3 +121,12 @@ Route::resource('announcements',                'AnnouncementsController');
 
 //SearchController
 Route::get('/select2search',                    'SearchController@select2');
+
+//PollController
+Route::get('/poll/{poll}',                      'PollController@show');
+
+//PollQuestionController
+Route::get('/pollquestion/{poll_question}',     'PollQuestionController@show');
+
+//PollResponseController
+Route::post('/pollresponse',                    'PollResponseController@store');

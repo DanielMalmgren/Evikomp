@@ -46,7 +46,7 @@
             @foreach($users as $user)
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                    <a href="/settings/{{$user->id}}">
+                    <a href="/users/{{$user->id}}">
                         <h6 class="my-0">{{$user->name}}</h6>
                     </a>
                     @if($user->workplace)
@@ -61,7 +61,9 @@
         {{--<a href="/exportusers" class="btn btn-primary">@lang('Hämta som Excel-fil')</a>--}}
     @endif
 
-    <a href="/users/create" class="btn btn-primary">@lang('Skapa användare manuellt')</a>
+    @can('Manage all users')
+        <a href="/users/create" class="btn btn-primary">@lang('Skapa användare manuellt')</a>
+    @endcan
 
     <link href="/select2/select2.min.css" rel="stylesheet" />
     <link href="/select2/select2-bootstrap4.min.css" rel="stylesheet" />

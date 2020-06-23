@@ -17,14 +17,24 @@ class CreatePollQuestionsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('poll_id');
             $table->foreign('poll_id')->references('id')->on('polls')->onDelete('cascade');
-            $table->string('text');
             $table->string('type', 20);
-            $table->string('alternatives')->nullable();
             $table->unsignedTinyInteger('max_alternatives')->default(0);
             $table->boolean('compulsory')->default(false);
             $table->unsignedTinyInteger('order')->default(0);
             $table->string('display_criteria')->default('');
             $table->timestamps();
+        });
+
+        Schema::create('poll_question_translations', function(Blueprint $table)
+        {
+            $table->increments('id');
+            $table->unsignedBigInteger('poll_question_id')->unsigned();
+            $table->string('text');
+            $table->string('alternatives')->nullable();
+            $table->string('locale')->index();
+
+            $table->unique(['poll_question_id','locale']);
+            $table->foreign('poll_question_id')->references('id')->on('poll_questions')->onDelete('cascade');
         });
     }
 
@@ -35,6 +45,7 @@ class CreatePollQuestionsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('poll_question_translations');
         Schema::dropIfExists('poll_questions');
     }
 }

@@ -126,7 +126,7 @@ Route::get('/select2search',                    'SearchController@select2');
 Route::get('/poll/{poll}',                      'PollController@show');
 
 //PollQuestionController
-Route::get('/pollquestion/{poll_question}',     'PollQuestionController@show');
+Route::get('/pollquestion/{question}',          'PollQuestionController@show');
 
 //PollResponseController
 Route::post('/pollresponse',                    'PollResponseController@store');

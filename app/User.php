@@ -103,6 +103,11 @@ class User extends Authenticatable
         return $this->hasMany('App\ProjectTime', 'registered_by');
     }
 
+    public function poll_sessions(): hasMany
+    {
+        return $this->hasMany('App\PollSession');
+    }
+
     /*public function gender()
     {
         logger('Namn: '.$this->name.', personnummer: '.$this->personid);

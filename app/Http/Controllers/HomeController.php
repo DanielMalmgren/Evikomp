@@ -25,12 +25,19 @@ class HomeController extends Controller
             $time_rows = Auth::user()->time_rows($previous_month_year, $previous_month);
             $time = end($time_rows)[32];
 
+            if(isset(Auth::user()->workplace->municipality->polls)) {
+                $poll = Auth::user()->workplace->municipality->polls->first();
+            } else {
+                $poll = null;
+            }
+
             $data = [
                 'announcements' => $announcements,
                 'lesson' => Auth::user()->next_lesson(),
                 'should_attest' => !$last_month_is_closed && !$last_month_is_attested && $time>=1.0 && Auth::user()->workplace->includetimeinreports,
                 'previous_month' => $previous_month,
                 'monthstr' => $monthstr,
+                'poll' => $poll,
             ];
             return view('pages.index')->with($data);
         }

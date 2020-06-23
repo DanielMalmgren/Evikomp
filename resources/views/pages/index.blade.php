@@ -15,6 +15,18 @@
     <br>
 @endif
 
+
+@isset($poll)
+    <div class="new border border-danger importantnotification">
+        <h1>@lang('Du har en enkät att fylla i!')</h1>
+
+        <a href="/poll/{{$poll->id}}" class="btn btn-primary">@lang('Gå till enkäten')</a>
+        <br>
+
+    </div>
+    <br>
+@endif
+
 {{--@if($lesson)
     <h1>@lang('Nästa lektion')</h1>
     @include('inc.listlesson')

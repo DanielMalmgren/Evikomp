@@ -3,12 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Municipality extends Model
 {
     public function workplaces()
     {
         return $this->hasMany('App\Workplace');
+    }
+
+    public function polls(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Poll', 'poll_municipality');
     }
 
     public function total_attested_time($level) {

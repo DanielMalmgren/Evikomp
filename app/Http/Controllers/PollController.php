@@ -16,11 +16,13 @@ class PollController extends Controller
         $poll_session->user_id = Auth::user()->id;
         $poll_session->save();
 
+        session(['poll_session_id' => $poll_session->id]);
+
         $first_question_id = $poll->first_question()->id;
 
         $data = [
             'poll' => $poll,
-            'poll_session' => $poll_session,
+            //'poll_session' => $poll_session,
             'first_question_id' => $first_question_id,
         ];
         return view('polls.show')->with($data);

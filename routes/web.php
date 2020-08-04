@@ -123,7 +123,10 @@ Route::resource('announcements',                'AnnouncementsController');
 Route::get('/select2search',                    'SearchController@select2');
 
 //PollController
+Route::get('/poll',                             'PollController@index');
 Route::get('/poll/{poll}',                      'PollController@show');
+Route::get('/poll/{poll}/edit',                 'PollController@edit');
+Route::get('/poll/{poll}/exportresponses',      'PollController@exportresponses');
 
 //PollQuestionController
 Route::get('/pollquestion/{question}',          'PollQuestionController@show');

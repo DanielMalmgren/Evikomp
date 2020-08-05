@@ -53,28 +53,58 @@
                             $(this).show();
                             $(this).find("input, textarea").each(function () { 
                                 $(this).attr("name", $(this).data("original-name"));
+                                setRequiredState($(this), true);
                             }); 
                         } else {
                             $(this).hide();
                             $(this).find("input, textarea").each(function () { 
                                 $(this).attr("name", "do_not_save");
+                                setRequiredState($(this), false);
                             }); 
                         }
                     }
                 });
             });
+
+            $("form[name='question'] .question").each(function () { 
+                $(this).find("input").first().trigger('change');
+            });
         });
+        	
+        function setRequiredState(input, setTo) {
+            if (input.data("original-required") === undefined && input.attr("type") !== "checkbox") {
+                if (input.prop('required')) {
+                    input.attr("data-original-required", "1");
+                } else {
+                    input.attr("data-original-required", "0");
+                }
+            }
+            if (input.attr("type") == "checkbox") { 
+                var wrapper = input.parents("div.question");
+                if (wrapper.data("min-select") !== undefined || wrapper.data("max-select") !== undefined) { 
+                    if (setTo == true) {
+                        wrapper.removeClass("skip-required-check");
+                    } else {
+                        wrapper.addClass("skip-required-check");
+                    }
+                }
+            } else {
+                if (input.data("original-required") == "1") {
+                    input.prop('required',setTo);
+                }
+            }
+        }
 
         $(function() {
             $("form[name='question']").submit(function(e){
-                $("form[name='question'] div[data-min-select]").each(function () { 
+                $( "form[name='question'] div[data-min-select]").not(".skip-required-check").each(function () {                     
                     if ($(this).find('input:checked').length < $(this).data("min-select") ) {
                         e.preventDefault();
                         alert("Minst " + $(this).data("min-select") + " alternativ måste väljas");
                         return;
                     }
                 });
-                /*$( "form[name='question'] div[data-max-select]").each(function () { 
+                /*$( "form[name='question'] div[data-max-select]").not(".skip-required-check").each(function () { 
                     if ($(this).find('input:checked').length > $(this).data("max-select") ) {
                         e.preventDefault();
                         alert("Max " + $(this).data("max-select") + " alternativ får väljas");

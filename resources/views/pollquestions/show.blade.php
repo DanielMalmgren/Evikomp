@@ -146,7 +146,7 @@
                 }
             @endphp
 
-            <div class="question question_{{$question->id}}" data-min-select="{{$question->max_alternatives}}" data-id="{{$question->id}}" {{empty($question->display_criteria)?"":'style=display:none data-display-criteria='.$question->display_criteria}}>
+            <div class="question question_{{$question->id}}" data-min-select="{{$question->min_alternatives}}" data-id="{{$question->id}}" {{empty($question->display_criteria)?"":'style=display:none data-display-criteria='.$question->display_criteria}}>
                 {{--<H1>@lang('Fråga :question av :questions', ['question' => $question->order, 'questions' => $question->poll->poll_questions->count()])</H1>--}}
 
                 {{$question->translateOrDefault(App::getLocale())->text}}

@@ -18,6 +18,7 @@ class CreatePollQuestionsTable extends Migration
             $table->unsignedBigInteger('poll_id');
             $table->foreign('poll_id')->references('id')->on('polls')->onDelete('cascade');
             $table->string('type', 20);
+            $table->unsignedTinyInteger('min_alternatives')->default(0);
             $table->unsignedTinyInteger('max_alternatives')->default(0);
             $table->boolean('compulsory')->default(false);
             $table->unsignedTinyInteger('order')->default(0);

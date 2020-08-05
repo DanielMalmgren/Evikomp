@@ -16,9 +16,10 @@ class PollResponseController extends Controller
         if(isset($request->response)) {
             foreach($request->response as $id => $response) {
                 //TODO: Skapa inte alltid en ny pollresponse, kolla först om det finns någon med rätt sessions-id och question-id!
-                $poll_response = new PollResponse();
-                $poll_response->poll_question_id = $id;
-                $poll_response->poll_session_id = session("poll_session_id");
+                $poll_response = PollResponse::firstOrNew([
+                    'poll_question_id' => $id,
+                    'poll_session_id' => session("poll_session_id"),
+                ]);
                 if(is_array($response)) {
                     $poll_response->response = implode(", ", $response);
                 } elseif(is_null($response)) {
@@ -29,9 +30,6 @@ class PollResponseController extends Controller
                 $poll_response->save();
             }
         }
-
-        logger($request->submit);
-        logger($request->page_break_id);
 
         if($request->submit == 'previous') {
             return redirect('/pollquestion/'.$request->previous_id);

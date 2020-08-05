@@ -17,7 +17,7 @@ class PollQuestion extends Model
         return $this->belongsTo('App\Poll');
     }
 
-    public function poll_response(): hasMany
+    public function poll_responses(): hasMany
     {
         return $this->hasMany('App\PollResponse');
     }

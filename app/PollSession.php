@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PollSession extends Model
 {
-    public function poll_response(): hasMany
+    public function poll_responses(): hasMany
     {
         return $this->hasMany('App\PollResponse');
     }

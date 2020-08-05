@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\PollQuestion;
+use App\PollSession;
 
 class PollQuestionController extends Controller
 {
@@ -17,9 +18,12 @@ class PollQuestionController extends Controller
             $previous_id = null;
         }
 
+        $poll_session = PollSession::find(session("poll_session_id"));
+
         $data = [
             'question' => $question,
             'previous_id' => $previous_id,
+            'previous_responses' => $poll_session->poll_responses,
         ];
 
         return view('pollquestions.show')->with($data);

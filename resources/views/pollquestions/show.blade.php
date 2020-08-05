@@ -41,6 +41,13 @@
                     selectWrapper.find('input:checked').each(function() {
                         selectedValues.push($(this).val());
                     });
+                } else if (select.attr("type") == "radio") {
+                    var selectedValues=[];
+                    selectWrapper.find('input').each(function() {
+                        if($(this).is(':checked')) { 
+                            selectedValues.push($(this).val());
+                        }
+                    });
                 } else {
                     var selectedValues = [select.val()];
                 }
@@ -96,7 +103,8 @@
         }
 
         $(function() {
-            $("form[name='question']").submit(function(e){
+            //$("form[name='question']").submit(function(e){
+            $("form[name='question'] button[type='submit']").not("[formnovalidate]").click(function(e){
                 $( "form[name='question'] div[data-min-select]").not(".skip-required-check").each(function () {                     
                     if ($(this).find('input:checked').length < $(this).data("min-select") ) {
                         e.preventDefault();
@@ -115,8 +123,6 @@
         });
     </script>
 
-    Previous: {{$previous_id}}
-
     <form method="post" name="question" action="{{action('PollResponseController@store')}}" accept-charset="UTF-8">
         @csrf
 
@@ -131,6 +137,15 @@
                 @break
             @endif
 
+            @php
+                $previous_response = $previous_responses->where('poll_question_id', $question->id)->first();
+                if(isset($previous_response)) {
+                    $previous = $previous_response->response;
+                } else {
+                    $previous = '';
+                }
+            @endphp
+
             <div class="question question_{{$question->id}}" data-min-select="{{$question->max_alternatives}}" data-id="{{$question->id}}" {{empty($question->display_criteria)?"":'style=display:none data-display-criteria='.$question->display_criteria}}>
                 {{--<H1>@lang('Fråga :question av :questions', ['question' => $question->order, 'questions' => $question->poll->poll_questions->count()])</H1>--}}
 
@@ -140,19 +155,19 @@
                 @endif
 
                 @if($question->type == "freetext")
-                    <textarea rows={{$question->max_alternatives}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}]" class="form-control" id="response"  oninput="document.question.submit.disabled=false;" {{$question->compulsory?"required":""}}></textarea>
+                    <textarea rows={{$question->max_alternatives}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}]" class="form-control" id="response"  oninput="document.question.submit.disabled=false;" {{$question->compulsory?"required":""}}>{{$previous}}</textarea>
                 @elseif($question->type == "select")
                     @if ($question->max_alternatives < 2)
                         @foreach($question->alternatives_array as $alternative)
                             <div class="radio">
-                                <label><input type="radio" data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}]" value="{{$alternative}}" {{$question->compulsory?"required":""}} onclick="document.question.submit.disabled=false;">{{$alternative}}</label>
+                                <label><input type="radio" {{$alternative==$previous?"checked":""}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}]" value="{{$alternative}}" {{$question->compulsory?"required":""}} onclick="document.question.submit.disabled=false;">{{$alternative}}</label>
                             </div>
                         @endforeach
                     @else
                         <p>@lang('(Ange max :alternatives alternativ)', ['alternatives' => $question->max_alternatives])</p>
                         @foreach($question->alternatives_array as $alternative)
                             <div class="checkbox">
-                                <label><input type="checkbox" data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}][]" value="{{$alternative}}" onclick="chkcontrol({{$question->id}})">{{$alternative}}</label>
+                                <label><input type="checkbox" {{strpos($previous, $alternative)!==false?"checked":""}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}][]" value="{{$alternative}}" onclick="chkcontrol({{$question->id}})">{{$alternative}}</label>
                             </div>
                         @endforeach
                     @endif
@@ -166,15 +181,17 @@
 
         @endwhile
 
+        <br><br>
+
         @isset($previous_id)
-            <button class="btn btn-primary btn-lg" formnovalidate value="previous" id="submit" name="submit" type="submit">@lang('Föregående')</button>
+            <button class="btn btn-primary btn-lg" formnovalidate value="previous" name="submit" type="submit">@lang('Föregående')</button>
         @else
             <button class="btn btn-primary btn-lg" disabled id="submit" name="submit" type="submit">@lang('Föregående')</button>
         @endif
         @if(isset($question))
-            <button class="btn btn-primary btn-lg" value="next" id="submit" name="submit" type="submit">@lang('Nästa')</button>
+            <button class="btn btn-primary btn-lg" value="next" name="submit" type="submit">@lang('Nästa')</button>
         @else
-            <button class="btn btn-primary btn-lg" value="finish" id="submit" name="submit" type="submit">@lang('Avsluta')</button>
+            <button class="btn btn-primary btn-lg" value="finish" name="submit" type="submit">@lang('Avsluta')</button>
         @endif
 
     </form>

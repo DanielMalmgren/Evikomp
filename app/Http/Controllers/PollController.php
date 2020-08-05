@@ -54,7 +54,7 @@ class PollController extends Controller
             $worksheet->setCellValueByColumnAndRow(1, $row, $session->user->name);
             $worksheet->setCellValueByColumnAndRow(2, $row, $session->user->title->name);
             $worksheet->setCellValueByColumnAndRow(3, $row, $session->user->workplace->name);
-            foreach($session->poll_response as $response) {
+            foreach($session->poll_responses as $response) {
                 $worksheet->setCellValueByColumnAndRow($column_order[$response->poll_question->id], $row, $response->response);
             }
             $row++;

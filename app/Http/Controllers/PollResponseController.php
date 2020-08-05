@@ -15,6 +15,7 @@ class PollResponseController extends Controller
 
         if(isset($request->response)) {
             foreach($request->response as $id => $response) {
+                //TODO: Skapa inte alltid en ny pollresponse, kolla först om det finns någon med rätt sessions-id och question-id!
                 $poll_response = new PollResponse();
                 $poll_response->poll_question_id = $id;
                 $poll_response->poll_session_id = session("poll_session_id");
@@ -29,19 +30,26 @@ class PollResponseController extends Controller
             }
         }
 
-        $question = PollQuestion::find($request->page_break_id);
+        logger($request->submit);
+        logger($request->page_break_id);
 
-        if(isset($question)) {
-            $nextquestion = $question->next_question();
-        }
-
-        if(isset($nextquestion)) {
-            return redirect('/pollquestion/'.$nextquestion->id);
+        if($request->submit == 'previous') {
+            return redirect('/pollquestion/'.$request->previous_id);
         } else {
-            $poll_session = PollSession::find(session("poll_session_id"));
-            $poll_session->finished = true;
-            $poll_session->save();
-            return view('polls.feedback');
+            $question = PollQuestion::find($request->page_break_id);
+
+            if(isset($question)) {
+                $nextquestion = $question->next_question();
+            }
+
+            if(isset($nextquestion)) {
+                return redirect('/pollquestion/'.$nextquestion->id);
+            } else {
+                $poll_session = PollSession::find(session("poll_session_id"));
+                $poll_session->finished = true;
+                $poll_session->save();
+                return view('polls.feedback');
+            }
         }
     }
 }

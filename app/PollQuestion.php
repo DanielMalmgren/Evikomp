@@ -27,6 +27,19 @@ class PollQuestion extends Model
         return $this->poll->next_question($this);
     }
 
+    public function first_on_previous_page()
+    {
+        if($this->order == 1) {
+            return null;
+        }
+        $previous_page_break = $this->poll->poll_questions->where('type', 'pagebreak')->where('order', '<', $this->order-1)->sortBy('order')->last();
+        if(isset($previous_page_break)) {
+            return $this->poll->poll_questions->where('order', $previous_page_break->order+1)->first();
+        } else {
+            return $this->poll->poll_questions->where('order', 1)->first();
+        }
+    }
+
     public function getAlternativesArrayAttribute()
     {
         return explode(';', $this->translateOrDefault(\App::getLocale())->alternatives);

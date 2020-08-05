@@ -49,12 +49,8 @@ class PollController extends Controller
             $i++;
         }
 
-        //logger(print_r($order, true));
-
-        //$worksheet->getStyle("A1:O1")->getFont()->setBold(true);
-
         $row = 2;
-        foreach($poll->poll_sessions as $session) {
+        foreach($poll->poll_sessions->where('finished', true) as $session) {
             $worksheet->setCellValueByColumnAndRow(1, $row, $session->user->name);
             $worksheet->setCellValueByColumnAndRow(2, $row, $session->user->title->name);
             $worksheet->setCellValueByColumnAndRow(3, $row, $session->user->workplace->name);

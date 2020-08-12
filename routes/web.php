@@ -126,10 +126,14 @@ Route::get('/select2search',                    'SearchController@select2');
 Route::get('/poll',                             'PollController@index');
 Route::get('/poll/{poll}',                      'PollController@show');
 Route::get('/poll/{poll}/edit',                 'PollController@edit');
+Route::put('/poll/{poll}',                      'PollController@update');
 Route::get('/poll/{poll}/exportresponses',      'PollController@exportresponses');
 
 //PollQuestionController
 Route::get('/pollquestion/{question}',          'PollQuestionController@show');
+Route::get('/pollquestion/{question}/edit',     'PollQuestionController@edit');
+Route::put('/pollquestion/{question}',          'PollQuestionController@update');
+Route::post('/pollquestion/reorder',            'PollQuestionController@reorder');
 
 //PollResponseController
 Route::post('/pollresponse',                    'PollResponseController@store');

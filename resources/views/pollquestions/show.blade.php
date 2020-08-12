@@ -77,7 +77,7 @@
                 $(this).find("input").first().trigger('change');
             });
         });
-        	
+
         function setRequiredState(input, setTo) {
             if (input.data("original-required") === undefined && input.attr("type") !== "checkbox") {
                 if (input.prop('required')) {

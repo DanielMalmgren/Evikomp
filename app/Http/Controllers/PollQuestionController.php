@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\PollQuestion;
 use App\PollSession;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 
 class PollQuestionController extends Controller
 {
@@ -20,6 +22,11 @@ class PollQuestionController extends Controller
 
         $poll_session = PollSession::find(session("poll_session_id"));
 
+        //TODO: Testa så nedan verkligen funkar som jag tror!
+        if(!isset($poll_session)) {
+            return view('pages.index')->withErrors(["error"=>"Kan inte visa enkäten!"]);
+        }
+
         $data = [
             'question' => $question,
             'previous_id' => $previous_id,
@@ -28,4 +35,57 @@ class PollQuestionController extends Controller
 
         return view('pollquestions.show')->with($data);
     }
+
+    public function edit(PollQuestion $question) {
+        $data = [
+            'question' => $question,
+            'other_questions' => $question->poll->poll_questions->where('type', '!=', 'pagebreak'),
+            'display_criteria_array' => explode('==', $question->display_criteria),
+        ];
+        return view('pollquestions.edit')->with($data);
+    }
+
+    public function update(Request $request, PollQuestion $question): RedirectResponse {
+        usleep(50000);
+        $this->validate($request, [
+            'text' => 'required',
+            'type' => 'required',
+        ],
+        [
+            'text.required' => __('Du måste ange själva frågetexten!'),
+            'type.required' => __('Du måste ange vad det är för typ av fråga!'),
+        ]);
+
+        $currentLocale = \App::getLocale();
+        $user = Auth::user();
+        logger("Poll question ".$question->id." is being edited by ".$user->name);
+
+        $question->alternatives_array = $request->alternative;
+
+        $question->translateOrNew($currentLocale)->text = $request->text;
+        $question->type = $request->type;
+        $question->min_alternatives = $request->min_alternatives;
+        $question->max_alternatives = $request->max_alternatives;
+        $question->compulsory = $request->compulsory;
+        if($request->display_criteria[0] == -1) {
+            $question->display_criteria = '';
+        } else {
+            $question->display_criteria = implode('==', $request->display_criteria);
+        }
+        $question->save();
+
+        return redirect('/poll/'.$question->poll->id.'/edit')->with('success', __('Ändringar sparade'));
+    }
+
+    public function reorder(Request $request): void {
+        parse_str($request->data, $data);
+        $ids = $data['id'];
+
+        foreach($ids as $order => $id){
+            $lesson = PollQuestion::findOrFail($id);
+            $lesson->order = $order+1;
+            $lesson->save();
+        }
+    }
+
 }

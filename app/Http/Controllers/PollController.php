@@ -7,6 +7,8 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use App\Poll;
 use App\PollSession;
+use App\Municipality;
+use Illuminate\Http\RedirectResponse;
 
 class PollController extends Controller
 {
@@ -20,8 +22,35 @@ class PollController extends Controller
     public function edit(Poll $poll) {
         $data = [
             'poll' => $poll,
+            'municipalities' => Municipality::orderBy('name')->get(),
         ];
         return view('polls.edit')->with($data);
+    }
+
+    public function update(Request $request, Poll $poll): RedirectResponse {
+        usleep(50000);
+        $this->validate($request, [
+            'name' => 'required',
+            'infotext' => 'required',
+        ],
+        [
+            'name.required' => __('Du måste ange ett namn på enkäten!'),
+            'infotext.required' => __('Du måste ange en text med information om enkäten!'),
+        ]);
+
+        $currentLocale = \App::getLocale();
+        $user = Auth::user();
+        logger("Poll ".$poll->id." is being edited by ".$user->name);
+
+        $poll->translateOrNew($currentLocale)->name = $request->name;
+        $poll->translateOrNew($currentLocale)->infotext = $request->infotext;
+        $poll->active_from = $request->active_from;
+        $poll->active_to = $request->active_to;
+        $poll->save();
+
+        $poll->municipalities()->sync($request->municipalities);
+
+        return redirect('/poll')->with('success', __('Ändringar sparade'));
     }
 
     public function exportresponses(Poll $poll) {

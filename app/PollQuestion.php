@@ -44,6 +44,11 @@ class PollQuestion extends Model
     {
         return explode(';', $this->translateOrDefault(\App::getLocale())->alternatives);
     }
+
+    public function setAlternativesArrayAttribute($value)
+    {
+        $this->translateOrDefault(\App::getLocale())->alternatives = implode(';', $value);
+    }
 }
 
 class PollQuestionTranslation extends Model

@@ -20,6 +20,11 @@ class Workplace extends Model
         return $this->belongsToMany('App\User', 'workplace_admins')->withPivot('attestlevel');
     }
 
+    public function polls(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Poll', 'poll_workplace');
+    }
+
     public function municipality(): BelongsTo
     {
         return $this->belongsTo('App\Municipality');

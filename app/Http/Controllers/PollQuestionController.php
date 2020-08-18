@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\PollQuestion;
 use App\PollSession;
+use App\Poll;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 
@@ -36,6 +37,14 @@ class PollQuestionController extends Controller
         return view('pollquestions.show')->with($data);
     }
 
+    public function create(Poll $poll) {
+        $data = [
+            'other_questions' => $poll->poll_questions->where('type', '!=', 'pagebreak'),
+            'poll' => $poll,
+        ];
+        return view('pollquestions.create')->with($data);
+    }
+
     public function edit(PollQuestion $question) {
         $data = [
             'question' => $question,
@@ -43,6 +52,30 @@ class PollQuestionController extends Controller
             'display_criteria_array' => explode('==', $question->display_criteria),
         ];
         return view('pollquestions.edit')->with($data);
+    }
+
+    public function store(Request $request): RedirectResponse {
+        usleep(50000);
+        $this->validate($request, [
+            'text' => 'required',
+            'type' => 'required',
+            'poll_id' => 'required',
+        ],
+        [
+            'text.required' => __('Du måste ange själva frågetexten!'),
+            'type.required' => __('Du måste ange vad det är för typ av fråga!'),
+        ]);
+
+        $currentLocale = \App::getLocale();
+        $poll = Poll::find($request->poll_id);
+
+        $question = new PollQuestion();
+        $question->poll_id = $request->poll_id;
+        $question->type = $request->type;
+        $question->order = $poll->poll_questions->max('order')+1;
+        $question->save();
+
+        return $this->update($request, $question);
     }
 
     public function update(Request $request, PollQuestion $question): RedirectResponse {

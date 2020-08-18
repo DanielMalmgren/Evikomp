@@ -9,7 +9,7 @@
 
     <div class="card">
             <div class="card-body">
-                {{$poll->translateOrDefault(App::getLocale())->infotext}}
+                {!!$poll->translateOrDefault(App::getLocale())->infotext!!}
             </div>
     </div>
 

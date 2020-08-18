@@ -23,9 +23,9 @@ class Poll extends Model
         return $this->hasMany('App\PollQuestion');
     }
 
-    public function municipalities(): BelongsToMany
+    public function workplaces(): BelongsToMany
     {
-        return $this->belongsToMany('App\Municipality', 'poll_municipality');
+        return $this->belongsToMany('App\Workplace', 'poll_workplace');
     }
 
     //Return the first question in this poll
@@ -44,5 +44,5 @@ class Poll extends Model
 class PollTranslation extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['name', 'infotext'];
+    protected $fillable = ['name', 'infotext', 'infotext2'];
 }

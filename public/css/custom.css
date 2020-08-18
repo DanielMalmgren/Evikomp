@@ -2,6 +2,10 @@
 * ====================== Various ===========================
 */
 
+div.tree-multiselect {
+    border: 0px !important;
+}
+
 .red {
     color: red;
 }

@@ -175,6 +175,8 @@
 
             </div>
 
+            <br>
+
             @php
                 $question = $question->next_question();
             @endphp

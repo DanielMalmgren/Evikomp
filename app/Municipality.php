@@ -12,11 +12,6 @@ class Municipality extends Model
         return $this->hasMany('App\Workplace');
     }
 
-    public function polls(): BelongsToMany
-    {
-        return $this->belongsToMany('App\Poll', 'poll_municipality');
-    }
-
     public function total_attested_time($level) {
         $attested_time = 0;
         foreach($this->workplaces->filter() as $workplace) {

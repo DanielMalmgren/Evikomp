@@ -51,6 +51,6 @@ class CreateProjectTimesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('project_time_user');
-        Schema::dropIfExists('project_time');
+        Schema::dropIfExists('project_times');
     }
 }

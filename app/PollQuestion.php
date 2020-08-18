@@ -47,7 +47,13 @@ class PollQuestion extends Model
 
     public function setAlternativesArrayAttribute($value)
     {
-        $this->translateOrDefault(\App::getLocale())->alternatives = implode(';', $value);
+        if(!isset($value)) {
+            return;
+        }
+        $imploded = implode(';', $value);
+        if(isset($imploded)) {
+            $this->translateOrNew(\App::getLocale())->alternatives = $imploded;
+        }
     }
 }
 

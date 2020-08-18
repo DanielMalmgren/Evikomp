@@ -15,9 +15,10 @@ class CreatePollsTable extends Migration
     {
         Schema::create('polls', function (Blueprint $table) {
             $table->id();
-            $table->boolean('active')->default(false);
             $table->date('active_from')->nullable();
             $table->date('active_to')->nullable();
+            $table->unsignedTinyInteger('scope_terms_of_employment')->default(0);
+            $table->unsignedTinyInteger('scope_full_or_part_time')->default(0);
             $table->timestamps();
         });
 
@@ -27,27 +28,28 @@ class CreatePollsTable extends Migration
             $table->unsignedBigInteger('poll_id')->unsigned();
             $table->string('name', 100);
             $table->string('infotext')->nullable();
+            $table->string('infotext2')->nullable();
             $table->string('locale')->index();
 
             $table->unique(['poll_id','locale']);
             $table->foreign('poll_id')->references('id')->on('polls')->onDelete('cascade');
         });
 
-        Schema::create('poll_municipality', function (Blueprint $table) {
+        Schema::create('poll_workplace', function (Blueprint $table) {
             $table->unsignedBigInteger('poll_id');
-            $table->unsignedInteger('municipality_id');
+            $table->unsignedInteger('workplace_id');
 
             $table->foreign('poll_id')
                 ->references('id')
                 ->on('polls')
                 ->onDelete('cascade');
 
-            $table->foreign('municipality_id')
+            $table->foreign('workplace_id')
                 ->references('id')
-                ->on('municipalities')
+                ->on('workplaces')
                 ->onDelete('cascade');
 
-            $table->primary(['poll_id', 'municipality_id']);
+            $table->primary(['poll_id', 'workplace_id']);
         });
     }
 
@@ -58,6 +60,7 @@ class CreatePollsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('poll_workplace');
         Schema::dropIfExists('poll_municipality');
         Schema::dropIfExists('poll_translations');
         Schema::dropIfExists('polls');

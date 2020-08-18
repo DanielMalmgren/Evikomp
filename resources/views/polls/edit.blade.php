@@ -5,6 +5,9 @@
 
 @section('content')
 
+    <script src="/trumbowyg/trumbowyg.min.js"></script>
+    <script type="text/javascript" src="/trumbowyg/langs/sv.min.js"></script>
+
     <form method="post" action="{{action('PollController@update', $poll->id)}}" accept-charset="UTF-8" enctype="multipart/form-data">
         @method('put')
         @csrf
@@ -15,14 +18,39 @@
         </div>
 
         <div class="mb-3">
-            <label for="infotext">@lang('Informationstext')</label>
-            <input name="infotext" class="form-control" id="infotext" value="{{$poll->translateOrDefault(App::getLocale())->infotext}}">
+            <label for="infotext">@lang('Informationstext före')</label>
+            <textarea rows="4" name="infotext" class="form-control twe">{!!$poll->translateOrDefault(App::getLocale())->infotext!!}</textarea>
         </div>
 
-        @lang('Aktiverad för följande kommuner:') <br>
-        @foreach($municipalities as $municipality)
-            <label><input type="checkbox" {{$poll->municipalities->contains('id', $municipality->id)?"checked":""}} name="municipalities[]" value="{{$municipality->id}}">{{$municipality->name}}</label>
+        <div class="mb-3">
+            <label for="infotext2">@lang('Informationstext efter')</label>
+            <textarea rows="4" name="infotext2" class="form-control twe">{!!$poll->translateOrDefault(App::getLocale())->infotext2!!}</textarea>
+        </div>
+
+        @lang('Målgrupp:') <br>
+        <select id="workplaces" name="workplaces[]" multiple="multiple">
+        @foreach($workplaces as $workplace)
+            <option value="{{$workplace->id}}" data-section="{{$workplace->municipality->name}}" {{$poll->workplaces->contains('id', $workplace->id)?"selected":""}}>{{$workplace->name}}</option>
         @endforeach
+        </select>
+
+        <div class="mb-3">
+            <select class="custom-select d-block w-100" name="scope_terms_of_employment" required="">
+                <option value="0">@lang('Samtliga')</option>
+                <option value="1" {{$poll->scope_terms_of_employment==1?"selected":""}}>@lang('Tillsvidareanställning')</option>
+                <option value="2" {{$poll->scope_terms_of_employment==2?"selected":""}}>@lang('Tidsbegränsad anställning')</option>
+                <option value="3" {{$poll->scope_terms_of_employment==3?"selected":""}}>@lang('Vet ej')</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <select class="custom-select d-block w-100" name="scope_full_or_part_time" required="">
+                <option value="0">@lang('Samtliga')</option>
+                <option value="1" {{$poll->scope_full_or_part_time==1?"selected":""}}>@lang('Deltid')</option>
+                <option value="2" {{$poll->scope_full_or_part_time==2?"selected":""}}>@lang('Heltid')</option>
+                <option value="3" {{$poll->scope_full_or_part_time==3?"selected":""}}>@lang('Vet ej')</option>
+            </select>
+        </div>
 
         <br><br>
 
@@ -64,7 +92,9 @@
         @endforeach
     </div>
 
-    <br>
+    <a href="/pollquestion/create/{{$poll->id}}" class="btn btn-primary">@lang('Lägg till fråga')</a>
+
+    <br><br>
 
     <a href="/poll/{{$poll->id}}/exportresponses" class="btn btn-primary">@lang('Exportera enkätsvar')</a>
 
@@ -82,6 +112,31 @@
                 });
             }
             });
+        });
+
+        $('.twe').trumbowyg({
+            btns: [
+                ['formatting'],
+                ['strong', 'em', 'del'],
+                ['link'],
+                ['justifyLeft', 'justifyCenter'],
+                ['unorderedList', 'orderedList'],
+                ['horizontalRule'],
+                ['fullscreen']
+            ],
+            lang: 'sv',
+            removeformatPasted: true,
+            minimalLinks: true
+        });
+    </script>
+
+
+    <link href="/tree-multiselect/jquery.tree-multiselect.min.css" rel="stylesheet">
+    <script src="/tree-multiselect/jquery.tree-multiselect.min.js"></script>
+    <script type="text/javascript">
+    	$("select#workplaces").treeMultiselect({
+            startCollapsed: true,
+            hideSidePanel: true
         });
     </script>
 

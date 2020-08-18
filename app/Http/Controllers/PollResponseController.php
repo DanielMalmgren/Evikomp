@@ -15,7 +15,6 @@ class PollResponseController extends Controller
 
         if(isset($request->response)) {
             foreach($request->response as $id => $response) {
-                //TODO: Skapa inte alltid en ny pollresponse, kolla först om det finns någon med rätt sessions-id och question-id!
                 $poll_response = PollResponse::firstOrNew([
                     'poll_question_id' => $id,
                     'poll_session_id' => session("poll_session_id"),
@@ -46,7 +45,12 @@ class PollResponseController extends Controller
                 $poll_session = PollSession::find(session("poll_session_id"));
                 $poll_session->finished = true;
                 $poll_session->save();
-                return view('polls.feedback');
+
+                $data = [
+                    'poll' => $poll_session->poll,
+                ];
+
+                return view('polls.feedback')->with($data);
             }
         }
     }

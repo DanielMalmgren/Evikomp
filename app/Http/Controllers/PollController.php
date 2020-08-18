@@ -7,7 +7,7 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use App\Poll;
 use App\PollSession;
-use App\Municipality;
+use App\Workplace;
 use Illuminate\Http\RedirectResponse;
 
 class PollController extends Controller
@@ -22,7 +22,7 @@ class PollController extends Controller
     public function edit(Poll $poll) {
         $data = [
             'poll' => $poll,
-            'municipalities' => Municipality::orderBy('name')->get(),
+            'workplaces' => Workplace::all(),
         ];
         return view('polls.edit')->with($data);
     }
@@ -44,11 +44,14 @@ class PollController extends Controller
 
         $poll->translateOrNew($currentLocale)->name = $request->name;
         $poll->translateOrNew($currentLocale)->infotext = $request->infotext;
+        $poll->translateOrNew($currentLocale)->infotext2 = $request->infotext2;
         $poll->active_from = $request->active_from;
         $poll->active_to = $request->active_to;
+        $poll->scope_full_or_part_time = $request->scope_full_or_part_time;
+        $poll->scope_terms_of_employment = $request->scope_terms_of_employment;
         $poll->save();
 
-        $poll->municipalities()->sync($request->municipalities);
+        $poll->workplaces()->sync($request->workplaces);
 
         return redirect('/poll')->with('success', __('Ändringar sparade'));
     }

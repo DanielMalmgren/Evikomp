@@ -130,6 +130,8 @@ Route::put('/poll/{poll}',                      'PollController@update');
 Route::get('/poll/{poll}/exportresponses',      'PollController@exportresponses');
 
 //PollQuestionController
+Route::get('/pollquestion/create/{poll}',       'PollQuestionController@create');
+Route::post('/pollquestion',                    'PollQuestionController@store');
 Route::get('/pollquestion/{question}',          'PollQuestionController@show');
 Route::get('/pollquestion/{question}/edit',     'PollQuestionController@edit');
 Route::put('/pollquestion/{question}',          'PollQuestionController@update');

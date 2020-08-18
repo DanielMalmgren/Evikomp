@@ -25,8 +25,11 @@ class HomeController extends Controller
             $time_rows = Auth::user()->time_rows($previous_month_year, $previous_month);
             $time = end($time_rows)[32];
 
-            if(isset(Auth::user()->workplace->municipality->polls)) {
-                $poll = Auth::user()->workplace->municipality->polls->first();
+            if(isset(Auth::user()->workplace->polls)) {
+                $poll = Auth::user()->workplace->polls
+                    ->whereIn('scope_terms_of_employment', [Auth::user()->terms_of_employment, 0])
+                    ->whereIn('scope_full_or_part_time', [Auth::user()->full_or_part_time, 0])
+                    ->first();
             } else {
                 $poll = null;
             }

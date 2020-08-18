@@ -108,7 +108,7 @@
                 $( "form[name='question'] div[data-min-select]").not(".skip-required-check").each(function () {                     
                     if ($(this).find('input:checked').length < $(this).data("min-select") ) {
                         e.preventDefault();
-                        alert("Minst " + $(this).data("min-select") + " alternativ måste väljas");
+                        alert("Minst " + $(this).data("min-select") + " alternativ måste väljas på frågan \"" + $(this).data('title') + "\"");
                         return;
                     }
                 });
@@ -146,7 +146,7 @@
                 }
             @endphp
 
-            <div class="question question_{{$question->id}}" {!!$question->max_alternatives>1?'data-min-select="'.$question->min_alternatives.'"':''!!} data-id="{{$question->id}}" {!!empty($question->display_criteria)?"":'style=display:none data-display-criteria="'.$question->display_criteria.'"'!!}>
+            <div class="question question_{{$question->id}}" data-title="{{$question->translateOrDefault(App::getLocale())->text}}" {!!$question->max_alternatives>1?'data-min-select="'.$question->min_alternatives.'"':''!!} data-id="{{$question->id}}" {!!empty($question->display_criteria)?"":'style=display:none data-display-criteria="'.$question->display_criteria.'"'!!}>
                 {{--<H1>@lang('Fråga :question av :questions', ['question' => $question->order, 'questions' => $question->poll->poll_questions->count()])</H1>--}}
 
                 {{$question->translateOrDefault(App::getLocale())->text}}

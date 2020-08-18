@@ -223,6 +223,18 @@ class User extends Authenticatable
             });
     }
 
+    public function getGenderAttribute() {
+        if(substr($this->personid, 10, 1) % 2 == '0') {
+            return 'F';
+        } else {
+            return 'M';
+        }
+    }
+
+    public function getBirthdateAttribute() {
+        return substr($this->personid, 0, 4).'-'.substr($this->personid, 4, 2).'-'.substr($this->personid, 6, 2);
+    }
+
     public function scopeGender(Builder $query, string $gender): ?Builder
     {
         if($gender == 'M') {

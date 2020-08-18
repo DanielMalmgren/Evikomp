@@ -19,4 +19,6 @@
         </ul>
     @endif
 
+    <a href="/poll/create" class="btn btn-primary">@lang('Skapa ny enkät')</a>
+
 @endsection

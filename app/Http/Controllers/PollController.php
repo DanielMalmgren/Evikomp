@@ -19,12 +19,36 @@ class PollController extends Controller
         return view('polls.index')->with($data);
     }
 
+    public function create() {
+        $data = [
+            'workplaces' => Workplace::all(),
+        ];
+        return view('polls.create')->with($data);
+    }
+
     public function edit(Poll $poll) {
         $data = [
             'poll' => $poll,
             'workplaces' => Workplace::all(),
         ];
         return view('polls.edit')->with($data);
+    }
+
+    public function store(Request $request): RedirectResponse {
+        usleep(50000);
+        $this->validate($request, [
+            'name' => 'required',
+            'infotext' => 'required',
+        ],
+        [
+            'name.required' => __('Du måste ange ett namn på enkäten!'),
+            'infotext.required' => __('Du måste ange en text med information om enkäten!'),
+        ]);
+
+        $poll = new Poll();
+        $poll->save();
+
+        return $this->update($request, $poll);
     }
 
     public function update(Request $request, Poll $poll): RedirectResponse {
@@ -69,8 +93,14 @@ class PollController extends Controller
         $worksheet->setCellValue('C1', 'Arbetsplats');
         $worksheet->getColumnDimension('C')->setAutoSize(true);
         $worksheet->getStyle('C1')->getFont()->setBold(true);
+        $worksheet->setCellValue('D1', 'Födelsedatum');
+        $worksheet->getColumnDimension('D')->setAutoSize(true);
+        $worksheet->getStyle('D1')->getFont()->setBold(true);
+        $worksheet->setCellValue('E1', 'Kön');
+        $worksheet->getColumnDimension('E')->setAutoSize(true);
+        $worksheet->getStyle('E1')->getFont()->setBold(true);
 
-        $i = 4;
+        $i = 6;
         $column_order = [];
         foreach($poll->poll_questions->where('type', '!=', 'pagebreak')->sortBy('order') as $question) {
             $cell = $worksheet->getCellByColumnAndRow($i, 1);
@@ -86,6 +116,8 @@ class PollController extends Controller
             $worksheet->setCellValueByColumnAndRow(1, $row, $session->user->name);
             $worksheet->setCellValueByColumnAndRow(2, $row, $session->user->title->name);
             $worksheet->setCellValueByColumnAndRow(3, $row, $session->user->workplace->name);
+            $worksheet->setCellValueByColumnAndRow(4, $row, $session->user->birthdate);
+            $worksheet->setCellValueByColumnAndRow(5, $row, $session->user->gender);
             foreach($session->poll_responses as $response) {
                 $worksheet->setCellValueByColumnAndRow($column_order[$response->poll_question->id], $row, $response->response);
             }

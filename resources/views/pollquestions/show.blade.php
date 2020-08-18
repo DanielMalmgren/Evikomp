@@ -155,7 +155,7 @@
                 @endif
 
                 @if($question->type == "freetext")
-                    <textarea rows={{$question->max_alternatives}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}]" class="form-control" id="response"  oninput="document.question.submit.disabled=false;" {{$question->compulsory?"required":""}}>{{$previous}}</textarea>
+                    <textarea rows={{$question->max_alternatives}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}]" class="form-control" oninput="document.question.submit.disabled=false;" {{$question->compulsory?"required":""}}>{{$previous}}</textarea>
                 @elseif($question->type == "select")
                     @if ($question->max_alternatives < 2)
                         @foreach($question->alternatives_array as $alternative)

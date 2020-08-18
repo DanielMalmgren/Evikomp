@@ -26,9 +26,12 @@ class HomeController extends Controller
             $time = end($time_rows)[32];
 
             if(isset(Auth::user()->workplace->polls)) {
+                $now = new \Carbon\Carbon();
                 $poll = Auth::user()->workplace->polls
                     ->whereIn('scope_terms_of_employment', [Auth::user()->terms_of_employment, 0])
                     ->whereIn('scope_full_or_part_time', [Auth::user()->full_or_part_time, 0])
+                    ->where('active_from', '<=', $now)
+                    ->where('active_to', '>=', $now)
                     ->first();
             } else {
                 $poll = null;

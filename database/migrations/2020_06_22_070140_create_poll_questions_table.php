@@ -31,7 +31,7 @@ class CreatePollQuestionsTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('poll_question_id')->unsigned();
             $table->string('text');
-            $table->string('alternatives')->nullable();
+            $table->string('alternatives', 4096)->nullable();
             $table->string('locale')->index();
 
             $table->unique(['poll_question_id','locale']);

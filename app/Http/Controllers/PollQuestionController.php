@@ -39,7 +39,7 @@ class PollQuestionController extends Controller
 
     public function create(Poll $poll) {
         $data = [
-            'other_questions' => $poll->poll_questions->where('type', '!=', 'pagebreak'),
+            'other_questions' => $poll->poll_questions->where('type', 'select'),
             'poll' => $poll,
         ];
         return view('pollquestions.create')->with($data);
@@ -48,7 +48,7 @@ class PollQuestionController extends Controller
     public function edit(PollQuestion $question) {
         $data = [
             'question' => $question,
-            'other_questions' => $question->poll->poll_questions->where('type', '!=', 'pagebreak'),
+            'other_questions' => $question->poll->poll_questions->where('type', 'select'),
             'display_criteria_array' => explode('==', $question->display_criteria),
         ];
         return view('pollquestions.edit')->with($data);

@@ -146,7 +146,7 @@
                 }
             @endphp
 
-            <div class="question question_{{$question->id}}" data-min-select="{{$question->min_alternatives}}" data-id="{{$question->id}}" {!!empty($question->display_criteria)?"":'style=display:none data-display-criteria="'.$question->display_criteria.'"'!!}>
+            <div class="question question_{{$question->id}}" {!!$question->max_alternatives>1?'data-min-select="'.$question->min_alternatives.'"':''!!} data-id="{{$question->id}}" {!!empty($question->display_criteria)?"":'style=display:none data-display-criteria="'.$question->display_criteria.'"'!!}>
                 {{--<H1>@lang('Fråga :question av :questions', ['question' => $question->order, 'questions' => $question->poll->poll_questions->count()])</H1>--}}
 
                 {{$question->translateOrDefault(App::getLocale())->text}}
@@ -160,7 +160,7 @@
                     @if ($question->max_alternatives < 2)
                         @foreach($question->alternatives_array as $alternative)
                             <div class="radio">
-                                <label><input type="radio" {{$alternative==$previous?"checked":""}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}]" value="{{$alternative}}" {{$question->compulsory?"required":""}} onclick="document.question.submit.disabled=false;">{{$alternative}}</label>
+                                <label><input type="radio" {{$alternative==$previous?"checked":""}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}]" value="{{$alternative}}" {{$question->compulsory?"required":""}}>{{$alternative}}</label>
                             </div>
                         @endforeach
                     @else

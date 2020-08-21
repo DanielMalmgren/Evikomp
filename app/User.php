@@ -153,6 +153,26 @@ class User extends Authenticatable
         }
     }
 
+    public function month_total_time(int $year, int $month): int
+    {
+        $at_total = $this->active_times()->where('date', '>', '2020-07-01')->sum('seconds')/3600;
+
+        $pt_total = 0;
+        $dates = $this->project_times()->whereMonth('date', (string)$month)->whereYear('date', (string)$year)->groupBy('date')->pluck('date');
+        foreach($dates as $date) {
+            $occasions = $this->project_times()->where('date', $date)->get();
+            $minutes = 0;
+            foreach($occasions as $occasion) {
+                    $minutes += $occasion->minutes;
+            }
+            $pt_total += round($minutes/60, 1);
+        }
+
+        $monthtotal = $at_total + $pt_total;
+
+        return $monthtotal;
+    }
+
     public function time_rows(int $year, int $month): array
     {
         $time_rows = [];
@@ -161,7 +181,7 @@ class User extends Authenticatable
 
         $total = 0;
         for($i = 1; $i <= 31; $i++) {
-            $this_time = $active_times_db = ActiveTime::where('user_id', $this->id)->whereMonth('date', (string)$month)->whereYear('date', (string)$year)->whereDay('date', (string)$i)->first();
+            $this_time = ActiveTime::where('user_id', $this->id)->whereMonth('date', (string)$month)->whereYear('date', (string)$year)->whereDay('date', (string)$i)->first();
             if($this_time) {
                 $time_rows[$rowtitle][$i] = round($this_time->seconds/3600, 1);
                 $total += round($this_time->seconds/3600, 1);

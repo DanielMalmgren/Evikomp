@@ -40,8 +40,11 @@
             <div class="col-lg-3 col-md-7 col-sm-5">
                 <h5 class="mb-0">{{$user->name}}</h5>
             </div>
-
-                @if($user->time_attests->where('month', $month)->where('year', $year)->isEmpty()) {{-- Det finns ingen attest alls för denna person --}}
+                @if($user->month_total_time($year, $month) < 0.1)
+                    <div class="col-lg-4 col-md-2 col-sm-2">
+                        <div>@lang('Ingen tid att attestera')</div>
+                    </div>
+                @elseif($user->time_attests->where('month', $month)->where('year', $year)->isEmpty()) {{-- Det finns ingen attest alls för denna person --}}
                     <div class="col-lg-4 col-md-2 col-sm-2">
                         <div class="text-danger">@lang('Ej attesterad')</div>
                     </div>

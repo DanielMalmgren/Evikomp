@@ -38,7 +38,7 @@ class SearchController extends Controller
                 $results['results'][$i]['children'][$key] = [
                     'id' => $track->id,
                     'text' => $track->name,
-                    'url' => '/track/'.$track->id,
+                    'url' => '/tracks/'.$track->id,
                 ];
             }
         }

@@ -27,8 +27,8 @@ class CreatePollsTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('poll_id')->unsigned();
             $table->string('name', 100);
-            $table->string('infotext')->nullable();
-            $table->string('infotext2')->nullable();
+            $table->string('infotext', 4000)->nullable();
+            $table->string('infotext2', 4000)->nullable();
             $table->string('locale')->index();
 
             $table->unique(['poll_id','locale']);

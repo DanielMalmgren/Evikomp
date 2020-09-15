@@ -47,6 +47,20 @@ class Lesson extends Model
         return $this->lesson_results->sum('rating');
     }
 
+    public function getPagesAttribute()
+    {
+        return $this->contents->where('type', 'pagebreak')->count()+1;
+    }
+
+    function getFirstContentOnPage(int $page)
+    {
+        if($page==1) {
+            return 0;
+        }
+        $pagebreak = $this->contents->where('type', 'pagebreak')->sortBy('order')->skip($page-2)->first();
+        return $this->contents->where('order', $pagebreak->order+1)->first()->order;
+    }
+
     public function scopeFinished($query, User $user=null)
     {
         if(!$user) {

@@ -21,7 +21,6 @@ Route::post('/tracks/reorder',                  'TrackController@reorder')->midd
 //LessonController
 Route::get('/lessons/create/{track}',           'LessonController@create')->middleware('permission:manage lessons');
 Route::post('/lessons',                         'LessonController@store')->middleware('permission:manage lessons');
-Route::get('/lessons/{lesson}',                 'LessonController@show');
 Route::get('/lessons/{lesson}/edit',            'LessonController@edit')->middleware('permission:manage lessons');
 Route::put('/lessons/{lesson}',                 'LessonController@update')->middleware('permission:manage lessons');
 Route::get('/lessons/{lesson}/editquestions',   'LessonController@editquestions')->middleware('permission:manage lessons');
@@ -29,6 +28,7 @@ Route::put('/lessons/{lesson}/vote',            'LessonController@vote');
 Route::get('/lessons/{lesson}/finish',          'LessonController@finish');
 Route::post('/lessons/reorder',                 'LessonController@reorder')->middleware('permission:manage lessons');
 Route::get('/lessons/{lesson}/replicate',       'LessonController@replicate');
+Route::get('/lessons/{lesson}/{page?}',         'LessonController@show');
 Route::post('/lessons/replicateQuestions',      'LessonController@replicateQuestions');
 Route::delete('/lessons/{lesson}',              'LessonController@destroy')->middleware('permission:manage lessons');
 

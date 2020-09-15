@@ -79,7 +79,10 @@
                 new_id = getfreeid();
                 switch($("#content_to_add").val()) {
                     case 'vimeo':
-                        $(wrapper).append('<div id="new_vimeo['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_vimeo['+new_id+']">@lang('Video-ID')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_vimeo['+new_id+']" class="form-control original-content"></div></div>');
+                        $(wrapper).append('<div id="new_vimeo['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_vimeo['+new_id+']">@lang('Video-film')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_vimeo['+new_id+']" class="form-control original-content"></div></div>');
+                        break;
+                    case 'youtube':
+                        $(wrapper).append('<div id="new_youtube['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_youtube['+new_id+']">@lang('Youtube-film')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_youtube['+new_id+']" class="form-control original-content"></div></div>');
                         break;
                     case 'html':
                         $(wrapper).append('<div id="new_html['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_html['+new_id+']">@lang('Text')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><textarea rows=5 name="new_html['+new_id+']" class="form-control twe original-content"></textarea></div></div>');
@@ -96,6 +99,9 @@
                         break;
                     case 'file':
                         $(wrapper).append('<div id="new_file['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_file['+new_id+']">@lang('Övrig fil')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_file['+new_id+']" class="form-control original-content" type="file"></div></div>');
+                        break;
+                    case 'pagebreak':
+                        $(wrapper).append('<div id="pagebreak['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><hr style="width:95%"><input name="new_pagebreak['+new_id+']" type="hidden"></div></div>');
                         break;
                 }
                 update_content_order();
@@ -201,6 +207,19 @@
                         </div>
                         @break
 
+                    @case('youtube')
+                        <div id="youtube[{{$content->id}}]" data-id="{{$content->id}}" class="card">
+                            <div class="card-body">
+                                <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
+                                <label class="handle" for="youtube[{{$content->id}}]">@lang('Youtube-film')</label>
+                                @if(locale_is_default())
+                                    <a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a>
+                                @endif
+                                <input name="youtube[{{$content->id}}]" class="form-control original-content" value="{{$content->content}}">
+                            </div>
+                        </div>
+                        @break
+
                     @case('html')
                         <div id="html[{{$content->id}}]" data-id="{{$content->id}}" class="card">
                             <div class="card-body">
@@ -296,6 +315,19 @@
                         </div>
                         @break
 
+                    @case('pagebreak')
+                        <div id="pagebreak[{{$content->id}}]" data-id="{{$content->id}}" class="card">
+                            <div class="card-body">
+                                <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
+                                @if(locale_is_default())
+                                    <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
+                                @endif
+                                <hr style="width:95%">
+                                <input name="pagebreak[{{$content->id}}]" class="original-content" type="hidden" value="whatever">
+                            </div>
+                        </div>
+                        @break
+
                     @default
                         Unexpected content type!
                 @endswitch
@@ -312,11 +344,13 @@
                     <select class="custom-select d-block w-100" name="content_to_add" id="content_to_add">
                         <option selected disabled value="select">@lang('Välj typ av innehåll')</option>>
                         <option value="vimeo">@lang('Vimeo-film')</option>
+                        <option value="youtube">@lang('Youtube-film')</option>
                         <option value="html">@lang('Text')</option>
                         <option value="audio">@lang('Pod (ljudfil)')</option>
                         <option value="office">@lang('Office-fil (Word, Excel, Powerpoint)')</option>
                         <option value="image">@lang('Bild')</option>
                         <option value="file">@lang('Övrig fil')</option>
+                        <option value="pagebreak">@lang('Sidbrytning')</option>
                     </select>
                 </div>
             </div>

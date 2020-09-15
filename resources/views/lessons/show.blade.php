@@ -12,7 +12,11 @@
         <div class="card-body">
 
             @if(count($lesson->contents) > 0)
-                @foreach($lesson->contents->sortBy('order') as $content)
+                @foreach($lesson->contents->sortBy('order')->skip($first_content_order) as $content)
+                @if($content->type == 'pagebreak')
+                    @break
+                @endif
+
                 @switch($content->type)
                     @case('vimeo')
                         <div style="max-width:250px">
@@ -32,6 +36,14 @@
                                 TimeMe.resetIdleCountdown();
                             });
                         </script>
+                        @break
+
+                   @case('youtube')
+                        <div style="max-width:250px">
+                            <div class="vimeo-container">
+                                <iframe id="youtube_{{$content->id}}" src="https://www.youtube.com/embed/{{$content->content}}" width="0" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                            </div>
+                        </div>
                         @break
 
                     @case('html')
@@ -74,6 +86,13 @@
 
     <br>
 
+    @if($pages > 1)
+        @for ($p = 1; $p <= $pages; $p++)
+            <a href="/lessons/{{$lesson->id}}/{{$p}}" class="btn btn-primary {{$page==$p?'disabled':''}}">@lang('Sida') {{$p}}</a>
+        @endfor
+        <br><br>
+    @endif
+
     @if ($question)
         <a href="/test/{{$lesson->id}}" class="btn btn-primary">@lang('Fortsätt till testet')</a>
     @else
@@ -81,6 +100,7 @@
     @endif
 
     @can('manage lessons')
+        <br><br>
         <a href="/lessons/{{$lesson->id}}/edit" class="btn btn-primary">@lang('Redigera lektionen')</a>
         <a href="/lessons/{{$lesson->id}}/editquestions" class="btn btn-primary">@lang('Redigera frågor för lektion')</a>
         <a href="/lessons/{{$lesson->id}}/replicate" class="btn btn-primary">@lang('Kopiera lektionen')</a>

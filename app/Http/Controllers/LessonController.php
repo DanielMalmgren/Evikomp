@@ -16,13 +16,16 @@ use Illuminate\Http\RedirectResponse;
 
 class LessonController extends Controller
 {
-    public function show(Lesson $lesson): View {
+    public function show(Lesson $lesson, ?int $page=1): View {
         $question = Question::where('lesson_id', $lesson->id)->first();
         $lesson->times_started++;
         $lesson->save();
         $data = [
             'question' => $question,
             'lesson' => $lesson,
+            'page' => $page,
+            'pages' => $lesson->pages,
+            'first_content_order' => $lesson->getFirstContentOnPage($page),
         ];
         return view('lessons.show')->with($data);
     }
@@ -239,6 +242,25 @@ class LessonController extends Controller
             }
         }
 
+        //Loop through all changed youtube contents
+        if($request->youtube) {
+            foreach($request->youtube as $youtube_id => $youtube_text) {
+                $content = Content::find($youtube_id);
+                $content->content = $youtube_text;
+                $content->save();
+                logger("Youtube content ".$youtube_id." is being changed");
+            }
+        }
+
+        //Loop through all added youtube contents
+        if($request->new_youtube) {
+            foreach($request->new_youtube as $temp_key => $new_youtube) {
+                $content = new Content('youtube', $lesson->id, $new_youtube);
+                $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+                logger("Youtube content ".$content->id." is being added");
+            }
+        }
+
         //Loop through all added audio contents
         if($request->new_audio) {
             foreach($request->new_audio as $temp_key => $new_audio) {
@@ -289,6 +311,15 @@ class LessonController extends Controller
                 $content->translateOrNew($currentLocale)->text = $new_file->getClientOriginalName();
                 $content->save();
                 $new_file->storeAs($content->filepath(true), $content->filename());
+            }
+        }
+
+        //Loop through all added page breaks
+        if($request->new_pagebreak) {
+            foreach($request->new_pagebreak as $temp_key => $new_pagebreak) {
+                $content = new Content('pagebreak', $lesson->id);
+                $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+                logger("Page break ".$content->id." is being added");
             }
         }
 

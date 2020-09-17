@@ -68,6 +68,14 @@ class Content extends Model
         }
     }
 
+    public function getTextIfExists() {
+        if($this->translateOrDefault(\App::getLocale()) !== null) {
+            return $this->translateOrDefault(\App::getLocale())->text;
+        } else {
+            return null;
+        }
+    }
+
     public function filepath($ignoreMissing=false) {
         if($ignoreMissing || $this->translatedFileExists()) {
             return "public/files/".$this->id."/".\App::getLocale().'/';

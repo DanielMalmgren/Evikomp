@@ -49,16 +49,22 @@ class Lesson extends Model
 
     public function getPagesAttribute()
     {
-        return $this->contents->where('type', 'pagebreak')->count()+1;
+        return $this->contents->where('type', 'pagebreak')->count();
+    }
+
+    public function page_heading(int $page)
+    {
+        return $this->contents->where('type', 'pagebreak')->sortBy('order')->skip($page-1)->first()->translateOrDefault(\App::getLocale())->text;
     }
 
     function getFirstContentOnPage(int $page)
     {
-        if($page==1) {
+        $pagebreak = $this->contents->where('type', 'pagebreak')->sortBy('order')->skip($page-1)->first();
+        if(isset($pagebreak)) {
+            return $this->contents->where('order', $pagebreak->order+1)->first()->order;
+        } else {
             return 0;
         }
-        $pagebreak = $this->contents->where('type', 'pagebreak')->sortBy('order')->skip($page-2)->first();
-        return $this->contents->where('order', $pagebreak->order+1)->first()->order;
     }
 
     public function scopeFinished($query, User $user=null)

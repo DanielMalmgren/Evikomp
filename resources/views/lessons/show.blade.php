@@ -4,6 +4,8 @@
 
 @section('content')
 
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
 <script src="https://player.vimeo.com/api/player.js"></script>
 
     <H1>{{$lesson->translateOrDefault(App::getLocale())->name}}</H1>
@@ -87,9 +89,11 @@
     <br>
 
     @if($pages > 1)
+        <a href="/lessons/{{$lesson->id}}/{{$page-1}}" class="btn btn-primary {{$page==1?'disabled':''}}"><i class="fas fa-chevron-left"></i></a>
         @for ($p = 1; $p <= $pages; $p++)
-            <a href="/lessons/{{$lesson->id}}/{{$p}}" class="btn btn-primary {{$page==$p?'disabled':''}}">@lang('Sida') {{$p}}</a>
+            <a href="/lessons/{{$lesson->id}}/{{$p}}" class="btn btn-primary {{$page==$p?'disabled':''}}">{{$lesson->page_heading($p)}}</a>
         @endfor
+        <a href="/lessons/{{$lesson->id}}/{{$page+1}}" class="btn btn-primary {{$page==$pages?'disabled':''}}"><i class="fas fa-chevron-right"></i></a>
         <br><br>
     @endif
 

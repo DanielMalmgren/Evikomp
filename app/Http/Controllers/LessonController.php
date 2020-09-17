@@ -314,10 +314,22 @@ class LessonController extends Controller
             }
         }
 
+        //Loop through all changed page breaks
+        if($request->pagebreak) {
+            foreach($request->pagebreak as $pagebreak_id => $pagebreak_text) {
+                $content = Content::find($pagebreak_id);
+                if($content->translateOrNew($currentLocale)->text != $pagebreak_text) {
+                    $content->translateOrNew($currentLocale)->text = $pagebreak_text;
+                    $content->save();
+                    logger("Page break ".$pagebreak_id." is being changed");
+                }
+            }
+        }
+
         //Loop through all added page breaks
         if($request->new_pagebreak) {
             foreach($request->new_pagebreak as $temp_key => $new_pagebreak) {
-                $content = new Content('pagebreak', $lesson->id);
+                $content = new Content('pagebreak', $lesson->id, null, $new_pagebreak);
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
                 logger("Page break ".$content->id." is being added");
             }

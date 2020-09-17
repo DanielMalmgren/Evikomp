@@ -101,7 +101,7 @@
                         $(wrapper).append('<div id="new_file['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_file['+new_id+']">@lang('Övrig fil')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_file['+new_id+']" class="form-control original-content" type="file"></div></div>');
                         break;
                     case 'pagebreak':
-                        $(wrapper).append('<div id="pagebreak['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><hr style="width:95%"><input name="new_pagebreak['+new_id+']" type="hidden"></div></div>');
+                        $(wrapper).append('<div id="pagebreak['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="pagebreak['+new_id+']">@lang('Sidrubrik')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_pagebreak['+new_id+']" class="form-control original-content"></div></div>');
                         break;
                 }
                 update_content_order();
@@ -319,11 +319,11 @@
                         <div id="pagebreak[{{$content->id}}]" data-id="{{$content->id}}" class="card">
                             <div class="card-body">
                                 <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
+                                <label class="handle" for="pagebreak[{{$content->id}}]">@lang('Sidrubrik')</label>
                                 @if(locale_is_default())
                                     <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
                                 @endif
-                                <hr style="width:95%">
-                                <input name="pagebreak[{{$content->id}}]" class="original-content" type="hidden" value="whatever">
+                                <input name="pagebreak[{{$content->id}}]" class="form-control original-content" value="{{$content->getTextIfExists()}}">
                             </div>
                         </div>
                         @break
@@ -350,7 +350,7 @@
                         <option value="office">@lang('Office-fil (Word, Excel, Powerpoint)')</option>
                         <option value="image">@lang('Bild')</option>
                         <option value="file">@lang('Övrig fil')</option>
-                        <option value="pagebreak">@lang('Sidbrytning')</option>
+                        <option value="pagebreak">@lang('Sidrubrik')</option>
                     </select>
                 </div>
             </div>

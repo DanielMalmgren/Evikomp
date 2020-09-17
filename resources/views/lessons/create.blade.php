@@ -80,7 +80,7 @@
                     $(wrapper).append('<div id="new_file['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="new_file['+new_id+']">@lang('Övrig fil')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="new_file['+new_id+']" class="form-control" type="file"></div></div>');
                     break;
                 case 'pagebreak':
-                    $(wrapper).append('<div id="pagebreak['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><hr style="width:95%"><input name="new_pagebreak['+new_id+']" type="hidden"></div></div>');
+                    $(wrapper).append('<div id="pagebreak['+new_id+']" data-id="'+new_id+'" class="card"><div class="card-body"><span class="handle"><i class="fas fa-arrows-alt-v"></i></span><label class="handle" for="pagebreak['+new_id+']">@lang('Sidrubrik')</label><a href="#" class="close remove_field" data-dismiss="alert" aria-label="close">&times;</a><input name="pagebreak['+new_id+']" class="form-control original-content"></div></div>');
                     break;
             }
             document.lesson.submit.disabled = false;
@@ -158,7 +158,7 @@
                     <option value="office">@lang('Office-fil (Word, Excel, Powerpoint)')</option>
                     <option value="image">@lang('Bild')</option>
                     <option value="file">@lang('Övrig fil')</option>
-                    <option value="pagebreak">@lang('Sidbrytning')</option>
+                    <option value="pagebreak">@lang('Sidrubrik')</option>
                 </select>
             </div>
         </div>

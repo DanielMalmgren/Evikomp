@@ -51,6 +51,9 @@
                         {{$user->name}}
                     </div>
                     <div class="col-lg-1 col-md-3 col-sm-5">
+                        <i class="far fa-chart-bar" onClick="window.location='/users/{{$user->id}}'"></i>
+                    </div>
+                    <div class="col-lg-1 col-md-3 col-sm-5">
                         <i class="fas fa-user-edit" onClick="window.location='/settings/{{$user->id}}'"></i>
                     </div>
                     <div class="col-lg-1 col-md-3 col-sm-5" onclick="deleteuser({{$user->id}}, '{{$user->name}}')">

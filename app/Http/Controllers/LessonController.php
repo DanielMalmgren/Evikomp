@@ -171,9 +171,11 @@ class LessonController extends Controller
             'new_image.*' => 'file|image|max:20000',
             'new_file.*' => 'file|max:20000',
             'new_html.*' => 'string',
+            'new_pagebreak.*' => 'string',
             'html.*' => 'string',
             'new_vimeo.*' => 'integer',
             'vimeo.*' => 'integer',
+            'pagebreak.*' => 'string',
         ],
         [
             'name.required' => __('Du måste ange ett namn på lektionen!'),
@@ -192,6 +194,8 @@ class LessonController extends Controller
             'html.*.string' => __('Du måste skriva någon text i textrutan!'),
             'new_vimeo.*.integer' => __('Ett giltigt Vimeo-id har bara siffror!'),
             'vimeo.*.integer' => __('Ett giltigt Vimeo-id har bara siffror!'),
+            'pagebreak.*.string' => __('Vänligen ange namn på din sidbrytning!'),
+            'new_pagebreak.*.string' => __('Vänligen ange namn på din sidbrytning!'),
         ]);
 
         $currentLocale = \App::getLocale();

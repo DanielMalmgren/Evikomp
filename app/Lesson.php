@@ -58,7 +58,7 @@ class Lesson extends Model
         if(isset($content_locale)) {
             return $content_locale->text;
         } else {
-            return '';
+            return __('Sida ').$page;
         }
     }
 

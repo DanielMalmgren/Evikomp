@@ -21,7 +21,7 @@
 
                 @switch($content->type)
                     @case('vimeo')
-                        <div style="max-width:250px">
+                        <div style="max-width:{{$content->max_width}}px">
                             <div class="vimeo-container">
                                 <iframe id="vimeo_{{$content->id}}" src="https://player.vimeo.com/video/{{$content->content}}" width="0" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
                             </div>
@@ -41,7 +41,7 @@
                         @break
 
                    @case('youtube')
-                        <div style="max-width:250px">
+                        <div style="max-width:{{$content->max_width}}px">
                             <div class="vimeo-container">
                                 <iframe id="youtube_{{$content->id}}" src="https://www.youtube.com/embed/{{$content->content}}" width="0" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
                             </div>
@@ -67,7 +67,9 @@
                         @break
 
                     @case('image')
-                        <img class="lessonimage" src="{{$content->url()}}">
+                        <div style="max-width:{{$content->max_width}}px">
+                            <img class="lessonimage" src="{{$content->url()}}">
+                        </div>
                         <br>
                         @break
 

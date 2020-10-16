@@ -28,6 +28,7 @@ class HomeController extends Controller
             if(isset(Auth::user()->workplace->polls)) {
                 $now = new \Carbon\Carbon();
                 $poll = Auth::user()->workplace->polls
+                    ->whereNotIn('id', Auth::user()->poll_sessions->pluck('poll_id'))
                     ->whereIn('scope_terms_of_employment', [Auth::user()->terms_of_employment, 0])
                     ->whereIn('scope_full_or_part_time', [Auth::user()->full_or_part_time, 0])
                     ->where('active_from', '<=', $now)

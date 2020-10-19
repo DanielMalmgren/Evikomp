@@ -55,14 +55,6 @@ class Content extends Model
         }
     }
 
-    public function setMaxWidthAttribute($value)
-    {
-        ContentSetting::updateOrCreate(
-            ['content_id' => $this->id, 'key' => 'max_width'],
-            ['value' => $value]
-        );
-    }
-
     public function getAdjustmentAttribute()
     {
         $valueobj = $this->content_settings->where('key', 'adjustment')->first();
@@ -71,14 +63,6 @@ class Content extends Model
         } else {
             return 'left';
         }
-    }
-
-    public function setAdjustmentAttribute($value)
-    {
-        ContentSetting::updateOrCreate(
-            ['content_id' => $this->id, 'key' => 'adjustment'],
-            ['value' => $value]
-        );
     }
 
     public function translatedFileExists() {

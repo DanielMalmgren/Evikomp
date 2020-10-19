@@ -50,9 +50,9 @@ $(function() {
                                 <div class="col-lg-3">
                                     <label for="settings[`+new_id+`][adjustment]">@lang('Justering')</label>
                                     <select class="custom-select d-block w-100" name="settings[`+new_id+`][adjustment]">
-                                        <option value="left">@lang('Vänster')</option>
-                                        <option value="center">@lang('Centrerad')</option>
-                                        <option value="right">@lang('Höger')</option>
+                                        <option value="float-left">@lang('Vänster')</option>
+                                        <option value="mx-auto">@lang('Centrerad')</option>
+                                        <option value="float-right">@lang('Höger')</option>
                                     </select>
                                 </div>
                             </div>
@@ -81,9 +81,9 @@ $(function() {
                                 <div class="col-lg-3">
                                     <label for="settings[`+new_id+`][adjustment]">@lang('Justering')</label>
                                     <select class="custom-select d-block w-100" name="settings[`+new_id+`][adjustment]">
-                                        <option value="left">@lang('Vänster')</option>
-                                        <option value="center">@lang('Centrerad')</option>
-                                        <option value="right">@lang('Höger')</option>
+                                        <option value="float-left">@lang('Vänster')</option>
+                                        <option value="mx-auto">@lang('Centrerad')</option>
+                                        <option value="float-right">@lang('Höger')</option>
                                     </select>
                                 </div>
                             </div>
@@ -122,9 +122,9 @@ $(function() {
                                 <div class="col-lg-3">
                                     <label for="settings[`+new_id+`][adjustment]">@lang('Justering')</label>
                                     <select class="custom-select d-block w-100" name="settings[`+new_id+`][adjustment]">
-                                        <option value="left">@lang('Vänster')</option>
-                                        <option value="center">@lang('Centrerad')</option>
-                                        <option value="right">@lang('Höger')</option>
+                                        <option value="float-left">@lang('Vänster')</option>
+                                        <option value="mx-auto">@lang('Centrerad')</option>
+                                        <option value="float-right">@lang('Höger')</option>
                                     </select>
                                 </div>
                             </div>

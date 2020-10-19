@@ -18,70 +18,71 @@
                 @if($content->type == 'pagebreak')
                     @break
                 @endif
+                <div class="clearfix">
 
-                @switch($content->type)
-                    @case('vimeo')
-                        <div style="max-width:{{$content->max_width}}px">
-                            <div class="vimeo-container">
-                                <iframe id="vimeo_{{$content->id}}" src="https://player.vimeo.com/video/{{$content->content}}" width="0" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                    @switch($content->type)
+                        @case('vimeo')
+                            <div class="{{$content->adjustment}}" style="width:100%;max-width:{{$content->max_width}}px">
+                                <div class="vimeo-container">
+                                    <iframe id="vimeo_{{$content->id}}" src="https://player.vimeo.com/video/{{$content->content}}" width="0" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                                </div>
                             </div>
-                        </div>
-                        <script type="text/javascript">
-                            var iframePlayer = new Vimeo.Player(document.querySelector('#vimeo_{{$content->id}}'));
-                            @if(Auth::user()->use_subtitles)
-                                iframePlayer.enableTextTrack('{{substr(App::getLocale(), 0, 2)}}').catch(function(error) {/*Do nothing if subtitle is missing*/});
-                            @else
-                                iframePlayer.disableTextTrack().catch(function(error) {/*Do nothing if subtitle is missing*/});
-                            @endif
-                            iframePlayer.on('timeupdate', function(data){
-                                window.focus();
-                                TimeMe.resetIdleCountdown();
-                            });
-                        </script>
-                        @break
+                            <script type="text/javascript">
+                                var iframePlayer = new Vimeo.Player(document.querySelector('#vimeo_{{$content->id}}'));
+                                @if(Auth::user()->use_subtitles)
+                                    iframePlayer.enableTextTrack('{{substr(App::getLocale(), 0, 2)}}').catch(function(error) {/*Do nothing if subtitle is missing*/});
+                                @else
+                                    iframePlayer.disableTextTrack().catch(function(error) {/*Do nothing if subtitle is missing*/});
+                                @endif
+                                iframePlayer.on('timeupdate', function(data){
+                                    window.focus();
+                                    TimeMe.resetIdleCountdown();
+                                });
+                            </script>
+                            @break
 
-                   @case('youtube')
-                        <div style="max-width:{{$content->max_width}}px">
-                            <div class="vimeo-container">
-                                <iframe id="youtube_{{$content->id}}" src="https://www.youtube.com/embed/{{$content->content}}" width="0" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                        @case('youtube')
+                            <div class="{{$content->adjustment}}" style="width:100%;max-width:{{$content->max_width}}px">
+                                <div class="vimeo-container">
+                                    <iframe id="youtube_{{$content->id}}" src="https://www.youtube.com/embed/{{$content->content}}" width="0" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                                </div>
                             </div>
-                        </div>
-                        @break
+                            @break
 
-                    @case('html')
-                        {!!$content->translateOrDefault(App::getLocale())->text!!}
-                        <br><br>
-                        @break
+                        @case('html')
+                            {!!$content->translateOrDefault(App::getLocale())->text!!}
+                            <br><br>
+                            @break
 
-                    @case('audio')
-                        <audio controls controlsList="nodownload">
-                            <source src="{{$content->url()}}" type="audio/mpeg">
-                        </audio>
-                        @break
+                        @case('audio')
+                            <audio controls controlsList="nodownload">
+                                <source src="{{$content->url()}}" type="audio/mpeg">
+                            </audio>
+                            @break
 
-                    @case('office')
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <iframe class="embed-responsive-item" src="https://view.officeapps.live.com/op/embed.aspx?src={{env('APP_URL').$content->url()}}"></iframe>
-                        </div>
-                        <br>
-                        @break
+                        @case('office')
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" src="https://view.officeapps.live.com/op/embed.aspx?src={{env('APP_URL').$content->url()}}"></iframe>
+                            </div>
+                            <br>
+                            @break
 
-                    @case('image')
-                        <div style="max-width:{{$content->max_width}}px">
-                            <img class="lessonimage" src="{{$content->url()}}">
-                        </div>
-                        <br>
-                        @break
+                        @case('image')
+                            <div class="{{$content->adjustment}}" style="max-width:{{$content->max_width}}px">
+                                <img class="lessonimage" src="{{$content->url()}}">
+                            </div>
+                            <br>
+                            @break
 
-                    @case('file')
-                        <a target="_blank" href="{{$content->url()}}">{{$content->filename()}}</a>
-                        <br>
-                        @break
+                        @case('file')
+                            <a target="_blank" href="{{$content->url()}}">{{$content->filename()}}</a>
+                            <br>
+                            @break
 
-                    @default
-                        Unexpected content type!
-                @endswitch
-
+                        @default
+                            Unexpected content type!
+                    @endswitch
+                </div>
                 @endforeach
             @endif
 

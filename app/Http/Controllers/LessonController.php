@@ -198,6 +198,8 @@ class LessonController extends Controller
         //Store this in a local variable. We'll have to replace all the temporary id's in it for real ones before we do the ordering
         $content_order = $request->content_order;
 
+        $id_map = collect();
+
         //Loop through all changed html contents
         if($request->html) {
             foreach($request->html as $html_id => $html_text) {
@@ -235,6 +237,7 @@ class LessonController extends Controller
             foreach($request->new_vimeo as $temp_key => $new_vimeo) {
                 $content = new Content('vimeo', $lesson->id, $new_vimeo);
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+                $id_map->put($temp_key, $content->id);
                 logger("Vimeo content ".$content->id." is being added");
             }
         }
@@ -254,6 +257,7 @@ class LessonController extends Controller
             foreach($request->new_youtube as $temp_key => $new_youtube) {
                 $content = new Content('youtube', $lesson->id, $new_youtube);
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+                $id_map->put($temp_key, $content->id);
                 logger("Youtube content ".$content->id." is being added");
             }
         }
@@ -284,6 +288,7 @@ class LessonController extends Controller
                 $content = new Content('image', $lesson->id, null, $new_image->getClientOriginalName());
                 $new_image->storeAs($content->filepath(true), $content->filename());
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+                $id_map->put($temp_key, $content->id);
                 logger("Image content ".$content->id." is being added");
             }
         }
@@ -336,10 +341,17 @@ class LessonController extends Controller
         if($request->settings) {
             foreach($request->settings as $content_id => $settings) {
                 foreach($settings as $key => $value) {
-                    ContentSetting::updateOrCreate(
-                        ['content_id' => $content_id, 'key' => $key],
-                        ['value' => $value]
-                    );
+                    if($id_map->has($content_id)) {
+                        ContentSetting::updateOrCreate(
+                            ['content_id' => $id_map->get($content_id), 'key' => $key],
+                            ['value' => $value]
+                        );
+                    } else {
+                        ContentSetting::updateOrCreate(
+                            ['content_id' => $content_id, 'key' => $key],
+                            ['value' => $value]
+                        );
+                    }
                 }
             }
         }

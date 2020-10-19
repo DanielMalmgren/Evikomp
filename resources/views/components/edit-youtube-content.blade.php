@@ -18,9 +18,9 @@
                 <div class="col-lg-3">
                     <label for="settings[{{$content->id}}][adjustment]">@lang('Justering')</label>
                     <select class="custom-select d-block w-100" name="settings[{{$content->id}}][adjustment]">
-                        <option {{$content->adjustment=='left'||old("adjustment[".$content->id."]")=='left'?"selected":""}} value="left">@lang('Vänster')</option>
-                        <option {{$content->adjustment=='center'||old("adjustment[".$content->id."]")=='center'?"selected":""}} value="center">@lang('Centrerad')</option>
-                        <option {{$content->adjustment=='right'||old("adjustment[".$content->id."]")=='right'?"selected":""}} value="right">@lang('Höger')</option>
+                        <option {{$content->adjustment=='float-left'||old("adjustment[".$content->id."]")=='float-left'?"selected":""}} value="float-left">@lang('Vänster')</option>
+                        <option {{$content->adjustment=='mx-auto'||old("adjustment[".$content->id."]")=='mx-auto'?"selected":""}} value="mx-auto">@lang('Centrerad')</option>
+                        <option {{$content->adjustment=='float-right'||old("adjustment[".$content->id."]")=='float-right'?"selected":""}} value="float-right">@lang('Höger')</option>
                     </select>
                 </div>
             </div>

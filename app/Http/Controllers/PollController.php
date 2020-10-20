@@ -19,6 +19,20 @@ class PollController extends Controller
         return view('polls.index')->with($data);
     }
 
+    public function replicate(Poll $poll): RedirectResponse {
+        $newPoll = $poll->replicateWithTranslations();
+        $newPoll->translateOrDefault(\App::getLocale())->name .= ' - ' . __('kopia');
+        $newPoll->push();
+
+        foreach($poll->poll_questions as $question) {
+            $newQuestion = $question->replicateWithTranslations();
+            $newQuestion->poll_id = $newPoll->id;
+            $newQuestion->push();
+        }
+
+        return redirect('/poll')->with('success', __('Enkäten har kopierats'));
+    }
+
     public function create() {
         $data = [
             'workplaces' => Workplace::all(),

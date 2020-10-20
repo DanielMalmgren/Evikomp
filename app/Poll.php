@@ -28,6 +28,15 @@ class Poll extends Model
         return $this->belongsToMany('App\Workplace', 'poll_workplace');
     }
 
+    public function users_count()
+    {
+        $count = 0;
+        foreach($this->workplaces as $workplace) {
+            $count += $workplace->users->count();
+        }
+        return $count;
+    }
+
     //Return the first question in this poll
     public function first_question(): PollQuestion
     {

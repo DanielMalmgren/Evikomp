@@ -50,7 +50,7 @@
                             @break
 
                         @case('html')
-                            {!!$content->translateOrDefault(App::getLocale())->text!!}
+                            {!!$content->text!!}
                             <br><br>
                             @break
 

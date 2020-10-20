@@ -65,6 +65,16 @@ class Content extends Model
         }
     }
 
+    public function getTextAttribute()
+    {
+        $translation = $this->translateOrDefault(\App::getLocale());
+        if(isset($translation)) {
+            return $translation->text;
+        } else {
+            return '';
+        }
+    }
+
     public function translatedFileExists() {
         return Storage::exists("public/files/".$this->id."/".\App::getLocale().'/'.$this->filename());
     }

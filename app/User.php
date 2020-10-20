@@ -43,6 +43,12 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Workplace', 'workplace_admins')->withPivot('attestlevel');
     }
 
+    //Get all tracks for which this user is admin
+    public function admin_tracks(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Track', 'track_admins');
+    }
+
     //Get this users locale
     public function locale(): BelongsTo
     {

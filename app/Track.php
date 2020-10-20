@@ -29,6 +29,11 @@ class Track extends Model
         return $this->belongsToMany('App\User');
     }
 
+    public function track_admins(): BelongsToMany
+    {
+        return $this->belongsToMany('App\User', 'track_admins');
+    }
+
     public function first_lesson(): ?Lesson
     {
         return $this->lessons()->orderBy('order')->where('active', true)->first();

@@ -15,7 +15,7 @@
         </div>
     @endif
 
-    @can('manage lessons')
+    @if($is_editor)
         @if(locale_is_default())
             <a href="/lessons/create/{{$track->id}}" class="btn btn-primary">@lang('Lägg till lektion')</a>
         @endif
@@ -36,7 +36,9 @@
                 });
             });
         </script>
+    @endif
 
+    @can('manage tracks')
         <a href="/tracks/{{$track->id}}/edit" class="btn btn-primary">@lang('Redigera spåret')</a>
 
         @if($track->lessons()->finished()->get()->isNotEmpty())

@@ -31,7 +31,7 @@
         @lang('Du har inga spår valda. Gå till dina inställningar för att välja vilka spår som ska visas här!')
     @endif
 
-    @can('manage lessons')
+    @can('manage tracks')
         @if($showall)
             <script type="text/javascript" language="javascript" src="{{asset('vendor/jquery-ui-1.12.1.custom/jquery-ui.min.js')}}"></script>
             <script type="text/javascript">

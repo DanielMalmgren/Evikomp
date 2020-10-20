@@ -27,6 +27,7 @@ class LessonController extends Controller
             'page' => $page,
             'pages' => $lesson->pages,
             'first_content_order' => $lesson->getFirstContentOnPage($page),
+            'is_editor' => Auth::user()->admin_tracks->where('id', $lesson->track->id)->isNotEmpty(),
         ];
         return view('lessons.show')->with($data);
     }

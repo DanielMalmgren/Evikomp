@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Track;
+use App\User;
 use PDF;
 
 class TrackController extends Controller
@@ -48,9 +49,11 @@ class TrackController extends Controller
                 ->orderBy('order')->get();
 
         }
+
         $data = [
             'track' => $track,
             'lessons' => $lessons,
+            'is_editor' => Auth::user()->admin_tracks->where('id', $track->id)->isNotEmpty(),
         ];
         return view('tracks.show')->with($data);
     }
@@ -108,6 +111,29 @@ class TrackController extends Controller
         $currentLocale = \App::getLocale();
         $user = Auth::user();
         logger("Track ".$track->id." is being edited by ".$user->name);
+
+        if($request->new_admins) {
+            foreach($request->new_admins as $user_id) {
+                $user = User::find($user_id);
+                if(isset($user)) {
+                    logger('Making '.$user->name.' editor for track '.$track->id);
+
+                    $user->admin_tracks()->attach($track);
+                    $user->assignRole('Track editor');
+                }
+            }
+        }
+
+        if($request->remove_admin) {
+            foreach(array_keys($request->remove_admin) as $user_id) {
+                $user = User::find($user_id);
+                logger('Removing '.$user->name.' as editor for track '.$track->id);
+                $user->admin_tracks()->detach($track);
+                if($user->admin_tracks->isNotEmpty()) {
+                    $user->removeRole('Track editor');
+                }
+            }
+        }
 
         $track->translateOrNew($currentLocale)->name = $request->name;
         $track->translateOrNew($currentLocale)->subtitle = $request->subtitle;

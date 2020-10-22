@@ -53,7 +53,7 @@ class TrackController extends Controller
         $data = [
             'track' => $track,
             'lessons' => $lessons,
-            'is_editor' => Auth::user()->admin_tracks->where('id', $track->id)->isNotEmpty(),
+            'is_editor' => Auth::user()->can('manage lessons') || Auth::user()->admin_tracks->where('id', $track->id)->isNotEmpty(),
         ];
         return view('tracks.show')->with($data);
     }

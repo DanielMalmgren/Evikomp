@@ -131,7 +131,7 @@
                 </select>
             @else
                 <select class="custom-select d-block w-100" id="workplace" name="workplace" required="" disabled>
-                    <option disabled data-municipality="-1">@lang('Välj kommun först')</option>
+                    <option disabled selected data-municipality="-1">@lang('Välj kommun först')</option>
                     @foreach($workplaces as $workplace)
                         <option data-municipality="{{$workplace->municipality_id}}" data-workplace-type="{{$workplace->workplace_type_id}}" value="{{$workplace->id}}">{{$workplace->name}}</option>
                     @endforeach
@@ -143,7 +143,7 @@
             <label for="title">@lang('Befattning')</label>
             @if($user->title || old('title'))
                 <select class="custom-select d-block w-100" id="title" name="title" required="">
-                    <option disabled data-workplace_type="-1">@lang('Välj din befattning')</option>
+                    <option disabled selected data-workplace_type="-1">@lang('Välj din befattning')</option>
                     @foreach($titles as $title)
                         @if($user->title && $user->title->id == $title->id || !$user->title && old('title') == $title->id)
                             <option selected data-workplace_type="{{$title->workplace_type->id}}" value="{{$title->id}}">{{$title->name}}</option>

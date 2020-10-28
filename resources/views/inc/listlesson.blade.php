@@ -5,7 +5,7 @@
                 <img class="lessonimage" src="/storage/icons/{{$lesson->icon}}" style="max-width:30px;margin-right:10px">
             @endif
         </div>
-        <div class="col-10">
+        <div class="col-9">
             <h5 class="mb-0">
                 {{$lesson->translateOrDefault(App::getLocale())->name}}
                 @if($lesson->active == 0)

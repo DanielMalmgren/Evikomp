@@ -104,6 +104,22 @@
         </div>
 
         <div class="mb-3">
+            <label for="color">@lang('Färg')</label>
+            <input name="color" type="color" list="presetColors" value="{{$lesson->color->hex}}">
+            <datalist id="presetColors">
+                @foreach($colors as $color)
+                    <option>{{$color->hex}}</option>
+                @endforeach
+            </datalist>
+        </div>
+
+        <div class="mb-3">
+            <label for="icon">@lang('Ikon: ') </label>
+            <img class="lessonimage" src="/storage/icons/{{$lesson->icon}}" style="max-width:50px">
+            <input name="icon" class="form-control" type="file" accept="image/jpeg,image/png,image/gif">
+        </div>
+
+        <div class="mb-3">
             <input type="hidden" name="active" value="0">
             <label><input type="checkbox" name="active" value="1" {{$lesson->active?"checked":""}}>@lang('Aktiv')</label>
         </div>

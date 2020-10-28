@@ -10,6 +10,7 @@ use App\Title;
 use App\LessonResult;
 use App\Content;
 use App\ContentSetting;
+use App\Color;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -68,6 +69,7 @@ class LessonController extends Controller
         $data = [
             'track' => $track,
             'titles' => $titles,
+            'colors' => Color::all(),
         ];
         return view('lessons.create')->with($data);
     }
@@ -116,6 +118,7 @@ class LessonController extends Controller
             'lesson' => $lesson,
             'titles' => $titles,
             'tracks' => Track::all(),
+            'colors' => Color::all(),
         ];
         return view('lessons.edit')->with($data);
     }
@@ -174,6 +177,8 @@ class LessonController extends Controller
             'new_file.*' => 'file|max:20000',
             'new_vimeo.*' => 'integer',
             'vimeo.*' => 'integer',
+            'color' => 'exists:colors,hex',
+            'icon' => 'image|max:2000',
         ],
         [
             'name.required' => __('Du måste ange ett namn på lektionen!'),
@@ -190,6 +195,9 @@ class LessonController extends Controller
             'new_file.*.max' => __('Din fil är för stor! Max-storleken är 20MB!'),
             'new_vimeo.*.integer' => __('Ett giltigt Vimeo-id har bara siffror!'),
             'vimeo.*.integer' => __('Ett giltigt Vimeo-id har bara siffror!'),
+            'color.exists' => __('Du måste välja en av de förvalda färgerna!'),
+            'icon.image' => __('Felaktigt bildformat!'),
+            'icon.max' => __('Din fil är för stor! Max-storleken är 2MB!'),
         ]);
 
         $currentLocale = \App::getLocale();
@@ -378,6 +386,13 @@ class LessonController extends Controller
                     $i++;
                 }
             }
+        }
+
+        $color = Color::where('hex', $request->color)->first();
+        $lesson->color_id = $color->id;
+
+        if(isset($request->icon)) {
+            $lesson->icon = basename($request->icon->store('public/icons'));
         }
 
         $lesson->translateOrNew($currentLocale)->name = $request->name;

@@ -8,7 +8,7 @@
 
     <H1>@lang('Redigera spår')</H1>
 
-    <form method="post" action="{{action('TrackController@update', $track->id)}}" accept-charset="UTF-8">
+    <form method="post" action="{{action('TrackController@update', $track->id)}}" accept-charset="UTF-8" enctype="multipart/form-data">
         @method('put')
         @csrf
 
@@ -20,6 +20,22 @@
         <div class="mb-3">
             <label for="subtitle">@lang('Undertitel')</label>
             <input name="subtitle" class="form-control" id="subtitle" value="{{$track->translateOrDefault(App::getLocale())->subtitle}}">
+        </div>
+
+        <div class="mb-3">
+            <label for="color">@lang('Färg')</label>
+            <input name="color" type="color" list="presetColors" value="{{$track->color->hex}}">
+            <datalist id="presetColors">
+                @foreach($colors as $color)
+                    <option>{{$color->hex}}</option>
+                @endforeach
+            </datalist>
+        </div>
+
+        <div class="mb-3">
+            <label for="icon">@lang('Ikon: ') </label>
+            <img class="lessonimage" src="/storage/icons/{{$track->icon}}" style="max-width:50px">
+            <input name="icon" class="form-control" type="file" accept="image/jpeg,image/png,image/gif">
         </div>
 
         <div class="mb-3">

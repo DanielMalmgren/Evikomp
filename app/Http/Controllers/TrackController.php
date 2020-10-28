@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Track;
 use App\User;
+use App\Color;
 use PDF;
 
 class TrackController extends Controller
@@ -70,7 +71,11 @@ class TrackController extends Controller
     }
 
     public function create() {
-        return view('tracks.create');
+        $data = [
+            'colors' => Color::all(),
+        ];
+        
+        return view('tracks.create')->with($data);
     }
 
     public function store(Request $request) {
@@ -92,6 +97,7 @@ class TrackController extends Controller
     public function edit(Track $track) {
         $data = [
             'track' => $track,
+            'colors' => Color::all(),
         ];
         return view('tracks.edit')->with($data);
     }
@@ -101,11 +107,16 @@ class TrackController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'id' => 'integer|min:0',
+            'color' => 'exists:colors,hex',
+            'icon' => 'image|max:2000',
         ],
         [
             'name.required' => __('Du måste ange ett namn på spåret!'),
             'id.integer' => __('Du måste ange ett positivt nummer för spåret!'),
             'id.min' => __('Du måste ange ett positivt nummer för spåret!'),
+            'color.exists' => __('Du måste välja en av de förvalda färgerna!'),
+            'icon.image' => __('Felaktigt bildformat!'),
+            'icon.max' => __('Din fil är för stor! Max-storleken är 2MB!'),
         ]);
 
         $currentLocale = \App::getLocale();
@@ -133,6 +144,13 @@ class TrackController extends Controller
                     $user->removeRole('Track editor');
                 }
             }
+        }
+
+        $color = Color::where('hex', $request->color)->first();
+        $track->color_id = $color->id;
+
+        if(isset($request->icon)) {
+            $track->icon = basename($request->icon->store('public/icons'));
         }
 
         $track->translateOrNew($currentLocale)->name = $request->name;

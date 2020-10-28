@@ -34,6 +34,13 @@ class Track extends Model
         return $this->belongsToMany('App\User', 'track_admins');
     }
 
+    public function color()
+    {
+        return $this->belongsTo('App\Color')->withDefault([
+            'hex' => '#ffffff',
+        ]);
+    }
+
     public function first_lesson(): ?Lesson
     {
         return $this->lessons()->orderBy('order')->where('active', true)->first();

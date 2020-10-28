@@ -42,6 +42,13 @@ class Lesson extends Model
         return $this->belongsToMany('App\Title');
     }
 
+    public function color()
+    {
+        return $this->belongsTo('App\Color')->withDefault([
+            'hex' => '#ffffff',
+        ]);
+    }
+
     public function rating()
     {
         return $this->lesson_results->sum('rating');

@@ -33,6 +33,8 @@ class QuestionController extends Controller
             'question' => $question,
             'test_session' => $test_session,
             'test_response' => $test_response,
+            'question_number' => $test_session->test_responses->count(),
+            'number_of_questions' => $test_session->number_of_questions(),
         ];
         return view('questions.show')->with($data);
     }
@@ -66,6 +68,11 @@ class QuestionController extends Controller
     public function destroy(Question $question) {
         logger('Destroying question '.$question->id);
         $question->delete();
+
+        if($question->lesson->number_of_questions > $question->lesson->questions->count()) {
+            $question->lesson->number_of_questions = $question->lesson->questions->count();
+            $question->lesson->save();
+        }
 
         $following_questions = Question::where('order', '>', $question->order)->where('lesson_id', $question->lesson_id)->get();
         foreach($following_questions as $following_question) {

@@ -34,6 +34,7 @@ Route::delete('/lessons/{lesson}',              'LessonController@destroy')->mid
 
 //TestController
 Route::get('/test/{lesson}',                    'TestController@show');
+Route::post('/test/{lesson}/number_of_questions', 'TestController@set_number_of_questions');
 Route::post('/test/storeResponse',              'TestController@store');
 
 //QuestionController

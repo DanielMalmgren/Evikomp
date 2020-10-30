@@ -32,7 +32,7 @@
         }
     </script>
 
-    <H1>@lang('Fråga :question av :questions', ['question' => $question->order, 'questions' => $test_session->number_of_questions()])</H1>
+    <H1>@lang('Fråga :question av :questions', ['question' => $question_number, 'questions' => $number_of_questions])</H1>
 
     {{$question->translateOrDefault(App::getLocale())->text}}
 

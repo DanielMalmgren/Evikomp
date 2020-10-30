@@ -25,7 +25,11 @@ class TestSession extends Model
 
     public function number_of_questions(): int
     {
-        return $this->lesson->questions->count();
+        if($this->lesson->number_of_questions == 0) {
+            return $this->lesson->questions->count();
+        } else {
+            return $this->lesson->number_of_questions;
+        }
     }
 
     public function completed_questions(): int

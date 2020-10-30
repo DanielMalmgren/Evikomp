@@ -34,6 +34,18 @@
                 });
            }
         });
+        
+        $("#number_of_questions").change(function(e){
+            e.preventDefault();
+            console.log("Du ändrade till " + $("#number_of_questions").val());
+            var number_of_questions = $("#number_of_questions").val();
+            var token = "{{ csrf_token() }}";
+            $.ajax({
+                url: '/test/{{$lesson->id}}/number_of_questions',
+                data : {_token:token,number_of_questions:number_of_questions},
+                type: 'POST'
+            });
+        });
     });
 </script>
 
@@ -56,6 +68,16 @@
         </form>
 
     @else
+        <div class="mb-3">
+            <label for="number_of_questions">@lang('Antal frågor som behöver besvaras')</label>
+            <select class="custom-select d-block w-100" name="number_of_questions" id="number_of_questions" required="">
+                @for ($i = 1; $i <= $lesson->questions->count(); $i++)
+                    <option value="{{$i}}" {{$i==$lesson->number_of_questions?"selected":""}}>{{$i}} (@lang('i slumpvis ordning'))</option>
+                @endfor
+                <option value="0" {{0==$lesson->number_of_questions?"selected":""}}>@lang("Samtliga (i ordning enligt nedan)")</option>
+            </select>
+        </div>
+
         @lang('Frågor')
         <div id="questionlist">
             @foreach($questions as $question)

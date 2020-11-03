@@ -348,18 +348,21 @@ class LessonController extends Controller
 
         //Loop through all settings
         if($request->settings) {
+            logger(print_r($request->settings, true));
             foreach($request->settings as $content_id => $settings) {
                 foreach($settings as $key => $value) {
-                    if($id_map->has($content_id)) {
-                        ContentSetting::updateOrCreate(
-                            ['content_id' => $id_map->get($content_id), 'key' => $key],
-                            ['value' => $value]
-                        );
-                    } else {
-                        ContentSetting::updateOrCreate(
-                            ['content_id' => $content_id, 'key' => $key],
-                            ['value' => $value]
-                        );
+                    if(isset($value)) {
+                        if($id_map->has($content_id)) {
+                            ContentSetting::updateOrCreate(
+                                ['content_id' => $id_map->get($content_id), 'key' => $key],
+                                ['value' => $value]
+                            );
+                        } else {
+                            ContentSetting::updateOrCreate(
+                                ['content_id' => $content_id, 'key' => $key],
+                                ['value' => $value]
+                            );
+                        }
                     }
                 }
             }

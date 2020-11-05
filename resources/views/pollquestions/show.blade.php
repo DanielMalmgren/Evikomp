@@ -56,7 +56,8 @@
                     var fieldId = $(this).data("display-criteria").split('==')[0];
                     var fieldValue = $(this).data("display-criteria").split('==')[1];
                     if (selectWrapper.data("id") == fieldId) {
-                        if (selectedValues.includes(fieldValue)) {
+                        //if (selectedValues.includes(fieldValue)) {
+                        if (selectedValues.indexOf(fieldValue) > -1) { //Workaround since .includes() doesn't work on IE
                             $(this).show();
                             $(this).find("input, textarea").each(function () { 
                                 $(this).attr("name", $(this).data("original-name"));

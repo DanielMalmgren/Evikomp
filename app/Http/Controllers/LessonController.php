@@ -348,7 +348,6 @@ class LessonController extends Controller
 
         //Loop through all settings
         if($request->settings) {
-            logger(print_r($request->settings, true));
             foreach($request->settings as $content_id => $settings) {
                 foreach($settings as $key => $value) {
                     if(isset($value)) {

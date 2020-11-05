@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Announcement;
 use App\ClosedMonth;
+use App\PollQuestion;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -33,6 +34,7 @@ class HomeController extends Controller
                     ->whereIn('scope_full_or_part_time', [Auth::user()->full_or_part_time, 0])
                     ->where('active_from', '<=', $now)
                     ->where('active_to', '>=', $now)
+                    ->whereIn('id', PollQuestion::all()->pluck('poll_id'))
                     ->first();
             } else {
                 $poll = null;

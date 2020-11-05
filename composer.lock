@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9600b08b589c4ade47f28256ad7831d3",
+    "content-hash": "01ea3bb6057641e1edec6be97bb7f6f8",
     "packages": [
         {
             "name": "aacotroneo/laravel-saml2",
@@ -1855,16 +1855,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.12.3",
+            "version": "v8.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "6707480c5f0db7aa07537f9ad93255b64b65b85e"
+                "reference": "37a0abd4f3dbc51e2256296b45f8be72c8fe2196"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/6707480c5f0db7aa07537f9ad93255b64b65b85e",
-                "reference": "6707480c5f0db7aa07537f9ad93255b64b65b85e",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/37a0abd4f3dbc51e2256296b45f8be72c8fe2196",
+                "reference": "37a0abd4f3dbc51e2256296b45f8be72c8fe2196",
                 "shasum": ""
             },
             "require": {
@@ -2018,7 +2018,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2020-10-29T22:01:29+00:00"
+            "time": "2020-11-03T14:13:19+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -2090,23 +2090,23 @@
         },
         {
             "name": "laravel/ui",
-            "version": "v3.0.0",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/ui.git",
-                "reference": "ff6af4f0bc5a5bfe73352cdc03dbfffc4ace92d8"
+                "reference": "444072cb2f8baaa15172c5cde2bd30d188c3b7e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/ui/zipball/ff6af4f0bc5a5bfe73352cdc03dbfffc4ace92d8",
-                "reference": "ff6af4f0bc5a5bfe73352cdc03dbfffc4ace92d8",
+                "url": "https://api.github.com/repos/laravel/ui/zipball/444072cb2f8baaa15172c5cde2bd30d188c3b7e7",
+                "reference": "444072cb2f8baaa15172c5cde2bd30d188c3b7e7",
                 "shasum": ""
             },
             "require": {
                 "illuminate/console": "^8.0",
                 "illuminate/filesystem": "^8.0",
                 "illuminate/support": "^8.0",
-                "php": "^7.3"
+                "php": "^7.3|^8.0"
             },
             "type": "library",
             "extra": {
@@ -2142,9 +2142,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/ui/issues",
-                "source": "https://github.com/laravel/ui/tree/v3.0.0"
+                "source": "https://github.com/laravel/ui/tree/v3.1.0"
             },
-            "time": "2020-09-11T15:34:08+00:00"
+            "time": "2020-11-03T19:51:21+00:00"
         },
         {
             "name": "league/commonmark",
@@ -7892,6 +7892,57 @@
             "time": "2020-05-29T17:27:14+00:00"
         },
         {
+            "name": "fakerphp/faker",
+            "version": "v1.10.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FakerPHP/Faker.git",
+                "reference": "f2713a5016faaf6ffc60e9d456dedb5ebf0efcae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/f2713a5016faaf6ffc60e9d456dedb5ebf0efcae",
+                "reference": "f2713a5016faaf6ffc60e9d456dedb5ebf0efcae",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "conflict": {
+                "fzaninotto/faker": "*"
+            },
+            "require-dev": {
+                "ext-intl": "*",
+                "phpunit/phpunit": "^7.5.20 || ^8.5.8 || ^9.4.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Faker\\": "src/Faker/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Zaninotto"
+                }
+            ],
+            "description": "Faker is a PHP library that generates fake data for you.",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures"
+            ],
+            "support": {
+                "issues": "https://github.com/FakerPHP/Faker/issues",
+                "source": "https://github.com/FakerPHP/Faker/tree/v1.10.1"
+            },
+            "time": "2020-10-28T09:32:46+00:00"
+        },
+        {
             "name": "firebase/php-jwt",
             "version": "v5.2.0",
             "source": {
@@ -7944,61 +7995,6 @@
                 "source": "https://github.com/firebase/php-jwt/tree/master"
             },
             "time": "2020-03-25T18:49:23+00:00"
-        },
-        {
-            "name": "fzaninotto/faker",
-            "version": "v1.9.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "fc10d778e4b84d5bd315dad194661e091d307c6f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/fc10d778e4b84d5bd315dad194661e091d307c6f",
-                "reference": "fc10d778e4b84d5bd315dad194661e091d307c6f",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.3.3 || ^7.0"
-            },
-            "require-dev": {
-                "ext-intl": "*",
-                "phpunit/phpunit": "^4.8.35 || ^5.7",
-                "squizlabs/php_codesniffer": "^2.9.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.9-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Faker\\": "src/Faker/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "François Zaninotto"
-                }
-            ],
-            "description": "Faker is a PHP library that generates fake data for you.",
-            "keywords": [
-                "data",
-                "faker",
-                "fixtures"
-            ],
-            "support": {
-                "issues": "https://github.com/fzaninotto/Faker/issues",
-                "source": "https://github.com/fzaninotto/Faker/tree/v1.9.1"
-            },
-            "abandoned": true,
-            "time": "2019-12-12T13:22:17+00:00"
         },
         {
             "name": "google/auth",

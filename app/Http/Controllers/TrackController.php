@@ -16,10 +16,10 @@ class TrackController extends Controller
             if(Auth::user()->can('list all lessons')) {
                 $tracks = Track::orderBy('order')->get();
             } else {
-                $tracks = Track::where('active', 1)->orderBy('order')->get();
+                $tracks = Track::where('active', 1)->get()->merge(Auth::user()->admin_tracks)->sortBy('order');
             }
         } else if(isset(Auth::user()->workplace)){
-            $tracks = Auth::user()->tracks->merge(Auth::user()->workplace->tracks)->sortBy('order');
+            $tracks = Auth::user()->tracks->merge(Auth::user()->workplace->tracks)->merge(Auth::user()->admin_tracks)->sortBy('order');
         } else {
             $tracks = collect([]);
         }

@@ -371,7 +371,7 @@ class LessonController extends Controller
                                 ['content_id' => $id_map->get($content_id), 'key' => $key],
                                 ['value' => $value]
                             );
-                        } else {
+                        } elseif(Content::find($content_id)) {
                             ContentSetting::updateOrCreate(
                                 ['content_id' => $content_id, 'key' => $key],
                                 ['value' => $value]

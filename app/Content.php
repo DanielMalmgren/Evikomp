@@ -40,6 +40,13 @@ class Content extends Model
         return $this->belongsTo('App\Lesson');
     }
 
+    public function color()
+    {
+        return $this->belongsTo('App\Color')->withDefault([
+            'hex' => '#ffffff',
+        ]);
+    }
+
     public function content_settings()
     {
         return $this->hasMany('App\ContentSetting');

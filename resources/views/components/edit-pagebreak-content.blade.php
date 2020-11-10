@@ -5,6 +5,21 @@
         @if(locale_is_default())
             <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
         @endif
-        <input name="pagebreak[{{$content->id}}]" class="form-control original-content" value="{{$content->getTextIfExists()}}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <input name="pagebreak[{{$content->id}}]" class="form-control original-content" value="{{$content->getTextIfExists()}}">
+                </div>
+                <div class="col-lg-2">
+                    <label for="content_colors[{{$content->id}}]">@lang('Färg')</label>
+                    <input name="content_colors[{{$content->id}}]" type="color" list="presetColors" value="{{$content->color->hex}}">
+                    <datalist id="presetColors">
+                        @foreach($colors as $color)
+                            <option>{{$color->hex}}</option>
+                        @endforeach
+                    </datalist>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

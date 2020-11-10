@@ -160,6 +160,7 @@
                         <option value="image">@lang('Bild')</option>
                         <option value="file">@lang('Övrig fil')</option>
                         <option value="pagebreak">@lang('Sidrubrik')</option>
+                        <option value="toc">@lang('Innehållsförteckning')</option>
                     </select>
                 </div>
             </div>

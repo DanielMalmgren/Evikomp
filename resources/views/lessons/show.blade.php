@@ -79,6 +79,18 @@
                             <br>
                             @break
 
+                        @case('toc')
+                            @if($pages > 1)
+                                @for ($p = 1; $p <= $pages; $p++)
+                                    <a href="/lessons/{{$lesson->id}}/{{$p}}" style="background-color:{{$lesson->page_color($p)}};border-color:{{$lesson->page_color($p)}}" class="btn btn-primary {{$page==$p?'disabled':''}}">{{$lesson->page_heading($p)}}</a>
+                                    <br><br>
+                                @endfor
+                            @else
+                                Please add more pages in order to make a table of contents!
+                            @endif
+                            <br>
+                            @break
+
                         @default
                             Unexpected content type!
                     @endswitch
@@ -94,7 +106,7 @@
     @if($pages > 1)
         <a href="/lessons/{{$lesson->id}}/{{$page-1}}" class="btn btn-primary {{$page==1?'disabled':''}}"><i class="fas fa-chevron-left"></i></a>
         @for ($p = 1; $p <= $pages; $p++)
-            <a href="/lessons/{{$lesson->id}}/{{$p}}" class="btn btn-primary {{$page==$p?'disabled':''}}">{{$lesson->page_heading($p)}}</a>
+            <a href="/lessons/{{$lesson->id}}/{{$p}}" style="background-color:{{$lesson->page_color($p)}};border-color:{{$lesson->page_color($p)}}" class="btn btn-primary {{$page==$p?'disabled':''}}">{{$lesson->page_heading($p)}}</a>
         @endfor
         <a href="/lessons/{{$lesson->id}}/{{$page+1}}" class="btn btn-primary {{$page==$pages?'disabled':''}}"><i class="fas fa-chevron-right"></i></a>
         <br><br>

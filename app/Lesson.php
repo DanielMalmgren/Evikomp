@@ -69,6 +69,12 @@ class Lesson extends Model
         }
     }
 
+    public function page_color(int $page)
+    {
+        $content = $this->contents->where('type', 'pagebreak')->sortBy('order')->skip($page-1)->first();
+        return $content->color->hex;
+    }
+
     function getFirstContentOnPage(int $page)
     {
         $pagebreak = $this->contents->where('type', 'pagebreak')->sortBy('order')->skip($page-1)->first();

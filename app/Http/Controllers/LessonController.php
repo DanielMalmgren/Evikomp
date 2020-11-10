@@ -330,10 +330,12 @@ class LessonController extends Controller
             foreach($request->pagebreak as $pagebreak_id => $pagebreak_text) {
                 $content = Content::find($pagebreak_id);
                 if($content->translateOrNew($currentLocale)->text != $pagebreak_text) {
-                    $content->translateOrNew($currentLocale)->text = $pagebreak_text;
-                    $content->save();
                     logger("Page break ".$pagebreak_id." is being changed");
                 }
+                $content->translateOrNew($currentLocale)->text = $pagebreak_text;
+                $color = Color::where('hex', $request->content_colors[$pagebreak_id])->first();
+                $content->color_id = $color->id;
+                $content->save();
             }
         }
 
@@ -341,8 +343,21 @@ class LessonController extends Controller
         if($request->new_pagebreak) {
             foreach($request->new_pagebreak as $temp_key => $new_pagebreak) {
                 $content = new Content('pagebreak', $lesson->id, null, $new_pagebreak);
+                $color = Color::where('hex', $request->content_colors[$temp_key])->first();
+                $content->color_id = $color->id;
+                $content->save();
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
                 logger("Page break ".$content->id." is being added");
+            }
+        }
+
+        //Loop through all added TOCs (table of contents)
+        if($request->new_toc) {
+            foreach($request->new_toc as $temp_key => $new_toc) {
+                $content = new Content('toc', $lesson->id);
+                $content->save();
+                $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+                logger("Table of contents ".$content->id." is being added");
             }
         }
 

@@ -18,4 +18,9 @@ class Color extends Model
     {
         return $this->hasMany('App\Lesson');
     }
+
+    public function contents()
+    {
+        return $this->hasMany('App\Content');
+    }
 }

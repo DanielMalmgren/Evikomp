@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use Illuminate\View\Component;
+use App\Color;
 
 class EditContent extends Component
 {
@@ -26,6 +27,10 @@ class EditContent extends Component
      */
     public function render()
     {
-        return view('components.edit-'.$this->content->type.'-content');
+        $data = [
+            'colors' => Color::all(),
+        ];
+
+        return view('components.edit-'.$this->content->type.'-content')->with($data);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use Illuminate\View\Component;
+use App\Color;
 
 class AddContent extends Component
 {
@@ -23,6 +24,10 @@ class AddContent extends Component
      */
     public function render()
     {
-        return view('components.add-content');
+        $data = [
+            'colors' => Color::all(),
+        ];
+
+        return view('components.add-content')->with($data);
     }
 }

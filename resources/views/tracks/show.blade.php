@@ -4,7 +4,10 @@
 
 @section('content')
 
-    <H1>{{$track->translateOrDefault(App::getLocale())->name}}</H1>
+    <H1>
+        <img class="lessonimage" src="{{$track->icon_with_path()}}" style="max-width:40px;max-height:40px">
+        {{$track->translateOrDefault(App::getLocale())->name}}
+    </H1>
 
     @if(count($lessons) > 0)
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">

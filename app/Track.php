@@ -41,6 +41,15 @@ class Track extends Model
         ]);
     }
 
+    public function icon_with_path()
+    {
+        if(isset($this->icon) && $this->icon != '') {
+            return "/storage/icons/".$this->icon;
+        } else {
+            return "/storage/icons/default.png";
+        }
+    }
+
     public function first_lesson(): ?Lesson
     {
         return $this->lessons()->orderBy('order')->where('active', true)->first();

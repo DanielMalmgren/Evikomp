@@ -17,9 +17,7 @@
                 <li class="list-group-item d-flex justify-content-between lh-condensed nopadding" style="margin-top:7px;border-style:solid;border-width:3px;border-color:{{$track->color->hex}}" id="id-{{$track->id}}">
                     <a href="/tracks/{{$track->id}}">
                         <h6 class="my-0">
-                            @if(isset($track->icon) && $track->icon != '')
-                                <img class="lessonimage" src="/storage/icons/{{$track->icon}}" style="max-width:30px;margin-right:10px">
-                            @endif
+                            <img class="lessonimage" src="{{$track->icon_with_path()}}" style="max-width:30px;max-height:30px;margin-right:10px">
                             {{$track->translateOrDefault(App::getLocale())->name}}
                             @if($track->active == 0)
                                 - inaktiv

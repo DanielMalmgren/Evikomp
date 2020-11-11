@@ -32,7 +32,7 @@ class TrackController extends Controller
     }
 
     public function show(Track $track) {
-        if(Auth::user()->can('list all lessons')) {
+        if(Auth::user()->can('list all lessons') || Auth::user()->admin_tracks->contains($track)) {
             $lessons = $track->lessons->sortBy('order');
         } else {
             $title = Auth::user()->title;

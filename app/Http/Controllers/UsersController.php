@@ -66,6 +66,7 @@ class UsersController extends Controller
 
     //The following function will not really delete a user, just remove it from the workplace
     public function destroy(User $user) {
+        logger($user->name." is removed from ".$user->workplace->name." by ".Auth::user()->name);
         $user->workplace_id = null;
         $user->save();
     }
@@ -128,6 +129,8 @@ class UsersController extends Controller
         $user->email = $request->email;
         $user->password = Hash::make($request->pwd_cleartext);
         $user->save();
+
+        logger($user->name." is created by ".Auth::user()->name);
 
         return redirect('/')->with('success', __('Användaren har skapats'));
     }

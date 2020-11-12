@@ -37,6 +37,8 @@ class WorkplaceController extends Controller
         $workplace->includetimeinreports = $request->includetimeinreports;
         $workplace->save();
 
+        logger("Workplace ".$workplace->name." is being created by ".Auth::user()->name);
+
         return $this->update($request, $workplace);
     }
 
@@ -104,10 +106,15 @@ class WorkplaceController extends Controller
         $workplace->includetimeinreports = $request->includetimeinreports;
         $workplace->save();
 
+        logger("Workplace ".$workplace->name." is being edited by ".Auth::user()->name);
+
         return redirect('/workplace')->with('success', 'Uppgifterna sparade');
     }
 
     public function destroy(Workplace $workplace) {
+
+        logger("Workplace ".$workplace->name." is being removed by ".Auth::user()->name);
+
         if(! $workplace->project_times->isEmpty()) {
             logger('Relocating registered project time for '.$workplace->name);
             foreach($workplace->project_times as $project_time) {

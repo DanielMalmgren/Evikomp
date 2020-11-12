@@ -91,6 +91,8 @@ class TrackController extends Controller
         $track->id = Track::max('id')+1;
         $track->save();
 
+        logger("Track ".$track->id." is being created by ".Auth::user()->name);
+
         return $this->update($request, $track);
     }
 

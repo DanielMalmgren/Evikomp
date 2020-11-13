@@ -143,3 +143,7 @@ Route::post('/pollquestion/reorder',            'PollQuestionController@reorder'
 
 //PollResponseController
 Route::post('/pollresponse',                    'PollResponseController@store');
+
+//MassMailingController
+Route::get('/massmailing/create',               'MassMailingController@create')->middleware('permission:send mass mailing');
+Route::post('/massmailing',                     'MassMailingController@store')->middleware('permission:send mass mailing');

@@ -62,6 +62,7 @@
                                     <li aria-haspopup="false"><a href="/timeattest/create">@lang('Attestera projekttid')</a></li>
                                     @hasrole('Admin')
                                         <li aria-haspopup="false"><a href="/poll">@lang('Hantera enkäter')</a></li>
+                                        <li aria-haspopup="false"><a href="/massmailing/create">@lang('Skicka e-post')</a></li>
                                     @endhasrole
                                     @can('export ESF report')
                                         <li aria-haspopup="false"><a href="/timesummary">@lang('Sammanställning till ESF')</a></li>

@@ -52,6 +52,14 @@
             </div>
         </div>
         <br>
+    @elseif(empty(Auth::user()->email))
+        <H1>@lang('Inställningar')</H1>
+        <div class="card">
+            <div class="card-body">
+                @lang('Ditt konto saknar en giltig e-postadress. Vänligen ange adress nedan!')
+            </div>
+        </div>
+        <br>
     @else
         <H1>@lang('Inställningar')</H1>
     @endif

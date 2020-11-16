@@ -11,7 +11,7 @@ use Illuminate\View\View;
 class HomeController extends Controller
 {
     public function index() {
-        if(empty(Auth::user()["workplace_id"]) || ! Auth::user()->accepted_gdpr) {
+        if(empty(Auth::user()["workplace_id"]) || !Auth::user()->accepted_gdpr || empty(Auth::user()->email)) {
             return redirect('/firstlogin');
         } else {
             $announcements = Announcement::All()->sort()->reverse()->take(5);

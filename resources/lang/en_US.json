@@ -175,6 +175,7 @@
     "Du är nu utloggad": "You are now logged out",
     "Välkommen!": "Welcome!",
     "Du behöver göra vissa inställningar för att kunna börja använda plattformen. Notera att samtliga val nedan är obligatoriska!": "In order to start using this platform you need to set up some settings. Plase note that all choices below are mandatory!",
+    "Ditt konto saknar en giltig e-postadress. Vänligen ange adress nedan!": "Your account does not have a valid email address. Please enter address below!",
     "Förnamn": "First name",
     "Efternamn": "Last name",
     "Kommun": "Municipality",

@@ -115,6 +115,7 @@ class QuestionController extends Controller
         $currentLocale = \App::getLocale();
         $question->correctAnswers = $request->correctAnswers;
         $question->translateOrNew($currentLocale)->text = $request->text;
+        $question->translateOrNew($currentLocale)->reasoning = $request->reasoning;
         $question->save();
 
         //Loop through all changed response options

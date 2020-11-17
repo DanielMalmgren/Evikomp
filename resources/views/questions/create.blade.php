@@ -27,6 +27,11 @@
             </select>
         </div>
 
+        <div class="mb-3">
+            <label for="reasoning">@lang('Resonemang')</label>
+            <input name="reasoning" class="form-control" id="reasoning">
+        </div>
+
         <div id="response_options_div">
             @lang('Svarsalternativ')
             <div id="input_fields_wrap">

@@ -23,8 +23,8 @@ class HomeController extends Controller
 
             $last_month_is_closed = ClosedMonth::where('month', $previous_month)->where('year', $previous_month_year)->exists();
             $last_month_is_attested = Auth::user()->time_attests->where('attestlevel', 1)->where('month', $previous_month)->where('year', $previous_month_year)->isNotEmpty();
-            $time_rows = Auth::user()->time_rows($previous_month_year, $previous_month);
-            $time = end($time_rows)[32];
+
+            $time=Auth::user()->month_total_time($previous_month_year, $previous_month);
 
             if(isset(Auth::user()->workplace->polls)) {
                 $now = new \Carbon\Carbon();

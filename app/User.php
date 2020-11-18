@@ -161,7 +161,10 @@ class User extends Authenticatable
 
     public function month_total_time(int $year, int $month): int
     {
-        $at_total = $this->active_times()->where('date', '>', '2020-07-01')->sum('seconds')/3600;
+        $at_total = $this->active_times()
+            ->where('date', '>=', $year.'-'.sprintf("%02d", $month).'-01')
+            ->where('date', '<', ($month==12?$year+1:$year).'-'.sprintf("%02d", $month==12?1:$month+1).'-01')
+            ->sum('seconds')/3600;
 
         $pt_total = 0;
         $dates = $this->project_times()->whereMonth('date', (string)$month)->whereYear('date', (string)$year)->groupBy('date')->pluck('date');
@@ -169,7 +172,7 @@ class User extends Authenticatable
             $occasions = $this->project_times()->where('date', $date)->get();
             $minutes = 0;
             foreach($occasions as $occasion) {
-                    $minutes += $occasion->minutes;
+                $minutes += $occasion->minutes;
             }
             $pt_total += round($minutes/60, 1);
         }

@@ -62,6 +62,17 @@ class Content extends Model
         }
     }
 
+    public function getMaxHeightAttribute()
+    {
+        $valueobj = $this->content_settings->where('key', 'max_height')->first();
+        if(isset($valueobj)) {
+            return $valueobj->value;
+        } else {
+            return '250';
+        }
+    }
+
+
     public function getAdjustmentAttribute()
     {
         $valueobj = $this->content_settings->where('key', 'adjustment')->first();
@@ -77,6 +88,15 @@ class Content extends Model
         $translation = $this->translateOrDefault(\App::getLocale());
         if(isset($translation)) {
             return $translation->text;
+        } else {
+            return '';
+        }
+    }
+
+    public function textPart($part) {
+        $translation = $this->translateOrDefault(\App::getLocale());
+        if(isset($translation)) {
+            return explode(';', $translation->text)[$part];
         } else {
             return '';
         }

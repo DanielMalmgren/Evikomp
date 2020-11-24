@@ -8,6 +8,14 @@
 
 <script src="https://player.vimeo.com/api/player.js"></script>
 
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.flip-card').click(function(){
+            $(this).toggleClass('flipped')
+        });
+    });
+</script>
+
     <H1>{{$lesson->translateOrDefault(App::getLocale())->name}}</H1>
 
     <div class="card">
@@ -72,6 +80,26 @@
                                 <img class="lessonimage" src="{{$content->url()}}">
                             </div>
                             <br>
+                            @break
+
+                        @case('flipcard')
+                            <div class="card mb-3 {{$content->adjustment}}" style="border:0;width:{{$content->max_width}}px;height:{{$content->max_height}}px;max-width:100%">
+                                <div class="flip-card mb-3">
+                                    <div class="flip-card-inner" style="background-color:{{$content->color->hex}}">
+                                        <div class="flip-card-front">
+                                            <div class="flip-card-content">
+                                                {!!$content->textPart(0)!!}
+                                            </div>
+                                        </div>
+                                        <div class="flip-card-back">
+                                            <div class="flip-card-content">
+                                                {!!$content->textPart(1)!!}
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </div>  
+                            </div>
+
                             @break
 
                         @case('file')

@@ -213,7 +213,7 @@ class LessonController extends Controller
         if($request->html) {
             foreach($request->html as $html_id => $html_text) {
                 $content = Content::find($html_id);
-                $newtext = $content->add_target_to_links($html_text);
+                $newtext = Content::add_target_to_links($html_text);
                 if($content->translateOrNew($currentLocale)->text != $newtext) {
                     $content->translateOrNew($currentLocale)->text = $newtext;
                     $content->save();
@@ -225,9 +225,42 @@ class LessonController extends Controller
         //Loop through all added html contents
         if($request->new_html) {
             foreach($request->new_html as $temp_key => $new_html) {
-                $content = new Content('html', $lesson->id, null, $new_html);
+                $newtext = Content::add_target_to_links($new_html);
+                $content = new Content('html', $lesson->id, null, $newtext);
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
                 logger("HTML content ".$content->id." is being added");
+            }
+        }
+
+        //Loop through all changed flipcard contents
+        if($request->flipcard_front) {
+            foreach($request->flipcard_front as $id => $front_text) {
+                $back_text = $request->flipcard_back[$id];
+                $content = Content::find($id);
+                $newfront = str_replace(';', '', $front_text);
+                $newback = str_replace(';', '', $back_text);
+                if($content->translateOrNew($currentLocale)->text != $newfront.';'.$newback) {
+                    $content->translateOrNew($currentLocale)->text = $newfront.';'.$newback;
+                    logger("Flipcard content ".$id." is being changed");
+                }
+                $color = Color::where('hex', $request->content_colors[$id])->first();
+                $content->color_id = $color->id;
+                $content->save();
+            }
+        }
+
+        //Loop through all added flipcard contents
+        if($request->new_flipcard_front) {
+            foreach($request->new_flipcard_front as $temp_key => $front_text) {
+                $back_text = $request->new_flipcard_back[$temp_key];
+                $newfront = str_replace(';', '', Content::add_target_to_links($front_text));
+                $newback = str_replace(';', '', Content::add_target_to_links($back_text));
+                $content = new Content('flipcard', $lesson->id, null, $newfront.';'.$newback);
+                $color = Color::where('hex', $request->content_colors[$temp_key])->first();
+                $content->color_id = $color->id;
+                $content->save();
+                $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+                logger("Flipcard content ".$content->id." is being added");
             }
         }
 

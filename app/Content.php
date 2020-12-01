@@ -93,6 +93,13 @@ class Content extends Model
         }
     }
 
+    public function setColor(String $hex) {
+        $color = Color::where('hex', $hex)->first();
+        if(isset($color)) {
+            $this->color_id = $color->id;
+        }
+    }
+
     public function textPart($part) {
         $translation = $this->translateOrDefault(\App::getLocale());
         if(isset($translation)) {

@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        @if($project_time->workplace->workplace_admins->contains('id', Auth::user()->id))
+        @if($project_time->workplace->workplace_admins->contains('id', Auth::user()->id) || $user->hasRole('Admin'))
             <H2>@lang('Närvarande personer')</H2>
             @foreach($workplace->users->sortBy('name') as $user)
                 <div class="checkbox">

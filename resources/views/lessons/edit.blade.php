@@ -62,6 +62,11 @@
             $("#titles").toggle(this.checked);
         });
 
+        $('.collapsecontent').on('click', function() {
+            console.log('Fäll ihop!');
+        });
+
+
         addtwe();
 
         $("#contents_wrap").sortable({

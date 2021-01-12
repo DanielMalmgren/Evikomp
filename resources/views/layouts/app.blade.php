@@ -4,11 +4,16 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" media="all" href="{{asset('css/bootstrap.css')}}">
+        <script type="text/javascript" language="javascript" src="{{asset('js/jquery-3.5.1.min.js')}}"></script>
+
+        <script src="{{ asset('js/app.js') }}" defer></script>
+
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+        {{--<link rel="stylesheet" type="text/css" media="all" href="{{asset('css/bootstrap.css')}}">--}}
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('css/footer.css')}}">
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('css/custom.css')}}">
 
-        <script type="text/javascript" language="javascript" src="{{asset('js/jquery-3.4.1.min.js')}}"></script>
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('font-awesome/css/font-awesome.min.css')}}">
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('webslidemenu/dropdown-effects/fade-down.css')}}" />
         <link rel="stylesheet" type="text/css" media="all" href="{{asset('webslidemenu/webslidemenu.css')}}">

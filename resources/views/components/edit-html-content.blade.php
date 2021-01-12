@@ -1,5 +1,5 @@
 <div id="html[{{$content->id}}]" data-id="{{$content->id}}" class="card">
-    <div class="card-body">
+    <div class="card-header">
         <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
         <label class="handle" for="html[{{$content->id}}]">
             @lang('Text')
@@ -8,8 +8,16 @@
             @endif
         </label>
         @if(locale_is_default())
-            <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
+            <a href="#" class="close remove_field pl-3" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
         @endif
-        <textarea rows="4" name="html[{{$content->id}}]" class="form-control twe original-content">{!!$content->text!!}</textarea>
+        <a data-toggle="collapse" href="#body{{$content->id}}" role="button" aria-expanded="false" aria-controls="body{{$content->id}}">
+        test
+            <i class="fas fa-chevron-up float-right"></i>
+        </a>
+    </div>
+    <div class="collapse show" id="body{{$content->id}}">
+        <div class="card-body">
+            <textarea rows="4" name="html[{{$content->id}}]" class="form-control twe original-content">{!!$content->text!!}</textarea>
+        </div>
     </div>
 </div>

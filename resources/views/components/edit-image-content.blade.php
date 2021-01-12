@@ -1,5 +1,5 @@
 <div id="image[{{$content->id}}]" data-id="{{$content->id}}" class="card">
-    <div class="card-body">
+    <div class="card-header">
         <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
         <label class="handle" for="image[{{$content->id}}]">
             @lang('Bild')
@@ -10,6 +10,8 @@
         @if(locale_is_default())
             <a href="#" class="close remove_field" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
         @endif
+    </div>
+    <div class="card-body">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">

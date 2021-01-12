@@ -114,8 +114,8 @@ class TimeSummaryController extends Controller
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./xls-template/Sammanställning_deltagare.xlsx');
 
         $worksheet = $spreadsheet->getSheetByName('Deltagarförteckning');
-        $worksheet->setCellValue('B3', '2018/00079'); //Diarienummer
-        $worksheet->setCellValue('B4', 'Evikomp'); //Projektnamn
+        $worksheet->setCellValue('B3', '2020/00088'); //Diarienummer
+        $worksheet->setCellValue('B4', 'Evikomp 2.0'); //Projektnamn
         $worksheet->setCellValue('H3', ucfirst($monthstr)); //Redovisningsmånad
         $worksheet->setCellValue('H4', $year); //År
         $row = 9;
@@ -160,8 +160,8 @@ class TimeSummaryController extends Controller
         }
 
         $worksheet = $spreadsheet->getSheetByName('Intyg för närvarotid');
-        $worksheet->setCellValue('B8', '2018/00079');       //Diarienummer
-        $worksheet->setCellValue('B9', 'Evikomp');          //Projektnamn
+        $worksheet->setCellValue('B8', '2020/00088');       //Diarienummer
+        $worksheet->setCellValue('B9', 'Evikomp 2.0');          //Projektnamn
         $worksheet->setCellValue('D8', ucfirst($monthstr)); //Redovisningsmånad
         $worksheet->setCellValue('D9', $year);              //År
         //$worksheet->setCellValue('C14', $total_hours);      //Totalt antal närvarotimmar under månaden

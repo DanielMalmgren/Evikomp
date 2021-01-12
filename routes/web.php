@@ -147,3 +147,7 @@ Route::post('/pollresponse',                    'PollResponseController@store');
 //MassMailingController
 Route::get('/massmailing/create',               'MassMailingController@create')->middleware('permission:send mass mailing');
 Route::post('/massmailing',                     'MassMailingController@store')->middleware('permission:send mass mailing');
+
+//SCORMImportController
+Route::get('/scormimport/create/{track}',       'SCORMImportController@create');
+Route::post('/scormimport',                     'SCORMImportController@store');

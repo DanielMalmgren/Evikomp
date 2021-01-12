@@ -13,13 +13,14 @@ class Content extends Model
 
     public $translatedAttributes = ['text'];
 
-    function __construct($type=null, $lesson_id=null, $content=null, $text=null) {
+    function __construct($type=null, $lesson_id=null, $content=null, $text=null, $order=null) {
         parent::__construct();
         if($type != null) {
             $currentLocale = \App::getLocale();
             $this->type = $type;
             $this->lesson_id = $lesson_id;
             $this->content = $content;
+            $this->order = $order;
             if($text != null) {
                 $this->translateOrNew($currentLocale)->text = $this->add_target_to_links($text);
             }

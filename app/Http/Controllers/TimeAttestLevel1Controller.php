@@ -83,8 +83,8 @@ class TimeAttestLevel1Controller extends Controller
         $worksheet->setCellValue('C8', $user->workplace->municipality->name); //Namn på deltagarens arbetsgivare
         $worksheet->setCellValue('C9', $user->workplace->municipality->orgnummer); //Organisationsnummer
 
-        $worksheet->setCellValue('W3', '2018/00079'); //Diarienummer
-        $worksheet->setCellValue('W4', 'Evikomp'); //Projektnamn
+        $worksheet->setCellValue('W3', '2020/00088'); //Diarienummer
+        $worksheet->setCellValue('W4', 'Evikomp 2.0'); //Projektnamn
 
         $worksheet->setCellValue('W6', ucfirst($monthstr)); //Redovisningsmånad
         $worksheet->setCellValue('W7', $year); //År

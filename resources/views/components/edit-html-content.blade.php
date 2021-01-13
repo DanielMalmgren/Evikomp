@@ -10,12 +10,11 @@
         @if(locale_is_default())
             <a href="#" class="close remove_field pl-3" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
         @endif
-        <a data-toggle="collapse" href="#body{{$content->id}}" role="button" aria-expanded="false" aria-controls="body{{$content->id}}">
-        test
-            <i class="fas fa-chevron-up float-right"></i>
+        <a data-toggle="collapse" href="#body{{$content->id}}" id="collapstoggle{{$content->id}}">
+            <i class="fas fa-chevron-up float-right text-dark"></i>
         </a>
     </div>
-    <div class="collapse show" id="body{{$content->id}}">
+    <div class="collapse multi-collapse show" id="body{{$content->id}}">
         <div class="card-body">
             <textarea rows="4" name="html[{{$content->id}}]" class="form-control twe original-content">{!!$content->text!!}</textarea>
         </div>

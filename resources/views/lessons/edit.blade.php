@@ -62,11 +62,6 @@
             $("#titles").toggle(this.checked);
         });
 
-        $('.collapsecontent').on('click', function() {
-            console.log('Fäll ihop!');
-        });
-
-
         addtwe();
 
         $("#contents_wrap").sortable({
@@ -141,7 +136,12 @@
         </div>
 
         <h2>@lang('Innehåll')</h2>
+
+        <a id="acollapse" href="javascript:jQuery('div .multi-collapse').collapse('hide'); jQuery('#acollapse').hide();jQuery('#aexpand').show();">@lang('Dölj alla')</a>
+        <a id="aexpand" href="javascript:jQuery('div .multi-collapse').collapse('show'); jQuery('#aexpand').hide(); jQuery('#acollapse').show();" style="display: none;">@lang('Visa alla')</a>
+
         <div id="contents_wrap">
+
             @if(count($lesson->contents) > 0)
                 @foreach($lesson->contents->sortBy('order') as $content)
                     <x-edit-content :content="$content"/>

@@ -31,6 +31,7 @@
 
         <script type="text/javascript">
             TimeMe.initialize({
+                trackWhenUserLeavesPage: false,
                 idleTimeoutInSeconds: 300 // seconds
             });
 
@@ -48,11 +49,11 @@
             }
 
             setInterval(function() {
-                if(!document.hidden) {
+                //if(!document.hidden) {
                     sendActiveTime();
                     TimeMe.resetAllRecordedPageTimes();
                     TimeMe.startTimer();
-                }
+                //}
             }, 10000);
 
             window.onbeforeunload = function(){

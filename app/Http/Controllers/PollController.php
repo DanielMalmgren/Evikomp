@@ -24,10 +24,20 @@ class PollController extends Controller
         $newPoll->translateOrDefault(\App::getLocale())->name .= ' - ' . __('kopia');
         $newPoll->push();
 
-        foreach($poll->poll_questions as $question) {
+        $id_map = collect(); //To keep track on copy id vs orig id, to fix display criterias
+        foreach($poll->poll_questions->sortBy('order') as $question) {
             $newQuestion = $question->replicateWithTranslations();
             $newQuestion->poll_id = $newPoll->id;
             $newQuestion->push();
+            $id_map->put($question->id, $newQuestion->id);
+            if(isset($newQuestion->display_criteria)) {
+                $display_criteria_array = explode('==', $question->display_criteria);
+                if(isset($display_criteria_array[1]) && $id_map->has($display_criteria_array[0])) { 
+                    $newQuestion->display_criteria = $id_map->get($display_criteria_array[0])."==".$display_criteria_array[1];
+                    $newQuestion->save();
+                }
+
+            }
         }
 
         return redirect('/poll')->with('success', __('Enkäten har kopierats'));

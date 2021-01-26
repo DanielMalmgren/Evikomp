@@ -13,7 +13,7 @@
             }
         }
 
-        function chkcontrol(question_id) {
+        function chkcontrol(question_id, max_alternatives) {
             var total=0;
             var mr=document.getElementsByName("response["+question_id+"][]");
             var mr_length=mr.length;
@@ -21,7 +21,7 @@
                 if(mr[i].checked) {
                     total=total+1;
                 }
-                if(total < {{$question->max_alternatives}}){
+                if(total < max_alternatives){
                     //document.question.submit.disabled = true;
                     enableordisableall(true, mr, mr_length);
                 } else {
@@ -168,7 +168,7 @@
                         <p>@lang('(Ange max :alternatives alternativ)', ['alternatives' => $question->max_alternatives])</p>
                         @foreach($question->alternatives_array as $alternative)
                             <div class="checkbox">
-                                <label><input type="checkbox" {{strpos($previous, $alternative)!==false?"checked":""}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}][]" value="{{$alternative}}" onclick="chkcontrol({{$question->id}})">{{$alternative}}</label>
+                                <label><input type="checkbox" {{strpos($previous, $alternative)!==false?"checked":""}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}][]" value="{{$alternative}}" onclick="chkcontrol({{$question->id}}, {{$question->max_alternatives}})">{{$alternative}}</label>
                             </div>
                         @endforeach
                     @endif

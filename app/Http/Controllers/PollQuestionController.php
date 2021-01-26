@@ -48,7 +48,7 @@ class PollQuestionController extends Controller
     public function edit(PollQuestion $question) {
         $data = [
             'question' => $question,
-            'other_questions' => $question->poll->poll_questions->where('type', 'select'),
+            'other_questions' => $question->poll->poll_questions->where('type', 'select')->sortBy('order'),
             'display_criteria_array' => explode('==', $question->display_criteria),
         ];
         return view('pollquestions.edit')->with($data);
@@ -119,6 +119,11 @@ class PollQuestionController extends Controller
             $lesson->order = $order+1;
             $lesson->save();
         }
+    }
+
+    public function destroy(PollQuestion $question) {
+        logger('Destroying poll question '.$question->id);
+        $question->delete();
     }
 
 }

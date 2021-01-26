@@ -140,6 +140,7 @@ Route::get('/pollquestion/{question}',          'PollQuestionController@show');
 Route::get('/pollquestion/{question}/edit',     'PollQuestionController@edit');
 Route::put('/pollquestion/{question}',          'PollQuestionController@update');
 Route::post('/pollquestion/reorder',            'PollQuestionController@reorder');
+Route::delete('/pollquestion/{question}',       'PollQuestionController@destroy');
 
 //PollResponseController
 Route::post('/pollresponse',                    'PollResponseController@store');

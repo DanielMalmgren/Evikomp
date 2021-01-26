@@ -41,6 +41,23 @@
             });
 
         });
+        
+        function deletequestion() {
+            if(confirm('Vill du verkligen radera denna fråga?')) {
+                var token = "{{ csrf_token() }}";
+                $.ajax({
+                    url: '/pollquestion/{{$question->id}}',
+                    data : {_token:token},
+                    type: 'DELETE',
+                    success: function(result) {
+                        console.log(result)
+                    }
+                })
+                .always(function() {
+                    window.location='/poll/{{$question->poll->id}}/edit';
+                });
+            }
+        }
     </script>
 
     <form method="post" action="{{action('PollQuestionController@update', $question->id)}}" accept-charset="UTF-8" enctype="multipart/form-data">
@@ -124,6 +141,8 @@
         <br>
 
         <button class="btn btn-primary btn-lg btn-primary" type="submit">@lang('Spara')</button>
+
+        <button type="button" class="btn btn-lg btn-danger" onclick="deletequestion()">@lang('Radera fråga')</button>
 
     </form>
 

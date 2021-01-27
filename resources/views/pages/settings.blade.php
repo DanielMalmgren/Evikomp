@@ -35,8 +35,8 @@
                 }
             });
             document.getElementById('workplace').disabled = false;
-            $("#workplace").change();
             $workplaceSelect.val($workplaceSelectId);
+            $("#workplace").change();
         });
         $("#municipality").change();
     });

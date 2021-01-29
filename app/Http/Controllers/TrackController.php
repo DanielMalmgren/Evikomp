@@ -128,7 +128,7 @@ class TrackController extends Controller
         if($request->new_admins) {
             foreach($request->new_admins as $user_id) {
                 $user = User::find($user_id);
-                if(isset($user)) {
+                if(isset($user) && !$user->admin_tracks->contains($track)) {
                     logger('Making '.$user->name.' editor for track '.$track->id);
 
                     $user->admin_tracks()->attach($track);

@@ -18,9 +18,9 @@ class ActiveTimeController extends Controller
             'date' => date('Y-m-d'),
         ]);
 
-        /*if (!\App::environment('prod')) {
-            logger('Storing '.$request->time.' seconds for '.Auth::user()->name.' ('.substr($request->header('User-Agent'), 0, 40).'...)');
-        }*/
+        if (!\App::environment('prod')) {
+            logger('Storing '.$request->time.' seconds for '.Auth::user()->name.' for a total of '.$activetime->seconds.' ('.round($activetime->seconds/60).' minutes) ('.substr($request->header('User-Agent'), 0, 25).'...)');
+        }
 
         $activetime->seconds += $request->time;
         $activetime->save();

@@ -172,7 +172,7 @@ class LessonController extends Controller
             'name' => 'required',
             'track' => 'required',
             'new_audio.*' => 'file|mimetypes:audio/mpeg|max:30000',
-            'new_audio' => 'array|max_uploaded_file_size:3000',
+            'new_audio' => 'array|max_uploaded_file_size:30000',
             'new_office.*' => 'file|mimetypes:application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation|max:10000',
             'new_image.*' => 'file|image|max:30000',
             'new_file.*' => 'file|max:30000',

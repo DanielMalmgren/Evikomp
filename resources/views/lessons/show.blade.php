@@ -142,6 +142,8 @@
 
     @if ($question)
         <a href="/test/{{$lesson->id}}" class="btn btn-primary">@lang('Fortsätt till testet')</a>
+    @elseif($lesson->poll)
+        <a href="/poll/{{$lesson->poll->id}}" class="btn btn-primary">@lang('Utvärdera denna lektion')</a>        
     @else
         <a href="/lessons/{{$lesson->id}}/finish" class="btn btn-primary">@lang('Färdig med denna lektion')</a>
     @endif

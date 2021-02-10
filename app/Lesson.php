@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,32 +15,32 @@ class Lesson extends Model
 
     public $translatedAttributes = ['name'];
 
-    public function track()
+    public function track(): BelongsTo
     {
         return $this->belongsTo('App\Track');
     }
 
-    public function questions()
+    public function questions(): HasMany
     {
         return $this->hasMany('App\Question');
     }
 
-    public function test_sessions()
+    public function test_sessions(): HasMany
     {
         return $this->hasMany('App\TestSession');
     }
 
-    public function lesson_results()
+    public function lesson_results(): HasMany
     {
         return $this->hasMany('App\LessonResult');
     }
 
-    public function contents()
+    public function contents(): HasMany
     {
         return $this->hasMany('App\Content');
     }
 
-    public function titles()
+    public function titles(): BelongsToMany
     {
         return $this->belongsToMany('App\Title');
     }
@@ -48,7 +50,12 @@ class Lesson extends Model
         return $this->belongsToMany('App\User', 'notification_receivers');
     }
 
-    public function color()
+    public function poll(): BelongsTo
+    {
+        return $this->belongsTo('App\Poll');
+    }
+
+    public function color(): BelongsTo
     {
         return $this->belongsTo('App\Color')->withDefault([
             'hex' => '#ffffff',

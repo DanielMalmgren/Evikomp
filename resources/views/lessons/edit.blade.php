@@ -135,6 +135,20 @@
             @endforeach
         </div>
 
+        <div class="mb-3">
+            <label for="poll">@lang('Kopplad till enkät')</label>
+            <select class="custom-select d-block w-100" id="poll" name="poll" required="">
+                <option value="-1">@lang('Ingen enkät')</option>
+                @foreach($polls as $poll)
+                    @if($lesson->poll_id == $poll->id)
+                        <option selected value="{{$poll->id}}">{{$poll->translateOrDefault(App::getLocale())->name}}</option>
+                    @else
+                        <option value="{{$poll->id}}">{{$poll->translateOrDefault(App::getLocale())->name}}</option>
+                    @endif
+                @endforeach
+            </select>
+        </div>
+
         <label>@lang('Notifieringsmottagare')</label>
         <div id="notification_receivers_wrap">
             @if(count($lesson->notification_receivers) > 0)

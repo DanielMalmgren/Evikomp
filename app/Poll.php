@@ -23,6 +23,11 @@ class Poll extends Model
         return $this->hasMany('App\PollQuestion');
     }
 
+    public function lessons(): HasMany
+    {
+        return $this->hasMany('App\Lesson');
+    }
+
     public function workplaces(): BelongsToMany
     {
         return $this->belongsToMany('App\Workplace', 'poll_workplace');

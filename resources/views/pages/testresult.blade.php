@@ -39,16 +39,16 @@
 
             <br><br>
 
-            @if($percent<100)
+            @if($percent < $lesson->test_required_percent)
                 @lang('Inte riktigt alla rätt rakt igenom. Klicka på knappen nedan för att gå tilbaka till lektionen och repetera.')
                 <br><br>
                 <a href="/lessons/{{$lesson->id}}" class="btn btn-primary">@lang('Tillbaka till lektionen')</a>
             @elseif(isset($nextlesson))
-                @lang('Bra, alla rätt på första försöket! Klicka på knappen nedan för att fortsätta till nästa lektion.')
+                @lang('Bra, du klarade testet! Klicka på knappen nedan för att fortsätta till nästa lektion.')
                 <br><br>
                 <a href="/lessons/{{$nextlesson->id}}" class="btn btn-primary">@lang('Nästa lektion')</a>
             @else
-                @lang('Bra, alla rätt på första försöket! Du har nu gjort färdigt alla dina valda lektioner. Bra jobbat!')
+                @lang('Du klarade testet. Bra jobbat!')
             @endif
 
             <br><br>

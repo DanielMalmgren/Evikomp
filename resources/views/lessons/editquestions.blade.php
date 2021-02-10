@@ -46,6 +46,18 @@
                 type: 'POST'
             });
         });
+
+        $("#test_required_percent").change(function(e){
+            e.preventDefault();
+            console.log("Du ändrade till " + $("#test_required_percent").val());
+            var test_required_percent = $("#test_required_percent").val();
+            var token = "{{ csrf_token() }}";
+            $.ajax({
+                url: '/test/{{$lesson->id}}/test_required_percent',
+                data : {_token:token,test_required_percent:test_required_percent},
+                type: 'POST'
+            });
+        });
     });
 </script>
 
@@ -77,6 +89,12 @@
                 <option value="0" {{0==$lesson->number_of_questions?"selected":""}}>@lang("Samtliga (i ordning enligt nedan)")</option>
             </select>
         </div>
+
+        <div class="mb-3">
+            <label for="test_required_percent">@lang('Andel rätt svar som krävs för att klara testet (i procent)')</label>
+            <input type="number" name="test_required_percent" class="form-control" id="test_required_percent" value="{{$lesson->test_required_percent}}" min="1" max="100">
+        </div>
+
 
         @lang('Frågor')
         <div id="questionlist">

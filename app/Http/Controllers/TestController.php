@@ -37,6 +37,11 @@ class TestController extends Controller
         $lesson->save();
     }
 
+    public function set_test_required_percent(Lesson $lesson, Request $request): void {
+        $lesson->test_required_percent = $request->test_required_percent;
+        $lesson->save();
+    }
+
     public function store(StoreTestResponse $request) {
         usleep(50000);
         $test_response = TestResponse::find($request->session()->get('test_response_id'));
@@ -65,7 +70,7 @@ class TestController extends Controller
 
             $user = User::find($test_session->user_id);
 
-            if($test_session->percent() == 100) {
+            if($test_session->percent() >= $lesson->test_required_percent) {
                 $lesson_result = LessonResult::updateOrCreate(
                     ['user_id' => $user->id, 'lesson_id' => $test_session->lesson_id]
                 );

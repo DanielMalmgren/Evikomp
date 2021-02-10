@@ -49,6 +49,13 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Track', 'track_admins');
     }
 
+    //Get all lessons for which this user will receive notifications
+    public function notification_receiver_for(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Lesson', 'notification_receivers');
+    }
+    
+
     //Get this users locale
     public function locale(): BelongsTo
     {

@@ -11,6 +11,7 @@ use App\LessonResult;
 use App\Content;
 use App\ContentSetting;
 use App\Color;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -160,9 +161,15 @@ class LessonController extends Controller
     }
 
     public function finish(Lesson $lesson):RedirectResponse {
+
+        $user = Auth::user();
+
         LessonResult::updateOrCreate(
-            ['user_id' => Auth::user()->id, 'lesson_id' => $lesson->id]
+            ['user_id' => $user->id, 'lesson_id' => $lesson->id]
         );
+
+        $lesson->send_notification($user);
+
         return redirect('/');
     }
 
@@ -205,6 +212,24 @@ class LessonController extends Controller
         $currentLocale = \App::getLocale();
         $user = Auth::user();
         logger("Lesson ".$lesson->id." is being edited by ".$user->name);
+
+        if($request->new_notification_receivers) {
+            foreach($request->new_notification_receivers as $user_id) {
+                $user = User::find($user_id);
+                if(isset($user) && !$user->notification_receiver_for->contains($lesson)) {
+                    logger('Making '.$user->name.' notification receiver for lesson '.$lesson->id);
+                    $user->notification_receiver_for()->attach($lesson);
+                }
+            }
+        }
+
+        if($request->remove_notification_receiver) {
+            foreach(array_keys($request->remove_notification_receiver) as $user_id) {
+                $user = User::find($user_id);
+                logger('Removing '.$user->name.' as notification receiver for lesson '.$lesson->id);
+                $user->notification_receiver_for()->detach($lesson);
+            }
+        }
 
         //Store this in a local variable. We'll have to replace all the temporary id's in it for real ones before we do the ordering
         $content_order = $request->content_order;

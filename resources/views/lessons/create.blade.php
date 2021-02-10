@@ -93,6 +93,13 @@
             @endforeach
         </div>
 
+        <label>@lang('Notifieringsmottagare')</label>
+        <div id="notification_receivers_wrap"></div>
+
+        <br>
+
+        <div id="add_notification_receiver_button" class="btn btn-primary" style="margin-bottom:15px" type="text">@lang('Lägg till notifieringsmottagare')</div>
+
         <h2>@lang('Innehåll')</h2>
         <div id="contents_wrap"></div>
 
@@ -119,5 +126,39 @@
 
         <button disabled class="btn btn-primary btn-lg btn-block" name="submit" type="submit">@lang('Spara')</button>
     </form>
+
+<script type="text/javascript">
+
+    function addselect2() {
+        $('.new_notification_receivers').select2({
+            width: '100%',
+            ajax: {
+                url: '/select2users',
+                dataType: 'json'
+            },
+            language: "sv",
+            minimumInputLength: 3,
+            theme: "bootstrap4"
+        });
+    }
+
+    $(function() {
+        var wrapper = $("#notification_receivers_wrap");
+        var add_button = $("#add_notification_receiver_button");
+
+        $(add_button).click(function(e){
+            e.preventDefault();
+            $(wrapper).append('<a class="list-group-item list-group-item-action"><div class="row"><div class="col-lg-9 col-md-9 col-sm-7"><select class="new_notification_receivers" name="new_notification_receivers[]"></select></div><div class="col-lg-1 col-md-3 col-sm-5"><i class="fas fa-trash remove_field"></i></div></div></a>');
+            addselect2();
+        });
+
+        $(wrapper).on("click",".remove_field", function(e){
+            e.preventDefault();
+            var parentdiv = $(this).parent('div').parent('div').parent('a');
+            parentdiv.remove();
+        })
+
+    });
+</script>
 
 @endsection

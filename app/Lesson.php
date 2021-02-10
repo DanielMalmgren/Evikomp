@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -40,6 +41,11 @@ class Lesson extends Model
     public function titles()
     {
         return $this->belongsToMany('App\Title');
+    }
+
+    public function notification_receivers(): BelongsToMany
+    {
+        return $this->belongsToMany('App\User', 'notification_receivers');
     }
 
     public function color()
@@ -112,6 +118,26 @@ class Lesson extends Model
             $user = Auth::user();
         }
         return $this->lesson_results->where("user_id", $user->id)->isNotEmpty();
+    }
+
+    //Send mail to all notification receivers telling them that $user has finished the lesson
+    //TODO: This should probably happen asynchronously to minimize delay for the user
+    public function send_notification(User $user) {
+        if($this->notification_receivers->isNotEmpty()) {
+            foreach($this->notification_receivers as $receiver) {
+                logger("Preparing email to ".$receiver->name." (".$receiver->email.")");
+                $to = [];
+                $to[] = ['email' => $receiver->email, 'name' => $receiver->name];
+                setlocale(LC_NUMERIC, $receiver->locale_id);
+
+                try {
+                    \Mail::to($to)->send(new \App\Mail\LessonNotification($user->name, $this->translateOrDefault(\App::getLocale())->name));
+                    logger("  Mail sent");
+                } catch(\Swift_TransportException $e) {
+                    logger("  Sending failed!");
+                }
+            }
+        }
     }
 }
 

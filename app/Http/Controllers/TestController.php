@@ -9,6 +9,7 @@ use App\Question;
 use App\TestResponse;
 use App\TestSession;
 use App\LessonResult;
+use App\User;
 use App\Http\Requests\StoreTestResponse;
 
 class TestController extends Controller
@@ -62,10 +63,13 @@ class TestController extends Controller
             $lesson->times_finished++;
             $lesson->save();
 
+            $user = User::find($test_session->user_id);
+
             if($test_session->percent() == 100) {
                 $lesson_result = LessonResult::updateOrCreate(
-                    ['user_id' => $test_session->user_id, 'lesson_id' => $test_session->lesson_id]
+                    ['user_id' => $user->id, 'lesson_id' => $test_session->lesson_id]
                 );
+                $lesson->send_notification($user);
                 if($test_session->percent() > $lesson_result->personal_best_percent) {
                     $lesson_result->personal_best_percent = $test_session->percent();
                     $lesson_result->save();

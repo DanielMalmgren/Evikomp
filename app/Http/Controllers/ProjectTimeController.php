@@ -123,7 +123,7 @@ class ProjectTimeController extends Controller
         $request->validate([
             'starttime' => 'required|date_format:H:i',
             'endtime' => 'required|date_format:H:i|after:starttime',
-            'date' => 'required|date|before_or_equal:today',
+            'date' => 'required|date|before_or_equal:today|date_format:Y-m-d',
             'users' => 'required',
             'workplace_id' => 'required',
         ],
@@ -132,6 +132,7 @@ class ProjectTimeController extends Controller
             'endtime.required' => __('Du måste ange en sluttid!'),
             'date.required' => __('Du måste ange ett datum!'),
             'date.date' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
+            'date.date_format' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
             'date.before_or_equal' => __('Du kan inte registrera tid i framtiden!'),
             'starttime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
             'endtime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
@@ -254,7 +255,7 @@ class ProjectTimeController extends Controller
         $request->validate([
             'starttime' => 'required|date_format:H:i',
             'endtime' => 'required|date_format:H:i|after:starttime',
-            'date' => 'required|date',
+            'date' => 'required|date|date_format:Y-m-d',
             'users' => 'required',
             'workplace_id' => 'required',
         ],
@@ -263,6 +264,7 @@ class ProjectTimeController extends Controller
             'endtime.required' => __('Du måste ange en sluttid!'),
             'date.required' => __('Du måste ange ett datum!'),
             'date.date' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
+            'date.date_format' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
             'starttime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
             'endtime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
             'users.required' => __('Du måste ange minst en användare som tid ska registreras på!'),

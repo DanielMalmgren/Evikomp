@@ -62,7 +62,12 @@ class TimeSummaryController extends Controller
     }
 
     private static function generateExcelRowForUser($worksheet, $row, $user, $hours, $colour=null) {
-        $age = date_diff(date_create(substr($user->personid, 0, 8)), date_create('now'))->y;
+        $date_born=date_create(substr($user->personid, 0, 8));
+        if($date_born) { //Because there are people with non date person id's
+            $age = date_diff($date_born, date_create('now'))->y;
+        } else {
+            $age = 'okänd';
+        }
         $gender = substr($user->personid, 10, 1)%2?"M":"K";
         if($user->project_times->isEmpty()) {
             $startdate = substr($user->created_at, 0, 10);

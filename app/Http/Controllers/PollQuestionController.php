@@ -12,7 +12,7 @@ use Illuminate\Http\RedirectResponse;
 
 class PollQuestionController extends Controller
 {
-    public function show(PollQuestion $question): View {
+    public function show(PollQuestion $question) {
 
         $previous = $question->first_on_previous_page();
         if(isset($previous)) {
@@ -23,9 +23,8 @@ class PollQuestionController extends Controller
 
         $poll_session = PollSession::find(session("poll_session_id"));
 
-        //TODO: Testa så nedan verkligen funkar som jag tror!
         if(!isset($poll_session)) {
-            return view('pages.index')->withErrors(["error"=>"Kan inte visa enkäten!"]);
+            return redirect('/')->with('error', __('Kan inte visa enkätfrågan!'));
         }
 
         $data = [

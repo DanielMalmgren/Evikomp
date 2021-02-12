@@ -27,6 +27,10 @@ class StoreTestResponse extends FormRequest
     public function rules()
     {
         $test_response = TestResponse::find($this->session()->get('test_response_id'));
+        if(! isset($test_response)) {
+            logger("Something went wrong while storing test response!");
+            logger("Test response id: ".$request->session()->get('test_response_id'));
+        }
         $question = $test_response->question;
         $correctoptions = ResponseOption::where([['question_id', '=', $question->id],['isCorrectAnswer', '=', true]])->get();
 

@@ -6,8 +6,7 @@
 
 <div class="col-md-12">
 
-    <H1>@lang('Attestera närvaro') - {{$monthstr.' '.$year}}</H1>
-    <small><a class="black" href="/projecttime/{{date('Y')}}/{{date('n')}}">@lang('För att se din närvaro under innevarande månad, klicka här.')</a></small>
+    <H1>@lang('Attestera närvaro')</H1>
     @if (session()->has('authnissuer'))
         <form method="post" name="settings" action="{{action('TimeAttestLevel1Controller@store')}}" accept-charset="UTF-8">
             @csrf
@@ -15,22 +14,23 @@
             <div class="card">
                 <div class="card-body">
 
+                    <h2>{{$prev_month_str.' '.$prev_month_year}}</h2>
                     <table class="table table-sm table-responsive table-nonfluid">
                         <thead>
                             <tr>
                                 <th scope="col">@lang('Typ av aktivitet')</th>
-                                @for($day = 1; $day <= $days_in_month; $day++)
+                                @for($day = 1; $day <= $days_in_prev_month; $day++)
                                     <th scope="col" class="initial-hide nowrap text-center">{{$day}}</th>
                                 @endfor
                                 <th scope="col">@lang('Timmar')</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($time_rows as $title => $time_row)
-                                @if($time_row != end($time_rows))
+                            @foreach($prev_month_time_rows as $title => $time_row)
+                                @if($time_row != end($prev_month_time_rows))
                                     <tr>
                                         <td>{{$title}}</td>
-                                        @for($day = 1; $day <= $days_in_month; $day++)
+                                        @for($day = 1; $day <= $days_in_prev_month; $day++)
                                             @if(isset($time_row[$day]))
                                                 <td class="initial-hide nowrap text-center">{{$time_row[$day]}}</td>
                                             @else
@@ -41,35 +41,106 @@
                                     </tr>
                                 @endif
                             @endforeach
+                            <tr style="font-weight:bold">
+                                <td>@lang('Summa')</td>
+                                @for($day = 1; $day <= $days_in_prev_month; $day++)
+                                    <td class="initial-hide nowrap"></td>
+                                @endfor
+                                <td class="text-center">{{end($prev_month_time_rows)[32]}}</td>
+                            </tr>
+                            <tr>
+                                <td>@lang('Tidigare attesterat')</td>
+                                @for($day = 1; $day <= $days_in_prev_month; $day++)
+                                    <td class="initial-hide nowrap"></td>
+                                @endfor
+                                <td class="text-center">{{$attested_prev_month}}</td>
+                            </tr>
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>@lang('Summa')</td>
-                                @for($day = 1; $day <= $days_in_month; $day++)
+                                <th>@lang('Att attestera')</td>
+                                @for($day = 1; $day <= $days_in_prev_month; $day++)
                                     <td class="initial-hide nowrap"></td>
                                 @endfor
-                                <th class="text-center">{{end($time_rows)[32]}}</td>
+                                <th class="text-center">{{end($prev_month_time_rows)[32]-$attested_prev_month}}</td>
                             </tr>
                         </tfoot>
                     </table>
                     <br>
 
-                    <input type="hidden" name="hours" value="{{end($time_rows)[32]}}">
-                    <input type="hidden" name="month" value="{{$month}}">
-                    <input type="hidden" name="year" value="{{$year}}">
+                    <h2>{{$this_month_str.' '.$this_month_year}}</h2>
+                    <table class="table table-sm table-responsive table-nonfluid">
+                        <thead>
+                            <tr>
+                                <th scope="col">@lang('Typ av aktivitet')</th>
+                                @for($day = 1; $day <= $days_in_this_month; $day++)
+                                    <th scope="col" class="initial-hide nowrap text-center">{{$day}}</th>
+                                @endfor
+                                <th scope="col">@lang('Timmar')</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($this_month_time_rows as $title => $time_row)
+                                @if($time_row != end($this_month_time_rows))
+                                    <tr>
+                                        <td>{{$title}}</td>
+                                        @for($day = 1; $day <= $days_in_this_month; $day++)
+                                            @if(isset($time_row[$day]))
+                                                <td class="initial-hide nowrap text-center">{{$time_row[$day]}}</td>
+                                            @else
+                                                <td class="initial-hide nowrap"></td>
+                                            @endif
+                                        @endfor
+                                        <td class="text-center">{{$time_row[32]}}</td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                            <tr style="font-weight:bold">
+                                <td>@lang('Summa')</td>
+                                @for($day = 1; $day <= $days_in_this_month; $day++)
+                                    <td class="initial-hide nowrap"></td>
+                                @endfor
+                                <td class="text-center">{{end($this_month_time_rows)[32]}}</td>
+                            </tr>
+                            <tr>
+                                <td>@lang('Tidigare attesterat')</td>
+                                @for($day = 1; $day <= $days_in_this_month; $day++)
+                                    <td class="initial-hide nowrap"></td>
+                                @endfor
+                                <td class="text-center">{{$attested_this_month}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>@lang('Att attestera')</td>
+                                @for($day = 1; $day <= $days_in_this_month; $day++)
+                                    <td class="initial-hide nowrap"></td>
+                                @endfor
+                                <th class="text-center">{{end($this_month_time_rows)[32]-$attested_this_month}}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
 
-                    <label><input {{$already_attested?"disabled checked":""}} {{$month_is_closed?"disabled":""}} type="checkbox" name="attest" value="attest" id="attest">@lang('Jag intygar härmed att ovanstående tidsregistrering är korrekt.')</label><br>
+                    <input type="hidden" name="prev_month_hours" value="{{end($prev_month_time_rows)[32]-$attested_prev_month}}">
+                    <input type="hidden" name="prev_month" value="{{$prev_month}}">
+                    <input type="hidden" name="prev_month_year" value="{{$prev_month_year}}">
+
+                    <input type="hidden" name="this_month_hours" value="{{end($this_month_time_rows)[32]-$attested_this_month}}">
+                    <input type="hidden" name="this_month" value="{{$this_month}}">
+                    <input type="hidden" name="this_month_year" value="{{$this_month_year}}">
+
+                    <label><input {{$already_fully_attested?"disabled checked":""}} type="checkbox" name="attest" value="attest" id="attest">@lang('Jag intygar härmed att ovanstående tidsregistrering är korrekt.')</label><br>
 
                 </div>
             </div>
 
             <br>
 
-            @if($month_is_closed)
+            {{--@if($month_is_closed)
                 <button class="btn btn-primary btn-lg btn-block" disabled id="submit" name="submit" type="submit">@lang('Månaden är stängd för attestering')</button>
-            @else
+            @else--}}
                 <button class="btn btn-primary btn-lg btn-block" disabled id="submit" name="submit" type="submit">@lang('Attestera')</button>
-            @endif
+            {{--@endif--}}
 
         </form>
     @else

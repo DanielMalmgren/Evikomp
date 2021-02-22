@@ -21,8 +21,9 @@ class HomeController extends Controller
             $previous_month_year = date("Y", strtotime("first day of previous month"));
             $monthstr = strftime('%B', strtotime("first day of previous month"));
 
-            $last_month_is_closed = ClosedMonth::where('month', $previous_month)->where('year', $previous_month_year)->exists();
-            $last_month_is_attested = Auth::user()->time_attests->where('attestlevel', 1)->where('month', $previous_month)->where('year', $previous_month_year)->isNotEmpty();
+            //$last_month_is_closed = ClosedMonth::where('month', $previous_month)->where('year', $previous_month_year)->exists();
+            //$last_month_is_attested = Auth::user()->time_attests->where('attestlevel', 1)->where('month', $previous_month)->where('year', $previous_month_year)->isNotEmpty();
+            $last_month_is_attested = Auth::user()->month_is_fully_attested($previous_month_year, $previous_month);
 
             $time=Auth::user()->month_total_time($previous_month_year, $previous_month);
 
@@ -43,7 +44,7 @@ class HomeController extends Controller
             $data = [
                 'announcements' => $announcements,
                 'lesson' => Auth::user()->next_lesson(),
-                'should_attest' => !$last_month_is_closed && !$last_month_is_attested && $time>=1.0 && Auth::user()->workplace->includetimeinreports,
+                'should_attest' => !$last_month_is_attested && $time>=1.0 && Auth::user()->workplace->includetimeinreports,
                 'previous_month' => $previous_month,
                 'monthstr' => $monthstr,
                 'poll' => $poll,

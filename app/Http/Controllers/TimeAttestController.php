@@ -41,7 +41,7 @@ class TimeAttestController extends Controller
 
         $user = Auth::user();
 
-        if(isset($request->level2attest)) {
+        /*if(isset($request->level2attest)) {
             foreach($request->level2attest as $user_id) {
                 TimeAttest::updateOrCreate([
                     'year' => $request->year,
@@ -56,7 +56,7 @@ class TimeAttestController extends Controller
                     'clientip' => $request->ip(),
                 ]);
             }
-        }
+        }*/
 
         if(isset($request->level3attest)) {
             foreach($request->level3attest as $user_id) {
@@ -69,7 +69,7 @@ class TimeAttestController extends Controller
                 [
                     'attestant_id' => $user->id,
                     'authnissuer' => session('authnissuer'),
-                    'hours' => User::find($user_id)->time_attests->where('month', $request->month)->where('year', $request->year)->first()->hours,
+                    'hours' => User::find($user_id)->time_attests->where('attestlevel', 1)->where('month', $request->month)->where('year', $request->year)->sum('hours'),
                     'clientip' => $request->ip(),
                 ]);
             }
@@ -91,18 +91,18 @@ class TimeAttestController extends Controller
             }
         }
 
-        if(ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
+        /*if(ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
             $month_is_closed = true;
         } else {
             $month_is_closed = false;
-        }
+        }*/
 
         $data = [
             'workplace' => $workplace,
             'attestlevel' => $attestlevel,
             'year' => $year,
             'month' => $month,
-            'month_is_closed' => $month_is_closed,
+            //'month_is_closed' => $month_is_closed,
         ];
 
         return view('timeattest.ajaxuserlist')->with($data);

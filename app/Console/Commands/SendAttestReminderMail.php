@@ -44,17 +44,18 @@ class SendAttestReminderMail extends Command
         logger("Running job for sending attest mail reminders!");
         $previous_month = date("m", strtotime("first day of previous month"));
         $previous_month_year = date("Y", strtotime("first day of previous month"));
-        $last_month_is_closed = ClosedMonth::where('month', $previous_month)->where('year', $previous_month_year)->exists();
+        /*$last_month_is_closed = ClosedMonth::where('month', $previous_month)->where('year', $previous_month_year)->exists();
         if($last_month_is_closed) {
             $this->info("Last month is closed, skipping sending of reminder mail.");
             logger("Last month is closed, skipping sending of reminder mail.");
             return;
-        }
+        }*/
         $amountsent = 0;
         $amountfailed = 0;
         $this->info("Looping through users...");
         foreach(User::whereNotNull('email')->get() as $user) {
-            $last_month_is_attested = $user->time_attests->where('month', $previous_month)->where('year', $previous_month_year)->isNotEmpty();
+            //$last_month_is_attested = $user->time_attests->where('month', $previous_month)->where('year', $previous_month_year)->isNotEmpty();
+            $last_month_is_attested = Auth::user()->month_is_fully_attested($previous_month_year, $previous_month);
             $time_rows = $user->time_rows($previous_month_year, $previous_month);
             $time = end($time_rows)[32];
             if($last_month_is_attested || $time<1.0 || !isset($user->workplace) || !$user->workplace->includetimeinreports) {

@@ -48,6 +48,7 @@ class ProjectTime extends Model
         return date("Y", strtotime($this->date));
     }
 
+    //Return true if any of the users connected to this project time has done any attest for the current month
     public function getIsAttestedAttribute()
     {
         foreach($this->users as $user) {

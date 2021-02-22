@@ -7,7 +7,7 @@
             <thead>
               <tr>
                 <th scope="col">@lang('Arbetsplats')</th>
-                <th scope="col">@lang('Upparbetad tid')</th>
+                <th scope="col">@lang('Registrerad tid')</th>
                 <th scope="col">@lang('Attesterad tid')</th>
               </tr>
             </thead>
@@ -32,7 +32,7 @@
                     <td>{{$pt}} + {{$at}}</td>
                     <td>
                         {{$workplace->month_attested_time($month, $year, 1)}} <i class="fas fa-arrow-right"></i>
-                        {{$workplace->month_attested_time($month, $year, 2)}} <i class="fas fa-arrow-right"></i>
+                        {{--{{$workplace->month_attested_time($month, $year, 2)}} <i class="fas fa-arrow-right"></i>--}}
                         {{$workplace->month_attested_time($month, $year, 3)}}
                         @if($workplace->month_attested_time($month, $year, 0) > 0)
                             ({{$workplace->month_attested_time($month, $year, 0)}})
@@ -50,7 +50,7 @@
                 <tr>
                     <th>Totalt</th>
                     <th>{{$projecthours}}</th>
-                    <th>{{$attestedhourslevel1}} <i class="fas fa-arrow-right"></i> {{$attestedhourslevel2}} <i class="fas fa-arrow-right"></i> {{$attestedhourslevel3}}</th>
+                    <th>{{$attestedhourslevel1}} <i class="fas fa-arrow-right"></i> {{$attestedhourslevel3}}</th>
                 </tr>
             </tfoot>
           </table>
@@ -58,11 +58,11 @@
     </div>
 </div>
 
-<br>
+{{--<br>
 
 <div class="mb-3">
-    <label><input type="checkbox" {{$month_closed?'checked disabled':''}}  name="close_month">@lang('Stäng månad för attestering')</label>
-</div>
+    <label><input type="checkbox" name="close_month">@lang('Stäng månad för attestering')</label>
+</div>--}}
 
 <script type="text/javascript">
 

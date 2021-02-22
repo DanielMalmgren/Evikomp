@@ -24,24 +24,24 @@ class TimeSummaryController extends Controller
         $year = date('Y', $time);
         $month = date('n', $time);
 
-        $month_closed = ClosedMonth::where('month', $month)->where('year', $year)->exists();
+        //$month_closed = ClosedMonth::where('month', $month)->where('year', $year)->exists();
 
         $projecthours = round(ActiveTime::filter()->whereYear('date', $year)->whereMonth('date', $month)->sum('seconds')/3600 +
                             ProjectTime::whereYear('date', $year)->whereMonth('date', $month)->get()->sum('minutes_total')/60, 1);
 
         $attestedhourslevel1 = round(TimeAttest::where('attestlevel', 1)->where('year', $year)->where('month', $month)->sum('hours'), 1);
-        $attestedhourslevel2 = round(TimeAttest::where('attestlevel', 2)->where('year', $year)->where('month', $month)->sum('hours'), 1);
+        //$attestedhourslevel2 = round(TimeAttest::where('attestlevel', 2)->where('year', $year)->where('month', $month)->sum('hours'), 1);
         $attestedhourslevel3 = round(TimeAttest::where('attestlevel', 3)->where('year', $year)->where('month', $month)->sum('hours'), 1);
 
         $data = [
             'year' => $year,
             'month' => $month,
             'monthstr' => strftime('%B', $time),
-            'month_closed' => $month_closed,
+            //'month_closed' => $month_closed,
             'workplaces' => Workplace::filter()->get(),
             'projecthours' => $projecthours,
             'attestedhourslevel1' => $attestedhourslevel1,
-            'attestedhourslevel2' => $attestedhourslevel2,
+            //'attestedhourslevel2' => $attestedhourslevel2,
             'attestedhourslevel3' => $attestedhourslevel3,
         ];
 
@@ -108,13 +108,13 @@ class TimeSummaryController extends Controller
         $month = date('n', $time);
         $monthstr = strftime('%B', $time);
 
-        if($request->close_month) {
+        /*if($request->close_month) {
             $closed_month = new ClosedMonth();
             $closed_month->user_id = Auth::user()->id;
             $closed_month->month = $month;
             $closed_month->year = $year;
             $closed_month->save();
-        }
+        }*/
 
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./xls-template/Sammanställning_deltagare.xlsx');
 
@@ -140,7 +140,7 @@ class TimeSummaryController extends Controller
                     $row++;
                 }
             } elseif($user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->count() > 0) {
-                $totaltime = $user->time_attests->where('month', $month)->where('year', $year)->first()->hours;
+                $totaltime = $user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->sum('hours');
                 if($totaltime > 0) {
                     $total_hours += $totaltime;
                     if(!$municipalities->contains('id', $user->workplace->municipality->id)) {

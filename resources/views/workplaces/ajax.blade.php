@@ -82,10 +82,11 @@
                                 {{$admin->name}}
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-5 adminleveldiv">
-                                <select class="custom-select d-block w-100" name="adminlevel[{{$admin->id}}]">
+                                {{--<select class="custom-select d-block w-100" name="adminlevel[{{$admin->id}}]">
                                     <option value="2" {{$admin->pivot->attestlevel==2?"selected":""}}>@lang('Arbetsplatskoordinator')</option>
                                     <option value="3" {{$admin->pivot->attestlevel==3?"selected":""}}>@lang('Chef')</option>
-                                </select>
+                                </select>--}}
+                                <input type="hidden" name="adminlevel[{{$admin->id}}]" value="3">
                             </div>
                             <div class="col-lg-1 col-md-3 col-sm-5">
                                 <i class="fas fa-trash remove_field"></i>

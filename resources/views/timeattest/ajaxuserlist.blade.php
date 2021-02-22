@@ -1,23 +1,26 @@
 <a class="list-group-item list-group-item-action">
     <div class="row">
-        <div class="col-lg-3 col-md-7 col-sm-5">
+        <div class="col-lg-3 col-md-4 col-sm-4">
             <h5 class="mb-0">@lang('Namn')</h5>
         </div>
-        <div class="col-lg-1 col-md-2 col-sm-2">
-            <h5 class="mb-0">@lang('Timmar')</h5>
+        <div class="col-lg-2 col-md-2 col-sm-3 text-center">
+            <h5 class="mb-0">@lang('Registrerad tid')</h5>
         </div>
-        <div class="col-lg-3 col-md-9 col-sm-15">
-            <h5 class="mb-0">@lang('Attesterad')</h5>
+        <div class="col-lg-2 col-md-2 col-sm-3 text-center">
+            <h5 class="mb-0">@lang('Deltagares attest')</h5>
         </div>
-        <div class="col-lg-1 col-md-3 col-sm-5">
+        <div class="col-lg-2 col-md-2 col-sm-2 text-center">
+            <h5 class="mb-0">@lang('Chefs attest')</h5>
+        </div>
+        <div class="col-lg-1 d-md-none d-sm-none d-lg-block text-center">
             <h5 class="mb-0">@lang('Radera')</h5>
         </div>
-        <div class="col-lg-1 col-md-3 col-sm-5">
+        <div class="col-lg-1 d-md-none d-sm-none d-lg-block text-center">
             <h5 class="mb-0">@lang('Info')</h5>
         </div>
     </div>
 </a>
-<a class="list-group-item list-group-item-action">
+{{--<a class="list-group-item list-group-item-action">
     <div class="row">
         <div class="col-lg-4 col-md-9 col-sm-7"></div>
         <div class="col-lg-1 col-md-3 col-sm-5">
@@ -27,60 +30,50 @@
             @lang('koordinator')
         </div>
         <div class="col-lg-1 col-md-3 col-sm-5">
-            @lang('chef')
+            @lang('chef/APK')
         </div>
     </div>
-</a>
+</a>--}}
 
 <br>
 
 @foreach($workplace->users->sortBy('name') as $user)
+    @php
+        $total_time = $user->month_total_time($year, $month);
+        $attestedlevel1 = $user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->sum('hours');
+        $attestedlevel3 = $user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->sum('hours');
+    @endphp
     <a class="list-group-item list-group-item-action" id="user-{{$user->id}}">
         <div class="row">
-            <div class="col-lg-3 col-md-7 col-sm-5">
+            <div class="col-lg-3 col-md-4 col-sm-4">
                 <h5 class="mb-0">{{$user->name}}</h5>
             </div>
-                @if($user->month_total_time($year, $month) < 0.1)
-                    <div class="col-lg-4 col-md-2 col-sm-2">
-                        <div>@lang('Ingen tid att attestera')</div>
-                    </div>
-                @elseif($user->time_attests->where('month', $month)->where('year', $year)->isEmpty()) {{-- Det finns ingen attest alls för denna person --}}
-                    <div class="col-lg-4 col-md-2 col-sm-2">
-                        <div class="text-danger">@lang('Ej attesterad')</div>
-                    </div>
-                @elseif($user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->isEmpty()) {{-- Det finns endast attest level 0 för denna person, dvs attestering sker på papper--}}
-                    <div class="col-lg-4 col-md-2 col-sm-2">
-                        <div class="text-danger">@lang('Attesteras manuellt på papper')</div>
-                    </div>
-                @else
-                    <div class="col-lg-1 col-md-2 col-sm-2">
-                        <small>{{$user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->first()->hours}}</small>
-                    </div>
-                    <div class="col-lg-1 col-md-3 col-sm-5">
-                        <input checked disabled data-toggle="tooltip" title="@lang('Attesterat av') {{$user->name}}" type="checkbox">
-                    </div>
-                    <div class="col-lg-1 col-md-3 col-sm-5">
-                        @if($user->time_attests->where('attestlevel', 2)->where('month', $month)->where('year', $year)->count() > 0)
-                            <input checked disabled type="checkbox" data-toggle="tooltip" title="@lang('Attesterat av') {{$user->time_attests->where('attestlevel', 2)->where('month', $month)->where('year', $year)->first()->attestant->name}}">
-                        @else
-                            <input type="checkbox" id="level2attest-{{$user->id}}" name="level2attest[]" value="{{$user->id}}" {{$attestlevel>=2&&!$month_is_closed?"":"disabled"}} onclick="togglesubmit(2)">
-                        @endif
-                    </div>
-                    <div class="col-lg-1 col-md-3 col-sm-5">
-                        @if($user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->count() > 0)
-                            <input checked disabled type="checkbox" data-toggle="tooltip" title="@lang('Attesterat av') {{$user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->first()->attestant->name}}">
-                        @elseif($user->id == Auth::user()->id)
-                            <input disabled type="checkbox">
-                        @else
-                            <input type="checkbox" name="level3attest[]" value="{{$user->id}}" {{$attestlevel>=3&&!$month_is_closed?"":"disabled"}} onclick="togglesubmit(3)">
-                        @endif
-                    </div>
-                @endif
+            @if($user->time_attests->where('attestlevel', 0)->where('month', $month)->where('year', $year)->isNotEmpty()) {{-- Det finns endast attest level 0 för denna person, dvs attestering sker på papper--}}
+                <div class="col-lg-6 col-md-6 col-sm-8">
+                    <div class="text-danger">@lang('Attesteras manuellt på papper')</div>
+                </div>
+            @else
+                <div class="col-lg-2 col-md-2 col-sm-3 text-center">
+                    <div>{{$total_time}}</div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-3 text-center">
+                    <div class="{{$attestedlevel1<$total_time?'text-danger':''}}">{{$attestedlevel1}}</div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 text-center">
+                    @if($user->id == Auth::user()->id || $attestedlevel1<$total_time || $total_time==0)
+                        <input disabled type="checkbox">
+                    @elseif($attestedlevel3 >= $total_time)
+                        <input checked disabled type="checkbox" data-toggle="tooltip" title="@lang('Attesterat av') {{$user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->first()->attestant->name}}">
+                    @else
+                        <input type="checkbox" name="level3attest[]" value="{{$user->id}}" {{$attestlevel>=3?"":"disabled"}} onclick="togglesubmit(3)">
+                    @endif
+                </div>
+            @endif
 
-            <div class="col-lg-1 col-md-3 col-sm-5" onclick="deleteuser({{$user->id}}, '{{$user->name}}')">
+            <div class="col-lg-1 col-md-1 d-sm-none d-md-block text-center" onclick="deleteuser({{$user->id}}, '{{$user->name}}')">
                 <i class="fas fa-trash"></i>
             </div>
-            <div class="col-lg-1 col-md-3 col-sm-5" onclick="toggleuserdetails({{$user->id}})">
+            <div class="col-lg-1 col-md-1 d-sm-none d-md-block text-center" onclick="toggleuserdetails({{$user->id}})">
                 <i class="fas fa-list"></i>
             </div>
         </div>
@@ -91,24 +84,21 @@
 @endforeach
 
 <div class="row">
-    <div class="col-lg-3"></div>
-    <div class="col-lg-2">
+    <div class="col-lg-5 col-md-6 col-sm-7"></div>
+    <div class="col-lg-2 col-md-2 col-sm-3 text-right">
         @lang('Markera alla')
     </div>
-    <div class="col-lg-1 col-md-1 col-sm-1">
-        <input type="checkbox" id="selectall_level2" {{$attestlevel>=2&&!$month_is_closed?"":"disabled"}} onclick="toggleattests(2)">
-    </div>
-    <div class="col-lg-1 col-md-1 col-sm-1">
-        <input type="checkbox" id="selectall_level3" {{$attestlevel>=3&&!$month_is_closed?"":"disabled"}} onclick="toggleattests(3)">
+    <div class="col-lg-2 col-md-2 col-sm-2 text-center">
+        <input type="checkbox" id="selectall_level3" {{$attestlevel>=2?"":"disabled"}} onclick="toggleattests(3)">
     </div>
 </div>
 
 <br>
-@if($month_is_closed)
+{{--@if($month_is_closed)
     <button class="btn btn-primary btn-lg btn-block" disabled id="submit" name="submit" type="submit">@lang('Månaden är stängd för attestering')</button>
-@else
+@else--}}
     <button class="btn btn-primary btn-lg btn-block" disabled id="submit" name="submit" type="submit">@lang('Attestera')</button>
-@endif
+{{--@endif--}}
 
 <script type="text/javascript">
 

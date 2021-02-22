@@ -145,9 +145,14 @@ class User extends Authenticatable
         return ($this->active_times->where('month', $month)->where('year', $year)->sum('seconds'))/60;
     }
 
-    public function attested_time_month(int $month, int $year, int $level): int
+    public function attested_time_month(int $month, int $year, int $level): float
     {
         return $this->time_attests->where('attestlevel', $level)->where('month', $month)->where('year', $year)->sum('hours');
+    }
+
+    public function month_is_fully_attested(int $year, int $month, int $level=1): bool
+    {
+        return $this->attested_time_month($month, $year, $level) >= $this->month_total_time($year, $month);
     }
 
     public function attested_time_total(int $level): int

@@ -64,11 +64,11 @@ class ProjectTimeController extends Controller
         }
 
         //If last month is closed, start the calendar picker on first day of this month
-        if(ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
-            $mindate = date("Y-m")."-01";
-        } else {
+        //if(ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
+        //    $mindate = date("Y-m")."-01";
+        //} else {
             $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
-        }
+        //}
 
         $data = [
             'workplaces' => $workplaces,
@@ -84,12 +84,12 @@ class ProjectTimeController extends Controller
 
         //If last month is already attested, no further time may be registered on it, so start the calendar picker on first day of this month
         //The same goes if last month is closed by administrator
-        if($user->time_attests->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty() ||
-           ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
-            $mindate = date("Y-m")."-01";
-        } else {
+        //if($user->time_attests->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty() ||
+        //   ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
+        //    $mindate = date("Y-m")."-01";
+        //} else {
             $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
-        }
+        //}
 
         $data = [
             'project_time_types' => $project_time_types,
@@ -104,11 +104,11 @@ class ProjectTimeController extends Controller
         $project_time_types = ProjectTimeType::all();
 
         //If last month is closed, start the calendar picker on first day of this month
-        if(ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
-            $mindate = date("Y-m")."-01";
-        } else {
+        //if(ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
+        //    $mindate = date("Y-m")."-01";
+        //} else {
             $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
-        }
+        //}
 
         $data = [
             'workplace' => $workplace,
@@ -204,11 +204,11 @@ class ProjectTimeController extends Controller
             $workplaces = Auth::user()->admin_workplaces; //->prepend(Auth::user()->workplace);
         }
 
-        if(ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
-            $mindate = date("Y-m")."-01";
-        } else {
+        //if(ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
+        //    $mindate = date("Y-m")."-01";
+        //} else {
             $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
-        }
+        //}
 
         $data = [
             'workplaces' => $workplaces,
@@ -228,12 +228,12 @@ class ProjectTimeController extends Controller
 
         //If last month is already attested, no further time may be registered on it, so start the calendar picker on first day of this month
         //The same goes if last month is closed by administrator
-        if($user->time_attests->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty() ||
-           ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
-            $mindate = date("Y-m")."-01";
-        } else {
+        //if($user->time_attests->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty() ||
+        //   ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
+        //    $mindate = date("Y-m")."-01";
+        //} else {
             $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
-        }
+        //}
 
         $data = [
             'project_time_types' => $project_time_types,

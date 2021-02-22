@@ -31,25 +31,25 @@
                     </div>
 
                     <div class="col-lg-3 col-md-3 col-sm-3 bg-transparent">
-                        @if($user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->isNotEmpty())
-                            <small>{{$user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->first()->hours}}</small>
-                        @else
+                        {{--@if($user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->isNotEmpty())--}}
+                            <small>{{$user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->sum('hours')}}</small>
+                        {{--@else
                             <small>0</small>
-                        @endif
-                        <i class="fas fa-arrow-right"></i>
+                        @endif--}}
+                        {{--<i class="fas fa-arrow-right"></i>
                         @if($user->time_attests->where('attestlevel', 2)->where('month', $month)->where('year', $year)->isNotEmpty())
                             <small>{{$user->time_attests->where('attestlevel', 2)->where('month', $month)->where('year', $year)->first()->hours}}</small>
                         @else
                             <small>0</small>
-                        @endif
+                        @endif--}}
                         <i class="fas fa-arrow-right"></i>
-                        @if($user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->isNotEmpty())
-                            <small>{{$user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->first()->hours}}</small>
-                        @else
+                        {{--@if($user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->isNotEmpty())--}}
+                            <small>{{$user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->sum('hours')}}</small>
+                        {{--@else
                             <small>0</small>
-                        @endif
+                        @endif--}}
                         @if($user->time_attests->where('attestlevel', 0)->where('month', $month)->where('year', $year)->isNotEmpty())
-                            <small>({{$user->time_attests->where('attestlevel', 0)->where('month', $month)->where('year', $year)->first()->hours}})</small>
+                            <small>({{$user->time_attests->where('attestlevel', 0)->where('month', $month)->where('year', $year)->sum('hours')}})</small>
                         @endif
                     </div>
 

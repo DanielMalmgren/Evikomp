@@ -39,7 +39,7 @@
 
 @foreach($workplace->users->sortBy('name') as $user)
     @php
-        $total_time = $user->month_total_time($year, $month);
+        $total_time = round($user->month_total_time($year, $month), 1);
         $attestedlevel1 = $user->time_attests->where('attestlevel', 1)->where('month', $month)->where('year', $year)->sum('hours');
         $attestedlevel3 = $user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->sum('hours');
     @endphp

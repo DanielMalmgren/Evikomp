@@ -152,7 +152,7 @@ class User extends Authenticatable
 
     public function month_is_fully_attested(int $year, int $month, int $level=1): bool
     {
-        return $this->attested_time_month($month, $year, $level) >= $this->month_total_time($year, $month);
+        return $this->attested_time_month($month, $year, $level) + 0.5 >= $this->month_total_time($year, $month);
     }
 
     public function attested_time_total(int $level): int
@@ -171,7 +171,7 @@ class User extends Authenticatable
         }
     }
 
-    public function month_total_time(int $year, int $month): int
+    public function month_total_time(int $year, int $month): float
     {
         $at_total = $this->active_times()
             ->where('date', '>=', $year.'-'.sprintf("%02d", $month).'-01')

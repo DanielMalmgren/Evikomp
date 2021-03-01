@@ -33,7 +33,7 @@ class TimeAttestLevel1Controller extends Controller
         $attest->authnissuer = session('authnissuer');
         $attest->hours = $request->prev_month_hours;
         $attest->clientip = $request->ip();
-        $attst->save();
+        $attest->save();
 
         $attest = new TimeAttest();
         $attest->year = $request->this_month_year;
@@ -44,7 +44,7 @@ class TimeAttestLevel1Controller extends Controller
         $attest->authnissuer = session('authnissuer');
         $attest->hours = $request->this_month_hours;
         $attest->clientip = $request->ip();
-        $attst->save();
+        $attest->save();
 
         /*TimeAttest::updateOrCreate([
             'year' => $request->year,

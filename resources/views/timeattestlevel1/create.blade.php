@@ -62,7 +62,7 @@
                                 @for($day = 1; $day <= $days_in_prev_month; $day++)
                                     <td class="initial-hide nowrap"></td>
                                 @endfor
-                                <th class="text-center">{{end($prev_month_time_rows)[32]-$attested_prev_month}}</td>
+                                <th class="text-center">{{abs(round(end($prev_month_time_rows)[32]-$attested_prev_month, 1))}}</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -116,7 +116,7 @@
                                 @for($day = 1; $day <= $days_in_this_month; $day++)
                                     <td class="initial-hide nowrap"></td>
                                 @endfor
-                                <th class="text-center">{{end($this_month_time_rows)[32]-$attested_this_month}}</td>
+                                <th class="text-center">{{abs(round(end($this_month_time_rows)[32]-$attested_this_month, 1))}}</td>
                             </tr>
                         </tfoot>
                     </table>

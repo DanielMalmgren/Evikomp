@@ -150,9 +150,9 @@ class User extends Authenticatable
         return $this->time_attests->where('attestlevel', $level)->where('month', $month)->where('year', $year)->sum('hours');
     }
 
-    public function month_is_fully_attested(int $year, int $month, int $level=1): bool
+    public function month_is_fully_attested(int $year, int $month, float $breakpoint, int $level=1): bool
     {
-        return $this->attested_time_month($month, $year, $level) + 0.5 >= $this->month_total_time($year, $month);
+        return $this->attested_time_month($month, $year, $level) + $breakpoint >= $this->month_total_time($year, $month);
     }
 
     public function attested_time_total(int $level): int

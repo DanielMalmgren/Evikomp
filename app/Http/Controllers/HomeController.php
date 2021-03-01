@@ -23,7 +23,7 @@ class HomeController extends Controller
 
             //$last_month_is_closed = ClosedMonth::where('month', $previous_month)->where('year', $previous_month_year)->exists();
             //$last_month_is_attested = Auth::user()->time_attests->where('attestlevel', 1)->where('month', $previous_month)->where('year', $previous_month_year)->isNotEmpty();
-            $last_month_is_attested = Auth::user()->month_is_fully_attested($previous_month_year, $previous_month);
+            $last_month_is_attested = Auth::user()->month_is_fully_attested($previous_month_year, $previous_month, 0.5);
 
             $time=Auth::user()->month_total_time($previous_month_year, $previous_month);
 

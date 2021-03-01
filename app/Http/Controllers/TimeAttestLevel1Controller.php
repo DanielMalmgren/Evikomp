@@ -24,27 +24,31 @@ class TimeAttestLevel1Controller extends Controller
 
         $user = Auth::user();
 
-        $attest = new TimeAttest();
-        $attest->year = $request->prev_month_year;
-        $attest->month = $request->prev_month;
-        $attest->user_id = $user->id;
-        $attest->attestant_id = $user->id;
-        $attest->attestlevel = 1;
-        $attest->authnissuer = session('authnissuer');
-        $attest->hours = $request->prev_month_hours;
-        $attest->clientip = $request->ip();
-        $attest->save();
+        if($request->prev_month_hours >= 0.1) {
+            $attest = new TimeAttest();
+            $attest->year = $request->prev_month_year;
+            $attest->month = $request->prev_month;
+            $attest->user_id = $user->id;
+            $attest->attestant_id = $user->id;
+            $attest->attestlevel = 1;
+            $attest->authnissuer = session('authnissuer');
+            $attest->hours = $request->prev_month_hours;
+            $attest->clientip = $request->ip();
+            $attest->save();
+        }
 
-        $attest = new TimeAttest();
-        $attest->year = $request->this_month_year;
-        $attest->month = $request->this_month;
-        $attest->user_id = $user->id;
-        $attest->attestant_id = $user->id;
-        $attest->attestlevel = 1;
-        $attest->authnissuer = session('authnissuer');
-        $attest->hours = $request->this_month_hours;
-        $attest->clientip = $request->ip();
-        $attest->save();
+        if($request->this_month_hours >= 0.1) {
+            $attest = new TimeAttest();
+            $attest->year = $request->this_month_year;
+            $attest->month = $request->this_month;
+            $attest->user_id = $user->id;
+            $attest->attestant_id = $user->id;
+            $attest->attestlevel = 1;
+            $attest->authnissuer = session('authnissuer');
+            $attest->hours = $request->this_month_hours;
+            $attest->clientip = $request->ip();
+            $attest->save();
+        }
 
         /*TimeAttest::updateOrCreate([
             'year' => $request->year,
@@ -79,8 +83,6 @@ class TimeAttestLevel1Controller extends Controller
         $days_in_prev_month = cal_days_in_month(CAL_GREGORIAN, $prev_month, $prev_month_year);
         $attested_prev_month = $user->attested_time_month($prev_month, $prev_month_year, 1);
 
-        logger("Attested prev month: ".$attested_prev_month);
-
         $this_month_year = date('Y');
         $this_month = date('n');
         $this_month_str = strftime('%B');
@@ -88,8 +90,8 @@ class TimeAttestLevel1Controller extends Controller
         $days_in_this_month = cal_days_in_month(CAL_GREGORIAN, $this_month, $this_month_year);
         $attested_this_month = $user->attested_time_month($this_month, $this_month_year, 1);
 
-        $already_fully_attested = $user->month_is_fully_attested($prev_month_year, $prev_month) 
-                               && $user->month_is_fully_attested($this_month_year, $this_month);
+        $already_fully_attested = $user->month_is_fully_attested($prev_month_year, $prev_month, 0.09) 
+                               && $user->month_is_fully_attested($this_month_year, $this_month, 0.09);
 
         $data = [
             'prev_month_year' => $prev_month_year,

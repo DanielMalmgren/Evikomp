@@ -73,5 +73,7 @@
 
     <br><br>
 
+    <label><input type="checkbox" name="generate_presence_list" {{old('generate_presence_list') !== null ? 'checked' : '' }}>@lang('Skriv ut närvarolista')</label>
+
     <button class="btn btn-primary btn-lg btn-block" id="submit" name="submit" type="submit">@lang('Spara')</button>
 </form>

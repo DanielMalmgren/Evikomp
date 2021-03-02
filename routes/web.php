@@ -77,6 +77,7 @@ Route::get('/projecttime',                      'ProjectTimeController@index');
 Route::get('/projecttime/create',               'ProjectTimeController@create')->middleware('permission:edit workplaces');
 Route::get('/projecttime/createsingleuser',     'ProjectTimeController@createsingleuser');
 Route::post('/projecttime',                     'ProjectTimeController@store');
+Route::get('/projecttime/presence_list/{project_time}', 'ProjectTimeController@presence_list');
 Route::get('/projecttime/{project_time}/edit',  'ProjectTimeController@edit');
 Route::put('/projecttime/{project_time}',       'ProjectTimeController@update');
 Route::get('/projecttimeajax/{workplace}',      'ProjectTimeController@ajax');

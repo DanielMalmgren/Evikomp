@@ -80,6 +80,10 @@
 
         <title>@yield('title') - Evikomp</title>
 
+        @if(session('download_file'))
+            <meta http-equiv="refresh" content="0;url={{session('download_file')}}">
+        @endif
+
     </head>
     <body>
         @include('inc.navbar')

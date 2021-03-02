@@ -9,6 +9,7 @@ use App\Workplace;
 use App\ProjectTime;
 use App\ProjectTimeType;
 use App\ClosedMonth;
+use PDF;
 
 class ProjectTimeController extends Controller
 {
@@ -150,7 +151,7 @@ class ProjectTimeController extends Controller
             $user = User::find($user_id);
 
             //Checking for colliding attests
-            if($user->time_attests->where('month', $month)->where('year', $year)->count() > 0) {
+            /*if($user->time_attests->where('month', $month)->where('year', $year)->count() > 0) {
                 //return back()->with('error', $user->name.' har redan attesterat denna månad!')->withInput();
                 add_flash_message(
                     [
@@ -158,7 +159,7 @@ class ProjectTimeController extends Controller
                         'type' => 'danger',
                     ]
                 );
-            }
+            }*/
 
             //Checking for colliding registration
             $occasions = $user->project_times()->where('date', $request->date)->get();
@@ -191,7 +192,12 @@ class ProjectTimeController extends Controller
         $project_time->save();
         $project_time->users()->sync($request->users);
 
-        return redirect($request->return_url)->with('success', __('Projekttiden har registrerats'));
+        if($request->generate_presence_list) {
+            \Session::flash('download_file', '/projecttime/presence_list/'.$project_time->id);
+            return redirect($request->return_url)->with('success', __('Projekttiden har registrerats och närvarolista laddas ner'));
+        } else {
+            return redirect($request->return_url)->with('success', __('Projekttiden har registrerats'));
+        }
     }
 
     public function index() {
@@ -284,4 +290,16 @@ class ProjectTimeController extends Controller
 
         return redirect('/projecttime')->with('success', __('Projekttiden har ändrats'));
     }
+
+    public function presence_list(ProjectTime $project_time) {
+        $data = [
+            'project_time' => $project_time,
+        ];
+
+        $pdf = PDF::loadView('projecttime.presence_list', $data);
+        return $pdf->download(__('Evikomp närvarolista.pdf'));
+
+        //return view('projecttime.presence_list')->with($data);
+    }
+
 }

@@ -296,7 +296,11 @@ class ProjectTimeController extends Controller
             'project_time' => $project_time,
         ];
 
-        $pdf = PDF::loadView('projecttime.presence_list', $data);
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->getDomPDF()->set_option("enable_php", true);
+        $pdf->loadView('projecttime.presence_list', $data);
+
+        //$pdf = PDF::loadView('projecttime.presence_list', $data);
         return $pdf->download(__('Evikomp närvarolista.pdf'));
 
         //return view('projecttime.presence_list')->with($data);

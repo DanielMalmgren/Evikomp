@@ -6,7 +6,7 @@
 
     <style>
         @page { margin: 100px 25px; }
-        header { position: fixed; top: -60px; left: 0px; right: 0px; height: 50px; }
+        header { position: fixed; top: -60px; left: 0px; right: 0px; height: 100px; }
         footer { position: fixed; bottom: -60px; left: 0px; right: 0px; height: 100px; }
         .linerow {height: 30px;border-spacing: 0 1em;} 
         .nounderscore {border-bottom: 0px;float:left;white-space:nowrap;}
@@ -16,6 +16,10 @@
     <header>
         <img height="40" src="{{public_path(env('HEADER_LOGO'))}}">
     </header>
+
+    <footer>
+        <img height="100" style="float:right" src="{{public_path('/images/EU_logga.png')}}">
+    </footer>
 
     <H1>@lang('Evikomp närvarolista')</H1>
 
@@ -55,8 +59,16 @@
         </tr>
     </table>
 
-    <footer>
-        <img height="100" style="float:right" src="{{public_path('/images/EU_logga.png')}}">
-    </footer>
+    <script type="text/php">
+        if (isset($pdf)) {
+            $text = "@lang('sida') {PAGE_NUM} / {PAGE_COUNT}";
+            $size = 10;
+            $font = $fontMetrics->getFont("Verdana");
+            $width = $fontMetrics->get_text_width($text, $font, $size) / 2;
+            $x = ($pdf->get_width() - $width) / 2;
+            $y = $pdf->get_height() - 35;
+            $pdf->page_text($x, $y, $text, $font, $size);
+        }
+    </script>
 
 @endsection

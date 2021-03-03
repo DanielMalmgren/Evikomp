@@ -5,9 +5,11 @@
 @section('content')
 
     <style>
-        @page { margin: 100px 25px; }
-        header { position: fixed; top: -60px; left: 0px; right: 0px; height: 100px; }
-        footer { position: fixed; bottom: -60px; left: 0px; right: 0px; height: 100px; }
+        @page { margin: 150px 25px; }
+        header { position: fixed; top: -110px; left: 0px; right: 0px; height: 100px; }
+        footer { position: fixed; bottom: -110px; left: 0px; right: 0px; height: 100px; }
+        h1 { margin-top: -20px;}
+        p.font-weight-bold {font-weight: bold;}
         .linerow {height: 30px;border-spacing: 0 1em;} 
         .nounderscore {border-bottom: 0px;float:left;white-space:nowrap;}
         .underscore {border-bottom: 1px solid #000; overflow: hidden;}
@@ -23,12 +25,14 @@
 
     <H1>@lang('Evikomp närvarolista')</H1>
 
+    <p class="font-weight-bold">
+        {{$project_time->date}}
+        {{\Carbon\Carbon::createFromFormat('H:i:s',$project_time->starttime)->format('h:i')}} -
+        {{\Carbon\Carbon::createFromFormat('H:i:s',$project_time->endtime)->format('h:i')}}
+    </p>
     @lang('Kommun: ') {{$project_time->workplace->municipality->name}}<br>
     @lang('Arbetsplats: ') {{$project_time->workplace->name}}<br>
     @lang('Aktivitet: ') {{$project_time->project_time_type->name}}<br>
-    @lang('Datum: ') {{$project_time->date}}<br>
-    @lang('Starttid: ') {{$project_time->starttime}}<br>
-    @lang('Sluttid: ') {{$project_time->endtime}}<br>
 
     <br>
 

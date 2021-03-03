@@ -50,7 +50,11 @@
         <tr width="100%" class="linerow">
             <td class="underscore" width="45%"></td>
             <td class="nounderscore" width="20px"></td>
-            <td class="underscore" width="45%"></td>
+            @if($signing_boss)
+                <td class="nounderscore" width="45%">{{$signing_boss->name}}</td>
+            @else
+                <td class="underscore" width="45%"></td>
+            @endif
         </tr>
         <tr width="100%" class="linerow">
             <td class="nounderscore" width="45%">@lang('Underskrift')</td>

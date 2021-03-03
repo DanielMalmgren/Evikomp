@@ -73,7 +73,31 @@
 
     <br><br>
 
-    <label><input type="checkbox" name="generate_presence_list" {{old('generate_presence_list') !== null ? 'checked' : '' }}>@lang('Skriv ut närvarolista')</label>
+    <label><input type="checkbox" id="generate_presence_list" name="generate_presence_list" {{old('generate_presence_list') !== null ? 'checked' : '' }}>@lang('Skriv ut närvarolista')</label>
+
+    @if($workplace->workplace_admins->count() > 0)
+        <div id="boss_wrapper" style="display: none;">
+            <label for="signing_boss">@lang('Attesterande chef')</label>
+            <select class="custom-select d-block w-100" name="signing_boss">
+                @foreach($workplace->workplace_admins as $admin)
+                    <option value="{{$admin->id}}">{{$admin->name}}</option>
+                @endforeach
+            </select>
+        </div>
+    @endif
+
+    <br>
 
     <button class="btn btn-primary btn-lg btn-block" id="submit" name="submit" type="submit">@lang('Spara')</button>
 </form>
+
+@if($workplace->workplace_admins->count() > 1)
+    <script type="text/javascript">
+        $(function() {
+            $('#generate_presence_list').on('change', function() {
+                var val = this.checked;
+                $("#boss_wrapper").toggle(this.checked);
+            });
+        });
+    </script>
+@endif

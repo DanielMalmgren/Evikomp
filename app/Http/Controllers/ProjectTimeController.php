@@ -193,6 +193,10 @@ class ProjectTimeController extends Controller
         $project_time->users()->sync($request->users);
 
         if($request->generate_presence_list) {
+            if($request->signing_boss) {
+                $request->session()->put('signing_boss', $request->signing_boss);
+            }
+
             \Session::flash('download_file', '/projecttime/presence_list/'.$project_time->id);
             return redirect($request->return_url)->with('success', __('Projekttiden har registrerats och närvarolista laddas ner'));
         } else {
@@ -291,19 +295,18 @@ class ProjectTimeController extends Controller
         return redirect('/projecttime')->with('success', __('Projekttiden har ändrats'));
     }
 
-    public function presence_list(ProjectTime $project_time) {
+    public function presence_list(Request $request, ProjectTime $project_time) {
+        $signing_boss = User::find($request->session()->pull('signing_boss'));
         $data = [
             'project_time' => $project_time,
+            'signing_boss' => $signing_boss,
         ];
 
         $pdf = \App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
         $pdf->loadView('projecttime.presence_list', $data);
 
-        //$pdf = PDF::loadView('projecttime.presence_list', $data);
         return $pdf->download(__('Evikomp närvarolista.pdf'));
-
-        //return view('projecttime.presence_list')->with($data);
     }
 
 }

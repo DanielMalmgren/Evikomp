@@ -4,8 +4,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\User;
+use Nexmo\Laravel\Facade\Nexmo;
 
-class SendAttestReminderMail extends Command
+class SendAttestReminderSMS extends Command
 {
     /**
      * The name and signature of the console command.
@@ -21,7 +22,7 @@ class SendAttestReminderMail extends Command
      *
      * @var string
      */
-    protected $description = 'Sends email with reminder to attest time to all users';
+    protected $description = 'Sends sms with reminder to attest time to all users';
 
     /**
      * Create a new command instance.
@@ -40,15 +41,15 @@ class SendAttestReminderMail extends Command
      */
     public function handle()
     {
-        logger("Running job for sending attest mail reminders!");
+        logger("Running job for sending attest sms reminders!");
         $previous_month = date("m", strtotime("first day of previous month"));
         $previous_month_year = date("Y", strtotime("first day of previous month"));
 
         $amountsent = 0;
         $amountfailed = 0;
         $this->info("Looping through users...");
-        foreach(User::whereNotNull('email')->get() as $user) {
-            $last_month_is_attested = $user->month_is_fully_attested($previous_month_year, $previous_month, 0.9);
+        foreach(User::whereNotNull('mobile')->get() as $user) {
+            $last_month_is_attested = $user->month_is_fully_attested($previous_month_year, $previous_month, 1.9);
             $time_rows = $user->time_rows($previous_month_year, $previous_month);
             $time = end($time_rows)[32];
             if($last_month_is_attested || $time<1.0 || !isset($user->workplace) || !$user->workplace->includetimeinreports) {
@@ -58,19 +59,25 @@ class SendAttestReminderMail extends Command
             setlocale(LC_TIME, $user->locale_id);
             $monthstr = strftime('%B', strtotime("first day of previous month"));
 
-            $this->info("Preparing email to ".$user->name." (".$user->email.")");
+            $this->info("Preparing sms to ".$user->name." (".$user->mobile.")");
             if($this->option('forreal') || $this->argument('onlysendto')==$user->email) {
-                $to = [];
-                $to[] = ['email' => $user->email, 'name' => $user->name];
-                setlocale(LC_NUMERIC, $user->locale_id);
+                $number = ltrim($user->mobile, '0');
 
+                if(strpos($number, "+") !== 0) {
+                    $number = "+46".$number;
+                }
+        
+                $this->info($number);
+        
                 try {
-                    \Mail::to($to)->send(new \App\Mail\AttestReminder($time, $monthstr));
-                    $this->info("  Mail sent");
+                    Nexmo::message()->send([
+                        'to'   => $number,
+                        'from' => 'Evikomp',
+                        'text' => "Hej. Vi kan se att du har ägnat ".$time." timmar åt projektet Evikomp under ".$monthstr.". Attestera dessa timmar här: ".env('APP_URL')."/attest MVH Evikomp"
+                    ]);
                     $amountsent++;
-                } catch(\Swift_TransportException $e) {
-                    $this->info("  Sending failed!");
-                    logger("Couldn't send mail to ".$user->email);
+                } catch(\Vonage\Client\Exception\Request $e) {
+                    $this->info('Nexmo error:' . $e->getMessage());
                     $amountfailed++;
                 }
             }

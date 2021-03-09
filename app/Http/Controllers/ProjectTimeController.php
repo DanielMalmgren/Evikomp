@@ -64,17 +64,14 @@ class ProjectTimeController extends Controller
             $workplaces = Auth::user()->admin_workplaces->sortBy('name');
         }
 
-        //If last month is closed, start the calendar picker on first day of this month
-        //if(ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
-        //    $mindate = date("Y-m")."-01";
-        //} else {
-            $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
-        //}
+        $mindate = date("Y-m-d", strtotime("first day of previous month"));
+        $maxdate = date("Y-m-d", strtotime("last day of next month"));
 
         $data = [
             'workplaces' => $workplaces,
             'project_time_types' => $project_time_types,
             'mindate' => $mindate,
+            'maxdate' => $maxdate,
         ];
         return view('projecttime.create')->with($data);
     }
@@ -83,14 +80,7 @@ class ProjectTimeController extends Controller
         $project_time_types = ProjectTimeType::all();
         $user = Auth::user();
 
-        //If last month is already attested, no further time may be registered on it, so start the calendar picker on first day of this month
-        //The same goes if last month is closed by administrator
-        //if($user->time_attests->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty() ||
-        //   ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
-        //    $mindate = date("Y-m")."-01";
-        //} else {
-            $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
-        //}
+        $mindate = date("Y-m-d", strtotime("first day of previous month"));
 
         $data = [
             'project_time_types' => $project_time_types,
@@ -104,17 +94,14 @@ class ProjectTimeController extends Controller
     public function ajax(Workplace $workplace) {
         $project_time_types = ProjectTimeType::all();
 
-        //If last month is closed, start the calendar picker on first day of this month
-        //if(ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
-        //    $mindate = date("Y-m")."-01";
-        //} else {
-            $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
-        //}
+        $mindate = date("Y-m-d", strtotime("first day of previous month"));
+        $maxdate = date("Y-m-d", strtotime("last day of next month"));
 
         $data = [
             'workplace' => $workplace,
             'project_time_types' => $project_time_types,
             'mindate' => $mindate,
+            'maxdate' => $maxdate,
         ];
         return view('projecttime.ajax')->with($data);
     }

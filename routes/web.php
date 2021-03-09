@@ -8,6 +8,8 @@ Route::get('/',                                 'HomeController@index');
 Route::get('/about',                            'HomeController@about');
 Route::get('/logout',                           'HomeController@logout');
 
+Route::permanentRedirect('/attest', '/timeattestlevel1/create');
+
 //TrackController
 Route::get('/tracks/create',                    'TrackController@create')->middleware('permission:manage lessons');
 Route::post('/tracks',                          'TrackController@store')->middleware('permission:manage lessons');

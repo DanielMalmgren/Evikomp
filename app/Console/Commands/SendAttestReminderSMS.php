@@ -13,8 +13,8 @@ class SendAttestReminderSMS extends Command
      *
      * @var string
      */
-    protected $signature = 'custom:attestreminder
-                            {--forreal : Really send the mails}
+    protected $signature = 'custom:attestremindersms
+                            {--forreal : Really send the messages}
                             {onlysendto=all : Only send to this address}';
 
     /**

@@ -33,6 +33,11 @@
 
 </script>
 
+@hasrole('Admin')
+    <small><a class="black" href="/projecttime/{{$workplace->id}}">@lang('Visa befintlig projekttid.')</a></small>
+    <br><br>
+@endhasrole
+
 <form method="post" name="question" action="{{action('ProjectTimeController@store')}}" accept-charset="UTF-8">
     @csrf
 

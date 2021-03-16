@@ -18,6 +18,16 @@ class TimeAttest extends Model
         return $this->belongsTo('App\User', 'attestant_id', 'id');
     }
 
+    public function project_time(): BelongsTo
+    {
+        return $this->belongsTo('App\ProjectTime');
+    }
+
+    public function from_list_by_user(): BelongsTo
+    {
+        return $this->belongsTo('App\User', 'from_list_by', 'id');
+    }
+
     public function scopeGender(Builder $query, string $gender): ?Builder
     {
         if($gender == 'M') {

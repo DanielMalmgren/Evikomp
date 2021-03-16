@@ -75,11 +75,12 @@ Route::get('/timesummarywpdetails/{workplace}/{year}/{month}', 'TimeSummaryContr
 Route::get('/exporttimesummary',                'TimeSummaryController@export')->middleware('permission:export ESF report');
 
 //ProjectTimeController
-Route::get('/projecttime',                      'ProjectTimeController@index');
 Route::get('/projecttime/create',               'ProjectTimeController@create')->middleware('permission:edit workplaces');
 Route::get('/projecttime/createsingleuser',     'ProjectTimeController@createsingleuser');
+Route::get('/projecttime/{workplace?}',         'ProjectTimeController@index');
 Route::post('/projecttime',                     'ProjectTimeController@store');
 Route::get('/projecttime/presence_list/{project_time}', 'ProjectTimeController@presence_list');
+Route::get('/projecttime/attest_from_list/{project_time}', 'ProjectTimeController@attest_from_list')->middleware('permission:manage time attests');
 Route::get('/projecttime/{project_time}/edit',  'ProjectTimeController@edit');
 Route::put('/projecttime/{project_time}',       'ProjectTimeController@update');
 Route::get('/projecttimeajax/{workplace}',      'ProjectTimeController@ajax');
@@ -90,6 +91,7 @@ Route::get('/timeattest/create',                'TimeAttestController@create')->
 Route::post('/timeattest',                      'TimeAttestController@store')->middleware('permission:manage time attests');
 Route::get('/timeattestajaxuserlist/{workplace}/{year}/{month}', 'TimeAttestController@ajaxuserlist')->middleware('permission:manage time attests');
 Route::get('/timeattestajaxuserdetails/{user}/{year}/{month}', 'TimeAttestController@ajaxuserdetails')->middleware('permission:manage time attests');
+Route::put('/timeattest/from_list/{project_time}', 'TimeAttestController@from_list')->middleware('permission:manage time attests');
 
 //TimeAttestLevel1Controller
 Route::get('/timeattestlevel1/create',          'TimeAttestLevel1Controller@create');

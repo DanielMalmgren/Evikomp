@@ -26,6 +26,11 @@ class ProjectTime extends Model
         return $this->belongsTo('App\User', 'registered_by');
     }
 
+    public function time_attests(): HasMany
+    {
+        return $this->hasMany('App\TimeAttest');
+    }
+
     //Return the number of minutes for this project time
     public function getMinutesAttribute()
     {

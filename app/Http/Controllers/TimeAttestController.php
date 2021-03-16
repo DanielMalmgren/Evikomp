@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\TimeAttest;
 use App\Workplace;
 use App\ClosedMonth;
+use App\ProjectTime;
 
 class TimeAttestController extends Controller
 {
@@ -40,23 +41,6 @@ class TimeAttestController extends Controller
         ]);
 
         $user = Auth::user();
-
-        /*if(isset($request->level2attest)) {
-            foreach($request->level2attest as $user_id) {
-                TimeAttest::updateOrCreate([
-                    'year' => $request->year,
-                    'month' => $request->month,
-                    'user_id' => $user_id,
-                    'attestlevel' => 2,
-                ],
-                [
-                    'attestant_id' => $user->id,
-                    'authnissuer' => session('authnissuer'),
-                    'hours' => User::find($user_id)->time_attests->where('month', $request->month)->where('year', $request->year)->first()->hours,
-                    'clientip' => $request->ip(),
-                ]);
-            }
-        }*/
 
         if(isset($request->level3attest)) {
             foreach($request->level3attest as $user_id) {
@@ -91,18 +75,11 @@ class TimeAttestController extends Controller
             }
         }
 
-        /*if(ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
-            $month_is_closed = true;
-        } else {
-            $month_is_closed = false;
-        }*/
-
         $data = [
             'workplace' => $workplace,
             'attestlevel' => $attestlevel,
             'year' => $year,
             'month' => $month,
-            //'month_is_closed' => $month_is_closed,
         ];
 
         return view('timeattest.ajaxuserlist')->with($data);
@@ -121,4 +98,63 @@ class TimeAttestController extends Controller
         return view('timeattest.ajaxuserdetails')->with($data);
     }
 
+    //Create time attests from signatures on attendee list
+    public function from_list(Request $request, ProjectTime $project_time) {
+        $user = Auth::user();
+        if(!$user->hasRole('Admin') && ! $project_time->workplace->workplace_admins->contains('id', $user->id)) {
+            abort(403);
+        }
+
+        usleep(50000);
+        $request->validate([
+            'users' => 'required',
+            'signing_boss' => 'required',
+        ],
+        [
+            'users.required' => __('Du måste ange minst en användare som har skrivit under närvaron!'),
+            'signing_boss.required' => __('Du måste ange namnet på den chef som skrivit under närvaron!'),
+        ]);
+
+        $project_time->users()->sync($request->users);
+
+        $year = $project_time->year;
+        $month = $project_time->month;
+        $hours = $project_time->minutes/60;
+
+        foreach($project_time->users as $user) {
+            logger("Creating attest for ".$user->name);
+
+            if(!$user->month_is_fully_attested($year, $month, $hours, 1)) {
+                $attest = new TimeAttest();
+                $attest->year = $year;
+                $attest->month = $month;
+                $attest->user_id = $user->id;
+                $attest->attestant_id = $user->id;
+                $attest->attestlevel = 1;
+                $attest->authnissuer = session('authnissuer');
+                $attest->hours = $hours;
+                $attest->clientip = $request->ip();
+                $attest->from_list_by = Auth::user()->id;
+                $attest->project_time_id = $project_time->id;
+                $attest->save();
+            }
+
+            if(!$user->month_is_fully_attested($year, $month, $hours, 3)) {
+                $attest = new TimeAttest();
+                $attest->year = $year;
+                $attest->month = $month;
+                $attest->user_id = $user->id;
+                $attest->attestant_id = $request->signing_boss;
+                $attest->attestlevel = 3;
+                $attest->authnissuer = session('authnissuer');
+                $attest->hours = $hours;
+                $attest->clientip = $request->ip();
+                $attest->from_list_by = Auth::user()->id;
+                $attest->project_time_id = $project_time->id;
+                $attest->save();
+            }
+        }
+
+        return redirect('/projecttime/'.$project_time->workplace_id)->with('success', __('Lektionstillfället har nu markerats som attesterat'));
+    }
 }

@@ -68,6 +68,12 @@ class User extends Authenticatable
         return $this->hasMany('App\TestSession');
     }
 
+    //Get all time attests that this user transferred from list
+    public function time_attests_from_list(): HasMany
+    {
+        return $this->hasMany('App\TimeAttest');
+    }
+
     //Get all months that this user has closed (probably not very useful, just here for completeness)
     public function closed_months(): HasMany
     {

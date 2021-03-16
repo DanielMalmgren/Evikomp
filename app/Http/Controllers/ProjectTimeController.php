@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 use App\User;
 use App\Workplace;
 use App\ProjectTime;
@@ -191,21 +192,24 @@ class ProjectTimeController extends Controller
         }
     }
 
-    public function index() {
+    public function index(Workplace $workplace=null) {
+        $mindate = date("Y-m-d", strtotime("first day of previous month"));
 
-        $workplaces = null;
+        if($workplace) {
+            $workplaces = collect();
+            $workplaces->add($workplace);
+        } else {
+            $workplaces = null;
 
-        if (Auth::user()->hasRole('Admin')) {
-            $workplaces = Workplace::all();
-        } elseif (Auth::user()->hasRole('Arbetsplatsadministratör')) {
-            $workplaces = Auth::user()->admin_workplaces; //->prepend(Auth::user()->workplace);
+            if (Auth::user()->hasRole('Admin')) {
+                $workplaces = Workplace::whereHas('project_times', function (Builder $query) use($mindate) {
+                    $query->where('date', '>=', $mindate);
+                })->get();
+            } elseif (Auth::user()->hasRole('Arbetsplatsadministratör')) {
+                //TODO: Filter out workplaces not having any project time recently (like we're doing with admin above)
+                $workplaces = Auth::user()->admin_workplaces; //->prepend(Auth::user()->workplace);
+            }
         }
-
-        //if(ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
-        //    $mindate = date("Y-m")."-01";
-        //} else {
-            $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
-        //}
 
         $data = [
             'workplaces' => $workplaces,
@@ -223,14 +227,7 @@ class ProjectTimeController extends Controller
             abort(403);
         }
 
-        //If last month is already attested, no further time may be registered on it, so start the calendar picker on first day of this month
-        //The same goes if last month is closed by administrator
-        //if($user->time_attests->where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->isNotEmpty() ||
-        //   ClosedMonth::where('month', date("m", strtotime("first day of previous month")))->where('year', date("Y", strtotime("first day of previous month")))->exists()) {
-        //    $mindate = date("Y-m")."-01";
-        //} else {
-            $mindate = date("Y-m", strtotime("first day of previous month"))."-01";
-        //}
+        $mindate = date("Y-m-d", strtotime("first day of previous month"));
 
         $data = [
             'project_time_types' => $project_time_types,
@@ -240,6 +237,20 @@ class ProjectTimeController extends Controller
             'project_time' => $project_time,
         ];
         return view('projecttime.edit')->with($data);
+    }
+
+    public function attest_from_list(ProjectTime $project_time) {
+        $user = Auth::user();
+
+        if(!$user->hasRole('Admin') && ! $project_time->workplace->workplace_admins->contains('id', $user->id)) {
+            abort(403);
+        }
+
+        $data = [
+            'user' => $user,
+            'project_time' => $project_time,
+        ];
+        return view('projecttime.attest_from_list')->with($data);
     }
 
     public function update(Request $request, ProjectTime $project_time) {

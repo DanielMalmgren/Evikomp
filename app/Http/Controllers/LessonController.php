@@ -86,11 +86,11 @@ class LessonController extends Controller
             'icon' => 'image|max:2000',
         ],
         [
-            'name.required' => __('Du måste ange ett namn på lektionen!',
+            'name.required' => __('Du måste ange ett namn på lektionen!'),
             'color.exists' => __('Du måste välja en av de förvalda färgerna!'),
             'icon.image' => __('Felaktigt bildformat!'),
             'icon.max' => __('Din fil är för stor! Max-storleken är 2MB!'),
-        )]);
+        ]);
 
         $currentLocale = \App::getLocale();
 

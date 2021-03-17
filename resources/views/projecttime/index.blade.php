@@ -4,9 +4,16 @@
 
 @section('content')
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" media="all" href="{{asset('fullcalendar/main.min.css')}}">
+    <script type="text/javascript" language="javascript" src="{{asset('fullcalendar/main.min.js')}}"></script>
+    <script type="text/javascript" language="javascript" src="{{asset('fullcalendar/locales-all.min.js')}}"></script>
+
     <H1>@lang('Registrerad tid')</H1>
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    {!! $calendar->calendar() !!}
+    {!! $calendar->script() !!}
 
     @if(isset($workplaces) && count($workplaces) > 0)
         @foreach($workplaces as $workplace)

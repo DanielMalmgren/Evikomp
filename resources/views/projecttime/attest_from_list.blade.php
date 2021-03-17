@@ -58,7 +58,7 @@
 
         <br>
 
-        <button class="btn btn-primary btn-lg btn-block" id="submit" name="submit" type="submit">@lang('Attestera')</button>
+        <button {{$project_time->time_attests->isNotEmpty()?"disabled":""}} class="btn btn-primary btn-lg btn-block" id="submit" name="submit" type="submit">@lang('Attestera')</button>
     </form>
 
 

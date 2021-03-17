@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Lesson;
 use App\Track;
 use App\Announcement;
+use App\ProjectTime;
 
 class SearchController extends Controller
 {
@@ -14,6 +16,20 @@ class SearchController extends Controller
         $results = ['results' => []];
 
         $i=-1;
+
+        if (Auth::user()->hasRole('Admin')) {
+            $mindate = date("Y-m-d", strtotime("first day of previous month"));
+            $project_time = ProjectTime::find($request->q);
+            if($project_time !== null && $project_time->date >= $mindate) {
+                $i++;
+                $results['results'][$i]['text'] = __('Attestering från lista');
+                $results['results'][$i]['children'][0] = [
+                    'id' => $project_time->id,
+                    'text' => $project_time->id,
+                    'url' => '/projecttime/attest_from_list/'.$project_time->id,
+                ];
+            }    
+        }
 
         $lessons = Lesson::whereTranslationLike('name', '%'.$request->q.'%')->orWhereHas('contents', static function ($query) use($request){
             $query->where('content', 'like', '%'.$request->q.'%')->orWhereTranslationLike('text', '%'.$request->q.'%');

@@ -21,6 +21,7 @@
 
     <footer>
         <img height="100" style="float:right" src="{{public_path('/images/EU_logga.png')}}">
+        <p style="position:absolute;bottom:10;">id: {{$project_time->id}}</p>
     </footer>
 
     <H1>@lang('Evikomp närvarolista')</H1>
@@ -30,7 +31,8 @@
         {{\Carbon\Carbon::createFromFormat('H:i:s',$project_time->starttime)->format('h:i')}} -
         {{\Carbon\Carbon::createFromFormat('H:i:s',$project_time->endtime)->format('h:i')}}
     </p>
-    @lang('Kommun: ') {{$project_time->workplace->municipality->name}}<br>
+    @lang('Projekt: ') Evikomp 2.0 (2020/00088)<br>
+    @lang('Kommun: ') {{$project_time->workplace->municipality->name}} ({{$project_time->workplace->municipality->orgnummer}})<br>
     @lang('Arbetsplats: ') {{$project_time->workplace->name}}<br>
     @lang('Aktivitet: ') {{$project_time->project_time_type->name}}<br>
 

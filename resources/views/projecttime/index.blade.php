@@ -34,11 +34,13 @@
                                     <i class="fas fa-arrow-right"></i>
                                     <i class="fas fa-clipboard-list"></i>
                                 </div>
-                                <div class="col-lg-1 col-md-1 col-sm-1" onClick="window.location='/projecttime/attest_from_list/{{$project_time->id}}'">
-                                    <i class="fas fa-clipboard-list"></i>
-                                    <i class="fas fa-arrow-right"></i>
-                                    <i class="fas fa-stamp"></i>
-                                </div>
+                                @if($project_time->time_attests->isEmpty())
+                                    <div class="col-lg-1 col-md-1 col-sm-1" onClick="window.location='/projecttime/attest_from_list/{{$project_time->id}}'">
+                                        <i class="fas fa-clipboard-list"></i>
+                                        <i class="fas fa-arrow-right"></i>
+                                        <i class="fas fa-stamp"></i>
+                                    </div>
+                                @endif
                             </div>
                         </a>
 

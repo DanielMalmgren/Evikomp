@@ -194,10 +194,12 @@ class ProjectTimeController extends Controller
 
     public function index(Workplace $workplace=null) {
         $mindate = date("Y-m-d", strtotime("first day of previous month"));
+        $maxdate = date("Y-m-d", strtotime("last day of next month"));
 
         if($workplace) {
             $workplaces = collect();
             $workplaces->add($workplace);
+            $project_times = ProjectTime::where('date', '>=', $mindate)->where('workplace_id', $workplace->id)->get();
         } else {
             $workplaces = null;
 
@@ -205,51 +207,54 @@ class ProjectTimeController extends Controller
                 $workplaces = Workplace::whereHas('project_times', function (Builder $query) use($mindate) {
                     $query->where('date', '>=', $mindate);
                 })->get();
+                $project_times = ProjectTime::where('date', '>=', $mindate)->get();
             } elseif (Auth::user()->hasRole('Arbetsplatsadministratör')) {
                 //TODO: Filter out workplaces not having any project time recently (like we're doing with admin above)
                 $workplaces = Auth::user()->admin_workplaces; //->prepend(Auth::user()->workplace);
+                $project_times = collect(); //TODO: FIX!
             }
         }
 
-
-
         $events = [];
 
-        $events[] = \Calendar::event(
-            'Event One', //event title
-            false, //full day event?
-            '2015-02-11T0800', //start time (you can also use Carbon instead of DateTime)
-            '2015-02-12T0800', //end time (you can also use Carbon instead of DateTime)
-            0 //optionally, you can specify an event ID
-        );
-        
-        $events[] = \Calendar::event(
-            "Valentine's Day", //event title
-            true, //full day event?
-            new \DateTime('2015-02-14'), //start time (you can also use Carbon instead of DateTime)
-            new \DateTime('2015-02-14'), //end time (you can also use Carbon instead of DateTime)
-            'stringEventId' //optionally, you can specify an event ID
-        );
-        
-        $calendar = new \Calendar();
-                $calendar->addEvents($events)
+        foreach($project_times as $project_time) {
+            $events[] = \Calendar::event(
+                $project_time->workplace->name, //event title
+                false, //full day event?
+                $project_time->date.'T'.$project_time->startstr(),
+                $project_time->date.'T'.$project_time->endstr(),
+                $project_time->id,
+                [
+                    'url' => '/projecttime/'.$project_time->id.'/edit',
+                    'backgroundColor' => '#'.substr(md5($project_time->workplace->id), 0, 6),
+                ]
+            );
+        }
+
+        $calendar = \Calendar::addEvents($events)
                 ->setOptions([
-                    'locale' => 'sv',
-                    'firstDay' => 0,
+                    'locale' => substr(\App::getLocale(), 0, 2),
+                    'weekNumberCalculation' => 'ISO',
+                    'weekNumbers' => true,
                     'displayEventTime' => true,
+                    'displayEventEnd' => true,
+                    'eventTimeFormat' => [
+                        'hour' => '2-digit',
+                        'minute' => '2-digit',
+                        'meridiem' => false
+                    ],
                     'selectable' => true,
-                    'initialView' => 'timeGridWeek',
+                    'initialView' => 'dayGridMonth',
+                    'slotMinTime' => "07:00:00",
+                    'slotMaxTime' => "22:00:00",
+                    'validRange' => [
+                        'start' => $mindate,
+                        'end' => $maxdate
+                    ],
                     'headerToolbar' => [
-                        'end' => 'today prev,next dayGridMonth timeGridWeek timeGridDay'
+                        'end' => 'today prev,next dayGridMonth timeGridWeek'
                     ]
                 ]);
-                $calendar->setId('1');
-                $calendar->setCallbacks([
-                    'select' => 'function(selectionInfo){}',
-                    'eventClick' => 'function(event){}'
-                ]);
-
-
 
         $data = [
             'workplaces' => $workplaces,

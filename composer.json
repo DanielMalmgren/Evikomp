@@ -17,6 +17,7 @@
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
+        "marwelln/holiday": "~2.0",
         "nexmo/laravel": "^2.4",
         "phpoffice/phpspreadsheet": "^1.9",
         "sentry/sentry-laravel": "2.3.1",

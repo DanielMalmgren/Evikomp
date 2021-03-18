@@ -42,7 +42,7 @@ class Workplace extends Model
 
     public function project_times(): HasMany
     {
-        return $this->hasMany('App\ProjectTime');
+        return $this->hasMany('App\ProjectTime')->orderBy('date')->orderBy('starttime');
     }
 
     public function ptusers($month)

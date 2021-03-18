@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Marwelln\Holiday;
 use App\User;
 use App\Workplace;
 use App\ProjectTime;
@@ -192,9 +193,41 @@ class ProjectTimeController extends Controller
         }
     }
 
-    public function index(Workplace $workplace=null) {
+    public function index(Request $request, Workplace $workplace=null) {
         $mindate = date("Y-m-d", strtotime("first day of previous month"));
         $maxdate = date("Y-m-d", strtotime("last day of next month"));
+
+        $events = [];
+
+        //Make sundays red
+        $events[] = \Calendar::event(
+            '', //event title
+            true, //full day event?
+            $mindate,
+            $maxdate,
+            0,
+            [
+                'display' => 'background',
+                'color' => '#ff0000',
+                'daysOfWeek' => '0',
+            ]
+        );
+
+        //Make Swedish holidays red
+        $holidays = (new Holiday)->between(new \DateTime($mindate), new \DateTime($maxdate));
+        foreach($holidays as $holiday) {
+            $events[] = \Calendar::event(
+                '', //event title
+                true, //full day event?
+                $holiday['date'],
+                $holiday['date'],
+                0,
+                [
+                    'display' => 'background',
+                    'color' => '#ff0000'
+                ]
+            );
+        }
 
         if($workplace) {
             $workplaces = collect();
@@ -215,8 +248,6 @@ class ProjectTimeController extends Controller
             }
         }
 
-        $events = [];
-
         foreach($project_times as $project_time) {
             $events[] = \Calendar::event(
                 $project_time->workplace->name, //event title
@@ -234,6 +265,7 @@ class ProjectTimeController extends Controller
         $calendar = \Calendar::addEvents($events)
                 ->setOptions([
                     'locale' => substr(\App::getLocale(), 0, 2),
+                    'themeSystem' => 'bootstrap',
                     'weekNumberCalculation' => 'ISO',
                     'weekNumbers' => true,
                     'displayEventTime' => true,

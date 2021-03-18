@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Registrerad tid'))
+@section('title', __('Registrerade lärtillfällen'))
 
 @section('content')
 
@@ -10,71 +10,96 @@
     <script type="text/javascript" language="javascript" src="{{asset('fullcalendar/main.min.js')}}"></script>
     <script type="text/javascript" language="javascript" src="{{asset('fullcalendar/locales-all.min.js')}}"></script>
 
-    <H1>@lang('Registrerad tid')</H1>
+    <H1>@lang('Registrerade lärtillfällen')</H1>
 
-    {!! $calendar->calendar() !!}
-    {!! $calendar->script() !!}
+    <ul class="nav nav-tabs tabs-up" id="charts">
+        <li class="nav-item"><a href="#" data-target="#calendar" class="nav-link active" data-toggle="tabchange" rel="tooltip"> @lang('Kalender') </a></li>
+        <li class="nav-item"><a href="#" data-target="#list" class="nav-link" data-toggle="tabchange" rel="tooltip"> @lang('Lista') </a></li>
+    </ul>
 
-    @if(isset($workplaces) && count($workplaces) > 0)
-        @foreach($workplaces as $workplace)
-            @if(count($workplace->project_times) > 0)
-                <label>{{$workplace->name}}</label>
-                @foreach($workplace->project_times->sortBy('date') as $project_time)
-                    @if($project_time->date > $mindate)
+    <br>
 
-                        <a class="list-group-item list-group-item-action">
-                            <div class="row">
-                                <div class="col-lg-3 col-md-3 col-sm-3">
-                                    {{$project_time->date}} {{$project_time->startstr()}}-{{$project_time->endstr()}}
-                                </div>
-                                <div class="col-lg-3 col-md-3 col-sm-2">
-                                    @lang('Registrerat av') {{$project_time->registered_by_user->name}}
-                                </div>
-                                <div class="col-lg-2 col-md-2 col-sm-2">
-                                    {{$project_time->users->count()}} @lang('deltagare')
-                                </div>
-                                <div class="col-lg-1 col-md-1 col-sm-1">
-                                    <i class="fas fa-edit" onClick="window.location='/projecttime/{{$project_time->id}}/edit'"></i>
-                                </div>
-                                <div class="col-lg-1 col-md-1 col-sm-1" onClick="window.location='/projecttime/presence_list/{{$project_time->id}}'">
-                                    <i class="fas fa-print"></i>
-                                    <i class="fas fa-arrow-right"></i>
-                                    <i class="fas fa-clipboard-list"></i>
-                                </div>
-                                @if($project_time->time_attests->isEmpty())
-                                    <div class="col-lg-1 col-md-1 col-sm-1" onClick="window.location='/projecttime/attest_from_list/{{$project_time->id}}'">
-                                        <i class="fas fa-clipboard-list"></i>
-                                        <i class="fas fa-arrow-right"></i>
-                                        <i class="fas fa-stamp"></i>
+    <div class="tab-content">
+
+        <div id="calendar" class="tab-pane show active">
+            {!! $calendar->calendar() !!}
+            {!! $calendar->script() !!}
+        </div>
+
+        <div id="list" class="tab-pane">
+            @if(isset($workplaces) && count($workplaces) > 0)
+                @foreach($workplaces as $workplace)
+                    @if(count($workplace->project_times) > 0)
+                        <label>{{$workplace->name}}</label>
+                        @foreach($workplace->project_times as $project_time)
+                            @if($project_time->date > $mindate)
+
+                                <a class="list-group-item list-group-item-action">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            {{$project_time->date}} {{$project_time->startstr()}}-{{$project_time->endstr()}}
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-2">
+                                            @lang('Registrerat av') {{$project_time->registered_by_user->name}}
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-2">
+                                            {{$project_time->users->count()}} @lang('deltagare')
+                                        </div>
+                                        <div class="col-lg-1 col-md-1 col-sm-1">
+                                            <i class="fas fa-edit" onClick="window.location='/projecttime/{{$project_time->id}}/edit'"></i>
+                                        </div>
+                                        @if($project_time->users->count() > 1)
+                                            <div class="col-lg-1 col-md-1 col-sm-1" onClick="window.location='/projecttime/presence_list/{{$project_time->id}}'">
+                                                <i class="fas fa-print"></i>
+                                                <i class="fas fa-arrow-right"></i>
+                                                <i class="fas fa-clipboard-list"></i>
+                                            </div>
+                                        @else
+                                            <div class="col-lg-1 col-md-1 col-sm-1"></div>
+                                        @endif
+                                        @if($project_time->time_attests->isEmpty() && $project_time->users->count() > 1)
+                                            <div class="col-lg-1 col-md-1 col-sm-1" onClick="window.location='/projecttime/attest_from_list/{{$project_time->id}}'">
+                                                <i class="fas fa-clipboard-list"></i>
+                                                <i class="fas fa-arrow-right"></i>
+                                                <i class="fas fa-stamp"></i>
+                                            </div>
+                                        @endif
                                     </div>
-                                @endif
-                            </div>
-                        </a>
+                                </a>
 
+                            @endif
+
+                        @endforeach
+                        <br>
                     @endif
-
                 @endforeach
-                <br>
-            @endif
-        @endforeach
-    @elseif(count(Auth::user()->project_times) > 0)
-        <ul class="list-group mb-3 tracks">
-            @foreach(Auth::user()->project_times->sortBy('date') as $project_time)
-                @if($project_time->date > $mindate)
-                    <li class="list-group-item d-flex justify-content-between lh-condensed nopadding {{$project_time->is_attested?"list-group-item-secondary":""}}">
-                        @if($project_time->registered_by == Auth::user()->id && !$project_time->is_attested)
-                            <a href="/projecttime/{{$project_time->id}}/edit">
-                        @else
-                            <a href="#">
+            @elseif(count(Auth::user()->project_times) > 0)
+                <ul class="list-group mb-3 tracks">
+                    @foreach(Auth::user()->project_times->sortBy('date') as $project_time)
+                        @if($project_time->date > $mindate)
+                            <li class="list-group-item d-flex justify-content-between lh-condensed nopadding {{$project_time->is_attested?"list-group-item-secondary":""}}">
+                                @if($project_time->registered_by == Auth::user()->id && !$project_time->is_attested)
+                                    <a href="/projecttime/{{$project_time->id}}/edit">
+                                @else
+                                    <a href="#">
+                                @endif
+                                    <h6 class="my-0">{{$project_time->date}} {{$project_time->startstr()}}-{{$project_time->endstr()}} {{$project_time->registered_by != Auth::user()->id?'('._('Registrerat av').' '.$project_time->registered_by_user->name.')':''}}</h6>
+                                </a>
+                            </li>
                         @endif
-                            <h6 class="my-0">{{$project_time->date}} {{$project_time->startstr()}}-{{$project_time->endstr()}} {{$project_time->registered_by != Auth::user()->id?'('._('Registrerat av').' '.$project_time->registered_by_user->name.')':''}}</h6>
-                        </a>
-                    </li>
-                @endif
-            @endforeach
-        </ul>
-    @else
-        @lang('Inga tidsregistreringar inlagda')
-    @endif
+                    @endforeach
+                </ul>
+            @else
+                @lang('Inga tidsregistreringar inlagda')
+            @endif
+        </div>
+    </div>
+
+<script type="text/javascript">
+    $('[data-toggle="tabchange"]').click(function(e) {
+        $(this).tab('show');
+        return false;
+    });
+</script>
 
 @endsection

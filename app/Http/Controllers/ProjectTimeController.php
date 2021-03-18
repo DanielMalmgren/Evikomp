@@ -284,8 +284,20 @@ class ProjectTimeController extends Controller
                         'end' => $maxdate
                     ],
                     'headerToolbar' => [
-                        'end' => 'today prev,next dayGridMonth timeGridWeek'
-                    ]
+                        'end' => 'today prev,next dayGridMonth workMonth timeGridWeek workWeek'
+                    ],
+                    'views' => [
+                        'workMonth' => [
+                            'buttonText' => __('Månad utan helger'),
+                            'type' => 'dayGridMonth',
+                            'weekends' => false,
+                        ],
+                        'workWeek' => [
+                            'buttonText' => __('Arbetsvecka'),
+                            'type' => 'timeGridWeek',
+                            'weekends' => false,
+                        ],
+                    ],
                 ]);
 
         $data = [

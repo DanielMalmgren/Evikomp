@@ -17,8 +17,6 @@
         <li class="nav-item"><a href="#" data-target="#list" class="nav-link" data-toggle="tabchange" rel="tooltip"> @lang('Lista') </a></li>
     </ul>
 
-    <br>
-
     <div class="tab-content">
 
         <div id="calendar" class="tab-pane show active">
@@ -29,49 +27,42 @@
         <div id="list" class="tab-pane">
             @if(isset($workplaces) && count($workplaces) > 0)
                 @foreach($workplaces as $workplace)
-                    @if(count($workplace->project_times) > 0)
-                        <label>{{$workplace->name}}</label>
-                        @foreach($workplace->project_times as $project_time)
-                            @if($project_time->date > $mindate)
-
-                                <a class="list-group-item list-group-item-action">
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-3 col-sm-3">
-                                            {{$project_time->date}} {{$project_time->startstr()}}-{{$project_time->endstr()}}
-                                        </div>
-                                        <div class="col-lg-3 col-md-3 col-sm-2">
-                                            @lang('Registrerat av') {{$project_time->registered_by_user->name}}
-                                        </div>
-                                        <div class="col-lg-2 col-md-2 col-sm-2">
-                                            {{$project_time->users->count()}} @lang('deltagare')
-                                        </div>
-                                        <div class="col-lg-1 col-md-1 col-sm-1">
-                                            <i class="fas fa-edit" onClick="window.location='/projecttime/{{$project_time->id}}/edit'"></i>
-                                        </div>
-                                        @if($project_time->users->count() > 1)
-                                            <div class="col-lg-1 col-md-1 col-sm-1" onClick="window.location='/projecttime/presence_list/{{$project_time->id}}'">
-                                                <i class="fas fa-print"></i>
-                                                <i class="fas fa-arrow-right"></i>
-                                                <i class="fas fa-clipboard-list"></i>
-                                            </div>
-                                        @else
-                                            <div class="col-lg-1 col-md-1 col-sm-1"></div>
-                                        @endif
-                                        @if($project_time->time_attests->isEmpty() && $project_time->users->count() > 1)
-                                            <div class="col-lg-1 col-md-1 col-sm-1" onClick="window.location='/projecttime/attest_from_list/{{$project_time->id}}'">
-                                                <i class="fas fa-clipboard-list"></i>
-                                                <i class="fas fa-arrow-right"></i>
-                                                <i class="fas fa-stamp"></i>
-                                            </div>
-                                        @endif
+                    <label>{{$workplace->name}}</label>
+                    @foreach($workplace->project_times->where('date', '>=', $mindate) as $project_time)
+                        <a class="list-group-item list-group-item-action">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-3">
+                                    {{$project_time->date}} {{$project_time->startstr()}}-{{$project_time->endstr()}}
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-2">
+                                    @lang('Registrerat av') {{$project_time->registered_by_user->name}}
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                    {{$project_time->users->count()}} @lang('deltagare')
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-1">
+                                    <i class="fas fa-edit" onClick="window.location='/projecttime/{{$project_time->id}}/edit'"></i>
+                                </div>
+                                @if($project_time->users->count() > 1)
+                                    <div class="col-lg-1 col-md-1 col-sm-1" onClick="window.location='/projecttime/presence_list/{{$project_time->id}}'">
+                                        <i class="fas fa-print"></i>
+                                        <i class="fas fa-arrow-right"></i>
+                                        <i class="fas fa-clipboard-list"></i>
                                     </div>
-                                </a>
-
-                            @endif
-
-                        @endforeach
-                        <br>
-                    @endif
+                                @else
+                                    <div class="col-lg-1 col-md-1 col-sm-1"></div>
+                                @endif
+                                @if($project_time->time_attests->isEmpty() && $project_time->users->count() > 1)
+                                    <div class="col-lg-1 col-md-1 col-sm-1" onClick="window.location='/projecttime/attest_from_list/{{$project_time->id}}'">
+                                        <i class="fas fa-clipboard-list"></i>
+                                        <i class="fas fa-arrow-right"></i>
+                                        <i class="fas fa-stamp"></i>
+                                    </div>
+                                @endif
+                            </div>
+                        </a>
+                    @endforeach
+                    <br>
                 @endforeach
             @elseif(count(Auth::user()->project_times) > 0)
                 <ul class="list-group mb-3 tracks">

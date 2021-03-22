@@ -53,6 +53,13 @@ class QuestionController extends Controller
             'text' => 'required',
             'correctAnswers' => 'required|integer',
             'lesson_id' => 'required',
+            'new_response_option_text.*' => 'string',
+            'response_option_text.*' => 'string',
+        ],
+        [
+            'text.required' => __('Du glömde skriva i själva frågan!'),
+            'new_response_option_text.*.string' => __('Du kan inte ange tomma svarsalternativ!'),
+            'response_option_text.*.string' => __('Du kan inte ange tomma svarsalternativ!'),
         ]);
 
         $lesson = Lesson::find($request->lesson_id);

@@ -20,14 +20,16 @@
     <div class="tab-content">
 
         <div id="calendar" class="tab-pane show active">
+            <br>
             {!! $calendar->calendar() !!}
             {!! $calendar->script() !!}
         </div>
 
         <div id="list" class="tab-pane">
+            <br>
             @if(isset($workplaces) && count($workplaces) > 0)
                 @foreach($workplaces as $workplace)
-                    <label>{{$workplace->name}}</label>
+                    <h2>{{$workplace->name}}</h2>
                     @foreach($workplace->project_times->where('date', '>=', $mindate) as $project_time)
                         <a class="list-group-item list-group-item-action">
                             <div class="row">
@@ -52,13 +54,15 @@
                                 @else
                                     <div class="col-lg-1 col-md-1 col-sm-1"></div>
                                 @endif
-                                @if($project_time->time_attests->isEmpty() && $project_time->users->count() > 1)
-                                    <div class="col-lg-1 col-md-1 col-sm-1" onClick="window.location='/projecttime/attest_from_list/{{$project_time->id}}'">
-                                        <i class="fas fa-clipboard-list"></i>
-                                        <i class="fas fa-arrow-right"></i>
-                                        <i class="fas fa-stamp"></i>
-                                    </div>
-                                @endif
+                                @hasrole('Admin')
+                                    @if($project_time->time_attests->isEmpty() && $project_time->users->count() > 1)
+                                        <div class="col-lg-1 col-md-1 col-sm-1" onClick="window.location='/projecttime/attest_from_list/{{$project_time->id}}'">
+                                            <i class="fas fa-clipboard-list"></i>
+                                            <i class="fas fa-arrow-right"></i>
+                                            <i class="fas fa-stamp"></i>
+                                        </div>
+                                    @endif
+                                @endhasrole
                             </div>
                         </a>
                     @endforeach
@@ -91,6 +95,10 @@
         $(this).tab('show');
         return false;
     });
+
+    function onDateClick(dateClickInfo) {
+        window.location='/projecttime/create?date='+dateClickInfo.dateStr+'&allDay='+dateClickInfo.allDay;
+    }
 </script>
 
 @endsection

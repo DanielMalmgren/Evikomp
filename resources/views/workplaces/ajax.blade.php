@@ -171,7 +171,7 @@
 
         $(add_button).click(function(e){
             e.preventDefault();
-            $(wrapper).append('<a class="list-group-item list-group-item-action"><div class="row"><div class="col-lg-4 col-md-9 col-sm-7"><select class="new_admins" name="new_admins[]"></select></div><div class="col-lg-3 col-md-3 col-sm-5 adminleveldiv"><select class="custom-select d-block w-100 adminlevel" name="adminlevel[]"><option value="2">@lang('Arbetsplatskoordinator')</option><option value="3">@lang('Chef')</option></select></div><div class="col-lg-1 col-md-3 col-sm-5"><i class="fas fa-trash remove_field"></i></div></div></a>');
+            $(wrapper).append('<a class="list-group-item list-group-item-action"><div class="row"><div class="col-lg-4 col-md-9 col-sm-7"><select class="new_admins" name="new_admins[]"></select></div><div class="col-lg-3 col-md-3 col-sm-5 adminleveldiv"><select class="custom-select d-block w-100 adminlevel" name="adminlevel[]"><option value="3">@lang('Chef')</option></select></div><div class="col-lg-1 col-md-3 col-sm-5"><i class="fas fa-trash remove_field"></i></div></div></a>');
             addselect2();
         });
 

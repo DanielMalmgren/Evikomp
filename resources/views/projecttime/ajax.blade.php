@@ -52,14 +52,14 @@
 
     <div class="mb-3">
         <label for="date">@lang('Datum')</label>
-        <input type="date" name="date" min="{{$mindate}}" max="{{$maxdate}}" class="form-control" value="{{old('date')}}">
+        <input type="date" name="date" min="{{$mindate}}" max="{{$maxdate}}" class="form-control" value="{{old('date')??$date??''}}">
     </div>
 
     <div class="mb-3">
         <div class="row container">
             <div class="mb-3">
                 <label for="starttime">@lang('Från')</label>
-                <input type="time" name="starttime" class="form-control time" value="{{old('starttime')}}">
+                <input type="time" name="starttime" class="form-control time" value="{{old('starttime')??$time??''}}">
             </div>
             <div class="mb-3">
                 <label for="endtime">@lang('Till')</label>

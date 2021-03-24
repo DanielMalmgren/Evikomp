@@ -58,7 +58,15 @@ class ProjectTimeController extends Controller
         return view('projecttime.show')->with($data);
     }
 
-    public function create() {
+    public function create(Request $request) {
+        if($request->allDay == 'true') {
+            $date = $request->date;
+            $time = null;
+        } else {
+            $date = substr($request->date, 0, 10);
+            $time = substr($request->date, 11, 5);
+        }
+
         $project_time_types = ProjectTimeType::all();
         if (Auth::user()->hasRole('Admin')) {
             $workplaces = Workplace::all()->sortBy('name');
@@ -74,6 +82,9 @@ class ProjectTimeController extends Controller
             'project_time_types' => $project_time_types,
             'mindate' => $mindate,
             'maxdate' => $maxdate,
+            'date' => $date,
+            'time' => $time,
+            'allDay' => $request->allDay,
         ];
         return view('projecttime.create')->with($data);
     }
@@ -93,7 +104,7 @@ class ProjectTimeController extends Controller
         return view('projecttime.createsingleuser')->with($data);
     }
 
-    public function ajax(Workplace $workplace) {
+    public function ajax(Request $request, Workplace $workplace) {
         $project_time_types = ProjectTimeType::all();
 
         $mindate = date("Y-m-d", strtotime("first day of previous month"));
@@ -104,8 +115,16 @@ class ProjectTimeController extends Controller
             'project_time_types' => $project_time_types,
             'mindate' => $mindate,
             'maxdate' => $maxdate,
+            'date' => $request->date,
+            'time' => $request->time,
+            'allDay' => $request->allDay,
         ];
         return view('projecttime.ajax')->with($data);
+    }
+
+    public function destroy(ProjectTime $project_time) {
+        logger('Destroying project time '.$project_time->id);
+        $project_time->delete();
     }
 
     public function store(Request $request) {
@@ -113,7 +132,7 @@ class ProjectTimeController extends Controller
         $request->validate([
             'starttime' => 'required|date_format:H:i',
             'endtime' => 'required|date_format:H:i|after:starttime',
-            'date' => 'required|date|before_or_equal:today|date_format:Y-m-d',
+            'date' => 'required|date|date_format:Y-m-d',
             'users' => 'required',
             'workplace_id' => 'required',
         ],
@@ -123,7 +142,6 @@ class ProjectTimeController extends Controller
             'date.required' => __('Du måste ange ett datum!'),
             'date.date' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
             'date.date_format' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
-            'date.before_or_equal' => __('Du kan inte registrera tid i framtiden!'),
             'starttime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
             'endtime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
             'users.required' => __('Du måste ange minst en användare som tid ska registreras på!'),
@@ -138,17 +156,6 @@ class ProjectTimeController extends Controller
         //För varje registrering, kolla så inte startdate eller enddate är mellan registrerigens start eller slut, kolla även tvärtemot (Så inte registreringen ligger inom vårt intervall)
         foreach($request->users as $user_id) {
             $user = User::find($user_id);
-
-            //Checking for colliding attests
-            /*if($user->time_attests->where('month', $month)->where('year', $year)->count() > 0) {
-                //return back()->with('error', $user->name.' har redan attesterat denna månad!')->withInput();
-                add_flash_message(
-                    [
-                        'message' => __(':name har redan attesterat denna månad!', ['name' => $user->name]),
-                        'type' => 'danger',
-                    ]
-                );
-            }*/
 
             //Checking for colliding registration
             $occasions = $user->project_times()->where('date', $request->date)->get();
@@ -243,8 +250,8 @@ class ProjectTimeController extends Controller
                 $project_times = ProjectTime::where('date', '>=', $mindate)->get();
             } elseif (Auth::user()->hasRole('Arbetsplatsadministratör')) {
                 //TODO: Filter out workplaces not having any project time recently (like we're doing with admin above)
-                $workplaces = Auth::user()->admin_workplaces; //->prepend(Auth::user()->workplace);
-                $project_times = collect(); //TODO: FIX!
+                $workplaces = Auth::user()->admin_workplaces;
+                $project_times = ProjectTime::all()->whereIn('workplace_id', $workplaces->pluck('id'))->where('date', '>=', $mindate);
             }
         }
 
@@ -298,6 +305,10 @@ class ProjectTimeController extends Controller
                             'weekends' => false,
                         ],
                     ],
+                ]);
+
+        $calendar->setCallbacks([
+                    'dateClick' => 'function(dateClickInfo){onDateClick(dateClickInfo)}'
                 ]);
 
         $data = [

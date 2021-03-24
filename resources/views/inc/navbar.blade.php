@@ -59,9 +59,9 @@
                                         <li aria-haspopup="false"><a href="/workplace">@lang('Arbetsplatsinställningar')</a></li>
                                     @endcanany
                                     <li aria-haspopup="false"><a href="/projecttime/create">@lang('Registrera projekttid')</a></li>
+                                    <li aria-haspopup="false"><a href="/projecttime">@lang('Hantera lärtillfällen')</a></li>
                                     <li aria-haspopup="false"><a href="/timeattest/create">@lang('Attestera projekttid')</a></li>
                                     @hasrole('Admin')
-                                        <li aria-haspopup="false"><a href="/projecttime">@lang('Hantera lärtillfällen')</a></li>
                                         <li aria-haspopup="false"><a href="/poll">@lang('Hantera enkäter')</a></li>
                                         <li aria-haspopup="false"><a href="/massmailing/create">@lang('Skicka e-post')</a></li>
                                     @endhasrole

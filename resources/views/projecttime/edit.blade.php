@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Ändra projekttid'))
+@section('title', __('Redigera lärtillfälle'))
 
 @section('content')
 
@@ -27,11 +27,28 @@
             }
         });
     });
+
+    function deleteprojecttime() {
+        if(confirm('Vill du verkligen radera detta lärtillfälle?')) {
+            var token = "{{ csrf_token() }}";
+            $.ajax({
+                url: '/projecttime/{{$project_time->id}}',
+                data : {_token:token},
+                type: 'DELETE',
+                success: function(result) {
+                    console.log(result)
+                }
+            })
+            .always(function() {
+                window.location='/projecttime/';
+            });
+        }
+    }
 </script>
 
 <div class="col-md-5 mb-3">
 
-    <H1>@lang('Ändra projekttid')</H1>
+    <H1>@lang('Redigera lärtillfälle')</H1>
 
     <form method="post" name="question" action="{{action('ProjectTimeController@update', $project_time->id)}}" accept-charset="UTF-8">
         @method('put')
@@ -77,9 +94,9 @@
 
         <br>
 
-        <button class="btn btn-primary btn-lg btn-block" id="submit" name="submit" type="submit">@lang('Spara')</button>
+        <button class="btn btn-primary btn-lg" id="submit" name="submit" type="submit">@lang('Spara')</button>
+        <button type="button" class="btn btn-lg btn-danger" onclick="deleteprojecttime()">@lang('Radera lärtillfälle')</button>
     </form>
-
 
 </div>
 

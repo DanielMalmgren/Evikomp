@@ -8,7 +8,7 @@
     $(function() {
         $('#workplace').change(function(){
             var selectedValue = $(this).val();
-            $("#settings").load("/projecttimeajax/" + selectedValue);
+            $("#settings").load("/projecttimeajax/" + selectedValue + "?date={{$date}}&time={{$time}}&allDay={{$allDay}}");
         });
     });
 </script>

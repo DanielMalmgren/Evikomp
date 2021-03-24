@@ -211,7 +211,7 @@
 
         <br><br>
 
-        <button class="btn btn-primary btn-lg btn-primary" type="submit">@lang('Spara')</button>
+        <button class="btn btn-primary btn-lg btn-primary" type="submit">@lang('Spara')</button><br>
         <button type="button" class="btn btn-lg btn-danger" onclick="deletelesson()">@lang('Radera lektion')</button>
 
     </form>

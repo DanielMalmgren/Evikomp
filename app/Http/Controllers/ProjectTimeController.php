@@ -220,11 +220,30 @@ class ProjectTimeController extends Controller
             ]
         );
 
+        $swedish_holiday_names = [
+            'newyearsday' => 'Nyårsdagen',
+            'newyearseve' => 'Nyårsafton',
+            'epiphany' => 'Trettondedag jul',
+            'easter' => 'Påskdagen',
+            'goodfriday' => 'Långfredagen',
+            'eastermonday' => 'Annandag påsk',
+            'ascensionday' => 'Kristi himmelfärdsdag',
+            'pentecostday' => 'Pingstdagen',
+            'mayday' => 'Första maj',
+            'swedishnationalday' => 'Sveriges nationaldag',
+            'midsummereve' => 'Midsommarafton',
+            'midsummerday' => 'Midsommardagen',
+            'allsaintsday' => 'Alla helgons dag',
+            'christmaseve' => 'Julafton',
+            'christmasday' => 'Juldagen',
+            'boxingday' => 'Annandag jul'
+        ];
+
         //Make Swedish holidays red
         $holidays = (new Holiday)->between(new \DateTime($mindate), new \DateTime($maxdate));
         foreach($holidays as $holiday) {
             $events[] = \Calendar::event(
-                '', //event title
+                $swedish_holiday_names[$holiday['id']], //event title
                 true, //full day event?
                 $holiday['date'],
                 $holiday['date'],

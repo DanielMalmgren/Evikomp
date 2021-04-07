@@ -63,7 +63,7 @@ class LessonController extends Controller
             }
         }
 
-        return redirect('/lessons/'.$newLesson->id)->with('success', __('Lektionen har kopierats'));
+        return redirect('/lessons/'.$newLesson->id)->with('success', __('Modulen har kopierats'));
     }
 
     public function create(Track $track): View {
@@ -86,7 +86,7 @@ class LessonController extends Controller
             'icon' => 'image|max:2000',
         ],
         [
-            'name.required' => __('Du måste ange ett namn på lektionen!'),
+            'name.required' => __('Du måste ange ett namn på modulen!'),
             'color.exists' => __('Du måste välja en av de förvalda färgerna!'),
             'icon.image' => __('Felaktigt bildformat!'),
             'icon.max' => __('Din fil är för stor! Max-storleken är 2MB!'),
@@ -199,7 +199,7 @@ class LessonController extends Controller
             'icon' => 'image|max:2000',
         ],
         [
-            'name.required' => __('Du måste ange ett namn på lektionen!'),
+            'name.required' => __('Du måste ange ett namn på modulen!'),
             'new_audio.*.mimetypes' => __('Din ljudfil måste vara i mp3-format!'),
             'new_office.*.mimetypes' => __('Din file måste vara antingen ett Word-dokument, en Excel-fil eller en Powerpoint-presentation!'),
             'new_image.*.image' => __('Felaktigt bildformat!'),

@@ -62,6 +62,11 @@ class Lesson extends Model
         ]);
     }
 
+    public function project_times(): BelongsToMany
+    {
+        return $this->belongsToMany('App\ProjectTime');
+    }
+
     public function rating()
     {
         return $this->lesson_results->sum('rating');

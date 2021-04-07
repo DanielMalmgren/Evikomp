@@ -36,7 +36,7 @@ class SearchController extends Controller
         })->get();
         if($lessons->isNotEmpty()) {
             $i++;
-            $results['results'][$i]['text'] = __('Lektioner');
+            $results['results'][$i]['text'] = __('Moduler');
             foreach($lessons as $key => $lesson) {
                 $results['results'][$i]['children'][$key] = [
                     'id' => $lesson->id,

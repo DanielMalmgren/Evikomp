@@ -32,9 +32,9 @@
         @csrf
 
         <div class="mb-3">
-            <label for="lesson">@lang('Min feedback gäller lektion')</label>
+            <label for="lesson">@lang('Min feedback gäller modul')</label>
             <select class="custom-select d-block w-100" name="lesson" id="lesson">
-                <option selected value="null">@lang('Ingen specifik lektion')</option>
+                <option selected value="null">@lang('Ingen specifik modul')</option>
                 @foreach($lessons as $lesson)
                     @if(isset($activelesson) && $lesson->id == $activelesson)
                         <option selected value="{{$lesson->name}}">{{$lesson->name}}</option>

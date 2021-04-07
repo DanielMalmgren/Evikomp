@@ -155,6 +155,6 @@ class TimeAttestController extends Controller
             }
         }
 
-        return redirect('/projecttime/'.$project_time->workplace_id)->with('success', __('Lektionstillfället har nu markerats som attesterat'));
+        return redirect('/projecttime/'.$project_time->workplace_id)->with('success', __('Lärtillfället har nu markerats som attesterat'));
     }
 }

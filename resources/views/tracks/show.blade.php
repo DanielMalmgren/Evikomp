@@ -20,7 +20,7 @@
 
     @if($is_editor)
         @if(locale_is_default())
-            <a href="/lessons/create/{{$track->id}}" class="btn btn-primary">@lang('Lägg till lektion')</a>
+            <a href="/lessons/create/{{$track->id}}" class="btn btn-primary">@lang('Lägg till modul')</a>
             <a href="/scormimport/create/{{$track->id}}" class="btn btn-primary">@lang('Importera SCORM-fil')</a>
         @endif
 

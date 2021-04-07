@@ -8,7 +8,7 @@
 <p>@lang('Antal personer inloggade idag: ') {{$sessions}}</p>
 <p>@lang('Antal registrerade användare: ') {{$users}} (Varav {{$maleusers}} män och {{$femaleusers}} kvinnor)</p>
 <p>@lang('Antal arbetsplatser: ') {{$workplaces}}</p>
-<p>@lang('Antal upplagda lektioner: ') {{$lessons}}</p>
+<p>@lang('Antal upplagda moduler: ') {{$lessons}}</p>
 <p>@lang('Antal timmar i plattformen hittills: ') {{$totalactivehours}} (I snitt {{$averageactivehours}} timmar per deltagare)</p>
 <p>@lang('Antal timmar manuellt registrerade hittills: ') {{$totalprojecthours}}</p>
 <p>@lang('Antal timmar attesterade av deltagare hittills: ') {{$attestedhourslevel1}} (I snitt {{$attestedhourslevel1peruser}} timmar per deltagare, {{$attestedhourslevel1permale}} för män och {{$attestedhourslevel1perfemale}} för kvinnor)</p>

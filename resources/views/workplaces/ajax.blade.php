@@ -23,6 +23,11 @@
         <label><input type="checkbox" name="includetimeinreports" value="1" {{$workplace->includetimeinreports?"checked":""}}>@lang('Inkludera i tidrapporter')</label>
     </div>
 
+    <div class="mb-3">
+        <input type="hidden" name="training_coordinator" value="0">
+        <label><input type="checkbox" name="training_coordinator" value="1" {{$workplace->training_coordinator?"checked":""}}>@lang('Utbildningssamordnare')</label>
+    </div>
+
     <label>@lang('Obligatoriska spår')</label>
     @if(count($tracks) > 0)
     <div class="card">

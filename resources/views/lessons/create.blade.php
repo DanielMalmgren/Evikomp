@@ -49,7 +49,7 @@
     });
 </script>
 
-    <H1>@lang('Lägg till lektion')</H1>
+    <H1>@lang('Lägg till modul')</H1>
 
     <form method="post" name="lesson" action="{{action('LessonController@store')}}" accept-charset="UTF-8" enctype="multipart/form-data">
         @csrf

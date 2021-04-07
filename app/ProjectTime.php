@@ -4,32 +4,67 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ProjectTime extends Model
 {
-    public function workplace()
+    //The workplace having this project time
+    public function workplace(): BelongsTo
     {
         return $this->belongsTo('App\Workplace');
     }
 
-    public function project_time_type()
+    //The type of project time
+    public function project_time_type(): BelongsTo
     {
         return $this->belongsTo('App\ProjectTimeType');
     }
 
-    public function users()
+    //The users having this project time
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany('App\User');
     }
 
-    public function registered_by_user()
+    //The user registering this project time
+    public function registered_by_user(): BelongsTo
     {
         return $this->belongsTo('App\User', 'registered_by');
     }
 
+    //The time attests connected to this project time (only used if atttesting from presence list)
     public function time_attests(): HasMany
     {
         return $this->hasMany('App\TimeAttest');
+    }
+
+    //The teacher assigned to this lesson
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo('App\User', 'teacher_id');
+    }
+
+    //The training coordinator organization responsible for assigning a teacher
+    public function training_coordinator(): BelongsTo
+    {
+        return $this->belongsTo('App\Workplace', 'training_coordinator_id');
+    }
+
+    //The lessons the workplace wants to be taught this project time
+    public function lessons(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Lesson');
+    }
+
+    //Return the color of this project time (in hex), which depends on it's status
+    public function color()
+    {
+        if($this->need_teacher && $this->teacher_id === null) {
+            return '#ff0000';
+        } else {
+            return '#00ff00';
+        }
     }
 
     //Return the number of minutes for this project time

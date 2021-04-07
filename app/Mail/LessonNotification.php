@@ -36,6 +36,6 @@ class LessonNotification extends Mailable
      */
     public function build()
     {
-        return $this->subject(_('Notifiering om avklarad lektion'))->view('emails.lesson_notification');
+        return $this->subject(_('Notifiering om avklarad modul'))->view('emails.lesson_notification');
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Redigera lektion'))
+@section('title', __('Redigera modul'))
 
 @section('content')
 
@@ -39,7 +39,7 @@
     }
 
     function deletelesson() {
-        if(confirm('Vill du verkligen radera denna lektion?')) {
+        if(confirm('Vill du verkligen radera denna modul?')) {
             var token = "{{ csrf_token() }}";
             $.ajax({
                 url: '/lessons/{{$lesson->id}}',
@@ -77,7 +77,7 @@
     });
 </script>
 
-    <H1>@lang('Redigera lektion')</H1>
+    <H1>@lang('Redigera modul')</H1>
 
     <form method="post" name="lesson" action="{{action('LessonController@update', $lesson->id)}}" accept-charset="UTF-8" enctype="multipart/form-data">
         @method('put')
@@ -212,7 +212,7 @@
         <br><br>
 
         <button class="btn btn-primary btn-lg btn-primary" type="submit">@lang('Spara')</button><br>
-        <button type="button" class="btn btn-lg btn-danger" onclick="deletelesson()">@lang('Radera lektion')</button>
+        <button type="button" class="btn btn-lg btn-danger" onclick="deletelesson()">@lang('Radera modul')</button>
 
     </form>
 

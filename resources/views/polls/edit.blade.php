@@ -72,7 +72,7 @@
 
         <div class="card">
             <div class="card-header">
-                @lang('Kopplad till lektion') <br>
+                @lang('Kopplad till modul') <br>
             </div>
             <div class="card-body">
                 <div id="lessons_wrap">

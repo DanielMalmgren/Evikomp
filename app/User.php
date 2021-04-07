@@ -127,6 +127,12 @@ class User extends Authenticatable
         return $this->hasMany('App\PollSession');
     }
 
+    //Get all project times for which this user is the teacher
+    public function taught_by(): HasMany
+    {
+        return $this->hasMany('App\ProjectTime', 'teacher_id');
+    }
+    
     /*public function gender()
     {
         logger('Namn: '.$this->name.', personnummer: '.$this->personid);

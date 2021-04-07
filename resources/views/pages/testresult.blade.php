@@ -40,24 +40,24 @@
             <br><br>
 
             @if($percent < $lesson->test_required_percent)
-                @lang('Inte riktigt alla rätt rakt igenom. Klicka på knappen nedan för att gå tilbaka till lektionen och repetera.')
+                @lang('Inte riktigt alla rätt rakt igenom. Klicka på knappen nedan för att gå tilbaka till modulen och repetera.')
                 <br><br>
-                <a href="/lessons/{{$lesson->id}}" class="btn btn-primary">@lang('Tillbaka till lektionen')</a>
+                <a href="/lessons/{{$lesson->id}}" class="btn btn-primary">@lang('Tillbaka till modulen')</a>
             @elseif(isset($lesson->poll))
                 @lang('Du klarade testet. Bra jobbat!')<br>
-                @lang('Vi önskar nu att du fyller i en enkät för att utvärdera denna lektion.')<br>
-                <a href="/poll/{{$lesson->poll->id}}" class="btn btn-primary">@lang('Utvärdera denna lektion')</a>        
+                @lang('Vi önskar nu att du fyller i en enkät för att utvärdera denna modul.')<br>
+                <a href="/poll/{{$lesson->poll->id}}" class="btn btn-primary">@lang('Utvärdera denna modul')</a>        
             @elseif(isset($nextlesson))
-                @lang('Bra, du klarade testet! Klicka på knappen nedan för att fortsätta till nästa lektion.')
+                @lang('Bra, du klarade testet! Klicka på knappen nedan för att fortsätta till nästa modul.')
                 <br><br>
-                <a href="/lessons/{{$nextlesson->id}}" class="btn btn-primary">@lang('Nästa lektion')</a>
+                <a href="/lessons/{{$nextlesson->id}}" class="btn btn-primary">@lang('Nästa modul')</a>
             @else
                 @lang('Du klarade testet. Bra jobbat!')
             @endif
 
             <br><br>
             @if(!isset($lesson->poll))
-                <a href="/feedback">@lang('Vi vill gärna veta vad du tyckte om lektionen. Klicka här för att lämna din åsikt!')</a>
+                <a href="/feedback">@lang('Vi vill gärna veta vad du tyckte om modulen. Klicka här för att lämna din åsikt!')</a>
             @endif
             {{--<p>
                 @lang('Vad tyckte du om lektionen? Ge tumme upp eller ned. Ditt svar är helt anonymt och hjälper oss att utveckla bättre innehåll!')

@@ -2,7 +2,7 @@
 <head></head>
 <body>
 @if($lesson != 'null')
-    <p>Avser lektion: {{$lesson}}</p>
+    <p>Avser modul: {{$lesson}}</p>
 @endif
 <p>{{$content}}</p>
 <hr>

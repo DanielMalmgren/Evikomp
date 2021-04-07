@@ -11,6 +11,8 @@ use App\Workplace;
 use App\ProjectTime;
 use App\ProjectTimeType;
 use App\ClosedMonth;
+use App\Track;
+use App\Lesson;
 use PDF;
 
 class ProjectTimeController extends Controller
@@ -85,7 +87,12 @@ class ProjectTimeController extends Controller
             'date' => $date,
             'time' => $time,
             'allDay' => $request->allDay,
+            'tracks' => Track::where('active', true)->get(),
+            'lessons' => Lesson::where('active', true)->get(),
         ];
+        if(!isset($request->date)) {
+            \Session::flash('warning', __('På grund av förändringar i plattformen kommer detta menyval att försvinna inom kort.<br> Registrera istället tid i projektet genom att gå in på menyvalet <i><b>Administration->Hantera lärtillfällen</b></i> och klicka på ett datum i kalendern!'));
+        }
         return view('projecttime.create')->with($data);
     }
 
@@ -101,14 +108,19 @@ class ProjectTimeController extends Controller
             'workplace' => $user->workplace,
             'mindate' => $mindate,
         ];
+        \Session::flash('warning', __('På grund av förändringar i plattformen kommer detta menyval att försvinna inom kort.<br> Registrera istället tid i projektet genom att gå in på menyvalet <i><b>Administration->Hantera lärtillfällen</b></i> och klicka på ett datum i kalendern!'));
         return view('projecttime.createsingleuser')->with($data);
     }
 
-    public function ajax(Request $request, Workplace $workplace) {
+    public function ajax(Request $request, Workplace $workplace=null) {
         $project_time_types = ProjectTimeType::all();
 
         $mindate = date("Y-m-d", strtotime("first day of previous month"));
         $maxdate = date("Y-m-d", strtotime("last day of next month"));
+
+        if($workplace === null) {
+            $workplace = Auth::user()->workplace;
+        }
 
         $data = [
             'workplace' => $workplace,
@@ -118,6 +130,8 @@ class ProjectTimeController extends Controller
             'date' => $request->date,
             'time' => $request->time,
             'allDay' => $request->allDay,
+            'tracks' => Track::where('active', true)->get(),
+            'lessons' => Lesson::where('active', true)->get(),
         ];
         return view('projecttime.ajax')->with($data);
     }
@@ -185,8 +199,10 @@ class ProjectTimeController extends Controller
         $project_time->workplace_id = $workplace->id;
         $project_time->project_time_type_id = $request->type;
         $project_time->registered_by = Auth::user()->id;
+        $project_time->need_teacher = $request->need_teacher;
         $project_time->save();
         $project_time->users()->sync($request->users);
+        $project_time->lessons()->sync($request->lessons);
 
         if($request->generate_presence_list) {
             if($request->signing_boss) {
@@ -194,9 +210,9 @@ class ProjectTimeController extends Controller
             }
 
             \Session::flash('download_file', '/projecttime/presence_list/'.$project_time->id);
-            return redirect($request->return_url)->with('success', __('Projekttiden har registrerats och närvarolista laddas ner'));
+            return redirect("/projecttime")->with('success', __('Lärtillfället har registrerats och närvarolista laddas ner'));
         } else {
-            return redirect($request->return_url)->with('success', __('Projekttiden har registrerats'));
+            return redirect("/projecttime")->with('success', __('Lärtillfället har registrerats'));
         }
     }
 
@@ -256,34 +272,40 @@ class ProjectTimeController extends Controller
         }
 
         if($workplace) {
-            $workplaces = collect();
-            $workplaces->add($workplace);
             $project_times = ProjectTime::where('date', '>=', $mindate)->where('workplace_id', $workplace->id)->get();
+        } elseif (Auth::user()->hasRole('Admin')) {
+            $project_times = ProjectTime::where('date', '>=', $mindate)
+                ->with(['workplace'])
+                ->orderBy('date')
+                ->orderBy('starttime')
+                ->get();
+        } elseif (Auth::user()->hasRole('Arbetsplatsadministratör')) {
+            $workplaces = Auth::user()->admin_workplaces->pluck('id');
+            $project_times = ProjectTime::whereIn('workplace_id', $workplaces)
+                ->orWhereIn('training_coordinator_id', $workplaces)
+                ->where('date', '>=', $mindate)
+                ->with(['workplace'])
+                ->orderBy('starttime')
+                ->get();
         } else {
-            $workplaces = null;
-
-            if (Auth::user()->hasRole('Admin')) {
-                $workplaces = Workplace::whereHas('project_times', function (Builder $query) use($mindate) {
-                    $query->where('date', '>=', $mindate);
-                })->get();
-                $project_times = ProjectTime::where('date', '>=', $mindate)->get();
-            } elseif (Auth::user()->hasRole('Arbetsplatsadministratör')) {
-                //TODO: Filter out workplaces not having any project time recently (like we're doing with admin above)
-                $workplaces = Auth::user()->admin_workplaces;
-                $project_times = ProjectTime::all()->whereIn('workplace_id', $workplaces->pluck('id'))->where('date', '>=', $mindate);
-            }
+            $project_times = Auth::user()->project_times
+                ->where('date', '>=', $mindate)
+                ->with(['workplace'])
+                ->sortBy('starttime');
         }
 
         foreach($project_times as $project_time) {
             $events[] = \Calendar::event(
                 $project_time->workplace->name, //event title
                 false, //full day event?
-                $project_time->date.'T'.$project_time->startstr(),
-                $project_time->date.'T'.$project_time->endstr(),
+                //TODO: Fix the time zone stuff! Ugly temporary solution!
+                //See https://github.com/acaronlex/laravel-calendar/issues/17
+                $project_time->date.'T'.$project_time->startstr().':00+02:00',
+                $project_time->date.'T'.$project_time->endstr().':00+02:00',
                 $project_time->id,
                 [
                     'url' => '/projecttime/'.$project_time->id.'/edit',
-                    'backgroundColor' => '#'.substr(md5($project_time->workplace->id), 0, 6),
+                    'backgroundColor' => $project_time->color(),
                 ]
             );
         }
@@ -291,6 +313,7 @@ class ProjectTimeController extends Controller
         $calendar = \Calendar::addEvents($events)
                 ->setOptions([
                     'locale' => substr(\App::getLocale(), 0, 2),
+                    'timezone' => 'Europe/Stockholm',
                     'themeSystem' => 'bootstrap',
                     'weekNumberCalculation' => 'ISO',
                     'weekNumbers' => true,
@@ -331,7 +354,7 @@ class ProjectTimeController extends Controller
                 ]);
 
         $data = [
-            'workplaces' => $workplaces,
+            'project_times' => $project_times,
             'mindate' => $mindate,
             'calendar' => $calendar,
         ];
@@ -343,18 +366,56 @@ class ProjectTimeController extends Controller
         $project_time_types = ProjectTimeType::all();
         $user = Auth::user();
 
-        if($project_time->registered_by_user != $user && ! $user->hasRole('Admin') && ! $project_time->workplace->workplace_admins->contains('id', $user->id)) {
+        $can_edit = false;
+        $can_see_contact_info = false;
+        $can_see_collegues = false;
+        $can_change_training_coordinator = false;
+        $can_change_teacher = false;
+
+        if($user->hasRole('Admin')){
+            $can_edit = true;
+            $can_see_contact_info = true;
+            $can_see_collegues = true;
+            $can_change_training_coordinator = true;
+            $can_change_teacher = true;
+        } elseif($project_time->workplace->workplace_admins->contains('id', $user->id)) {
+            $can_edit = true;
+            $can_see_contact_info = true;
+            $can_see_collegues = true;
+        } elseif(isset($project_time->training_coordinator) && 
+                $project_time->training_coordinator->users->contains('id', $user->id) ||
+                $project_time->training_coordinator->workplace_admins->contains('id', $user->id)) {
+            $can_edit = false;
+            $can_see_contact_info = true;
+            $can_see_collegues = true;
+            $can_change_teacher = true;
+        } elseif($project_time->registered_by == $user->id) {
+            $can_edit = true;
+        } elseif($project_time->users->contains('id', $user->id)) {
+            //User that can see but not touch...
+        } else {
             abort(403);
         }
 
         $mindate = date("Y-m-d", strtotime("first day of previous month"));
+        $maxdate = date("Y-m-d", strtotime("last day of next month"));
 
         $data = [
             'project_time_types' => $project_time_types,
             'user' => $user,
             'workplace' => $project_time->workplace,
             'mindate' => $mindate,
+            'maxdate' => $maxdate,
             'project_time' => $project_time,
+            'training_coordinators' => Workplace::where('training_coordinator', true)->get(),
+            'teachers' => isset($project_time->training_coordinator_id)?$project_time->training_coordinator->users:null,
+            'tracks' => Track::where('active', true)->get(),
+            'lessons' => Lesson::where('active', true)->get(),
+            'can_edit' => $can_edit,
+            'can_see_contact_info' => $can_see_contact_info,
+            'can_see_collegues' => $can_see_collegues,
+            'can_change_training_coordinator' => $can_change_training_coordinator,
+            'can_change_teacher' => $can_change_teacher,
         ];
         return view('projecttime.edit')->with($data);
     }
@@ -374,43 +435,73 @@ class ProjectTimeController extends Controller
     }
 
     public function update(Request $request, ProjectTime $project_time) {
+        usleep(50000);
         $user = Auth::user();
-        if($project_time->registered_by_user != $user && ! $user->hasRole('Admin') && ! $project_time->workplace->workplace_admins->contains('id', $user->id)) {
+
+        if($user->hasRole('Admin') ||
+            $project_time->workplace->workplace_admins->contains('id', $user->id)) {
+            $request->validate([
+                'starttime' => 'date_format:H:i',
+                'endtime' => 'date_format:H:i|after:starttime',
+                'date' => 'date|date_format:Y-m-d',
+                'users' => 'required',
+            ],
+            [
+                'date.date' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
+                'date.date_format' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
+                'starttime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
+                'endtime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
+                'users.required' => __('Du måste ange minst en användare som tid ska registreras på!'),
+                'endtime.after' => __('Sluttiden får inte inträffa före starttiden!'),
+            ]);
+    
+            $project_time->date = $request->date;
+            $project_time->starttime = $request->starttime;
+            $project_time->endtime = $request->endtime;
+            $project_time->project_time_type_id = $request->type;
+            $project_time->need_teacher = $request->need_teacher;
+            if(isset($request->training_coordinator)) {
+                $project_time->training_coordinator_id = $request->training_coordinator;
+            }
+            if(isset($request->teacher)) {
+                $project_time->teacher_id = $request->teacher;
+            }
+            $project_time->save();
+            $project_time->users()->sync($request->users);
+            $project_time->lessons()->sync($request->lessons);
+        } elseif(isset($project_time->training_coordinator) && 
+                $project_time->training_coordinator->users->contains('id', $user->id) ||
+                $project_time->training_coordinator->workplace_admins->contains('id', $user->id)) {
+            if(isset($request->teacher)) {
+                $project_time->teacher_id = $request->teacher;
+            }
+            $project_time->save();
+        } elseif($project_time->registered_by == $user->id) {
+            $request->validate([
+                'starttime' => 'date_format:H:i',
+                'endtime' => 'date_format:H:i|after:starttime',
+                'date' => 'date|date_format:Y-m-d',
+                'users' => 'required',
+            ],
+            [
+                'date.date' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
+                'date.date_format' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
+                'starttime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
+                'endtime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
+                'users.required' => __('Du måste ange minst en användare som tid ska registreras på!'),
+                'endtime.after' => __('Sluttiden får inte inträffa före starttiden!'),
+            ]);
+    
+            $project_time->date = $request->date;
+            $project_time->starttime = $request->starttime;
+            $project_time->endtime = $request->endtime;
+            $project_time->project_time_type_id = $request->type;
+            $project_time->save();
+        } else {
             abort(403);
         }
 
-        usleep(50000);
-        $request->validate([
-            'starttime' => 'required|date_format:H:i',
-            'endtime' => 'required|date_format:H:i|after:starttime',
-            'date' => 'required|date|date_format:Y-m-d',
-            'users' => 'required',
-            'workplace_id' => 'required',
-        ],
-        [
-            'starttime.required' => __('Du måste ange en starttid!'),
-            'endtime.required' => __('Du måste ange en sluttid!'),
-            'date.required' => __('Du måste ange ett datum!'),
-            'date.date' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
-            'date.date_format' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
-            'starttime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
-            'endtime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
-            'users.required' => __('Du måste ange minst en användare som tid ska registreras på!'),
-            'endtime.after' => __('Sluttiden får inte inträffa före starttiden!'),
-        ]);
-
-        $workplace = Workplace::find($request->workplace_id);
-
-        $project_time->date = $request->date;
-        $project_time->starttime = $request->starttime;
-        $project_time->endtime = $request->endtime;
-        $project_time->workplace_id = $workplace->id;
-        $project_time->project_time_type_id = $request->type;
-        $project_time->registered_by = Auth::user()->id;
-        $project_time->save();
-        $project_time->users()->sync($request->users);
-
-        return redirect('/projecttime')->with('success', __('Projekttiden har ändrats'));
+        return redirect('/projecttime')->with('success', __('Lärtillfället har ändrats'));
     }
 
     public function presence_list(Request $request, ProjectTime $project_time) {

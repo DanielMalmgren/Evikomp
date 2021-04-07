@@ -14,7 +14,7 @@
     <p>@lang('Antal timmar attesterade av chef hittills: ') {{$attestedhourslevel3}}</p>
     <br>
 
-    <H2>@lang('Avklarade lektioner')</H2>
+    <H2>@lang('Avklarade moduler')</H2>
     @foreach($tracks as $track)
         <h3>{{$track->translateOrDefault(App::getLocale())->name}}</h3>
         @foreach($track->lessons->where('active', true)->sortBy('order') as $lesson)

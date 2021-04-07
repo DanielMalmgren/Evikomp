@@ -45,6 +45,11 @@ class Workplace extends Model
         return $this->hasMany('App\ProjectTime')->orderBy('date')->orderBy('starttime');
     }
 
+    public function color(): String
+    {
+        return '#'.substr(md5($this->id), 0, 6);
+    }
+
     public function ptusers($month)
     {
         $users = collect();

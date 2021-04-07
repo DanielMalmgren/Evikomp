@@ -35,6 +35,7 @@ class WorkplaceController extends Controller
         $workplace->workplace_type_id = $request->workplace_type;
         $workplace->municipality_id = $request->municipality;
         $workplace->includetimeinreports = $request->includetimeinreports;
+        $workplace->training_coordinator = $request->training_coordinator;
         $workplace->save();
 
         logger("Workplace ".$workplace->name." is being created by ".Auth::user()->name);
@@ -104,11 +105,17 @@ class WorkplaceController extends Controller
         $workplace->name = $request->name;
         $workplace->workplace_type_id = $request->workplace_type;
         $workplace->includetimeinreports = $request->includetimeinreports;
+        $workplace->training_coordinator = $request->training_coordinator;
         $workplace->save();
 
         logger("Workplace ".$workplace->name." is being edited by ".Auth::user()->name);
 
         return redirect('/workplace')->with('success', 'Uppgifterna sparade');
+    }
+
+    public function getusers(Workplace $workplace) {
+        $users = $workplace->users->map->only(['id', 'name'])->all();
+        return response()->json(['users' => $users]);
     }
 
     public function destroy(Workplace $workplace) {

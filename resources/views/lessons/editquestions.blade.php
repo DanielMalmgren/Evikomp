@@ -61,17 +61,17 @@
     });
 </script>
 
-    <H1>@lang('Redigera frågor för lektion') {{$lesson->translateOrDefault(App::getLocale())->name}}</H1>
+    <H1>@lang('Test för modul ') {{$lesson->translateOrDefault(App::getLocale())->name}}</H1>
 
     @if($questions->isEmpty())
-        @lang('Denna lektion har inga frågor. Du kan kopiera samtliga frågor ifrån en annan lektion genom att välja nedan.')
+        @lang('Denna modul har inga testfrågor. Du kan kopiera samtliga frågor ifrån en annan modul genom att välja nedan.')
 
         <form method="post" action="{{action('LessonController@replicateQuestions')}}" accept-charset="UTF-8">
             @csrf
             <input type="hidden" name="targetlesson" value="{{$lesson->id}}">
             <div class="mb-3">
                 <select class="custom-select d-block w-100" name="sourcelesson" id="sourcelesson" required="" onchange="this.form.submit()">
-                    <option disabled selected>@lang('Välj lektion att kopiera ifrån')</option>
+                    <option disabled selected>@lang('Välj modul att kopiera ifrån')</option>
                     @foreach($lessonsWithQuestions as $sourcelesson)
                         <option value="{{$sourcelesson->id}}">{{$sourcelesson->translateOrDefault(App::getLocale())->name}} ({{$sourcelesson->track->translateOrDefault(App::getLocale())->name}})</option>
                     @endforeach
@@ -119,6 +119,6 @@
         <a href="/test/question/create?lesson_id={{$lesson->id}}" class="btn btn-primary">@lang('Lägg till fråga')</a>
     @endif
 
-    <a href="/lessons/{{$lesson->id}}" class="btn btn-primary">@lang('Tillbaka till lektionen')</a>
+    <a href="/lessons/{{$lesson->id}}" class="btn btn-primary">@lang('Tillbaka till modulen')</a>
 
 @endsection

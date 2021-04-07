@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Registrera projekttid'))
+@section('title', __('Registrera lärtillfälle'))
 
 @section('content')
 
@@ -13,11 +13,17 @@
     });
 </script>
 
-<div class="col-md-5 mb-3">
+<div class="col-md-8 mb-3">
 
-    <H1>Registrera projekttid</H1>
+    <H1>Registrera lärtillfälle</H1>
 
-    @if(count($workplaces) == 1)
+    @if(count($workplaces) == 0)
+        @php
+            $workplace = \Auth::user()->workplace;
+            $singleuser = true;
+        @endphp
+        @include('projecttime.ajax')
+    @elseif(count($workplaces) == 1)
         @foreach($workplaces as $workplace)
             <H1>{{$workplace->name}}</H1>
             @include('projecttime.ajax')

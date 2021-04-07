@@ -75,7 +75,7 @@ Route::get('/timesummarywpdetails/{workplace}/{year}/{month}', 'TimeSummaryContr
 Route::get('/exporttimesummary',                'TimeSummaryController@export')->middleware('permission:export ESF report');
 
 //ProjectTimeController
-Route::get('/projecttime/create',               'ProjectTimeController@create')->middleware('permission:edit workplaces');
+Route::get('/projecttime/create',               'ProjectTimeController@create');
 Route::get('/projecttime/createsingleuser',     'ProjectTimeController@createsingleuser');
 Route::get('/projecttime/{workplace?}',         'ProjectTimeController@index');
 Route::post('/projecttime',                     'ProjectTimeController@store');
@@ -83,7 +83,7 @@ Route::get('/projecttime/presence_list/{project_time}', 'ProjectTimeController@p
 Route::get('/projecttime/attest_from_list/{project_time}', 'ProjectTimeController@attest_from_list')->middleware('permission:manage time attests');
 Route::get('/projecttime/{project_time}/edit',  'ProjectTimeController@edit');
 Route::put('/projecttime/{project_time}',       'ProjectTimeController@update');
-Route::get('/projecttimeajax/{workplace}',      'ProjectTimeController@ajax');
+Route::get('/projecttimeajax/{workplace?}',     'ProjectTimeController@ajax');
 Route::get('/projecttime/{year}/{month}',       'ProjectTimeController@show');
 Route::delete('/projecttime/{project_time}',    'ProjectTimeController@destroy')->middleware('permission:manage time attests');
 
@@ -115,6 +115,7 @@ Route::post('/workplace',                       'WorkplaceController@store')->mi
 Route::get('/workplace',                        'WorkplaceController@edit')->middleware('permission:edit workplaces');
 Route::put('/workplace/{workplace}',            'WorkplaceController@update')->middleware('permission:edit workplaces');
 Route::get('/workplaceajax/{workplace}',        'WorkplaceController@ajax')->middleware('permission:edit workplaces');
+Route::get('/workplace/{workplace}/getusers',   'WorkplaceController@getusers');
 Route::delete('/workplace/{workplace}',         'WorkplaceController@destroy')->middleware('permission:add workplaces');
 
 //SessionController

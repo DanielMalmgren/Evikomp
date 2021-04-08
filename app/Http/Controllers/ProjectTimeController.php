@@ -216,7 +216,7 @@ class ProjectTimeController extends Controller
         }
     }
 
-    public function index(Request $request, Workplace $workplace=null) {
+    public function index(Request $request) {
         $mindate = date("Y-m-d", strtotime("first day of previous month"));
         $maxdate = date("Y-m-d", strtotime("last day of next month"));
 
@@ -271,9 +271,7 @@ class ProjectTimeController extends Controller
             );
         }
 
-        if($workplace) {
-            $project_times = ProjectTime::where('date', '>=', $mindate)->where('workplace_id', $workplace->id)->get();
-        } elseif (Auth::user()->hasRole('Admin')) {
+        if(Auth::user()->hasRole('Admin')) {
             $project_times = ProjectTime::where('date', '>=', $mindate)
                 ->with(['workplace'])
                 ->orderBy('date')
@@ -285,23 +283,23 @@ class ProjectTimeController extends Controller
                 ->orWhereIn('training_coordinator_id', $workplaces)
                 ->where('date', '>=', $mindate)
                 ->with(['workplace'])
+                ->orderBy('date')
                 ->orderBy('starttime')
                 ->get();
         } else {
+            //TODO: Även tillfällen där man är tilldelad som lärare måste med!
             $project_times = Auth::user()->project_times
                 ->where('date', '>=', $mindate)
-                ->with(['workplace'])
                 ->sortBy('starttime');
         }
 
+        $tzstring = (new \DateTime('now', new \DateTimeZone( 'Europe/Stockholm' )))->format('P');
         foreach($project_times as $project_time) {
             $events[] = \Calendar::event(
                 $project_time->workplace->name, //event title
                 false, //full day event?
-                //TODO: Fix the time zone stuff! Ugly temporary solution!
-                //See https://github.com/acaronlex/laravel-calendar/issues/17
-                $project_time->date.'T'.$project_time->startstr().':00+02:00',
-                $project_time->date.'T'.$project_time->endstr().':00+02:00',
+                $project_time->date.'T'.$project_time->startstr().':00'.$tzstring,
+                $project_time->date.'T'.$project_time->endstr().':00'.$tzstring,
                 $project_time->id,
                 [
                     'url' => '/projecttime/'.$project_time->id.'/edit',

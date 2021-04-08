@@ -220,6 +220,7 @@
                 <div class="w-50">
                     <select {{$can_change_teacher?'':'disabled'}} class="custom-select d-block" id="teacher" name="teacher">
                         @if(isset($teachers))
+                            <option selected disabled>@lang('Välj lärare')</option>
                             @foreach($teachers as $teacher)
                                 <option {{$project_time->teacher_id==$teacher->id?"selected":""}} value="{{$teacher->id}}">{{$teacher->name}}</option>
                             @endforeach

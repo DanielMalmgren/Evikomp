@@ -77,7 +77,7 @@ Route::get('/exporttimesummary',                'TimeSummaryController@export')-
 //ProjectTimeController
 Route::get('/projecttime/create',               'ProjectTimeController@create');
 Route::get('/projecttime/createsingleuser',     'ProjectTimeController@createsingleuser');
-Route::get('/projecttime/{workplace?}',         'ProjectTimeController@index');
+Route::get('/projecttime',                      'ProjectTimeController@index');
 Route::post('/projecttime',                     'ProjectTimeController@store');
 Route::get('/projecttime/presence_list/{project_time}', 'ProjectTimeController@presence_list');
 Route::get('/projecttime/attest_from_list/{project_time}', 'ProjectTimeController@attest_from_list')->middleware('permission:manage time attests');

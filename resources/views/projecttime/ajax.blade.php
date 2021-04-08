@@ -22,10 +22,13 @@
         });
 
         $('.date_or_time').change(function () {
-            var date=document.getElementById("date");
-            var time=document.getElementById("starttime");
-            var combined = new Date(date.value + ' ' + time.value);
-            if(date.value=='' || time.value=='') {
+            var date=document.getElementById("date").value;
+            var time=document.getElementById("starttime").value;
+            if(time=='') {
+                time='00:00'
+            }
+            var combined = new Date(date + ' ' + time);
+            if(date=='') {
                 console.log("Inte färdigvalt");
             } else if(combined < new Date()) {
                 console.log("Dåtid");
@@ -116,11 +119,6 @@
     }
 
 </script>
-
-@hasrole('Admin')
-    <small><a class="black" href="/projecttime/{{$workplace->id}}">@lang('Visa befintlig projekttid.')</a></small>
-    <br><br>
-@endhasrole
 
 <form method="post" name="question" action="{{action('ProjectTimeController@store')}}" accept-charset="UTF-8">
     @csrf

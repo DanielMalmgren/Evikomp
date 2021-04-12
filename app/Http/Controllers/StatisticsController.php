@@ -93,7 +93,7 @@ class StatisticsController extends Controller
                 $timeperwp = collect([]);
 
                 foreach(Workplace::filter()->get() as $workplace) {
-                    $timeperwp->push(round($workplace->total_attested_time(3)));
+                    $timeperwp->push(round($workplace->time_attests()->where('attestlevel', 3)->sum('hours')));
                     $labels->push($workplace->name);
                 }
                 $chart->dataset(_('Tid per arbetsplats'), 'pie', $timeperwp)->options([
@@ -124,7 +124,7 @@ class StatisticsController extends Controller
                 $time = collect([]);
 
                 foreach(Municipality::all() as $municipality) {
-                    $time->push(round($municipality->total_attested_time(3)));
+                    $time->push(round($municipality->time_attests()->where('attestlevel', 3)->sum('hours')));
                     $labels->push($municipality->name);
                 }
                 $chart->dataset(_('Tid per kommun'), 'pie', $time)->options([

@@ -7,16 +7,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Municipality extends Model
 {
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
+
     public function workplaces()
     {
         return $this->hasMany('App\Workplace');
     }
 
-    public function total_attested_time($level) {
-        $attested_time = 0;
-        foreach($this->workplaces->filter() as $workplace) {
-            $attested_time += $workplace->total_attested_time($level);
-        }
-        return $attested_time;
+    public function time_attests()
+    {
+        return $this->hasManyDeep('App\TimeAttest', ['App\Workplace', 'App\User']);
     }
 }

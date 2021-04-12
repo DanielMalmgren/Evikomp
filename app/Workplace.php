@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Workplace extends Model
 {
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
+
     public function users(): HasMany
     {
         return $this->hasMany('App\User');
@@ -45,6 +47,16 @@ class Workplace extends Model
         return $this->hasMany('App\ProjectTime')->orderBy('date')->orderBy('starttime');
     }
 
+    public function time_attests()
+    {
+        return $this->hasManyDeep('App\TimeAttest', ['App\User']);
+    }
+
+    public function active_times()
+    {
+        return $this->hasManyDeep('App\ActiveTime', ['App\User']);
+    }
+
     public function color(): String
     {
         return '#'.substr(md5($this->id), 0, 6);
@@ -57,33 +69,16 @@ class Workplace extends Model
             $users = $users->merge($project_time->users);
         }
         return $users;
+
+        //return $this->hasManyDeep('App\User', ['App\ProjectTime']);
     }
 
     public function month_active_time(int $month, int $year): int {
-        $active_time = 0;
-        foreach($this->users as $user) {
-            //logger('User '.$user->name.' has '.$user->active_time_minutes_month($month, $year).' active minutes');
-            $active_time += $user->active_time_minutes_month($month, $year);
-        }
-        return $active_time;
+        return ($this->active_times->where('month', $month)->where('year', $year)->sum('seconds'))/60;
     }
 
     public function month_attested_time(int $month, int $year, int $level): int {
-        $attested_time = 0;
-        foreach($this->users as $user) {
-            $attested_time += $user->attested_time_month($month, $year, $level);
-        }
-        return $attested_time;
-
-        //return $this->users->collapse()->time_attests->where('month', $month)->sum('hours');
-    }
-
-    public function total_attested_time(int $level): int {
-        $attested_time = 0;
-        foreach($this->users as $user) {
-            $attested_time += $user->attested_time_total($level);
-        }
-        return $attested_time;
+        return $this->time_attests->where('attestlevel', $level)->where('month', $month)->where('year', $year)->sum('hours');
     }
 
     public function scopeFilter(Builder $query): Builder

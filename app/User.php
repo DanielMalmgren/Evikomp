@@ -133,15 +133,6 @@ class User extends Authenticatable
         return $this->hasMany('App\ProjectTime', 'teacher_id');
     }
     
-    /*public function gender()
-    {
-        logger('Namn: '.$this->name.', personnummer: '.$this->personid);
-        logger('Näst sista siffran: '.substr($this->personid, 10, 1));
-        logger('Modulo: '.substr($this->personid, 10, 1)%2);
-        $gender=substr($this->personid, 10, 1)%2==0?'F':'M';
-        logger('Gender: '.$gender);
-    }*/
-
     public function active_time_today(): string
     {
         return date("H:i:s", $this->active_times->last()->seconds);
@@ -150,11 +141,6 @@ class User extends Authenticatable
     public function active_time_total(): string
     {
         return date("H:i:s", $this->active_times->sum('seconds')+59);
-    }
-
-    public function active_time_minutes_month(int $month, int $year): int
-    {
-        return ($this->active_times->where('month', $month)->where('year', $year)->sum('seconds'))/60;
     }
 
     public function attested_time_month(int $month, int $year, int $level): float

@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <label for="youtube[{{$content->id}}]">@lang('ID')</label>
-                        <input name="youtube[{{$content->id}}]" class="form-control original-content" value="{{$content->content}}">
+                        <input name="youtube[{{$content->id}}]" class="form-control original-content" value="{{$content->content}}" maxlength="11">
                     </div>
                     <div class="col-lg-2">
                         <label for="settings[{{$content->id}}][max_width]">@lang('Maxbredd')</label>

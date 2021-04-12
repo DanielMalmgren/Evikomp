@@ -19,7 +19,7 @@
                     </div>
                     <div class="col-lg-2">
                         <label for="settings[{{$content->id}}][max_width]">@lang('Maxbredd')</label>
-                        <input name="settings[{{$content->id}}][max_width]" class="form-control" value="{{$content->max_width}}">
+                        <input name="settings[{{$content->id}}][max_width]" class="form-control" value="{{$content->max_width}}" maxlength="10">
                     </div>
                     <div class="col-lg-3">
                         <label for="settings[{{$content->id}}][adjustment]">@lang('Justering')</label>

@@ -287,10 +287,14 @@ class ProjectTimeController extends Controller
                 ->orderBy('starttime')
                 ->get();
         } else {
-            //TODO: Även tillfällen där man är tilldelad som lärare måste med!
-            $project_times = Auth::user()->project_times
+            $project_times = ProjectTime::join('project_time_user', 'project_times.id', '=', 'project_time_user.project_time_id')
+                ->where('teacher_id', Auth::user()->id)
+                ->orWhere('project_time_user.user_id', Auth::user()->id)
                 ->where('date', '>=', $mindate)
-                ->sortBy('starttime');
+                ->with(['workplace'])
+                ->orderBy('date')
+                ->orderBy('starttime')
+                ->get();
         }
 
         $tzstring = (new \DateTime('now', new \DateTimeZone( 'Europe/Stockholm' )))->format('P');
@@ -364,6 +368,12 @@ class ProjectTimeController extends Controller
         $project_time_types = ProjectTimeType::all();
         $user = Auth::user();
 
+        if($project_time->teacher_id !== null) {
+            $teacher_assigned = true;
+        } else {
+            $teacher_assigned = false;
+        }
+
         $can_edit = false;
         $can_see_contact_info = false;
         $can_see_collegues = false;
@@ -376,13 +386,15 @@ class ProjectTimeController extends Controller
             $can_see_collegues = true;
             $can_change_training_coordinator = true;
             $can_change_teacher = true;
+            $teacher_assigned = false;
         } elseif($project_time->workplace->workplace_admins->contains('id', $user->id)) {
             $can_edit = true;
             $can_see_contact_info = true;
             $can_see_collegues = true;
         } elseif(isset($project_time->training_coordinator) && 
-                $project_time->training_coordinator->users->contains('id', $user->id) ||
-                $project_time->training_coordinator->workplace_admins->contains('id', $user->id)) {
+                ($project_time->training_coordinator->users->contains('id', $user->id) ||
+                $project_time->training_coordinator->workplace_admins->contains('id', $user->id ||
+                $project_time->teacher_id == $user->id))) {
             $can_edit = false;
             $can_see_contact_info = true;
             $can_see_collegues = true;
@@ -390,7 +402,7 @@ class ProjectTimeController extends Controller
         } elseif($project_time->registered_by == $user->id) {
             $can_edit = true;
         } elseif($project_time->users->contains('id', $user->id)) {
-            //User that can see but not touch...
+            $can_see_collegues = true;
         } else {
             abort(403);
         }
@@ -414,6 +426,7 @@ class ProjectTimeController extends Controller
             'can_see_collegues' => $can_see_collegues,
             'can_change_training_coordinator' => $can_change_training_coordinator,
             'can_change_teacher' => $can_change_teacher,
+            'teacher_assigned' => $teacher_assigned,
         ];
         return view('projecttime.edit')->with($data);
     }
@@ -453,11 +466,17 @@ class ProjectTimeController extends Controller
                 'endtime.after' => __('Sluttiden får inte inträffa före starttiden!'),
             ]);
     
-            $project_time->date = $request->date;
-            $project_time->starttime = $request->starttime;
-            $project_time->endtime = $request->endtime;
+            if(isset($request->date)) {
+                $project_time->date = $request->date;
+            }
+            if(isset($request->starttime)) {
+                $project_time->starttime = $request->starttime;
+            }
+            if(isset($request->endtime)) {
+                $project_time->endtime = $request->endtime;
+            }
             $project_time->project_time_type_id = $request->type;
-            $project_time->need_teacher = $request->need_teacher;
+            $project_time->need_teacher = $project_time->need_teacher || $request->need_teacher;
             if(isset($request->training_coordinator)) {
                 $project_time->training_coordinator_id = $request->training_coordinator;
             }

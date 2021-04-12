@@ -22,19 +22,16 @@
         });
 
         $('.date_or_time').change(function () {
-            var date=document.getElementById("date").value;
-            var time=document.getElementById("starttime").value;
-            if(time=='') {
-                time='00:00'
-            }
-            var combined = new Date(date + ' ' + time);
+            date = document.getElementById("date").value;
             if(date=='') {
-                console.log("Inte färdigvalt");
-            } else if(combined < new Date()) {
-                console.log("Dåtid");
+                return;
+            }
+            var chosendate = new Date(date);
+            var deadline = new Date();
+            deadline.setDate(deadline.getDate() + 14);
+            if(chosendate < deadline) {
                 $("#need_teacher").hide();
             } else {
-                console.log("Framtid");
                 $("#need_teacher").show();
             }
         });

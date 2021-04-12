@@ -56,21 +56,22 @@
             })
         });
 
-
-        $('.date_or_time').change(function () {
-            var date=document.getElementById("date");
-            var time=document.getElementById("starttime");
-            var combined = new Date(date.value + ' ' + time.value);
-            if(date.value=='' || time.value=='') {
-                console.log("Inte färdigvalt");
-            } else if(combined < new Date()) {
-                console.log("Dåtid");
-                $("#need_teacher").hide();
-            } else {
-                console.log("Framtid");
-                $("#need_teacher").show();
-            }
-        });
+        @if(!$teacher_assigned)
+            $('.date_or_time').change(function () {
+                var date=document.getElementById("date");
+                var time=document.getElementById("starttime");
+                var combined = new Date(date.value + ' ' + time.value);
+                if(date.value=='' || time.value=='') {
+                    console.log("Inte färdigvalt");
+                } else if(combined < new Date()) {
+                    console.log("Dåtid");
+                    $("#need_teacher").hide();
+                } else {
+                    console.log("Framtid");
+                    $("#need_teacher").show();
+                }
+            });
+        @endif
 
         $("#date").change();
 
@@ -173,7 +174,6 @@
         @method('put')
         @csrf
 
-        {{--<input type="hidden" name="workplace_id" value="{{$workplace->id}}">--}}
         <select {{$can_edit?'':'disabled'}} class="custom-select d-block w-100" id="type" name="type">
             @foreach($project_time_types as $type)
                 <option {{$type->id==$project_time->project_time_type_id?"selected":""}} value="{{$type->id}}">{{$type->name}}</option>
@@ -184,18 +184,18 @@
 
         <div class="mb-3">
             <label for="date">@lang('Datum')</label>
-            <input {{$can_edit?'':'disabled'}} type="date" id="date" name="date" min="{{$mindate}}" max="{{$maxdate}}" class="form-control date_or_time" value="{{$project_time->date}}">
+            <input {{$can_edit&&!$teacher_assigned?'':'disabled'}} type="date" id="date" name="date" min="{{$mindate}}" max="{{$maxdate}}" class="form-control date_or_time" value="{{$project_time->date}}">
         </div>
 
         <div class="mb-3">
             <div class="row container">
                 <div class="mb-3">
                     <label for="starttime">@lang('Från')</label>
-                    <input {{$can_edit?'':'disabled'}} type="time" id="starttime" name="starttime" class="form-control time date_or_time" value="{{substr($project_time->starttime, 0, 5)}}">
+                    <input {{$can_edit&&!$teacher_assigned?'':'disabled'}} type="time" id="starttime" name="starttime" class="form-control time date_or_time" value="{{substr($project_time->starttime, 0, 5)}}">
                 </div>
                 <div class="mb-3">
                     <label for="endtime">@lang('Till')</label>
-                    <input {{$can_edit?'':'disabled'}} type="time" name="endtime" class="form-control time" value="{{substr($project_time->endtime, 0, 5)}}">
+                    <input {{$can_edit&&!$teacher_assigned?'':'disabled'}} type="time" name="endtime" class="form-control time" value="{{substr($project_time->endtime, 0, 5)}}">
                 </div>
             </div>
         </div>
@@ -203,14 +203,19 @@
         <div id="need_teacher">
             <H2>@lang('Lärarstöd')</H2>
             <div class="mb-3">
-                <input type="hidden" name="need_teacher" value="0">
-                <label><input {{$can_edit?'':'disabled'}} type="checkbox" name="need_teacher" value="1" {{$project_time->need_teacher?"checked":""}}>@lang('Lärarstöd önskas')</label>
+                @if($can_edit&&!$teacher_assigned)
+                    <input type="hidden" name="need_teacher" value="0">
+                    <label><input type="checkbox" name="need_teacher" value="1" {{$project_time->need_teacher?"checked":""}}>@lang('Lärarstöd önskas')</label>
+                @else
+                    <input type="hidden" name="need_teacher" value="{{$project_time->need_teacher?"1":"0"}}">
+                    <label><input disabled type="checkbox" name="need_teacher" value="1" {{$project_time->need_teacher?"checked":""}}>@lang('Lärarstöd önskas')</label>
+                @endif
             </div>
             <div class="row container">
                 <div class="w-50">
                     <select {{$can_change_training_coordinator?'':'disabled'}} class="custom-select d-block" id="training_coordinator" name="training_coordinator">
                         @if($project_time->training_coordinator_id===null)
-                            <option selected disabled>@lang('Välj utbildningskoordinator')</option>
+                            <option selected disabled>@lang('Välj utbildningssamordnare')</option>
                         @endif
                         @foreach($training_coordinators as $coordinator)
                             <option {{$project_time->training_coordinator_id==$coordinator->id?"selected":""}} value="{{$coordinator->id}}">{{$coordinator->name}}</option>
@@ -225,7 +230,7 @@
                                 <option {{$project_time->teacher_id==$teacher->id?"selected":""}} value="{{$teacher->id}}">{{$teacher->name}}</option>
                             @endforeach
                         @else
-                            <option selected disabled>@lang('Välj utbildningskoordinator först')</option>
+                            <option selected disabled>@lang('Välj utbildningssamordnare först')</option>
                         @endif
                     </select>
                 </div>
@@ -301,7 +306,7 @@
         @endif--}}
 
         <button {{$can_edit||$can_change_teacher?'':'disabled'}} class="btn btn-primary btn-lg" id="submit" name="submit" type="submit">@lang('Spara')</button>
-        <button {{$can_edit?'':'disabled'}} type="button" class="btn btn-lg btn-danger" onclick="deleteprojecttime()">@lang('Radera lärtillfälle')</button>
+        <button {{$can_edit&&!$teacher_assigned?'':'disabled'}} type="button" class="btn btn-lg btn-danger" onclick="deleteprojecttime()">@lang('Radera lärtillfälle')</button>
     </form>
 
 </div>

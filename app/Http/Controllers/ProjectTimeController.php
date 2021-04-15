@@ -17,6 +17,9 @@ use PDF;
 
 class ProjectTimeController extends Controller
 {
+    private $mindate = '2020-12-01';
+    private $maxdate = '2022-11-30';
+
     public function show($year, $month) {
         $user = Auth::user();
         setlocale(LC_TIME, $user->locale_id);
@@ -76,14 +79,11 @@ class ProjectTimeController extends Controller
             $workplaces = Auth::user()->admin_workplaces->sortBy('name');
         }
 
-        $mindate = date("Y-m-d", strtotime("first day of previous month"));
-        $maxdate = date("Y-m-d", strtotime("last day of next month"));
-
         $data = [
             'workplaces' => $workplaces,
             'project_time_types' => $project_time_types,
-            'mindate' => $mindate,
-            'maxdate' => $maxdate,
+            'mindate' => $this->mindate,
+            'maxdate' => $this->maxdate,
             'date' => $date,
             'time' => $time,
             'allDay' => $request->allDay,
@@ -100,13 +100,11 @@ class ProjectTimeController extends Controller
         $project_time_types = ProjectTimeType::all();
         $user = Auth::user();
 
-        $mindate = date("Y-m-d", strtotime("first day of previous month"));
-
         $data = [
             'project_time_types' => $project_time_types,
             'user' => $user,
             'workplace' => $user->workplace,
-            'mindate' => $mindate,
+            'mindate' => $this->mindate,
         ];
         \Session::flash('warning', __('På grund av förändringar i plattformen kommer detta menyval att försvinna inom kort.<br> Registrera istället tid i projektet genom att gå in på menyvalet <i><b>Administration->Hantera lärtillfällen</b></i> och klicka på ett datum i kalendern!'));
         return view('projecttime.createsingleuser')->with($data);
@@ -115,9 +113,6 @@ class ProjectTimeController extends Controller
     public function ajax(Request $request, Workplace $workplace=null) {
         $project_time_types = ProjectTimeType::all();
 
-        $mindate = date("Y-m-d", strtotime("first day of previous month"));
-        $maxdate = date("Y-m-d", strtotime("last day of next month"));
-
         if($workplace === null) {
             $workplace = Auth::user()->workplace;
         }
@@ -125,8 +120,8 @@ class ProjectTimeController extends Controller
         $data = [
             'workplace' => $workplace,
             'project_time_types' => $project_time_types,
-            'mindate' => $mindate,
-            'maxdate' => $maxdate,
+            'mindate' => $this->mindate,
+            'maxdate' => $this->maxdate,
             'date' => $request->date,
             'time' => $request->time,
             'allDay' => $request->allDay,
@@ -215,17 +210,14 @@ class ProjectTimeController extends Controller
     }
 
     public function index(Request $request) {
-        $mindate = date("Y-m-d", strtotime("first day of previous month"));
-        $maxdate = date("Y-m-d", strtotime("last day of next month"));
-
         $events = [];
 
         //Make sundays red
         $events[] = \Calendar::event(
             '', //event title
             true, //full day event?
-            $mindate,
-            $maxdate,
+            $this->mindate,
+            $this->maxdate,
             0,
             [
                 'display' => 'background',
@@ -254,7 +246,7 @@ class ProjectTimeController extends Controller
         ];
 
         //Make Swedish holidays red
-        $holidays = (new Holiday)->between(new \DateTime($mindate), new \DateTime($maxdate));
+        $holidays = (new Holiday)->between(new \DateTime($this->mindate), new \DateTime($this->maxdate));
         foreach($holidays as $holiday) {
             $events[] = \Calendar::event(
                 $swedish_holiday_names[$holiday['id']], //event title
@@ -270,7 +262,7 @@ class ProjectTimeController extends Controller
         }
 
         if(Auth::user()->hasRole('Admin')) {
-            $project_times = ProjectTime::where('date', '>=', $mindate)
+            $project_times = ProjectTime::where('date', '>=', $this->mindate)
                 ->with(['workplace'])
                 ->orderBy('date')
                 ->orderBy('starttime')
@@ -279,7 +271,7 @@ class ProjectTimeController extends Controller
             $workplaces = Auth::user()->admin_workplaces->pluck('id');
             $project_times = ProjectTime::whereIn('workplace_id', $workplaces)
                 ->orWhereIn('training_coordinator_id', $workplaces)
-                ->where('date', '>=', $mindate)
+                ->where('date', '>=', $this->mindate)
                 ->with(['workplace'])
                 ->orderBy('date')
                 ->orderBy('starttime')
@@ -288,7 +280,7 @@ class ProjectTimeController extends Controller
             $project_times = ProjectTime::join('project_time_user', 'project_times.id', '=', 'project_time_user.project_time_id')
                 ->where('teacher_id', Auth::user()->id)
                 ->orWhere('project_time_user.user_id', Auth::user()->id)
-                ->where('date', '>=', $mindate)
+                ->where('date', '>=', $this->mindate)
                 ->with(['workplace'])
                 ->orderBy('date')
                 ->orderBy('starttime')
@@ -329,8 +321,8 @@ class ProjectTimeController extends Controller
                     'slotMinTime' => "07:00:00",
                     'slotMaxTime' => "22:00:00",
                     'validRange' => [
-                        'start' => $mindate,
-                        'end' => $maxdate
+                        'start' => $this->mindate,
+                        'end' => $this->maxdate
                     ],
                     'headerToolbar' => [
                         'end' => 'today prev,next dayGridMonth workMonth timeGridWeek workWeek'
@@ -355,7 +347,6 @@ class ProjectTimeController extends Controller
 
         $data = [
             'project_times' => $project_times,
-            'mindate' => $mindate,
             'calendar' => $calendar,
         ];
 
@@ -405,15 +396,12 @@ class ProjectTimeController extends Controller
             abort(403);
         }
 
-        $mindate = date("Y-m-d", strtotime("first day of previous month"));
-        $maxdate = date("Y-m-d", strtotime("last day of next month"));
-
         $data = [
             'project_time_types' => $project_time_types,
             'user' => $user,
             'workplace' => $project_time->workplace,
-            'mindate' => $mindate,
-            'maxdate' => $maxdate,
+            'mindate' => $this->mindate,
+            'maxdate' => $this->maxdate,
             'project_time' => $project_time,
             'training_coordinators' => Workplace::where('training_coordinator', true)->get(),
             'teachers' => isset($project_time->training_coordinator_id)?$project_time->training_coordinator->users:null,

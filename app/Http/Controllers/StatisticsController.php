@@ -17,7 +17,7 @@ class StatisticsController extends Controller
     public function index() {
         setlocale(LC_NUMERIC, \Auth::user()->locale_id);
 
-        $allusers = User::gdpraccepted()->count();
+        //$allusers = User::gdpraccepted()->count();
         $filteredusers = User::filter()->count();
         $maleusers = User::gender('M')->filter()->count();
         $femaleusers = User::gender('F')->filter()->count();
@@ -34,7 +34,7 @@ class StatisticsController extends Controller
 
         $data = [
             'sessions' => ActiveTime::filter()->whereDate('date', '=', date('Y-m-d'))->count(),
-            'users' => $allusers,
+            'users' => $filteredusers,
             'maleusers' => $maleusers,
             'femaleusers' => $femaleusers,
             'workplaces' => Workplace::filter()->count(),
@@ -43,11 +43,11 @@ class StatisticsController extends Controller
             'averageactivehours' => $averageactivehours,
             'totalprojecthours' => round(ProjectTime::all()->sum('minutes_total')/60),
             'attestedhourslevel1' => $attestedhourslevel1,
-            'attestedhourslevel1peruser' => round($attestedhourslevel1/$allusers, 2),
+            'attestedhourslevel1peruser' => round($attestedhourslevel1/$filteredusers, 2),
             'attestedhourslevel1permale' => round($maleattestedhourslevel1/$maleusers, 2),
             'attestedhourslevel1perfemale' => round($femaleattestedhourslevel1/$femaleusers, 2),
             'attestedhourslevel3' => $attestedhourslevel3,
-            'attestedhourslevel3peruser' => round($attestedhourslevel3/$allusers, 2),
+            'attestedhourslevel3peruser' => round($attestedhourslevel3/$filteredusers, 2),
             'attestedhourslevel3permale' => round($maleattestedhourslevel3/$maleusers, 2),
             'attestedhourslevel3perfemale' => round($femaleattestedhourslevel3/$femaleusers, 2),
         ];

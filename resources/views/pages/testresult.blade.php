@@ -48,9 +48,7 @@
                 @lang('Vi önskar nu att du fyller i en enkät för att utvärdera denna modul.')<br>
                 <a href="/poll/{{$lesson->poll->id}}" class="btn btn-primary">@lang('Utvärdera denna modul')</a>        
             @elseif(isset($nextlesson))
-                @lang('Bra, du klarade testet! Klicka på knappen nedan för att fortsätta till nästa modul.')
-                <br><br>
-                <a href="/lessons/{{$nextlesson->id}}" class="btn btn-primary">@lang('Nästa modul')</a>
+                @lang('Bra, du klarade testet! Modulen är nu markerad som färdig.')
             @else
                 @lang('Du klarade testet. Bra jobbat!')
             @endif

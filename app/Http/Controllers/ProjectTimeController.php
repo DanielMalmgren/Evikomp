@@ -147,7 +147,6 @@ class ProjectTimeController extends Controller
             'starttime' => 'required|date_format:H:i',
             'endtime' => 'required|date_format:H:i|after:starttime',
             'date' => 'required|date|date_format:Y-m-d',
-            'users' => 'required',
             'workplace_id' => 'required',
         ],
         [
@@ -158,7 +157,6 @@ class ProjectTimeController extends Controller
             'date.date_format' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
             'starttime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
             'endtime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
-            'users.required' => __('Du måste ange minst en användare som tid ska registreras på!'),
             'endtime.after' => __('Sluttiden får inte inträffa före starttiden!'),
         ]);
 
@@ -455,17 +453,15 @@ class ProjectTimeController extends Controller
                 'starttime' => 'date_format:H:i',
                 'endtime' => 'date_format:H:i|after:starttime',
                 'date' => 'date|date_format:Y-m-d',
-                'users' => 'required',
             ],
             [
                 'date.date' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
                 'date.date_format' => __('Datumet måste vara i formatet yyyy-mm-dd!'),
                 'starttime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
                 'endtime.date_format' => __('Tidpunkterna måste vara i formatet hh:mm!'),
-                'users.required' => __('Du måste ange minst en användare som tid ska registreras på!'),
                 'endtime.after' => __('Sluttiden får inte inträffa före starttiden!'),
             ]);
-    
+
             if(isset($request->date)) {
                 $project_time->date = $request->date;
             }

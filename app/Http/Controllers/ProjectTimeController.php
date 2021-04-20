@@ -194,7 +194,11 @@ class ProjectTimeController extends Controller
         $project_time->workplace_id = $workplace->id;
         $project_time->project_time_type_id = $request->type;
         $project_time->registered_by = Auth::user()->id;
-        $project_time->need_teacher = $request->need_teacher;
+        if($request->need_teacher !== null) {
+            $project_time->need_teacher = $request->need_teacher;
+        } else {
+            $project_time->need_teacher = false;
+        }
         $project_time->save();
         $project_time->users()->sync($request->users);
         $project_time->lessons()->sync($request->lessons);

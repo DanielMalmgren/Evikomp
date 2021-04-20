@@ -30,9 +30,10 @@
         <script src="/select2/i18n/{{substr(App::getLocale(), 0, 2)}}.js"></script>
 
         <script type="text/javascript">
+            var reportedTime = 0;
             TimeMe.initialize({
                 trackWhenUserLeavesPage: false,
-                idleTimeoutInSeconds: 300 // seconds
+                idleTimeoutInSeconds: 30 // seconds
             });
 
             function sendActiveTime() {
@@ -40,19 +41,22 @@
                 if(isNaN(time)) {
                     return;
                 }
+                console.log(time);
+                var timeToReport = time - reportedTime; 
                 var token = "{{ csrf_token() }}";
                 $.ajax({
                     url: '/activetime',
-                    data : {_token:token,time:time},
+                    data : {_token:token,time:timeToReport},
                     type: 'POST'
                 });
+                reportedTime = time;
             }
 
             setInterval(function() {
                 //if(!document.hidden) {
                     sendActiveTime();
-                    TimeMe.resetAllRecordedPageTimes();
-                    TimeMe.startTimer();
+                    //TimeMe.resetAllRecordedPageTimes();
+                    //TimeMe.startTimer();
                 //}
             }, 10000);
 

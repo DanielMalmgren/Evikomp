@@ -154,6 +154,7 @@
         <br><br>
         <a href="/lessons/{{$lesson->id}}/edit" class="btn btn-primary">@lang('Redigera modulen')</a>
         <a href="/lessons/{{$lesson->id}}/editquestions" class="btn btn-primary">@lang('Redigera modulens test')</a>
+        <a href="/notificationreceivers/{{$lesson->id}}/edit" class="btn btn-primary">@lang('Redigera notifieringsmottagare')</a>
         <a href="/lessons/{{$lesson->id}}/replicate" class="btn btn-primary">@lang('Kopiera modulen')</a>
     @endif
 

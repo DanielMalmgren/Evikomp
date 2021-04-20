@@ -39,6 +39,8 @@ class AddWorkplaceToNotificationReceivers extends Migration
                 ->onDelete('cascade');
 
             $table->primary(['lesson_id', 'user_id', 'workplace_id']);
+
+            $table->timestamps();
         });
     }
 

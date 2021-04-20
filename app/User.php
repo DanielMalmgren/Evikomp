@@ -49,10 +49,10 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Track', 'track_admins');
     }
 
-    //Get all lessons for which this user will receive notifications
+    //Get all notification_receiver objects for lessons for which this user will receive notifications
     public function notification_receiver_for(): BelongsToMany
     {
-        return $this->belongsToMany('App\Lesson', 'notification_receivers');
+        return $this->belongsToMany('App\NotificationReceiver', 'notification_receivers');
     }
     
 

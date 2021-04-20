@@ -34,6 +34,10 @@ Route::get('/lessons/{lesson}/{page?}',         'LessonController@show');
 Route::post('/lessons/replicateQuestions',      'LessonController@replicateQuestions');
 Route::delete('/lessons/{lesson}',              'LessonController@destroy')->middleware('permission:manage lessons');
 
+//NotificationReceiversController
+Route::get('/notificationreceivers/{lesson}/edit', 'NotificationReceiversController@edit')->middleware('permission:manage lessons');
+Route::put('/notificationreceivers/{lesson}',   'NotificationReceiversController@update')->middleware('permission:manage lessons');
+
 //TestController
 Route::get('/test/{lesson}',                    'TestController@show');
 Route::post('/test/{lesson}/number_of_questions', 'TestController@set_number_of_questions');

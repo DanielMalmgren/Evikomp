@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class Lesson extends Model
 {
     use \Astrotomic\Translatable\Translatable;
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     public $translatedAttributes = ['name'];
 
@@ -45,9 +46,9 @@ class Lesson extends Model
         return $this->belongsToMany('App\Title');
     }
 
-    public function notification_receivers(): BelongsToMany
+    public function notification_receivers(): HasMany
     {
-        return $this->belongsToMany('App\User', 'notification_receivers');
+        return $this->hasMany('App\NotificationReceiver');
     }
 
     public function poll(): BelongsTo
@@ -135,12 +136,12 @@ class Lesson extends Model
     //Send mail to all notification receivers telling them that $user has finished the lesson
     //TODO: This should probably happen asynchronously to minimize delay for the user
     public function send_notification(User $user) {
-        if($this->notification_receivers->isNotEmpty()) {
-            foreach($this->notification_receivers as $receiver) {
-                logger("Preparing email to ".$receiver->name." (".$receiver->email.")");
+        if($this->notification_receivers->where('workplace_id', $user->workplace_id)->isNotEmpty()) {
+            foreach($this->notification_receivers->where('workplace_id', $user->workplace_id) as $receiver) {
+                logger("Preparing email to ".$receiver->user->name." (".$receiver->user->email.")");
                 $to = [];
-                $to[] = ['email' => $receiver->email, 'name' => $receiver->name];
-                setlocale(LC_NUMERIC, $receiver->locale_id);
+                $to[] = ['email' => $receiver->user->email, 'name' => $receiver->user->name];
+                setlocale(LC_NUMERIC, $receiver->user->locale_id);
 
                 try {
                     \Mail::to($to)->send(new \App\Mail\LessonNotification($user->id, $user->firstname, $user->name, $this->translateOrDefault(\App::getLocale())->name));

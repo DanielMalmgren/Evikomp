@@ -161,20 +161,22 @@ class ProjectTimeController extends Controller
         //Loopa igenom alla de aktuella användarna
         //Ta fram deras tidsregistreringar för den aktuella dagen
         //För varje registrering, kolla så inte startdate eller enddate är mellan registrerigens start eller slut, kolla även tvärtemot (Så inte registreringen ligger inom vårt intervall)
-        foreach($request->users as $user_id) {
-            $user = User::find($user_id);
+        if($request->users !== null) {
+            foreach($request->users as $user_id) {
+                $user = User::find($user_id);
 
-            //Checking for colliding registration
-            $occasions = $user->project_times()->where('date', $request->date)->get();
-            foreach($occasions as $occasion) {
-                if(($request->starttime > $occasion->startstr() && $request->starttime < $occasion->endstr()) ||
-                   ($request->endtime > $occasion->startstr() && $request->endtime < $occasion->endstr()) ||
-                   ($occasion->starttime > $request->starttime && $occasion->startstr() < $request->endtime))  {
-                    //return back()->with('error', $user->name.' har redan ett tillfälle inlagt mellan '.$occasion->startstr().' och '.$occasion->endstr().'!')->withInput();
-                    add_flash_message([
-                        'message' => __('Detta krockar med en registrering som :name har gjort mellan klockan :from och :to samma dag!', ['name' => $user->name, 'from' => $occasion->startstr(), 'to' =>$occasion->endstr()]),
-                        'type' => 'danger',
-                    ]);
+                //Checking for colliding registration
+                $occasions = $user->project_times()->where('date', $request->date)->get();
+                foreach($occasions as $occasion) {
+                    if(($request->starttime > $occasion->startstr() && $request->starttime < $occasion->endstr()) ||
+                    ($request->endtime > $occasion->startstr() && $request->endtime < $occasion->endstr()) ||
+                    ($occasion->starttime > $request->starttime && $occasion->startstr() < $request->endtime))  {
+                        //return back()->with('error', $user->name.' har redan ett tillfälle inlagt mellan '.$occasion->startstr().' och '.$occasion->endstr().'!')->withInput();
+                        add_flash_message([
+                            'message' => __('Detta krockar med en registrering som :name har gjort mellan klockan :from och :to samma dag!', ['name' => $user->name, 'from' => $occasion->startstr(), 'to' =>$occasion->endstr()]),
+                            'type' => 'danger',
+                        ]);
+                    }
                 }
             }
         }

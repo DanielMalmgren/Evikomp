@@ -24,6 +24,11 @@
     </div>
 
     <div class="mb-3">
+        <input type="hidden" name="send_attest_reminders" value="0">
+        <label><input type="checkbox" name="send_attest_reminders" value="1" {{$workplace->send_attest_reminders?"checked":""}}>@lang('Skicka attestpåminnelser')</label>
+    </div>
+
+    <div class="mb-3">
         <input type="hidden" name="training_coordinator" value="0">
         <label><input type="checkbox" name="training_coordinator" value="1" {{$workplace->training_coordinator?"checked":""}}>@lang('Utbildningssamordnare')</label>
     </div>

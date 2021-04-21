@@ -35,6 +35,7 @@ class WorkplaceController extends Controller
         $workplace->workplace_type_id = $request->workplace_type;
         $workplace->municipality_id = $request->municipality;
         $workplace->includetimeinreports = $request->includetimeinreports;
+        $workplace->send_attest_reminders = $request->send_attest_reminders;
         $workplace->training_coordinator = $request->training_coordinator;
         $workplace->save();
 
@@ -105,6 +106,7 @@ class WorkplaceController extends Controller
         $workplace->name = $request->name;
         $workplace->workplace_type_id = $request->workplace_type;
         $workplace->includetimeinreports = $request->includetimeinreports;
+        $workplace->send_attest_reminders = $request->send_attest_reminders;
         $workplace->training_coordinator = $request->training_coordinator;
         $workplace->save();
 

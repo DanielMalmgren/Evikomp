@@ -52,7 +52,7 @@ class SendAttestReminderSMS extends Command
             $last_month_is_attested = $user->month_is_fully_attested($previous_month_year, $previous_month, 1.9);
             $time_rows = $user->time_rows($previous_month_year, $previous_month);
             $time = end($time_rows)[32];
-            if($last_month_is_attested || $time<1.0 || !isset($user->workplace) || !$user->workplace->includetimeinreports) {
+            if($last_month_is_attested || $time<1.0 || !isset($user->workplace) || !$user->workplace->send_attest_reminders) {
                 continue;
             }
 

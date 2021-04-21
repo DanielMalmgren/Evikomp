@@ -34,10 +34,11 @@
                     </div>
                     <div class="collapse multi-collapse show" id="body{{$notification_receiver->user_id}}">
                         <div class="card-body">
+                            <label>@lang('Kommuner/arbetsplatser för vilka personen ska få notifieringar')</label>
                             <select id="workplaces{{$notification_receiver->user_id}}" name="workplaces[{{$notification_receiver->user_id}}][]" multiple="multiple">
-                            @foreach($workplaces as $workplace)
-                                <option value="{{$workplace->id}}" data-section="{{$workplace->municipality->name}}" {{$this_users_workplaces->contains('workplace_id', $workplace->id)?"selected":""}}>{{$workplace->name}}</option>
-                            @endforeach
+                                @foreach($workplaces as $workplace)
+                                    <option value="{{$workplace->id}}" data-section="{{$workplace->municipality->name}}" {{$this_users_workplaces->contains('workplace_id', $workplace->id)?"selected":""}}>{{$workplace->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -112,10 +113,11 @@
                     </div>
                     <div class="collapse multi-collapse show" id="body`+new_id+`">
                         <div class="card-body">
+                            <label>@lang('Kommuner/arbetsplatser för vilka personen ska få notifieringar')</label>
                             <select id="workplaces`+new_id+`" name="workplaces[`+new_id+`][]" multiple="multiple">
-                            @foreach($workplaces as $workplace)
-                                <option value="{{$workplace->id}}" data-section="{{$workplace->municipality->name}}">{{$workplace->name}}</option>
-                            @endforeach
+                                @foreach($workplaces as $workplace)
+                                    <option value="{{$workplace->id}}" data-section="{{$workplace->municipality->name}}">{{$workplace->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>

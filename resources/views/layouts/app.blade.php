@@ -33,7 +33,7 @@
             var reportedTime = 0;
             TimeMe.initialize({
                 trackWhenUserLeavesPage: false,
-                idleTimeoutInSeconds: 30 // seconds
+                idleTimeoutInSeconds: 7200 // seconds
             });
 
             function sendActiveTime() {
@@ -41,14 +41,19 @@
                 if(isNaN(time)) {
                     return;
                 }
-                console.log(time);
+                //console.log(time);
                 var timeToReport = time - reportedTime; 
                 var token = "{{ csrf_token() }}";
-                $.ajax({
-                    url: '/activetime',
-                    data : {_token:token,time:timeToReport},
-                    type: 'POST'
-                });
+                if(timeToReport > 0) {
+                    if (timeToReport > 60) {
+                        timeToReport = 60
+                    }
+                    $.ajax({
+                        url: '/activetime',
+                        data : {_token:token,time:timeToReport},
+                        type: 'POST'
+                    });
+                }
                 reportedTime = time;
             }
 

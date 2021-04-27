@@ -223,24 +223,6 @@ class LessonController extends Controller
         $user = Auth::user();
         logger("Lesson ".$lesson->id." is being edited by ".$user->name);
 
-        /*if($request->new_notification_receivers) {
-            foreach($request->new_notification_receivers as $user_id) {
-                $user = User::find($user_id);
-                if(isset($user) && !$user->notification_receiver_for->contains($lesson)) {
-                    logger('Making '.$user->name.' notification receiver for lesson '.$lesson->id);
-                    $user->notification_receiver_for()->attach($lesson);
-                }
-            }
-        }
-
-        if($request->remove_notification_receiver) {
-            foreach(array_keys($request->remove_notification_receiver) as $user_id) {
-                $user = User::find($user_id);
-                logger('Removing '.$user->name.' as notification receiver for lesson '.$lesson->id);
-                $user->notification_receiver_for()->detach($lesson);
-            }
-        }*/
-
         //Store this in a local variable. We'll have to replace all the temporary id's in it for real ones before we do the ordering
         $content_order = $request->content_order;
 
@@ -482,6 +464,13 @@ class LessonController extends Controller
             $lesson->poll_id = null;
         } else {
             $lesson->poll_id = $request->poll;
+        }
+
+        if($request->diploma) {
+            $lesson->diploma_layout = $request->diploma_layout;
+            $lesson->diploma_require_all_track_lessons = $request->diploma_require_all_track_lessons;
+        } else {
+            $lesson->diploma_layout = null;
         }
 
         $lesson->translateOrNew($currentLocale)->name = $request->name;

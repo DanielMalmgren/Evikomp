@@ -35,8 +35,11 @@
 
     $(function() {
         $('#limited_by_title').on('change', function() {
-            var val = this.checked;
             $("#titles").toggle(this.checked);
+        });
+
+        $('#diploma').on('change', function() {
+            $("#diploma_wrapper").toggle(this.checked);
         });
 
         $("#contents_wrap").sortable({
@@ -93,12 +96,34 @@
             @endforeach
         </div>
 
-        <label>@lang('Notifieringsmottagare')</label>
-        <div id="notification_receivers_wrap"></div>
+        <div class="mb-3">
+            <label for="poll">@lang('Kopplad till enkät')</label>
+            <select class="custom-select d-block w-100" id="poll" name="poll" required="">
+                <option value="-1">@lang('Ingen enkät')</option>
+                @foreach($polls as $poll)
+                    <option value="{{$poll->id}}">{{$poll->translateOrDefault(App::getLocale())->name}}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <input type="hidden" name="diploma" value="0">
+            <label><input type="checkbox" name="diploma" id="diploma" value="1">@lang('Tillåt diplomutskrift')</label>
+        </div>
+
+        <div id="diploma_wrapper" style="display: none;">
+            <label for="diploma_layout">@lang('Typ av diplom')</label>
+            <select class="custom-select d-block w-100" id="diploma_layout" name="diploma_layout" required="">
+                <option value="lesson">@lang('Moduldiplom')</option>
+                <option value="track">@lang('Spårdiplom')</option>
+                <option value="track_module_list">@lang('Spårdiplom med modullista')</option>
+            </select>
+
+            <input type="hidden" name="diploma_require_all_track_lessons" value="0">
+            <label><input type="checkbox" name="diploma_require_all_track_lessons" id="diploma_require_all_track_lessons" value="1">@lang('Enbart om alla spårets moduler är genomförda')</label>
+        </div>
 
         <br>
-
-        <div id="add_notification_receiver_button" class="btn btn-primary" style="margin-bottom:15px" type="text">@lang('Lägg till notifieringsmottagare')</div>
 
         <h2>@lang('Innehåll')</h2>
         <div id="contents_wrap"></div>

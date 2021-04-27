@@ -55,6 +55,7 @@ Route::post('/test/question/reorder',           'QuestionController@reorder')->m
 
 //TestResultController
 Route::get('/test/result/{test_session}',       'TestResultController@show');
+Route::get('/test/{test_session}/pdfdiploma',   'TestResultController@pdfdiploma');
 
 //FeedbackController
 Route::get('/feedback',                         'FeedbackController@create');

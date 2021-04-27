@@ -58,8 +58,11 @@
     $(function() {
 
         $('#limited_by_title').on('change', function() {
-            var val = this.checked;
             $("#titles").toggle(this.checked);
+        });
+
+        $('#diploma').on('change', function() {
+            $("#diploma_wrapper").toggle(this.checked);
         });
 
         addtwe();
@@ -90,7 +93,7 @@
             <input name="name" class="form-control" id="name" value="{{$lesson->translateOrDefault(App::getLocale())->name}}">
         </div>
 
-        <div class="mb-3">
+g        <div class="mb-3">
             <label for="track">@lang('Spår')</label>
             <select class="custom-select d-block w-100" id="track" name="track" required="">
                 @foreach($tracks as $track)
@@ -149,6 +152,22 @@
             </select>
         </div>
 
+        <div class="mb-3">
+            <input type="hidden" name="diploma" value="0">
+            <label><input type="checkbox" name="diploma" id="diploma" value="1" {{isset($lesson->diploma_layout)?"checked":""}}>@lang('Tillåt diplomutskrift')</label>
+
+            <div id="diploma_wrapper" style="{{!isset($lesson->diploma_layout)?"display: none;":""}}">
+                <label for="diploma_layout">@lang('Typ av diplom')</label>
+                <select class="custom-select d-block w-100" id="diploma_layout" name="diploma_layout" required="">
+                    <option value="lesson" {{$lesson->diploma_layout=="lesson"?"selected":""}}>@lang('Moduldiplom')</option>
+                    <option value="track" {{$lesson->diploma_layout=="track"?"selected":""}}>@lang('Spårdiplom')</option>
+                    <option value="track_module_list" {{$lesson->diploma_layout=="track_module_list"?"selected":""}}>@lang('Spårdiplom med modullista')</option>
+                </select>
+
+                <input type="hidden" name="diploma_require_all_track_lessons" value="0">
+                <label><input type="checkbox" name="diploma_require_all_track_lessons" id="diploma_require_all_track_lessons" value="1" {{$lesson->diploma_require_all_track_lessons?"checked":""}}>@lang('Enbart om alla spårets moduler är genomförda')</label>
+            </div>
+        </div>
         <br>
 
         <h2>@lang('Innehåll')</h2>

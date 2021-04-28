@@ -26,7 +26,8 @@ class TestResultController extends Controller
         $user = \Auth::user();
 
         $track_lessons = $test_session->lesson->track->lessons
-                         ->whereIn('id', $user->lesson_results->pluck('lesson_id'));
+                         ->whereIn('id', $user->lesson_results->pluck('lesson_id'))
+                         ->sortBy('order');
 
         $data = [
             'lesson' => $test_session->lesson,

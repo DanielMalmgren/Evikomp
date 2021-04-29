@@ -477,8 +477,8 @@ class ProjectTimeController extends Controller
             $project_time->users()->sync($request->users);
             $project_time->lessons()->sync($request->lessons);
         } elseif(isset($project_time->training_coordinator) && 
-                $project_time->training_coordinator->users->contains('id', $user->id) ||
-                $project_time->training_coordinator->workplace_admins->contains('id', $user->id)) {
+                ($project_time->training_coordinator->users->contains('id', $user->id) ||
+                $project_time->training_coordinator->workplace_admins->contains('id', $user->id))) {
             if(isset($request->teacher)) {
                 $project_time->teacher_id = $request->teacher;
             }

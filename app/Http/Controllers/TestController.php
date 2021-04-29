@@ -81,7 +81,7 @@ class TestController extends Controller
                 }
             }
 
-            return redirect('/test/result/'.$test_session->id);
+            return redirect('/testresult?test_session_id='.$test_session->id);
         }
     }
 }

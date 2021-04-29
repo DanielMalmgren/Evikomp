@@ -4,27 +4,32 @@
 
 @section('content')
 
-    <H1>@lang('Testresultat')</H1>
+    <H1>@lang('Resultat')</H1>
 
     <div class="card">
         <div class="card-body">
 
-            @for ($i = 10; $i <= 100; $i=$i+10)
-                @if($percent>=$i)
-                    <img class="resultstar" src="/images/Star_happy.png">
-                @else
-                    <img class="resultstar" src="/images/Star_unhappy.png">
-                @endif
-            @endfor
-
-            <br><br>
+            @if($lesson_has_test)
+                @for ($i = 10; $i <= 100; $i=$i+10)
+                    @if($percent>=$i)
+                        <img class="resultstar" src="/images/Star_happy.png">
+                    @else
+                        <img class="resultstar" src="/images/Star_unhappy.png">
+                    @endif
+                @endfor
+                <br><br>
+            @endif
 
             @if($percent < $lesson->test_required_percent)
                 @lang('Inte riktigt alla rätt rakt igenom. Klicka på knappen nedan för att gå tilbaka till modulen och repetera.')
                 <br><br>
                 <a href="/lessons/{{$lesson->id}}" class="btn btn-primary">@lang('Tillbaka till modulen')</a>
             @else
-                @lang('Bra, du klarade testet! Modulen är nu markerad som färdig.')
+                @if($lesson_has_test)
+                    @lang('Bra, du klarade testet! Modulen är nu markerad som färdig.')
+                @else
+                    @lang('Modulen är nu markerad som färdig.')
+                @endif
                 <br><br>
                 @if(isset($lesson->poll))
                     @lang('Vi önskar nu att du fyller i en enkät för att utvärdera denna modul.')<br>
@@ -32,7 +37,7 @@
                     <br><br>
                 @endif
                 @if(isset($lesson->diploma_layout))
-                    <a href="/test/{{$test_session_id}}/pdfdiploma" class="btn btn-primary">@lang('Skriv ut diplom')</a>
+                    <a href="/testresult/{{$lesson->id}}/pdfdiploma" class="btn btn-primary">@lang('Skriv ut diplom')</a>
                 @endif
             @endif
 

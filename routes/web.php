@@ -27,7 +27,7 @@ Route::get('/lessons/{lesson}/edit',            'LessonController@edit')->middle
 Route::put('/lessons/{lesson}',                 'LessonController@update')->middleware('permission:manage lessons');
 Route::get('/lessons/{lesson}/editquestions',   'LessonController@editquestions')->middleware('permission:manage lessons');
 Route::put('/lessons/{lesson}/vote',            'LessonController@vote');
-Route::get('/lessons/{lesson}/finish',          'LessonController@finish');
+//Route::get('/lessons/{lesson}/finish',          'LessonController@finish');
 Route::post('/lessons/reorder',                 'LessonController@reorder')->middleware('permission:manage lessons');
 Route::get('/lessons/{lesson}/replicate',       'LessonController@replicate');
 Route::get('/lessons/{lesson}/{page?}',         'LessonController@show');
@@ -54,8 +54,8 @@ Route::delete('/test/question/{question}',      'QuestionController@destroy')->m
 Route::post('/test/question/reorder',           'QuestionController@reorder')->middleware('permission:manage lessons');
 
 //TestResultController
-Route::get('/test/result/{test_session}',       'TestResultController@show');
-Route::get('/test/{test_session}/pdfdiploma',   'TestResultController@pdfdiploma');
+Route::get('/testresult',                      'TestResultController@show');
+Route::get('/testresult/{lesson}/pdfdiploma',  'TestResultController@pdfdiploma');
 
 //FeedbackController
 Route::get('/feedback',                         'FeedbackController@create');

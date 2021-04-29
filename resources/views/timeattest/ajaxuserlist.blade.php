@@ -60,7 +60,7 @@
                     <div class="{{$attestedlevel1<$total_time?'text-danger':''}}">{{$attestedlevel1}}</div>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2 text-center">
-                    @if($user->id == Auth::user()->id || $attestedlevel1<$total_time || $total_time==0)
+                    @if($user->id == Auth::user()->id || $attestedlevel1==0 || $total_time==0)
                         <input disabled type="checkbox">
                     @elseif($attestedlevel3 >= $total_time)
                         <input checked disabled type="checkbox" data-toggle="tooltip" title="@lang('Attesterat av') {{$user->time_attests->where('attestlevel', 3)->where('month', $month)->where('year', $year)->first()->attestant->name}}">

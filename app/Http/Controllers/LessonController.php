@@ -170,7 +170,7 @@ class LessonController extends Controller
         return redirect('/lessons/'.$targetlesson->id.'/editquestions');
     }
 
-    public function finish(Lesson $lesson):RedirectResponse {
+    /*public function finish(Lesson $lesson):RedirectResponse {
 
         $user = Auth::user();
 
@@ -181,7 +181,7 @@ class LessonController extends Controller
         $lesson->send_notification($user);
 
         return redirect('/');
-    }
+    }*/
 
     public function update(Request $request, Lesson $lesson): RedirectResponse {
         usleep(50000);

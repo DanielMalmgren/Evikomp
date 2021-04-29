@@ -21,28 +21,28 @@
         }
         .bigcontent {
             @if($lesson->diploma_layout == "track_module_list")
-                margin-top: 300px;
+                margin-top: 350px;
             @else
                 margin-top: 400px;
             @endif
-            line-height: 150%;
+            line-height: 120%;
             font-size: 35px;
             text-align: center;
         }
         .smallcontent {
             margin-top: 30px;
-            margin-left: 180px;
-            line-height: 150%;
+            margin-left: 160px;
+            line-height: 130%;
             font-size: 25px;
         }
         li {
             margin: 0;
-            padding: 0px 0 0px 50px;
+            padding: 0px 0 0px 55px;
             list-style: none;
             background-image: url({{env('APP_URL')}}/images/listbullet.png);
             background-repeat: no-repeat;
-            background-position: left center;
-            background-size: 40px;
+            background-position: 0 12;
+            background-size: 30px;
         }
         ul {
             padding-inline-start: 0px;
@@ -66,9 +66,9 @@
 
     @if($lesson->diploma_layout == "track_module_list")
         <div class="smallcontent">
-            <div style="margin-left: 40px">
+            <p style="margin-left: 40px; margin-bottom: -20px;">
                 @lang('Ingående moduler')
-            </div>
+            </p>
             <ul>
                 @foreach($track_lessons as $track_lesson)
                     <li>

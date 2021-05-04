@@ -62,6 +62,7 @@ class SendPresenceReminderMail extends Command
                 $project_times = ProjectTime::where('date', '<', date("Y-m-d"))
                                   ->whereRaw('updated_at < timestamp(date, endtime)')
                                   ->where('date', '>', date('Y-m-d', strtotime('-1 month')))
+                                  ->orderBy('date')
                                   ->get();
                 break;
         }

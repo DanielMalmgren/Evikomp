@@ -9,7 +9,7 @@
     @endforeach
 
     <p>Observera att oavsett om närvaron stämmer eller inte behöver du alltid bekräfta genom att klicka på lärtillfället och spara.</p>
-    <p>påminnelser kommer automatiskt att skickas ut tills detta har gjorts.</p>
+    <p>Påminnelser kommer automatiskt att skickas ut tills detta har gjorts.</p>
 
     <p>Med vänlig hälsning, Evikomp projektgrupp</p>
     <p>Detta e-postmeddelande är automatgenererat.</p>

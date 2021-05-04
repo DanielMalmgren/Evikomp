@@ -168,7 +168,7 @@
 
 <div class="col-md-8 mb-3">
 
-    <H1>@lang('Redigera lärtillfälle')</H1>
+    <H1>@lang('Redigera lärtillfälle') - {{$project_time->workplace->name}}</H1>
 
     <form method="post" name="question" action="{{action('ProjectTimeController@update', $project_time->id)}}" accept-charset="UTF-8">
         @method('put')

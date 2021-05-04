@@ -32,7 +32,7 @@ class PresenceReminder extends Mailable
      */
     public function build()
     {
-        switch ($mode) {
+        switch ($this->mode) {
             case "sync":
                 return $this->subject(_('Närvaro vid lärtillfälle'))->view('emails.presencereminder_sync');
                 break;

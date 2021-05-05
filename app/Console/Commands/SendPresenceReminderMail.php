@@ -55,12 +55,13 @@ class SendPresenceReminderMail extends Command
                 $project_times = ProjectTime::where('date', date("Y-m-d"))
                                   ->where('endtime', '<=', date("H:i"))
                                   ->where('endtime', '>', date('H:i', strtotime('-1 hour')))
+                                  ->whereRaw('updated_at < timestamp(date, starttime)')
                                   ->get();
                 break;
             case "mode=async": //Supposed to remind of all occurences that is still not updated (verified) after taking place
                 $mode = "async";
                 $project_times = ProjectTime::where('date', '<', date("Y-m-d"))
-                                  ->whereRaw('updated_at < timestamp(date, endtime)')
+                                  ->whereRaw('updated_at < timestamp(date, starttime)')
                                   ->where('date', '>', date('Y-m-d', strtotime('-1 month')))
                                   ->orderBy('date')
                                   ->get();

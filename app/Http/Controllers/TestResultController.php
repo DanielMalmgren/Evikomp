@@ -54,6 +54,7 @@ class TestResultController extends Controller
             'lesson' => $lesson,
             'name' => $user->name,
             'track_lessons' => $track_lessons,
+            'user_id' => $user->id,
         ];
 
         //return view('lessons.pdfdiploma')->with($data);

@@ -6,6 +6,7 @@
 
     <style>
         @page { margin: 0px 0px; }
+        footer { position: fixed; left: 20px; right: 0px; height: 50px; }
         @font-face {
             font-family: "Bodoni italic";
             src: url({{env('APP_URL')}}/fonts/BodoniFLF-Italic.ttf) format("truetype");
@@ -49,6 +50,11 @@
             margin-block-start: 0px;
         }
     </style>
+
+     <footer>
+        <p style="position:absolute;bottom:15;">id: {{$user_id}}</p>
+        <p style="position:absolute;bottom:0;">datum: {{date("Y-m-d")}}</p>
+    </footer>
 
     <div class="bigcontent">
         @lang('Detta diplom intygar att')<br>

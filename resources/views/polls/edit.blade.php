@@ -14,6 +14,9 @@
         @method('put')
         @csrf
 
+        <h1>@lang('Redigera enkät')</h1>
+        @lang('Adress till denna enkät:') <a href="{{env('APP_URL')}}/poll/{{$poll->id}}">{{env('APP_URL')}}/poll/{{$poll->id}}</a><br><br>
+
         <div class="mb-3">
             <label for="name">@lang('Namn')</label>
             <input name="name" class="form-control" id="name" value="{{$poll->translateOrDefault(App::getLocale())->name}}">
@@ -76,16 +79,20 @@
             </div>
             <div class="card-body">
                 <div id="lessons_wrap">
-                    @foreach($poll->lessons as $lesson)
-                        <a class="list-group-item list-group-item-action">
-                            <div class="row">
-                                <input type="hidden" class="adminid" name="lesson[{{$lesson->id}}]">
-                                <div class="col-lg-4 col-md-9 col-sm-7">
-                                    {{$lesson->translateOrDefault(App::getLocale())->name}}
+                    @if($poll->lessons->isNotEmpty())
+                        @foreach($poll->lessons as $lesson)
+                            <a class="list-group-item list-group-item-action">
+                                <div class="row">
+                                    <input type="hidden" class="adminid" name="lesson[{{$lesson->id}}]">
+                                    <div class="col-lg-4 col-md-9 col-sm-7">
+                                        {{$lesson->translateOrDefault(App::getLocale())->name}}
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    @endforeach
+                            </a>
+                        @endforeach
+                    @else
+                        @lang('Inte kopplad till någon modul. För att göra detta, se inställningarna för den modul du vill koppla!')
+                    @endif
                 </div>
             </div>
         </div>

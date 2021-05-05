@@ -23,13 +23,13 @@
                         @lang(' av '){{$poll->users_count()}}
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-1">
-                        <i class="fas fa-copy" onClick="window.location='/poll/{{$poll->id}}/replicate'"></i>
+                        <i class="fas fa-copy" data-toggle="tooltip" title="@lang('Kopiera')" onClick="window.location='/poll/{{$poll->id}}/replicate'"></i>
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-1">
-                        <i class="fas fa-edit" onClick="window.location='/poll/{{$poll->id}}/edit'"></i>
+                        <i class="fas fa-edit" data-toggle="tooltip" title="@lang('Redigera')" onClick="window.location='/poll/{{$poll->id}}/edit'"></i>
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-1">
-                        <i class="fas fa-file-excel" onClick="window.location='/poll/{{$poll->id}}/exportresponses'"></i>
+                        <i class="fas fa-file-excel" data-toggle="tooltip" title="@lang('Exportera Excel')" onClick="window.location='/poll/{{$poll->id}}/exportresponses'"></i>
                     </div>
                 </div>
             </a>

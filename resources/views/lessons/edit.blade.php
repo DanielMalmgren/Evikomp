@@ -93,7 +93,7 @@
             <input name="name" class="form-control" id="name" value="{{$lesson->translateOrDefault(App::getLocale())->name}}">
         </div>
 
-g        <div class="mb-3">
+        <div class="mb-3">
             <label for="track">@lang('Spår')</label>
             <select class="custom-select d-block w-100" id="track" name="track" required="">
                 @foreach($tracks as $track)

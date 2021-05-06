@@ -73,7 +73,12 @@ class SendPresenceReminderMail extends Command
 
         $adminlist = [];
 
-        foreach($project_times as $project_time) {
+        foreach($project_times as $key => $project_time) {
+            if($project_time->users->count() == 1 &&
+                $project_time->users->first()->id == $project_time->registered_by) {
+                $project_times->forget($key);
+                continue;
+            }
             $this->info($project_time->id.", ended: ".$project_time->date." ".$project_time->endtime.", updated:".$project_time->updated_at);
             foreach($project_time->workplace->workplace_admins as $user) {
                 array_push($adminlist, $user->id);

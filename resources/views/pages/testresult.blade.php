@@ -33,7 +33,7 @@
                 <br><br>
                 @if(isset($lesson->poll))
                     @lang('Vi önskar nu att du fyller i en enkät för att utvärdera denna modul.')<br>
-                    <a href="/poll/{{$lesson->poll->id}}" class="btn btn-primary">@lang('Utvärdera denna modul')</a>
+                    <a href="/poll/{{$lesson->poll->id}}/{{$lesson->id}}" class="btn btn-primary">@lang('Utvärdera denna modul')</a>
                     <br><br>
                 @endif
                 @if(isset($lesson->diploma_layout))

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Poll;
 use App\PollSession;
 use App\Workplace;
+use App\Lesson;
 use Illuminate\Http\RedirectResponse;
 
 class PollController extends Controller
@@ -124,7 +125,14 @@ class PollController extends Controller
         $worksheet->getColumnDimension('E')->setAutoSize(true);
         $worksheet->getStyle('E1')->getFont()->setBold(true);
 
-        $i = 6;
+        $worksheet->setCellValue('F1', __('Spår'));
+        $worksheet->getColumnDimension('F')->setAutoSize(true);
+        $worksheet->getStyle('F1')->getFont()->setBold(true);
+        $worksheet->setCellValue('G1', __('Lektion'));
+        $worksheet->getColumnDimension('G')->setAutoSize(true);
+        $worksheet->getStyle('G1')->getFont()->setBold(true);
+
+        $i = 8;
         $column_order = [];
         foreach($poll->poll_questions->where('type', '!=', 'pagebreak')->sortBy('order') as $question) {
             $cell = $worksheet->getCellByColumnAndRow($i, 1);
@@ -142,6 +150,12 @@ class PollController extends Controller
             $worksheet->setCellValueByColumnAndRow(3, $row, $session->user->workplace->name);
             $worksheet->setCellValueByColumnAndRow(4, $row, $session->user->birthdate);
             $worksheet->setCellValueByColumnAndRow(5, $row, $session->user->gender);
+
+            if($session->lesson !== null) {
+                $worksheet->setCellValueByColumnAndRow(6, $row, $session->lesson->track->translateOrDefault(\App::getLocale())->name);
+                $worksheet->setCellValueByColumnAndRow(7, $row, $session->lesson->translateOrDefault(\App::getLocale())->name);
+            }
+
             foreach($session->poll_responses as $response) {
                 $worksheet->setCellValueByColumnAndRow($column_order[$response->poll_question->id], $row, $response->response);
             }
@@ -156,10 +170,13 @@ class PollController extends Controller
         $writer->save("php://output");
     }
 
-    public function show(Poll $poll): View {
+    public function show(Poll $poll, Lesson $lesson=null): View {
         $poll_session = new PollSession();
         $poll_session->poll_id = $poll->id;
         $poll_session->user_id = Auth::user()->id;
+        if($lesson !== null) {
+            $poll_session->lesson_id = $lesson->id;
+        }
         $poll_session->save();
 
         session(['poll_session_id' => $poll_session->id]);

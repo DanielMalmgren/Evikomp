@@ -140,11 +140,11 @@ Route::get('/select2search',                    'SearchController@select2');
 Route::get('/poll',                             'PollController@index');
 Route::get('/poll/create',                      'PollController@create');
 Route::post('/poll',                            'PollController@store');
-Route::get('/poll/{poll}',                      'PollController@show');
 Route::get('/poll/{poll}/edit',                 'PollController@edit');
 Route::get('/poll/{poll}/replicate',            'PollController@replicate');
-Route::put('/poll/{poll}',                      'PollController@update');
 Route::get('/poll/{poll}/exportresponses',      'PollController@exportresponses');
+Route::get('/poll/{poll}/{lesson?}',            'PollController@show');
+Route::put('/poll/{poll}',                      'PollController@update');
 
 //PollQuestionController
 Route::get('/pollquestion/create/{poll}',       'PollQuestionController@create');

@@ -22,4 +22,9 @@ class PollSession extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function lesson(): BelongsTo
+    {
+        return $this->belongsTo('App\Lesson');
+    }
 }

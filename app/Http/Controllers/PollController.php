@@ -147,7 +147,9 @@ class PollController extends Controller
         foreach($poll->poll_sessions->where('finished', true) as $session) {
             $worksheet->setCellValueByColumnAndRow(1, $row, $session->user->name);
             $worksheet->setCellValueByColumnAndRow(2, $row, $session->user->title->name);
-            $worksheet->setCellValueByColumnAndRow(3, $row, $session->user->workplace->name);
+            if($session->user->workplace !== null) {
+                $worksheet->setCellValueByColumnAndRow(3, $row, $session->user->workplace->name);
+            }
             $worksheet->setCellValueByColumnAndRow(4, $row, $session->user->birthdate);
             $worksheet->setCellValueByColumnAndRow(5, $row, $session->user->gender);
 

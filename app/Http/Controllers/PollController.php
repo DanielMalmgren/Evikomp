@@ -128,11 +128,15 @@ class PollController extends Controller
         $worksheet->setCellValue('F1', __('Spår'));
         $worksheet->getColumnDimension('F')->setAutoSize(true);
         $worksheet->getStyle('F1')->getFont()->setBold(true);
-        $worksheet->setCellValue('G1', __('Lektion'));
+        $worksheet->setCellValue('G1', __('Modul'));
         $worksheet->getColumnDimension('G')->setAutoSize(true);
         $worksheet->getStyle('G1')->getFont()->setBold(true);
 
-        $i = 8;
+        $worksheet->setCellValue('H1', __('Datum'));
+        $worksheet->getColumnDimension('H')->setAutoSize(true);
+        $worksheet->getStyle('H1')->getFont()->setBold(true);
+
+        $i = 9;
         $column_order = [];
         foreach($poll->poll_questions->where('type', '!=', 'pagebreak')->sortBy('order') as $question) {
             $cell = $worksheet->getCellByColumnAndRow($i, 1);
@@ -157,6 +161,8 @@ class PollController extends Controller
                 $worksheet->setCellValueByColumnAndRow(6, $row, $session->lesson->track->translateOrDefault(\App::getLocale())->name);
                 $worksheet->setCellValueByColumnAndRow(7, $row, $session->lesson->translateOrDefault(\App::getLocale())->name);
             }
+
+            $worksheet->setCellValueByColumnAndRow(8, $row, substr($session->created_at, 0, 10));
 
             foreach($session->poll_responses as $response) {
                 $worksheet->setCellValueByColumnAndRow($column_order[$response->poll_question->id], $row, $response->response);

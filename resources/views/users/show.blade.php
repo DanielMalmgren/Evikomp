@@ -31,4 +31,9 @@
 
     <a href="/settings/{{$user->id}}" class="btn btn-primary">@lang('Inställningar')</a>
 
+    @canImpersonate()
+        <br><br>
+        <a href="/users/impersonate/{{$user->id}}" class="btn btn-primary">@lang('Skifta till denna person')</a>
+    @endCanImpersonate
+
 @endsection

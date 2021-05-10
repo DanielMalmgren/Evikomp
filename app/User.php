@@ -13,6 +13,8 @@ use App\Lesson;
 
 class User extends Authenticatable
 {
+    use \Lab404\Impersonate\Models\Impersonate;
+
     use Notifiable;
     use HasRoles;
 
@@ -131,6 +133,11 @@ class User extends Authenticatable
     public function taught_by(): HasMany
     {
         return $this->hasMany('App\ProjectTime', 'teacher_id');
+    }
+
+    public function canImpersonate()
+    {
+        return $this->hasRole('Admin');
     }
     
     public function active_time_today(): string

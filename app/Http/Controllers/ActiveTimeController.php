@@ -13,6 +13,11 @@ class ActiveTimeController extends Controller
             'time' => 'required|integer',
         ]);
 
+        $manager = app('impersonate');
+        if($manager->isImpersonating()) {
+            return;
+        }
+
         $activetime = ActiveTime::firstOrNew([
             'user_id' => Auth::user()->id,
             'date' => date('Y-m-d'),

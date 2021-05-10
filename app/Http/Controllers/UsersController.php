@@ -44,9 +44,15 @@ class UsersController extends Controller
         return view('users.index')->with($data);
     }
 
-    /*public function export() {
-        return Excel::download(new UsersExport(), 'Deltagare_Evikomp.xlsx');
-    }*/
+    public function impersonate(User $user) {
+        Auth::user()->impersonate($user);
+        return redirect('/')->with('success', __('Du är nu ').$user->name);
+    }
+
+    public function leaveImpersonation() {
+        Auth::user()->leaveImpersonation();
+        return redirect('/')->with('success', __('Du är nu dig själv igen!'));
+    }
 
     //Return a json containing users matching a search string sent from a select2 object. See https://select2.org/data-sources/ajax
     public function select2(Request $request) {

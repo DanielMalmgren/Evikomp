@@ -40,6 +40,11 @@ class TimeAttestController extends Controller
             'workplace' => 'required',
         ]);
 
+        $manager = app('impersonate');
+        if($manager->isImpersonating()) {
+            return redirect('/')->with('error', 'Du kan inte attestera som någon annan!');
+        }
+
         $user = Auth::user();
 
         if(isset($request->level3attest)) {

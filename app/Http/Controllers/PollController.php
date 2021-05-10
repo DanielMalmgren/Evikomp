@@ -109,19 +109,19 @@ class PollController extends Controller
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./xls-template/Pollresponses.xlsx');
         $worksheet = $spreadsheet->getSheetByName('Enkätsvar');
 
-        $worksheet->setCellValue('A1', 'Namn');
+        $worksheet->setCellValue('A1', __('Namn'));
         $worksheet->getColumnDimension('A')->setAutoSize(true);
         $worksheet->getStyle('A1')->getFont()->setBold(true);
-        $worksheet->setCellValue('B1', 'Befattning');
+        $worksheet->setCellValue('B1', __('Befattning'));
         $worksheet->getColumnDimension('B')->setAutoSize(true);
         $worksheet->getStyle('B1')->getFont()->setBold(true);
-        $worksheet->setCellValue('C1', 'Arbetsplats');
+        $worksheet->setCellValue('C1', __('Arbetsplats'));
         $worksheet->getColumnDimension('C')->setAutoSize(true);
         $worksheet->getStyle('C1')->getFont()->setBold(true);
-        $worksheet->setCellValue('D1', 'Födelsedatum');
+        $worksheet->setCellValue('D1', __('Födelsedatum'));
         $worksheet->getColumnDimension('D')->setAutoSize(true);
         $worksheet->getStyle('D1')->getFont()->setBold(true);
-        $worksheet->setCellValue('E1', 'Kön');
+        $worksheet->setCellValue('E1', __('Kön'));
         $worksheet->getColumnDimension('E')->setAutoSize(true);
         $worksheet->getStyle('E1')->getFont()->setBold(true);
 

@@ -63,10 +63,11 @@ Route::post('/feedback',                        'FeedbackController@post');
 
 //UsersControler
 Route::get('/users/create',                     'UsersController@create')->middleware('permission:manage users');
+Route::get('/users/impersonate/{user}',         'UsersController@impersonate')->middleware('permission:impersonate');
+Route::get('/users/leaveimpersonation',         'UsersController@leaveImpersonation');
 Route::get('/users/{user}',                     'UsersController@show');
 Route::post('/users',                           'UsersController@store')->middleware('permission:manage users');
 Route::get('/users',                            'UsersController@index')->middleware('permission:manage users');
-//Route::get('/exportusers',                      'UsersController@export')->middleware('permission:manage users');
 Route::delete('/user/{user}',                   'UsersController@destroy')->middleware('permission:manage users');
 Route::get('/select2users',                     'UsersController@select2');
 

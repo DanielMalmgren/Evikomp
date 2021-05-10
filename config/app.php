@@ -164,6 +164,8 @@ return [
         Astrotomic\Translatable\TranslatableServiceProvider::class,
 
         Barryvdh\DomPDF\ServiceProvider::class,
+
+        Lab404\Impersonate\ImpersonateServiceProvider::class,
     ],
 
     /*

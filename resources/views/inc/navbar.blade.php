@@ -30,6 +30,14 @@
     });
 </script>
 
+@impersonating()
+    <div class="impersonate-header">
+        <a href="/users/leaveimpersonation">
+            @lang('Du låtsas nu vara :name. Klicka här för att bli dig själv igen!', ['name' => Auth::user()->firstname])
+        </a>
+    </div>
+@endImpersonating
+
 <!-- Mobile Header -->
 <div class="wsmobileheader clearfix ">
     <a id="wsnavtoggle" class="wsanimated-arrow"><span></span></a>

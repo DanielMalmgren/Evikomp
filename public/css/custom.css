@@ -2,6 +2,16 @@
 * ====================== Various ===========================
 */
 
+.impersonate-header {
+    height: 25px !important;
+    background-color: yellow !important;
+    background: yellow !important;
+    position: fixed;
+    text-align: center;
+    z-index: 1001;
+    width: 100%;
+}
+
 div.tree-multiselect {
     border: 0px !important;
 }

@@ -22,6 +22,11 @@ class TimeAttestLevel1Controller extends Controller
             'attest' => 'required',
         ]);
 
+        $manager = app('impersonate');
+        if($manager->isImpersonating()) {
+            return redirect('/')->with('error', 'Du kan inte attestera som någon annan!');
+        }
+
         $user = Auth::user();
 
         if($request->prev_month_hours >= 0.1) {

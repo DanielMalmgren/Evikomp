@@ -16,14 +16,16 @@ class LessonNotification extends Mailable
      *
      * @return void
      */
-    public function __construct($user, $lesson)
+    public function __construct($user, $lesson, $finished_lessons)
     {
         $this->user = $user;
         $this->lesson = $lesson;
+        $this->finished_lessons = $finished_lessons;
     }
 
     public $user;
     public $lesson;
+    public $finished_lessons;
 
     /**
      * Build the message.

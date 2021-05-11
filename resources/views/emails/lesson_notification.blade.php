@@ -6,7 +6,7 @@
 
     <p>{{$user->firstname}} har även sedan innan genomfört följande moduler inom spåret {{$lesson->track->translateOrDefault(\App::getLocale())->name}}:</p>
 
-    @foreach($lesson->track->lessons as $other_lesson)
+    @foreach($finished_lessons as $other_lesson)
         <p>{{$other_lesson->translateOrDefault(\App::getLocale())->name}}</p>
     @endforeach
 

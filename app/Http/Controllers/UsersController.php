@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use App\Track;
+use App\Lesson;
 use App\Exports\UsersExport;
 
 class UsersController extends Controller
@@ -16,7 +18,10 @@ class UsersController extends Controller
         }
 
         if($user->workplace){
-            $tracks = $user->tracks->merge($user->workplace->tracks)->sort();
+            //TODO: Optimize this, should be done in a single query
+            $finished_lessons = Lesson::whereIn('id', $user->lesson_results->pluck('lesson_id'));
+            $finished_tracks = Track::whereIn('id', $finished_lessons->pluck('track_id'))->get();
+            $tracks = $user->tracks->merge($user->workplace->tracks)->merge($finished_tracks)->sort();
         } else {
             $tracks = collect([]);
         }

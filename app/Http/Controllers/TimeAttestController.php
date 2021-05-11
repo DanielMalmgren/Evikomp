@@ -42,7 +42,7 @@ class TimeAttestController extends Controller
 
         $manager = app('impersonate');
         if($manager->isImpersonating()) {
-            return redirect('/')->with('error', 'Du kan inte attestera som någon annan!');
+            return redirect('/')->with('error', __('Du kan inte attestera som någon annan!'));
         }
 
         $user = Auth::user();

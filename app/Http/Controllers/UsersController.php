@@ -45,6 +45,7 @@ class UsersController extends Controller
     }
 
     public function impersonate(User $user) {
+        logger(Auth::user()->name." is now impersonating as ".$user->name);
         Auth::user()->impersonate($user);
         return redirect('/')->with('success', __('Du är nu ').$user->name);
     }

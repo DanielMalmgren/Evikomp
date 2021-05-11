@@ -144,7 +144,7 @@ class Lesson extends Model
                 setlocale(LC_NUMERIC, $receiver->user->locale_id);
 
                 try {
-                    \Mail::to($to)->send(new \App\Mail\LessonNotification($user->id, $user->firstname, $user->name, $this->translateOrDefault(\App::getLocale())->name));
+                    \Mail::to($to)->send(new \App\Mail\LessonNotification($user, $this));
                     logger("  Mail sent");
                 } catch(\Swift_TransportException $e) {
                     logger("  Sending failed!");

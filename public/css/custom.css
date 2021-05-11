@@ -189,6 +189,12 @@ audio {
     position:absolute;
 }
 
+@media (min-width: 768px) {
+    body.sub .feedback img  {
+       width:120px;
+    }
+}
+
 @media (max-width: 767px)  {
     .feedback img {
         width:120px;

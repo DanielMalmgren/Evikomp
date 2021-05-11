@@ -94,7 +94,7 @@
         @endif
 
     </head>
-    <body>
+    <body class="{{Route::getCurrentRoute()->uri()=='/'?"home":"sub"}}">
         @include('inc.navbar')
         <div class="container main clearfix">
             @include('inc.messages')

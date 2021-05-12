@@ -476,6 +476,13 @@ class ProjectTimeController extends Controller
             $project_time->save();
             $project_time->users()->sync($request->users);
             $project_time->lessons()->sync($request->lessons);
+
+            //Updates that occur after the event started is counted as confirmation of the event
+            if($project_time->date." ".$project_time->starttime <= date("Y-m-d H:i")) {
+                logger("Project time ".$project_time->id." is confirmed by ".$user->name);
+                $project_time->confirm();
+            }
+
         } elseif(isset($project_time->training_coordinator) && 
                 ($project_time->training_coordinator->users->contains('id', $user->id) ||
                 $project_time->training_coordinator->workplace_admins->contains('id', $user->id))) {

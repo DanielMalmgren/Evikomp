@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\LessonResult;
 
 class ProjectTime extends Model
 {
@@ -106,6 +107,19 @@ class ProjectTime extends Model
 
     public function endstr() {
         return substr($this->endtime, 0, 5);
+    }
+
+    //Confirm that this project time has occurred and that all attached users should get the lessons involved marked as finished
+    public function confirm() {
+        foreach($this->lessons as $lesson) {
+            foreach($this->users as $user) {
+                logger("Marking lesson ".$lesson->id." as finished for ".$user->name);
+                LessonResult::FirstOrCreate(
+                    ['user_id' => $user->id, 'lesson_id' => $lesson->id]
+                );
+
+            }
+        }
     }
 
 }

@@ -82,9 +82,15 @@ class TrackController extends Controller
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',
+            'color' => 'exists:colors,hex',
+            'icon' => 'image|max:2000',
         ],
         [
             'name.required' => __('Du måste ange ett namn på spåret!'),
+            'color.exists' => __('Du måste välja en av de förvalda färgerna!'),
+            'color.hex' => __('Du måste välja en av de förvalda färgerna!'),
+            'icon.image' => __('Felaktigt bildformat!'),
+            'icon.max' => __('Din fil är för stor! Max-storleken är 2MB!'),
         ]);
 
         $track = new Track();
@@ -108,15 +114,13 @@ class TrackController extends Controller
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',
-            'id' => 'integer|min:0',
             'color' => 'exists:colors,hex',
             'icon' => 'image|max:2000',
         ],
         [
             'name.required' => __('Du måste ange ett namn på spåret!'),
-            'id.integer' => __('Du måste ange ett positivt nummer för spåret!'),
-            'id.min' => __('Du måste ange ett positivt nummer för spåret!'),
             'color.exists' => __('Du måste välja en av de förvalda färgerna!'),
+            'color.hex' => __('Du måste välja en av de förvalda färgerna!'),
             'icon.image' => __('Felaktigt bildformat!'),
             'icon.max' => __('Din fil är för stor! Max-storleken är 2MB!'),
         ]);

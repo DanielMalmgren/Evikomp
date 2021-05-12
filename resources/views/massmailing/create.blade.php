@@ -5,8 +5,7 @@
 
 @section('content')
 
-    <script src="/trumbowyg/trumbowyg.min.js"></script>
-    <script type="text/javascript" src="/trumbowyg/langs/sv.min.js"></script>
+    <x-trumbowyg-includes/>
 
     <H1>@lang('Skicka ut massmail')</H1>
 
@@ -43,18 +42,7 @@
         }
 
         $('.twe').trumbowyg({
-            btns: [
-                ['formatting'],
-                ['strong', 'em', 'del'],
-                ['link'],
-                ['justifyLeft', 'justifyCenter'],
-                ['unorderedList', 'orderedList'],
-                ['horizontalRule'],
-                ['fullscreen']
-            ],
-            lang: 'sv',
-            removeformatPasted: true,
-            minimalLinks: true
+            <x-trumbowyg-settings/>
         });
     </script>
 

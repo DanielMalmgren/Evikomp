@@ -2,29 +2,17 @@
 
 @section('content')
 
-<script src="/trumbowyg/trumbowyg.min.js"></script>
-<script type="text/javascript" src="/trumbowyg/langs/sv.min.js"></script>
+<x-trumbowyg-includes/>
 
 <script type="text/javascript">
     $(function() {
         $('#bodytext').trumbowyg({
-            btns: [
-                ['formatting'],
-                ['strong', 'em', 'del'],
-                ['link'],
-                ['justifyLeft', 'justifyCenter'],
-                ['unorderedList', 'orderedList'],
-                ['horizontalRule'],
-                ['fullscreen']
-            ],
-            lang: 'sv',
-            removeformatPasted: true,
-            minimalLinks: true
+            <x-trumbowyg-settings/>
         });
     });
 </script>
 
-<div class="col-md-6">
+<div class="col-md-8">
 
     <H1>@lang('Skapa meddelande')</H1>
 

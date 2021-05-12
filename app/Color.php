@@ -23,4 +23,18 @@ class Color extends Model
     {
         return $this->hasMany('App\Content');
     }
+
+    public function hex_without_hash()
+    {
+        return substr($this->hex, 1);
+    }
+
+    public static function list_for_trumbowyg()
+    {
+        $list = '';
+        foreach(Color::all() as $color) {
+            $list .= "'".$color->hex_without_hash()."', ";
+        }
+        return $list;
+    }
 }

@@ -55,7 +55,7 @@ class AnnouncementsController extends Controller
         $announcement->preamble = $request->preamble;
         $announcement->save();
 
-        return redirect('/')->with('success', 'Meddelandet sparat');
+        return redirect('/announcements/'.$announcement->id)->with('success', 'Meddelandet sparat');
     }
 
     /**
@@ -105,7 +105,7 @@ class AnnouncementsController extends Controller
         $announcement->preamble = $request->preamble;
         $announcement->save();
 
-        return redirect('/')->with('success', 'Meddelandet sparat');
+        return redirect('/announcements/'.$announcement->id)->with('success', 'Meddelandet sparat');
     }
 
     /**

@@ -5,8 +5,7 @@
 
 @section('content')
 
-    <script src="/trumbowyg/trumbowyg.min.js"></script>
-    <script type="text/javascript" src="/trumbowyg/langs/sv.min.js"></script>
+    <x-trumbowyg-includes/>
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
@@ -153,18 +152,7 @@
         });
 
         $('.twe').trumbowyg({
-            btns: [
-                ['formatting'],
-                ['strong', 'em', 'del'],
-                ['link'],
-                ['justifyLeft', 'justifyCenter'],
-                ['unorderedList', 'orderedList'],
-                ['horizontalRule'],
-                ['fullscreen']
-            ],
-            lang: 'sv',
-            removeformatPasted: true,
-            minimalLinks: true
+            <x-trumbowyg-settings/>
         });
     </script>
 

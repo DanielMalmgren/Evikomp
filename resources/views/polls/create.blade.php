@@ -5,8 +5,7 @@
 
 @section('content')
 
-    <script src="/trumbowyg/trumbowyg.min.js"></script>
-    <script type="text/javascript" src="/trumbowyg/langs/sv.min.js"></script>
+    <x-trumbowyg-includes/>
 
     <form method="post" action="{{action('PollController@store')}}" accept-charset="UTF-8" enctype="multipart/form-data">
         @csrf
@@ -66,18 +65,7 @@
 
     <script type="text/javascript">
         $('.twe').trumbowyg({
-            btns: [
-                ['formatting'],
-                ['strong', 'em', 'del'],
-                ['link'],
-                ['justifyLeft', 'justifyCenter'],
-                ['unorderedList', 'orderedList'],
-                ['horizontalRule'],
-                ['fullscreen']
-            ],
-            lang: 'sv',
-            removeformatPasted: true,
-            minimalLinks: true
+            <x-trumbowyg-settings/>
         });
     </script>
 

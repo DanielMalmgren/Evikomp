@@ -32,6 +32,10 @@ class TrackController extends Controller
     }
 
     public function show(Track $track) {
+        if(empty(Auth::user()["workplace_id"]) || !Auth::user()->accepted_gdpr || empty(Auth::user()->email) || empty(Auth::user()->title)) {
+            return redirect('/firstlogin');
+        }
+
         if(Auth::user()->can('list all lessons') || Auth::user()->admin_tracks->contains($track)) {
             $lessons = $track->lessons->sortBy('order');
         } else {

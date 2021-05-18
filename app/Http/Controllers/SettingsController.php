@@ -98,6 +98,11 @@ class SettingsController extends Controller
 
         $user->assignRole('Registrerad');
 
-        return redirect('/')->with('success', __('Inställningarna sparade'));
+        if($request->session()->has('orig_requested_url')) {
+            $orig_requested_url = $request->session()->pull('orig_requested_url');
+            return redirect($orig_requested_url)->with('success', __('Inställningarna sparade'));
+        } else {
+            return redirect('/')->with('success', __('Inställningarna sparade'));
+        }
     }
 }

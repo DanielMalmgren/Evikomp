@@ -283,10 +283,11 @@ class ProjectTimeController extends Controller
                 ->orderBy('starttime')
                 ->get();
         } else {
-            $project_times = ProjectTime::join('project_time_user', 'project_times.id', '=', 'project_time_user.project_time_id')
+            $project_times = ProjectTime::leftJoin('project_time_user', 'project_times.id', '=', 'project_time_user.project_time_id')
                 ->where('teacher_id', Auth::user()->id)
                 ->orWhere('project_time_user.user_id', Auth::user()->id)
                 ->where('date', '>=', $this->mindate)
+                ->groupBy('project_times.id')
                 ->with(['workplace'])
                 ->orderBy('date')
                 ->orderBy('starttime')

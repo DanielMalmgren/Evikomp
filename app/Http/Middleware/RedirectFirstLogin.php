@@ -19,7 +19,6 @@ class RedirectFirstLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        logger(Route::getCurrentRoute()->uri());
         if((empty(Auth::user()["workplace_id"]) || !Auth::user()->accepted_gdpr || 
             empty(Auth::user()->email) || empty(Auth::user()->title)) &&
             Route::getCurrentRoute()->uri() != 'firstlogin' && !str_starts_with(Route::getCurrentRoute()->uri(), 'settings') &&

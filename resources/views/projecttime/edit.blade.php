@@ -215,7 +215,7 @@
                 <div class="w-50">
                     <select {{$can_change_training_coordinator?'':'disabled'}} class="custom-select d-block" id="training_coordinator" name="training_coordinator">
                         @if($project_time->training_coordinator_id===null)
-                            <option selected disabled>@lang('Välj utbildningssamordnare')</option>
+                            <option selected disabled>@lang('Välj utbildningsanordnare')</option>
                         @endif
                         @foreach($training_coordinators as $coordinator)
                             <option {{$project_time->training_coordinator_id==$coordinator->id?"selected":""}} value="{{$coordinator->id}}">{{$coordinator->name}}</option>
@@ -230,7 +230,7 @@
                                 <option {{$project_time->teacher_id==$teacher->id?"selected":""}} value="{{$teacher->id}}">{{$teacher->name}}</option>
                             @endforeach
                         @else
-                            <option selected disabled>@lang('Välj utbildningssamordnare först')</option>
+                            <option selected disabled>@lang('Välj utbildningsanordnare först')</option>
                         @endif
                     </select>
                 </div>

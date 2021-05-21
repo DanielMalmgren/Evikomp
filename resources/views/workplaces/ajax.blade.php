@@ -30,7 +30,7 @@
 
     <div class="mb-3">
         <input type="hidden" name="training_coordinator" value="0">
-        <label><input type="checkbox" name="training_coordinator" value="1" {{$workplace->training_coordinator?"checked":""}}>@lang('Utbildningssamordnare')</label>
+        <label><input type="checkbox" name="training_coordinator" value="1" {{$workplace->training_coordinator?"checked":""}}>@lang('Utbildningsanordnare')</label>
     </div>
 
     <label>@lang('Obligatoriska spår')</label>

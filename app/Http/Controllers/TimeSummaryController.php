@@ -103,18 +103,10 @@ class TimeSummaryController extends Controller
             'rel_month' => 'required',
         ]);
 
-        $time = strtotime($request->rel_month." month");
+        $time = incrementDate($request->rel_month);
         $year = date('Y', $time);
         $month = date('n', $time);
         $monthstr = strftime('%B', $time);
-
-        /*if($request->close_month) {
-            $closed_month = new ClosedMonth();
-            $closed_month->user_id = Auth::user()->id;
-            $closed_month->month = $month;
-            $closed_month->year = $year;
-            $closed_month->save();
-        }*/
 
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./xls-template/Sammanställning_deltagare.xlsx');
 

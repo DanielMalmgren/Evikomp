@@ -22,7 +22,7 @@ class Content extends Model
             $this->content = $content;
             $this->order = $order;
             if($text != null) {
-                $this->translateOrNew($currentLocale)->text = $this->add_target_to_links($text);
+                $this->translateOrNew($currentLocale)->text = $this->fix_links($text);
             }
             $this->save();
         }
@@ -155,8 +155,10 @@ class Content extends Model
         }
     }
 
-    public static function add_target_to_links($text) {
-        return str_replace('<a href=', '<a target="_blank" href=', $text);
+    public static function fix_links($text) {
+        $text = str_replace('<a href=', '<a target="_blank" href=', $text);
+        $text = preg_replace('/(^|[\n\s])#([^\s"\t\n\r<:]*)/is', '$1<a target="" href="/tags/$2">#$2</a>', $text);
+        return $text;
     }
 }
 

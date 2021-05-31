@@ -232,7 +232,7 @@ class LessonController extends Controller
         if($request->html) {
             foreach($request->html as $html_id => $html_text) {
                 $content = Content::find($html_id);
-                $newtext = Content::add_target_to_links($html_text);
+                $newtext = Content::fix_links($html_text);
                 if($content->translateOrNew($currentLocale)->text != $newtext) {
                     $content->translateOrNew($currentLocale)->text = $newtext;
                     $content->save();
@@ -244,7 +244,7 @@ class LessonController extends Controller
         //Loop through all added html contents
         if($request->new_html) {
             foreach($request->new_html as $temp_key => $new_html) {
-                $newtext = Content::add_target_to_links($new_html);
+                $newtext = Content::fix_links($new_html);
                 $content = new Content('html', $lesson->id, null, $newtext);
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
                 logger("HTML content ".$content->id." is being added");
@@ -271,8 +271,8 @@ class LessonController extends Controller
         if($request->new_flipcard_front) {
             foreach($request->new_flipcard_front as $temp_key => $front_text) {
                 $back_text = $request->new_flipcard_back[$temp_key];
-                $newfront = str_replace(';', '', Content::add_target_to_links($front_text));
-                $newback = str_replace(';', '', Content::add_target_to_links($back_text));
+                $newfront = str_replace(';', '', Content::fix_links($front_text));
+                $newback = str_replace(';', '', Content::fix_links($back_text));
                 $content = new Content('flipcard', $lesson->id, null, $newfront.';'.$newback);
                 $content->setColor($request->content_colors[$temp_key]);
                 $content->save();

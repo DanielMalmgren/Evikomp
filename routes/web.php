@@ -169,3 +169,6 @@ Route::post('/massmailing',                     'MassMailingController@store')->
 //SCORMImportController
 Route::get('/scormimport/create/{track}',       'SCORMImportController@create');
 Route::post('/scormimport',                     'SCORMImportController@store');
+
+//TagController
+Route::get('/tags/{tag}',                       'TagController@show');

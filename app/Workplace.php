@@ -57,6 +57,12 @@ class Workplace extends Model
         return $this->hasManyDeep('App\ActiveTime', ['App\User']);
     }
 
+    //Get all lesson lists assigned to this workplace
+    public function lesson_lists()
+    {
+        return $this->morphToMany('App\LessonList', 'listable');
+    }    
+
     public function color(): String
     {
         return '#'.substr(md5($this->id), 0, 6);

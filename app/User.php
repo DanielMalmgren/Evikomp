@@ -100,6 +100,24 @@ class User extends Authenticatable
         return $this->hasMany('App\ActiveTime');
     }
 
+    //Get all lesson lists owned by this user
+    public function lesson_lists_owned(): HasMany
+    {
+        return $this->hasMany('App\LessonList');
+    }
+
+    //Get all lesson lists assigned to this user
+    public function lesson_lists()
+    {
+        return $this->morphToMany('App\LessonList', 'listable');
+    }
+
+    //Get all lesson lists assigned to this user or to this user's workplace
+    public function all_lesson_lists()
+    {
+        //TODO!
+    }
+
     //Get all this users lesson results
     public function lesson_results(): HasMany
     {

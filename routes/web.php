@@ -134,6 +134,9 @@ Route::get('/statistics/ajaxchart/{chartid}',   'StatisticsController@ajaxchart'
 //AnnouncementsController
 Route::resource('announcements',                'AnnouncementsController');
 
+//ListController
+Route::resource('lists',                        'ListController');
+
 //SearchController
 Route::get('/select2search',                    'SearchController@select2');
 

@@ -46,6 +46,11 @@ class Lesson extends Model
         return $this->belongsToMany('App\Title');
     }
 
+    public function lesson_lists(): BelongsToMany
+    {
+        return $this->belongsToMany('App\LessonList');
+    }
+
     public function notification_receivers(): HasMany
     {
         return $this->hasMany('App\NotificationReceiver');

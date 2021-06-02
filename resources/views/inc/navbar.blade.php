@@ -100,6 +100,9 @@
                         @can('use administration')
                             <li aria-haspopup="false"><a target="_blank" href="/pdf/Evikomp%20administratörsmanual.pdf">@lang('Administratörsmanual')</a></li>
                         @endcan
+                        @can('manage lessons')
+                            <li aria-haspopup="false"><a target="_blank" href="/pdf/Evikomp%20redaktörsmanual.pdf">@lang('Redaktörsmanual')</a></li>
+                        @endcan
                         @hasrole('Admin')
                             <li aria-haspopup="false"><a target="_blank" href="/pdf/Evikomp%20intern%20manual.pdf">@lang('Intern manual')</a></li>
                         @endhasrole

@@ -373,10 +373,13 @@ class ProjectTimeController extends Controller
         $can_edit = false;
         $can_see_contact_info = false;
         $can_see_collegues = false;
+        $can_change_collegues = false;
         $can_change_training_coordinator = false;
         $can_change_teacher = false;
 
-        if($user->hasRole('Admin')){
+        if($project_time->cancelled) {
+            //Just let everything stay as it is
+        } elseif($user->hasRole('Admin')){
             $can_edit = true;
             $can_see_contact_info = true;
             $can_see_collegues = true;
@@ -394,6 +397,7 @@ class ProjectTimeController extends Controller
             $can_edit = false;
             $can_see_contact_info = true;
             $can_see_collegues = true;
+            $can_change_collegues = true;
             $can_change_teacher = true;
         } elseif($project_time->registered_by == $user->id) {
             $can_edit = true;
@@ -417,6 +421,7 @@ class ProjectTimeController extends Controller
             'can_edit' => $can_edit,
             'can_see_contact_info' => $can_see_contact_info,
             'can_see_collegues' => $can_see_collegues,
+            'can_change_collegues' => $can_change_collegues,
             'can_change_training_coordinator' => $can_change_training_coordinator,
             'can_change_teacher' => $can_change_teacher,
             'teacher_assigned' => $teacher_assigned,
@@ -441,6 +446,13 @@ class ProjectTimeController extends Controller
     public function update(Request $request, ProjectTime $project_time) {
         usleep(50000);
         $user = Auth::user();
+
+        if($request->submit == 'cancel') {
+            $project_time->cancelled = true;
+            $project_time->save();
+            $project_time->users()->detach();
+            return redirect('/projecttime')->with('success', __('Lärtillfället har avbokats'));
+        }
 
         if($user->hasRole('Admin') ||
             $project_time->workplace->workplace_admins->contains('id', $user->id)) {
@@ -489,6 +501,7 @@ class ProjectTimeController extends Controller
                 $project_time->training_coordinator->workplace_admins->contains('id', $user->id))) {
             if(isset($request->teacher)) {
                 $project_time->teacher_id = $request->teacher;
+                $project_time->users()->sync($request->users);
             }
             $project_time->save();
         } elseif($project_time->registered_by == $user->id) {

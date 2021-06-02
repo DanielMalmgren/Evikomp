@@ -170,6 +170,10 @@
 
     <H1>@lang('Redigera lärtillfälle') - {{$project_time->workplace->name}}</H1>
 
+    @if($project_time->cancelled)
+        <h1>@lang('Inställt!')</h1>
+    @endif
+
     <form method="post" name="question" action="{{action('ProjectTimeController@update', $project_time->id)}}" accept-charset="UTF-8">
         @method('put')
         @csrf
@@ -291,7 +295,7 @@
             <H2>@lang('Närvarande personer')</H2>
             @foreach($workplace->users->sortBy('name') as $user)
                 <div class="checkbox">
-                    <label><input {{$can_edit?'':'disabled'}} type="checkbox" name="users[]" {{$project_time->users->contains('id',$user->id) ? 'checked' : '' }} value="{{$user->id}}" id="{{$user->id}}">{{$user->name}}</label>
+                    <label><input {{$can_edit||$can_change_collegues?'':'disabled'}} type="checkbox" name="users[]" {{$project_time->users->contains('id',$user->id) ? 'checked' : '' }} value="{{$user->id}}" id="{{$user->id}}">{{$user->name}}</label>
                 </div>
             @endforeach
         @else
@@ -306,7 +310,10 @@
         @endif--}}
 
         <button {{$can_edit||$can_change_teacher?'':'disabled'}} class="btn btn-primary btn-lg" id="submit" name="submit" type="submit">@lang('Spara')</button>
-        <button {{$can_edit&&!$teacher_assigned?'':'disabled'}} type="button" class="btn btn-lg btn-danger" onclick="deleteprojecttime()">@lang('Radera lärtillfälle')</button>
+        <button {{$can_edit?'':'disabled'}} class="btn btn-danger btn-lg" id="submit" name="submit" value="cancel" type="submit">@lang('Ställ in')</button>
+        @hasrole('Admin')
+            <button {{$can_edit&&!$teacher_assigned?'':'disabled'}} type="button" class="btn btn-lg btn-danger" onclick="deleteprojecttime()">@lang('Radera lärtillfälle')</button>
+        @endhasrole
     </form>
 
 </div>

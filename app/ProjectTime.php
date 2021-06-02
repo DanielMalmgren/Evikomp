@@ -61,7 +61,9 @@ class ProjectTime extends Model
     //Return the color of this project time (in hex), which depends on it's status
     public function color()
     {
-        if($this->need_teacher && $this->teacher_id === null) {
+        if($this->cancelled) {
+            return '#ffa500';
+        } elseif($this->need_teacher && $this->teacher_id === null) {
             return '#ff0000';
         } else {
             return '#00ff00';

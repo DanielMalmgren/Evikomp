@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\LessonList;
 use App\Track;
-use App\lesson;
+use App\Lesson;
 use App\Workplace;
 
 class ListController extends Controller

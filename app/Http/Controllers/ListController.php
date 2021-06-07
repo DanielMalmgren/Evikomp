@@ -142,4 +142,16 @@ class ListController extends Controller
     {
         //
     }
+
+    //Attach or detach a list to a lesson
+    public function lessonAttach(Request $request)
+    {
+        $lesson = Lesson::find($request->lesson);
+        $list = LessonList::find($request->list);
+        if($request->attach === "true") {
+            $lesson->lesson_lists()->attach($list);
+        } else {
+            $lesson->lesson_lists()->detach($list);
+        }        
+    }
 }

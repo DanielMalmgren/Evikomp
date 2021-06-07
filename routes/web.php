@@ -136,6 +136,7 @@ Route::resource('announcements',                'AnnouncementsController');
 
 //ListController
 Route::resource('lists',                        'ListController');
+Route::post('/lists/lessonattach',              'ListController@lessonAttach');
 
 //SearchController
 Route::get('/select2search',                    'SearchController@select2');

@@ -21,6 +21,7 @@ use Illuminate\Http\RedirectResponse;
 class LessonController extends Controller
 {
     public function show(Lesson $lesson, ?int $page=1): View {
+        $user = Auth::user();
         $question = Question::where('lesson_id', $lesson->id)->first();
         $lesson->times_started++;
         $lesson->save();
@@ -29,8 +30,9 @@ class LessonController extends Controller
             'lesson' => $lesson,
             'page' => $page,
             'pages' => $lesson->pages,
+            'my_lists' => $user->lesson_lists_owned,
             'first_content_order' => $lesson->getFirstContentOnPage($page),
-            'is_editor' => Auth::user()->can('manage lessons') || Auth::user()->admin_tracks->where('id', $lesson->track->id)->isNotEmpty(),
+            'is_editor' => $user->can('manage lessons') || Auth::user()->admin_tracks->where('id', $lesson->track->id)->isNotEmpty(),
         ];
         return view('lessons.show')->with($data);
     }

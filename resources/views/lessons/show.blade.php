@@ -148,6 +148,54 @@
         <a href="/testresult?lesson_id={{$lesson->id}}" class="btn btn-primary">@lang('Färdig med denna modul')</a>
     @endif
 
+    @hasrole('Admin')
+        <div class="modal fade" id="module-management" tabindex="-1" role="dialog" aria-labelledby="module-management-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="module-management-label">Hantera listor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Stäng">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>@lang('Välj i vilka listor denna modul ska finnas')</p>
+                @foreach($my_lists as $list)
+                    <label><input class="lessonconnect" data-list="{{$list->id}}" type="checkbox" {{$lesson->lesson_lists->contains('id', $list->id)?"checked":""}}>{{$list->name}}</label><br>
+                @endforeach
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">@lang('Stäng')</button>
+                <a href="/lists/create" class="btn btn-primary">@lang('Skapa ny lista')</a>
+                <a href="/lists" class="btn btn-primary">@lang('Redigera dina listor')</a>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#module-management">
+            @lang('Hantera listor')
+        </button>
+
+        <script type="text/javascript">
+                $(function() {
+                    $('.lessonconnect').change(function() {
+                        var token = "{{ csrf_token() }}";
+                        $.ajax({
+                            url: '/lists/lessonattach',
+                            data : {
+                                _token:token,
+                                attach:this.checked,
+                                list:this.dataset.list,
+                                lesson:{{$lesson->id}}
+                            },
+                            type: 'POST'
+                        });
+                    });                
+                });
+        </script>
+    @endhasrole
+
     <a href="/tracks/{{$lesson->track->id}}" class="btn btn-primary">@lang('Tillbaka till spåret')</a>
 
     @if($is_editor)

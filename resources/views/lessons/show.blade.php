@@ -159,10 +159,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>@lang('Välj i vilka listor denna modul ska finnas')</p>
-                @foreach($my_lists as $list)
-                    <label><input class="lessonconnect" data-list="{{$list->id}}" type="checkbox" {{$lesson->lesson_lists->contains('id', $list->id)?"checked":""}}>{{$list->name}}</label><br>
-                @endforeach
+                @if($my_lists->isEmpty())
+                    @lang('Du har inte skapat några listor än, klicka på "Skapa ny lista" för att skapa din första lista!')
+                @else
+                    <p>@lang('Välj i vilka listor denna modul ska finnas')</p>
+                    @foreach($my_lists as $list)
+                        <label><input class="lessonconnect" data-list="{{$list->id}}" type="checkbox" {{$lesson->lesson_lists->contains('id', $list->id)?"checked":""}}>{{$list->name}}</label><br>
+                    @endforeach
+                @endif
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">@lang('Stäng')</button>

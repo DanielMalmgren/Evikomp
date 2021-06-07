@@ -8,7 +8,7 @@
 
     <H1>@lang('Mina listor')</H1>
 
-    @foreach($my_lists as $list)
+    @forelse($my_lists as $list)
         <a class="list-group-item list-group-item-action" onClick="window.location='/lists/{{$list->id}}'">
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6">
@@ -25,7 +25,9 @@
                 </div>
             </div>
         </a>
-    @endforeach
+    @empty
+        @lang('Du har inte skapat några listor än, klicka på "Skapa ny lista" för att skapa din första lista!')<br>
+    @endforelse
 
     <br>
 

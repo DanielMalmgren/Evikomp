@@ -137,6 +137,7 @@ Route::resource('announcements',                'AnnouncementsController');
 //ListController
 Route::resource('lists',                        'ListController');
 Route::post('/lists/lessonattach',              'ListController@lessonAttach');
+Route::get('/lists/{list}/replicate',           'ListController@replicate');
 
 //SearchController
 Route::get('/select2search',                    'SearchController@select2');

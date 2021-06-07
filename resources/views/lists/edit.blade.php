@@ -51,15 +51,13 @@
 
         <H2>@lang('Delning av listan')</H2>
 
-        Listan är delad med {{$list->users->count()}} användare och {{$list->workplaces->count()}} arbetsplatser.<br>
-
-        Användare:<br>
+        @lang('Användare'):<br>
 
         <div id="users_wrap">
             @foreach($list->users as $user)
                 <a class="list-group-item list-group-item-action">
                     <div class="row">
-                        <input type="hidden" class="userid" name="users[{{$user->id}}]">
+                        <input type="hidden" class="userid" name="users[]" value="{{$user->id}}">
                         <div class="col-lg-4 col-md-9 col-sm-7">
                             {{$user->name}}
                         </div>
@@ -70,11 +68,11 @@
                 </a>
             @endforeach
         </div>
-        <div id="add_user_button" class="btn btn-primary" style="margin-bottom:15px" type="text">@lang('Lägg till användare')</div>
+        <div id="add_user_button" class="btn btn-secondary" style="margin-bottom:15px" type="text">@lang('Lägg till användare')</div>
 
         <br><br>
 
-        Arbetsplatser:<br>
+        @lang('Arbetsplatser'):<br>
         <select id="workplaces" name="workplaces[]" multiple="multiple">
             @foreach($workplaces as $workplace)
                 <option value="{{$workplace->id}}" data-section="{{$workplace->municipality->name}}" {{$list->workplaces->contains('id', $workplace->id)?"selected":""}}>{{$workplace->name}}</option>
@@ -173,7 +171,7 @@
 
 
     function addselect2() {
-        $('.new_users').select2({
+        $('.users').select2({
             width: '100%',
             ajax: {
                 url: '/select2users',
@@ -191,23 +189,17 @@
 
         $(add_button).click(function(e){
             e.preventDefault();
-            $(wrapper).append('<a class="list-group-item list-group-item-action"><div class="row"><div class="col-lg-4 col-md-9 col-sm-7"><select class="new_users" name="new_users[]"></select></div><div class="col-lg-1 col-md-3 col-sm-5"><i class="fas fa-trash remove_field"></i></div></div></a>');
+            $(wrapper).append('<a class="list-group-item list-group-item-action"><div class="row"><div class="col-lg-4 col-md-9 col-sm-7"><select class="users" name="users[]"></select></div><div class="col-lg-1 col-md-3 col-sm-5"><i class="fas fa-trash remove_field"></i></div></div></a>');
             addselect2();
         });
 
         $(wrapper).on("click",".remove_field", function(e){
             e.preventDefault();
             var parentdiv = $(this).parent('div').parent('div').parent('a');
-            var userid = $(this).parent('div').parent('div').find('.userid');
-            var oldname = adminid.attr('name');
-            parentdiv.hide();
-            userid.attr('name', 'remove_' + oldname);
+            parentdiv.remove();
         })
 
     });
-
-
-
 
 </script>
 

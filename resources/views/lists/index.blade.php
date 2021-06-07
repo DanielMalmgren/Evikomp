@@ -9,7 +9,7 @@
     <H1>@lang('Mina listor')</H1>
 
     @forelse($my_lists as $list)
-        <a class="list-group-item list-group-item-action" onClick="window.location='/lists/{{$list->id}}'">
+        <a class="list-group-item list-group-item-action" id="list-{{$list->id}}" onClick="window.location='/lists/{{$list->id}}'">
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     {{$list->name}}
@@ -18,10 +18,13 @@
                     {{$list->lessons->count()}}@lang(' moduler')
                 </div>
                 <div class="col-lg-1 col-md-1 col-sm-1">
-                    <i class="fas fa-copy" data-toggle="tooltip" title="@lang('Kopiera')" onClick="window.location='/lists/{{$list->id}}/replicate'"></i>
+                    <i class="fas fa-copy" data-toggle="tooltip" title="@lang('Kopiera')" onClick="window.event.stopPropagation();window.event.cancelBubble=true;window.location='/lists/{{$list->id}}/replicate'"></i>
                 </div>
                 <div class="col-lg-1 col-md-1 col-sm-1">
                     <i class="fas fa-edit" data-toggle="tooltip" title="@lang('Redigera')" onClick="window.event.stopPropagation();window.event.cancelBubble=true;window.location='/lists/{{$list->id}}/edit';"></i>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1">
+                    <i class="fas fa-trash" data-toggle="tooltip" title="@lang('Radera')" onClick="window.event.stopPropagation();window.event.cancelBubble=true;deletelist({{$list->id}})"></i>
                 </div>
             </div>
         </a>
@@ -53,5 +56,20 @@
             </a>
         @endforeach
     @endif
+
+<script type="text/javascript">
+
+    function deletelist(list_id) {
+        if(confirm('Vill du verkligen radera denna lista?')) {
+            $("#list-"+list_id).remove();
+            var token = "{{ csrf_token() }}";
+            $.ajax({
+                url: '/lists/'+list_id,
+                data : {_token:token},
+                type: 'DELETE'
+            });
+        }
+    }
+</script>
 
 @endsection

@@ -8,6 +8,8 @@ use App\LessonList;
 use App\Track;
 use App\Lesson;
 use App\Workplace;
+use App\User;
+use Illuminate\Http\RedirectResponse;
 
 class ListController extends Controller
 {
@@ -128,6 +130,7 @@ class ListController extends Controller
 
         $list->lessons()->sync($request->lessons);
         $list->workplaces()->sync($request->workplaces);
+        $list->users()->sync($request->users);
 
         return redirect('/lists')->with('success', 'Listan har sparats');
     }
@@ -138,9 +141,9 @@ class ListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(LessonList $list)
     {
-        //
+        $list->delete();
     }
 
     //Attach or detach a list to a lesson
@@ -153,5 +156,19 @@ class ListController extends Controller
         } else {
             $lesson->lesson_lists()->detach($list);
         }        
+    }
+
+    //Make a copy of this list
+    public function replicate(LessonList $list): RedirectResponse {
+        $newList = $list->replicate();
+        $newList->name = $newList->name.' ('.__('kopia').')';
+        $newList->push();
+
+        foreach($list->lessons as $lesson)
+        {
+            $newList->lessons()->attach($lesson);
+        }
+
+        return redirect('/lists')->with('success', 'Listan har kopierats');
     }
 }

@@ -35,11 +35,24 @@ class ListController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        if (Auth::user()->hasRole('Admin')) {
+            $workplaces = Workplace::all()->sortBy('name');
+        } else {
+            $workplaces = Auth::user()->admin_workplaces;
+        }
+
+        $lesson = null;
+        if(isset($request->lesson_id)) {
+            $lesson = Lesson::find($request->lesson_id);
+        }
+
         $data = [
             'tracks' => Track::where('active', true)->get(),
             'lessons' => Lesson::where('active', true)->get(),
+            'workplaces' => $workplaces,
+            'lesson' => $lesson,
         ];
         
         return view('lists.create')->with($data);

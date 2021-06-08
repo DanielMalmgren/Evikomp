@@ -148,7 +148,7 @@
         <a href="/testresult?lesson_id={{$lesson->id}}" class="btn btn-primary">@lang('Färdig med denna modul')</a>
     @endif
 
-    @hasrole('Admin')
+    @can('see beta features')
         <div class="modal fade" id="module-management" tabindex="-1" role="dialog" aria-labelledby="module-management-label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -170,7 +170,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">@lang('Stäng')</button>
-                <a href="/lists/create" class="btn btn-primary">@lang('Skapa ny lista')</a>
+                <a href="/lists/create?lesson_id={{$lesson->id}}" class="btn btn-primary">@lang('Skapa ny lista')</a>
                 <a href="/lists" class="btn btn-primary">@lang('Redigera dina listor')</a>
             </div>
             </div>
@@ -198,7 +198,7 @@
                     });                
                 });
         </script>
-    @endhasrole
+    @endcan
 
     <a href="/tracks/{{$lesson->track->id}}" class="btn btn-primary">@lang('Tillbaka till spåret')</a>
 

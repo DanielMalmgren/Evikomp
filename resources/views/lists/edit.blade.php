@@ -24,14 +24,14 @@
             @foreach($list->lessons as $pt_lesson)
                 <div class="mb-3" id="lesson[{{$pt_lesson->id}}]" data-id="{{$pt_lesson->id}}">
                     <div class="row container">
-                        <div class="w-45">
+                        <div class="w-48">
                             <select class="custom-select d-block track" data-id="{{$pt_lesson->id}}" id="track{{$pt_lesson->id}}">
                                 @foreach($tracks as $track)
                                     <option {{$track->id==$pt_lesson->track->id?"selected":""}} value="{{$track->id}}">{{$track->name}}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="w-45">
+                        <div class="w-48">
                             <select class="custom-select d-block" id="lessons{{$pt_lesson->id}}" name="lessons[{{$pt_lesson->id}}]">
                                 <option disabled value="-1">@lang('Välj en modul')</option>
                                 @foreach($lessons as $lesson)
@@ -39,9 +39,9 @@
                                 @endforeach
                             </select>
                         </div>
-                        {{--<div class="w-10">
-                            <i class="fas fa-trash"></i>
-                        </div>--}}
+                        <div class="w-4 ml-3 mt-2">
+                            <i class="fas fa-trash remove_lesson"></i>
+                        </div>
                     </div>
                 </div>
             @endforeach
@@ -62,7 +62,7 @@
                             {{$user->name}}
                         </div>
                         <div class="col-lg-1 col-md-3 col-sm-5">
-                            <i class="fas fa-trash remove_field"></i>
+                            <i class="fas fa-trash remove_user"></i>
                         </div>
                     </div>
                 </a>
@@ -86,12 +86,6 @@
 </div>
 
 <script type="text/javascript">
-
-    function deletelesson(lesson_id) {
-        if(confirm('@lang("Vill du verkligen modulen från listan?")')) {
-            console.log("TODO!");
-        }
-    }
 
     $(function() {
 
@@ -151,6 +145,12 @@
             //$("#track{{$pt_lesson->id}}").change();
         @endforeach
 
+        $("#lessonwrapper").on("click",".remove_lesson", function(e){
+            e.preventDefault();
+            var parentdiv = $(this).parent('div').parent('div').parent('div');
+            parentdiv.remove();
+        })
+
     });
 
     function getfreeid() {
@@ -189,11 +189,11 @@
 
         $(add_button).click(function(e){
             e.preventDefault();
-            $(wrapper).append('<a class="list-group-item list-group-item-action"><div class="row"><div class="col-lg-4 col-md-9 col-sm-7"><select class="users" name="users[]"></select></div><div class="col-lg-1 col-md-3 col-sm-5"><i class="fas fa-trash remove_field"></i></div></div></a>');
+            $(wrapper).append('<a class="list-group-item list-group-item-action"><div class="row"><div class="col-lg-4 col-md-9 col-sm-7"><select class="users" name="users[]"></select></div><div class="col-lg-1 col-md-3 col-sm-5"><i class="fas fa-trash remove_user"></i></div></div></a>');
             addselect2();
         });
 
-        $(wrapper).on("click",".remove_field", function(e){
+        $(wrapper).on("click",".remove_user", function(e){
             e.preventDefault();
             var parentdiv = $(this).parent('div').parent('div').parent('a');
             parentdiv.remove();

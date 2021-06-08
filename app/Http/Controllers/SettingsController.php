@@ -56,11 +56,12 @@ class SettingsController extends Controller
     }
 
     public function store(Request $request, User $user): RedirectResponse {
+        usleep(50000);
         if($user != Auth::user() && ! Auth::user()->hasRole('Admin') && (! isset($user->workplace) || ! $user->workplace->workplace_admins->contains('id', Auth::user()->id))) {
+            logger("User ".Auth::user()->id." is trying to change settings for user ".$user->id.". Responding with http 403.");
             abort(403);
         }
 
-        usleep(50000);
         $this->validate($request, [
             'workplace' => 'required',
             'email' => 'required|email|unique:users,email,'.$user->id,

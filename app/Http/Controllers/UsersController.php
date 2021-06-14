@@ -13,7 +13,7 @@ use App\Exports\UsersExport;
 class UsersController extends Controller
 {
     public function show(User $user) {
-        if($user != Auth::user() && ! Auth::user()->hasRole('Admin') && (! isset($user->workplace) || ! $user->workplace->workplace_admins->contains('id', Auth::user()->id))) {
+        if($user->isNot(Auth::user()) && ! Auth::user()->hasRole('Admin') && (! isset($user->workplace) || ! $user->workplace->workplace_admins->contains('id', Auth::user()->id))) {
             abort(403);
         }
 

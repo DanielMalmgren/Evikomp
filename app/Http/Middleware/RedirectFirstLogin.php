@@ -23,7 +23,7 @@ class RedirectFirstLogin
             empty(Auth::user()->email) || empty(Auth::user()->title)) &&
             Route::getCurrentRoute()->uri() != 'firstlogin' && !str_starts_with(Route::getCurrentRoute()->uri(), 'settings') &&
             Route::getCurrentRoute()->uri() != 'activetime' && !str_starts_with(Route::getCurrentRoute()->uri(), 'storesettings') &&
-            Route::getCurrentRoute()->uri() != 'unsecurelogin' &&
+            Route::getCurrentRoute()->uri() != 'unsecurelogin' && Route::getCurrentRoute()->uri() != 'login' &&
             Route::getCurrentRoute()->uri() != 'storegdpraccept' && Route::getCurrentRoute()->uri() != 'storefirstloginlanguage') {
             $request->session()->put('orig_requested_url', Route::getCurrentRoute()->uri());
             $request->session()->save();

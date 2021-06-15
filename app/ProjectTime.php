@@ -124,4 +124,19 @@ class ProjectTime extends Model
         }
     }
 
+    //Notify this project time's training coordinator that they should assign a teacher
+    public function notify_training_coordinator() {
+        foreach($this->training_coordinator->workplace_admins as $user) {
+            $to = [];
+            $to[] = ['email' => $user->email, 'name' => $user->name];
+
+            try {
+                \Mail::to($to)->send(new \App\Mail\ChooseTeacherNotification($this));
+                logger("Sent teacher notification mail to ".$user->email);
+            } catch(\Swift_TransportException $e) {
+                logger("Couldn't send mail to ".$user->email);
+            }
+        }
+    }
+
 }

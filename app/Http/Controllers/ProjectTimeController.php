@@ -480,15 +480,24 @@ class ProjectTimeController extends Controller
             }
             $project_time->project_time_type_id = $request->type;
             $project_time->need_teacher = $project_time->need_teacher || $request->need_teacher;
+            $new_training_coordinator = false;
             if(isset($request->training_coordinator)) {
+                if($project_time->training_coordinator_id != $request->training_coordinator &&
+                    !isset($request->teacher)) {
+                        $new_training_coordinator = true;
+                }
                 $project_time->training_coordinator_id = $request->training_coordinator;
-            }
-            if(isset($request->teacher)) {
-                $project_time->teacher_id = $request->teacher;
+                if(isset($request->teacher)) {
+                    $project_time->teacher_id = $request->teacher;
+                }
             }
             $project_time->save();
             $project_time->users()->sync($request->users);
             $project_time->lessons()->sync($request->lessons);
+
+            if($new_training_coordinator) {
+                $project_time->notify_training_coordinator();
+            }
 
             //Updates that occur after the event started is counted as confirmation of the event
             if($project_time->date." ".$project_time->starttime <= date("Y-m-d H:i")) {

@@ -66,6 +66,9 @@ class SendPresenceReminderMail extends Command
                                   ->orderBy('date')
                                   ->get();
                 break;
+            default:
+                $this->error("The mode argument needs to be either mode=sync or mode=async!");
+                return;
         }
 
         $amountsent = 0;
@@ -108,6 +111,6 @@ class SendPresenceReminderMail extends Command
             }
         }
 
-        logger("Sending completed. ".$amountsent." reminders sent and ".$amountfailed." failed.");
+        logger("Sending completed. ".$amountsent." presence reminders sent and ".$amountfailed." failed.");
     }
 }

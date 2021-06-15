@@ -26,6 +26,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('custom:checklinks')->weekly();
         $schedule->command('custom:attestreminder --forreal')->cron('0 7 * * 1,4')->environments(['prod']);
+        $schedule->command('custom:presencereminder mode=sync --forreal')->cron('5 * * * *')->environments(['prod']);
+        $schedule->command('custom:presencereminder mode=async --forreal')->cron('0 7 * * 2')->environments(['prod']);
     }
 
     /**

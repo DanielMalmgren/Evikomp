@@ -48,7 +48,7 @@ class Lesson extends Model
 
     public function lesson_lists(): BelongsToMany
     {
-        return $this->belongsToMany('App\LessonList');
+        return $this->belongsToMany('App\LessonList')->withPivot('order');
     }
 
     public function notification_receivers(): HasMany

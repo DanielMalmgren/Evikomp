@@ -17,4 +17,8 @@
         </div>
     @endif
 
+    @if($can_edit)
+        <a href="/lists/{{$list->id}}/edit" class="btn btn-secondary">@lang('Redigera denna lista')</a>
+    @endif
+
 @endsection

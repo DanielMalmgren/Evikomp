@@ -21,7 +21,7 @@ class LessonList extends Model
     //Get all lessons in this lesson list
     public function lessons(): BelongsToMany
     {
-        return $this->belongsToMany('App\Lesson');
+        return $this->belongsToMany('App\Lesson')->withPivot('order');
     }
     
     //Get all users assigned to this list

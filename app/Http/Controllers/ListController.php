@@ -92,7 +92,8 @@ class ListController extends Controller
     {
         $data = [
             'list' => $list,
-            'lessons' => $list->lessons,
+            'lessons' => $list->lessons->sortBy('pivot.order'),
+            'can_edit' => $list->user->is(Auth::user()) || Auth::user()->hasRole('Admin')
         ];
         return view('lists.show')->with($data);
     }
@@ -105,6 +106,11 @@ class ListController extends Controller
      */
     public function edit(LessonList $list)
     {
+        if($list->user->isNot(Auth::user()) && ! Auth::user()->hasRole('Admin')) {
+            logger("User ".Auth::user()->id." is trying to edit list ".$list->id.". Responding with http 403.");
+            abort(403);
+        }
+
         if (Auth::user()->hasRole('Admin')) {
             $workplaces = Workplace::all()->sortBy('name');
         } else {
@@ -130,6 +136,11 @@ class ListController extends Controller
      */
     public function update(Request $request, LessonList $list)
     {
+        if($list->user->isNot(Auth::user()) && ! Auth::user()->hasRole('Admin')) {
+            logger("User ".Auth::user()->id." is trying to edit list ".$list->id.". Responding with http 403.");
+            abort(403);
+        }
+
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use App\Lesson;
 
 class User extends Authenticatable
@@ -113,9 +114,17 @@ class User extends Authenticatable
     }
 
     //Get all lesson lists assigned to this user or to this user's workplace
-    public function all_lesson_lists()
+    public function all_lesson_lists(bool $include_own=false): Collection
     {
-        //TODO!
+        $user_lists = $this->lesson_lists()->get();
+        $workplace_lists = $this->workplace->lesson_lists()
+                                ->where('user_id', '!=', $this->id)->get();
+        if($include_own) {
+            $own_lists = $this->lesson_lists_owned()->get();
+            return $user_lists->merge($workplace_lists)->merge($own_lists)->sortBy('name');
+        } else {
+            return $user_lists->merge($workplace_lists)->sortBy('name');
+        }
     }
 
     //Get all this users lesson results

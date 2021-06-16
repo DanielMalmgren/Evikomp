@@ -27,11 +27,27 @@
     <br>
 @endif
 
-{{--@if($lesson)
-    <h1>@lang('Nästa lektion')</h1>
-    @include('inc.listlesson')
-    <br>
-@endif--}}
+@can('see beta features')
+    @if(isset($shared_lists) && $shared_lists->isNotEmpty())
+        <H1>@lang('Listor')</H1>
+
+        @foreach($shared_lists as $list)
+            <a class="list-group-item list-group-item-action" onClick="window.location='/lists/{{$list->id}}'">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        {{$list->name}}
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-2">
+                        {{$list->user->name}}
+                    </div>
+                </div>
+            </a>
+        @endforeach
+        <br>
+        <a href="/lists" class="btn btn-secondary">@lang('Redigera listor')</a>
+        <br><br>
+    @endif
+@endcan
 
 <H1>@lang('Nyheter')</H1>
 

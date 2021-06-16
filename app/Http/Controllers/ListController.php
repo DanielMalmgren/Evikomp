@@ -24,7 +24,7 @@ class ListController extends Controller
 
         $data = [
             'my_lists' => $user->lesson_lists_owned,
-            'shared_lists' => $user->lesson_lists, //TODO: Behöver även inkludera dem som delats med min arbetsplats!
+            'shared_lists' => $user->all_lesson_lists(false),
         ];
         
         return view('lists.index')->with($data);

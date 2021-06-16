@@ -40,22 +40,20 @@
 
     <H1>@lang('Listor delade med mig')</H1>
 
-    @if($shared_lists->isEmpty())
-        @lang("Ingen har delat någon lista med dig")
-    @else
-        @foreach($shared_lists as $list)
-            <a class="list-group-item list-group-item-action" onClick="window.location='/lists/{{$list->id}}'">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        {{$list->name}}
-                    </div>
-                    <div class="col-lg-3 col-md-3 col-sm-2">
-                        {{$list->user->name}}
-                    </div>
+    @forelse($shared_lists as $list)
+        <a class="list-group-item list-group-item-action" onClick="window.location='/lists/{{$list->id}}'">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    {{$list->name}}
                 </div>
-            </a>
-        @endforeach
-    @endif
+                <div class="col-lg-3 col-md-3 col-sm-2">
+                    {{$list->user->name}}
+                </div>
+            </div>
+        </a>
+    @empty
+        @lang("Ingen har delat någon lista med dig")
+    @endforelse
 
 <script type="text/javascript">
 

@@ -309,6 +309,11 @@ class ProjectTimeController extends Controller
             );
         }
 
+        $last_used_date = $request->session()->pull('last_used_date');
+        if(!isset($last_used_date)) {
+            $last_used_date = date("Y-m-d");
+        }
+
         $calendar = \Calendar::addEvents($events)
                 ->setOptions([
                     'locale' => substr(\App::getLocale(), 0, 2),
@@ -318,6 +323,7 @@ class ProjectTimeController extends Controller
                     'weekNumbers' => true,
                     'displayEventTime' => true,
                     'displayEventEnd' => true,
+                    'initialDate' => $last_used_date,
                     'eventTimeFormat' => [
                         'hour' => '2-digit',
                         'minute' => '2-digit',
@@ -454,6 +460,11 @@ class ProjectTimeController extends Controller
             return redirect('/projecttime')->with('success', __('Lärtillfället har avbokats'));
         }
 
+        if(isset($request->date)) {
+            //Used later on to tell the calendar to show right date
+            $request->session()->put('last_used_date', $request->date);
+        }
+
         if($user->hasRole('Admin') ||
             $project_time->workplace->workplace_admins->contains('id', $user->id)) {
             $request->validate([
@@ -482,13 +493,19 @@ class ProjectTimeController extends Controller
             $project_time->need_teacher = $project_time->need_teacher || $request->need_teacher;
             $new_training_coordinator = false;
             if(isset($request->training_coordinator)) {
-                if($project_time->training_coordinator_id != $request->training_coordinator &&
-                    !isset($request->teacher)) {
+                if($project_time->training_coordinator_id != $request->training_coordinator) {
+                    $project_time->no_teacher_available = false;
+                    if(!isset($request->teacher)) {
                         $new_training_coordinator = true;
+                    }
                 }
                 $project_time->training_coordinator_id = $request->training_coordinator;
                 if(isset($request->teacher)) {
-                    $project_time->teacher_id = $request->teacher;
+                    if($request->teacher == -1) {
+                        $project_time->no_teacher_available = true;
+                    } else {
+                        $project_time->teacher_id = $request->teacher;
+                    }
                 }
             }
             $project_time->save();
@@ -509,7 +526,11 @@ class ProjectTimeController extends Controller
                 ($project_time->training_coordinator->users->contains('id', $user->id) ||
                 $project_time->training_coordinator->workplace_admins->contains('id', $user->id))) {
             if(isset($request->teacher)) {
-                $project_time->teacher_id = $request->teacher;
+                if($request->teacher == -1) {
+                    $project_time->no_teacher_available = true;
+                } else {
+                    $project_time->teacher_id = $request->teacher;
+                }
                 $project_time->users()->sync($request->users);
             }
             $project_time->save();

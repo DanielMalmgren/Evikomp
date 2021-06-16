@@ -63,6 +63,8 @@ class ProjectTime extends Model
     {
         if($this->cancelled) {
             return '#ffa500';
+        } elseif($this->no_teacher_available) {
+            return '#7d3c98';
         } elseif($this->need_teacher && $this->teacher_id === null) {
             return '#ff0000';
         } else {

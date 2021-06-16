@@ -41,15 +41,13 @@
                         len = response.users.length;
                     }
                     if (len>0) {
-                        var option = "<option selected disabled value='-1'>@lang('Välj lärare')</option>"; 
-                        $("#teacher").append(option);
+                        $("#teacher").append("<option selected disabled>@lang('Välj lärare')</option>");
+                        $("#teacher").append("<option value='-1'>@lang('Ingen lärare tillgänglig')</option>");
+
                         for (var i = 0; i<len; i++) {
                             var id = response.users[i].id;
                             var name = response.users[i].name;
-
-                            var option = "<option value='"+id+"'>"+name+"</option>"; 
-
-                            $("#teacher").append(option);
+                            $("#teacher").append("<option value='"+id+"'>"+name+"</option>");
                         }
                     }
                 }
@@ -64,10 +62,8 @@
                 if(date.value=='' || time.value=='') {
                     console.log("Inte färdigvalt");
                 } else if(combined < new Date()) {
-                    console.log("Dåtid");
                     $("#need_teacher").hide();
                 } else {
-                    console.log("Framtid");
                     $("#need_teacher").show();
                 }
             });
@@ -230,6 +226,7 @@
                     <select {{$can_change_teacher?'':'disabled'}} class="custom-select d-block" id="teacher" name="teacher">
                         @if(isset($teachers))
                             <option selected disabled>@lang('Välj lärare')</option>
+                            <option value="-1" {{$project_time->no_teacher_available?"selected":""}}>@lang('Ingen lärare tillgänglig')</option>
                             @foreach($teachers as $teacher)
                                 <option {{$project_time->teacher_id==$teacher->id?"selected":""}} value="{{$teacher->id}}">{{$teacher->name}}</option>
                             @endforeach
@@ -310,7 +307,7 @@
         @endif--}}
 
         <button {{$can_edit||$can_change_teacher?'':'disabled'}} class="btn btn-primary btn-lg" id="submit" name="submit" type="submit">@lang('Spara')</button>
-        <button {{$can_edit?'':'disabled'}} class="btn btn-danger btn-lg" id="submit" name="submit" value="cancel" type="submit">@lang('Ställ in')</button>
+        <button {{$can_edit?'':'disabled'}} class="btn btn-danger btn-lg" id="submit2" name="submit" value="cancel" type="submit">@lang('Ställ in')</button>
         @hasrole('Admin')
             <button {{$can_edit&&!$teacher_assigned?'':'disabled'}} type="button" class="btn btn-lg btn-danger" onclick="deleteprojecttime()">@lang('Radera lärtillfälle')</button>
         @endhasrole

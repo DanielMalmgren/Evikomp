@@ -42,7 +42,7 @@ class HomeController extends Controller
             //'lesson' => Auth::user()->next_lesson(),
             'should_attest' => !$last_month_is_attested && $time>=1.0 && Auth::user()->workplace->includetimeinreports,
             //'previous_month' => $previous_month,
-            //'monthstr' => $monthstr,
+            'monthstr' => $monthstr,
             'poll' => $poll,
             'shared_lists' => $user->all_lesson_lists(true),
         ];

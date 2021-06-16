@@ -504,6 +504,7 @@ class ProjectTimeController extends Controller
                     if($request->teacher == -1) {
                         $project_time->no_teacher_available = true;
                     } else {
+                        $project_time->no_teacher_available = false;
                         $project_time->teacher_id = $request->teacher;
                     }
                 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use App\ResponseOption;
 use App\TestResponse;
 use Illuminate\Validation\Rule;
@@ -28,8 +29,10 @@ class StoreTestResponse extends FormRequest
     {
         $test_response = TestResponse::find($this->session()->get('test_response_id'));
         if(! isset($test_response)) {
-            logger("Something went wrong while storing test response!");
-            //logger("Test response id: ".$request->session()->get('test_response_id'));
+            logger("Something went wrong while validating test response!");
+            logger("Test response id: ".$this->session()->get('test_response_id'));
+            logger("Test session id: ".$this->session()->get('testsession_id'));
+            logger("User id: ".Auth::user()->id);
         }
         $question = $test_response->question;
         $correctoptions = ResponseOption::where([['question_id', '=', $question->id],['isCorrectAnswer', '=', true]])->get();

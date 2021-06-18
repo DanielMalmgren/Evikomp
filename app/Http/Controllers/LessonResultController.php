@@ -22,7 +22,7 @@ class LessonResultController extends Controller
 
         $poll = $lesson->poll;
         $poll_compulsory = $lesson->poll_compulsory;
-        if($user->poll_sessions->where('poll_id', $lesson->poll->id)->isNotEmpty()) {
+        if($poll !== null && $user->poll_sessions->where('poll_id', $lesson->poll->id)->isNotEmpty()) {
             $poll = null;
             $poll_compulsory = false;
         }
@@ -40,11 +40,9 @@ class LessonResultController extends Controller
             $lesson_has_test = true;
 
             if($test_session) { //The user just came back from doing a test
-                logger("Percent on test: ".$test_session->percent());
                 $percent = max($test_session->percent(), $personal_best);
                 if($test_session->percent() >= $lesson->test_required_percent) {
                     //The user cleared the test!
-                    logger("Passed now (".$percent." percent)!");
                     $passed_now = true;
                 } else {
                     //The user failed the test
@@ -52,8 +50,6 @@ class LessonResultController extends Controller
                 }
             } else {
                 if($personal_best < $lesson->test_required_percent) {
-                    logger("Personal best: ".$personal_best);
-                    logger("Required percent: ".$lesson->test_required_percent);
                     //The user has never finished the test, do it now!
                     return redirect('/test/'.$lesson->id);
                 } else {
@@ -68,7 +64,6 @@ class LessonResultController extends Controller
         }
 
         if(!$poll_compulsory) {
-            logger("No compulsary poll");
             $request->session()->forget('test_session_id');
             $request->session()->forget('lesson_result_id');
             if($passed_now) {
@@ -76,7 +71,6 @@ class LessonResultController extends Controller
                 $lesson->save();
                 $lesson->send_notification($user);
                 if($percent > $lesson_result->personal_best_percent) {
-                    logger("Saving new personal best: ".$percent);
                     $lesson_result->personal_best_percent = $percent;
                     $lesson_result->save();
                 }

@@ -20,9 +20,7 @@ class TestController extends Controller
         $test_session->user_id = Auth::user()->id;
         $test_session->save();
 
-        logger("In TestController::show, test_session->id is ".$test_session->id);
         $request->session()->put('test_session_id', $test_session->id); //Used in LessonResultController for verification that this is the correct session
-        logger("In TestController::show, test_session_id is ".$request->session()->get('test_session_id'));
 
         $lesson->times_test_started++;
         $lesson->save();

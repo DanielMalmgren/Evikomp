@@ -15,7 +15,7 @@ class FeedbackController extends Controller
 
         if(strpos(url()->previous(), '/lessons/')) {
             $activelesson = substr(url()->previous(), strrpos(url()->previous(), '/')+1);
-        } elseif(strpos(url()->previous(), '/test/result/')) {
+        } elseif(strpos(url()->previous(), '/result/')) {
             $testsession = TestSession::find(substr(url()->previous(), strrpos(url()->previous(), '/')+1));
             $activelesson = $testsession->lesson_id;
         } else {

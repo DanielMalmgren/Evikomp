@@ -13,5 +13,9 @@
         </div>
     </div>
 
+    @isset($lesson_result)
+        <br><br>
+        <a href="/result/{{$lesson_result->lesson_id}}" class="btn btn-primary">@lang('Tillbaka till resultatsidan')</a>
+    @endisset
 
 @endsection

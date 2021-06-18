@@ -20,11 +20,14 @@ use Illuminate\Http\RedirectResponse;
 
 class LessonController extends Controller
 {
-    public function show(Lesson $lesson, ?int $page=1): View {
+    public function show(Request $request, Lesson $lesson, ?int $page=1): View {
         $user = Auth::user();
         $question = Question::where('lesson_id', $lesson->id)->first();
         $lesson->times_started++;
         $lesson->save();
+
+        $request->session()->forget('test_session_id');
+
         $data = [
             'question' => $question,
             'lesson' => $lesson,
@@ -464,8 +467,10 @@ class LessonController extends Controller
 
         if($request->poll < 0) {
             $lesson->poll_id = null;
+            $lesson->poll_compulsory = false;
         } else {
             $lesson->poll_id = $request->poll;
+            $lesson->poll_compulsory = $request->poll_compulsory;
         }
 
         if($request->diploma) {

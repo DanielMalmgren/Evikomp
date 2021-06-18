@@ -54,6 +54,14 @@
             $("#diploma_wrapper").toggle(this.checked);
         });
 
+        $('#poll').on('change', function() {
+            if($(this).val() < 0) {
+                $("#poll_compulsory").hide();
+            } else {
+                $("#poll_compulsory").show();
+            }
+        });
+
         addtwe();
 
         $("#contents_wrap").sortable({
@@ -140,6 +148,13 @@
                 @endforeach
             </select>
         </div>
+
+        <div id="poll_compulsory" class="mb-3" style="{{!$lesson->poll_id?"display: none;":""}}">
+            <input type="hidden" name="poll_compulsory" value="0">
+            <label><input type="checkbox" name="poll_compulsory" value="1" {{$lesson->poll_compulsory?"checked":""}}>@lang('Gör enkäten tvingande')</label>
+        </div>
+
+        <br>
 
         <div class="mb-3">
             <input type="hidden" name="diploma" value="0">

@@ -140,13 +140,7 @@
         <br><br>
     @endif
 
-    @if ($question)
-        <a href="/test/{{$lesson->id}}" class="btn btn-primary">@lang('Fortsätt till testet')</a>
-    {{--@elseif($lesson->poll)
-        <a href="/poll/{{$lesson->poll->id}}" class="btn btn-primary">@lang('Utvärdera denna modul')</a>--}}
-    @else
-        <a href="/testresult?lesson_id={{$lesson->id}}" class="btn btn-primary">@lang('Färdig med denna modul')</a>
-    @endif
+    <a href="/result/{{$lesson->id}}" class="btn btn-primary">@lang('Färdig med denna modul')</a>
 
     @can('see beta features')
         <div class="modal fade" id="module-management" tabindex="-1" role="dialog" aria-labelledby="module-management-label" aria-hidden="true">
@@ -170,14 +164,14 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">@lang('Stäng')</button>
-                <a href="/lists/create?lesson_id={{$lesson->id}}" class="btn btn-primary">@lang('Skapa ny lista')</a>
-                <a href="/lists" class="btn btn-primary">@lang('Redigera dina listor')</a>
+                <a href="/lists/create?lesson_id={{$lesson->id}}" class="btn btn-secondary">@lang('Skapa ny lista')</a>
+                <a href="/lists" class="btn btn-secondary">@lang('Redigera dina listor')</a>
             </div>
             </div>
         </div>
         </div>
 
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#module-management">
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#module-management">
             @lang('Hantera listor')
         </button>
 
@@ -200,7 +194,7 @@
         </script>
     @endcan
 
-    <a href="/tracks/{{$lesson->track->id}}" class="btn btn-primary">@lang('Tillbaka till spåret')</a>
+    <a href="/tracks/{{$lesson->track->id}}" class="btn btn-secondary">@lang('Tillbaka till spåret')</a>
 
     @if($is_editor)
         <br><br>

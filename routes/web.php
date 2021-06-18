@@ -53,9 +53,9 @@ Route::put('/test/question/{question}',         'QuestionController@update')->mi
 Route::delete('/test/question/{question}',      'QuestionController@destroy')->middleware('permission:manage lessons');
 Route::post('/test/question/reorder',           'QuestionController@reorder')->middleware('permission:manage lessons');
 
-//TestResultController
-Route::get('/testresult',                      'TestResultController@show');
-Route::get('/testresult/{lesson}/pdfdiploma',  'TestResultController@pdfdiploma');
+//LessonResultController
+Route::get('/result/{lesson}',                  'LessonResultController@show');
+Route::get('/result/{lesson}/pdfdiploma',       'LessonResultController@pdfdiploma');
 
 //FeedbackController
 Route::get('/feedback',                         'FeedbackController@create');

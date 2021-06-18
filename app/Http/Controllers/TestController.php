@@ -14,11 +14,15 @@ use App\Http\Requests\StoreTestResponse;
 
 class TestController extends Controller
 {
-    public function show(Lesson $lesson) {
+    public function show(Request $request, Lesson $lesson) {
         $test_session = new TestSession();
         $test_session->lesson_id = $lesson->id;
         $test_session->user_id = Auth::user()->id;
         $test_session->save();
+
+        logger("In TestController::show, test_session->id is ".$test_session->id);
+        $request->session()->put('test_session_id', $test_session->id); //Used in LessonResultController for verification that this is the correct session
+        logger("In TestController::show, test_session_id is ".$request->session()->get('test_session_id'));
 
         $lesson->times_test_started++;
         $lesson->save();
@@ -65,23 +69,7 @@ class TestController extends Controller
             $request->session()->forget('test_response_id'); //Rensa denna så det skapas en ny när vi kommer till QuestionController@show
             return redirect('/test/question/'.$nextquestion->id.'?testsession_id='.$test_session->id);
         } else {
-            $lesson->times_finished++;
-            $lesson->save();
-
-            $user = User::find($test_session->user_id);
-
-            if($test_session->percent() >= $lesson->test_required_percent) {
-                $lesson_result = LessonResult::updateOrCreate(
-                    ['user_id' => $user->id, 'lesson_id' => $test_session->lesson_id]
-                );
-                $lesson->send_notification($user);
-                if($test_session->percent() > $lesson_result->personal_best_percent) {
-                    $lesson_result->personal_best_percent = $test_session->percent();
-                    $lesson_result->save();
-                }
-            }
-
-            return redirect('/testresult?test_session_id='.$test_session->id);
+            return redirect('/result/'.$lesson->id);
         }
     }
 }

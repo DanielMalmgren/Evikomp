@@ -4,9 +4,7 @@
 
 @section('content')
 
-{{--<script type="text/javascript" src="/tempusdominus/moment-with-locales.js"></script>
-<script type="text/javascript" src="/tempusdominus/tempusdominus-bootstrap-4.min.js"></script>
-<link rel="stylesheet" href="/tempusdominus/tempusdominus-bootstrap-4.min.css" />--}}
+{{--
 
 <script type="text/javascript">
     $(function() {
@@ -55,28 +53,6 @@
             <label for="date">@lang('Datum')</label>
             <input type="date" name="date" min="{{$mindate}}" max="{{date("Y-m-d")}}" class="form-control" value="{{old('date')}}">
 
-            {{--<div style="overflow:hidden;">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div id="date" name="date"></div>
-                        </div>
-                    </div>
-                </div>
-                <script type="text/javascript">
-                    $(function () {
-                        $('#date').datetimepicker({
-                            format: 'L',
-                            locale: 'sv',
-                            inline: true,
-                            sideBySide: true,
-                            minDate: '{{$mindate}}',
-                            maxDate: '{{date("Y-m-d")}}'
-                        });
-                    });
-                </script>
-            </div>--}}
-
         </div>
 
         <div class="mb-3">
@@ -101,5 +77,7 @@
 
 
 </div>
+
+--}}
 
 @endsection

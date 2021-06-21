@@ -97,7 +97,7 @@ class ProjectTimeController extends Controller
     }
 
     public function createsingleuser() {
-        $project_time_types = ProjectTimeType::all();
+        /*$project_time_types = ProjectTimeType::all();
         $user = Auth::user();
 
         $data = [
@@ -105,9 +105,9 @@ class ProjectTimeController extends Controller
             'user' => $user,
             'workplace' => $user->workplace,
             'mindate' => $this->mindate,
-        ];
+        ];*/
         \Session::flash('warning', __('På grund av förändringar i plattformen kommer detta menyval att försvinna inom kort.<br> Registrera istället tid i projektet genom att gå in på menyvalet <i><b>Administration->Hantera lärtillfällen</b></i> och klicka på ett datum i kalendern!'));
-        return view('projecttime.createsingleuser')->with($data);
+        return view('projecttime.createsingleuser'); //->with($data);
     }
 
     public function ajax(Request $request, Workplace $workplace=null) {

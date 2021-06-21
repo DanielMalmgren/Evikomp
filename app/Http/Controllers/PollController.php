@@ -179,13 +179,24 @@ class PollController extends Controller
     }
 
     public function show(Poll $poll, Lesson $lesson=null): View {
-        $poll_session = new PollSession();
-        $poll_session->poll_id = $poll->id;
-        $poll_session->user_id = Auth::user()->id;
-        if($lesson !== null) {
-            $poll_session->lesson_id = $lesson->id;
+
+        $poll_session = Auth::user()->poll_sessions->where('poll_id', $poll->id)->first();
+        if(isset($poll_session)) {
+            if($poll_session->finished) {
+                $data = [
+                    'poll' => $poll,
+                ];
+                return view('polls.alreadyfilled')->with($data);
+            }
+        } else {
+            $poll_session = new PollSession();
+            $poll_session->poll_id = $poll->id;
+            $poll_session->user_id = Auth::user()->id;
+            if($lesson !== null) {
+                $poll_session->lesson_id = $lesson->id;
+            }
+            $poll_session->save();
         }
-        $poll_session->save();
 
         session(['poll_session_id' => $poll_session->id]);
 

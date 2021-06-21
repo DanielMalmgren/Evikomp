@@ -57,7 +57,7 @@
                         <br><br>
                     @endif
                     @if(isset($lesson->diploma_layout))
-                        <a href="/testresult/{{$lesson->id}}/pdfdiploma" class="btn btn-primary">@lang('Skriv ut diplom')</a>
+                        <a href="/result/{{$lesson->id}}/pdfdiploma" class="btn btn-primary">@lang('Skriv ut diplom')</a>
                     @endif
                 @endif
             @endif

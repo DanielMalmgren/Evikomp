@@ -2,6 +2,10 @@
 * ====================== Various ===========================
 */
 
+.list-group-item {
+    cursor: pointer;
+}
+
 .impersonate-header {
     height: 25px !important;
     background-color: yellow !important;
@@ -133,6 +137,7 @@ audio {
     width: 100%;
     height: 100%;
     perspective: 1000px;
+    cursor:pointer;
   }
 
   .flip-card-inner {

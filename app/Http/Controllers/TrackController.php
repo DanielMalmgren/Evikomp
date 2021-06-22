@@ -199,7 +199,8 @@ class TrackController extends Controller
 
         $cell = $worksheet->getCellByColumnAndRow(1, 1);
         $worksheet->getColumnDimension($cell->getColumn())->setAutoSize(true);
-        $worksheet->getStyle($cell->getCoordinate())->getFont()->setBold(true);
+        $cell = $worksheet->getCellByColumnAndRow(2, 1);
+        $worksheet->getColumnDimension($cell->getColumn())->setAutoSize(true);
 
         $i = 3;
         foreach($track->lessons->where('active', true)->sortBy('order') as $lesson) {
@@ -220,7 +221,9 @@ class TrackController extends Controller
         foreach($track->finished_users->sortBy('name') as $user) {
             $total = 0;
             $worksheet->setCellValueByColumnAndRow(1, $row, $user->name);
-            $worksheet->setCellValueByColumnAndRow(2, $row, $user->workplace->name);
+            if($user->workplace) {
+                $worksheet->setCellValueByColumnAndRow(2, $row, $user->workplace->name);
+            }
             foreach($column_order as $lesson_id => $column) {
                 if($lesson_id == -1) {
                     $cell = $worksheet->getCellByColumnAndRow($column, $row);

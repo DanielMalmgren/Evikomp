@@ -201,7 +201,7 @@ class TrackController extends Controller
         $worksheet->getColumnDimension($cell->getColumn())->setAutoSize(true);
         $worksheet->getStyle($cell->getCoordinate())->getFont()->setBold(true);
 
-        $i = 2;
+        $i = 3;
         foreach($track->lessons->where('active', true)->sortBy('order') as $lesson) {
             $cell = $worksheet->getCellByColumnAndRow($i, 1);
             $cell->setValue($lesson->translateOrDefault(\App::getLocale())->name);
@@ -217,9 +217,10 @@ class TrackController extends Controller
         $column_order[-1] = $i;
 
         $row = 2;
-        foreach($track->finished_users as $user) {
+        foreach($track->finished_users->sortBy('name') as $user) {
             $total = 0;
             $worksheet->setCellValueByColumnAndRow(1, $row, $user->name);
+            $worksheet->setCellValueByColumnAndRow(2, $row, $user->workplace->name);
             foreach($column_order as $lesson_id => $column) {
                 if($lesson_id == -1) {
                     $cell = $worksheet->getCellByColumnAndRow($column, $row);

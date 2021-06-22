@@ -10,6 +10,7 @@ use App\Lesson;
 class Track extends Model
 {
     use \Astrotomic\Translatable\Translatable;
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     public $translatedAttributes = ['name'];
     public $incrementing = false;
@@ -32,6 +33,11 @@ class Track extends Model
     public function track_admins(): BelongsToMany
     {
         return $this->belongsToMany('App\User', 'track_admins');
+    }
+
+    //Returns all users that has finished any module within this track
+    public function finished_users() {
+        return $this->hasManyDeep('App\User', ['App\Lesson', 'lesson_results'])->groupBy('users.id');
     }
 
     public function color()

@@ -20,8 +20,8 @@
 
     @if($is_editor)
         @if(locale_is_default())
-            <a href="/lessons/create/{{$track->id}}" class="btn btn-primary">@lang('Lägg till modul')</a>
-            <a href="/scormimport/create/{{$track->id}}" class="btn btn-primary">@lang('Importera SCORM-fil')</a>
+            <a href="/lessons/create/{{$track->id}}" class="btn btn-secondary">@lang('Lägg till modul')</a>
+            <a href="/scormimport/create/{{$track->id}}" class="btn btn-secondary">@lang('Importera SCORM-fil')</a>
         @endif
 
         <script type="text/javascript" language="javascript" src="{{asset('vendor/jquery-ui-1.12.1.custom/jquery-ui.min.js')}}"></script>
@@ -43,11 +43,11 @@
     @endif
 
     @can('manage tracks')
-        <a href="/tracks/{{$track->id}}/edit" class="btn btn-primary">@lang('Redigera spåret')</a>
+        <a href="/tracks/{{$track->id}}/edit" class="btn btn-secondary">@lang('Redigera spåret')</a>
+    @endcan
 
-        @if($track->lessons()->finished()->get()->isNotEmpty())
-            <a href="/tracks/{{$track->id}}/pdfdiploma" class="btn btn-primary">@lang('Ge mig mitt diplom!')</a>
-        @endif
+    @can('export track compilation')
+        <a href="/tracks/{{$track->id}}/compilationxls" class="btn btn-secondary">@lang('Exportera resultat')</a>
     @endcan
 
 @endsection

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Track;
 use App\User;
 use App\Color;
+use App\LessonResult;
+use App\Lesson;
 use PDF;
 
 class TrackController extends Controller
@@ -182,5 +184,73 @@ class TrackController extends Controller
         $pdf = PDF::loadView('tracks.pdfdiploma', $data);
 
         return $pdf->download('diploma.pdf');
+    }
+
+    //Download an Excel-fil with a compilation of all users that has completed anything in this track
+    public function compilationXls(Track $track) {
+        if(!Auth::user()->hasRole('Admin')) {
+            logger("User ".Auth::user()->id." is trying to get xls compilation for track ".$track->id.". Responding with http 403.");
+            abort(403);
+        }
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $cell = $worksheet->getCellByColumnAndRow(1, 1);
+        $worksheet->getColumnDimension($cell->getColumn())->setAutoSize(true);
+        $worksheet->getStyle($cell->getCoordinate())->getFont()->setBold(true);
+
+        $i = 2;
+        foreach($track->lessons->where('active', true)->sortBy('order') as $lesson) {
+            $cell = $worksheet->getCellByColumnAndRow($i, 1);
+            $cell->setValue($lesson->translateOrDefault(\App::getLocale())->name);
+            $worksheet->getColumnDimension($cell->getColumn())->setAutoSize(true);
+            $worksheet->getStyle($cell->getCoordinate())->getFont()->setBold(true);
+            $column_order[$lesson->id] = $i;
+            $i++;
+        }
+        $cell = $worksheet->getCellByColumnAndRow($i, 1);
+        $cell->setValue("Summa");
+        $worksheet->getColumnDimension($cell->getColumn())->setAutoSize(true);
+        $worksheet->getStyle($cell->getCoordinate())->getFont()->setBold(true);
+        $column_order[-1] = $i;
+
+        $row = 2;
+        foreach($track->finished_users as $user) {
+            $total = 0;
+            $worksheet->setCellValueByColumnAndRow(1, $row, $user->name);
+            foreach($column_order as $lesson_id => $column) {
+                if($lesson_id == -1) {
+                    $cell = $worksheet->getCellByColumnAndRow($column, $row);
+                    $cell->setValue($total);
+                } elseif(LessonResult::where('user_id', $user->id)->where('lesson_id', $lesson_id)->get()->isNotEmpty()) {
+                    $cell = $worksheet->getCellByColumnAndRow($column, $row);
+                    $cell->setValue("✓");
+                    $cell->getStyle()->getAlignment()->setHorizontal('center');
+                    $total++;
+                }
+            }
+            $row++;
+        }
+
+        $cell = $worksheet->getCellByColumnAndRow(1, $row);
+        $cell->setValue("Summa");
+        foreach($column_order as $lesson_id => $column) {
+            if($lesson_id != -1) {
+                $lesson = Lesson::find($lesson_id);
+                $cell = $worksheet->getCellByColumnAndRow($column, $row);
+                $cell->setValue($total);
+                $cell->setValue($lesson->lesson_results->count());
+                $cell->getStyle()->getAlignment()->setHorizontal('center');
+            }
+        }
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+
+        $filename = "Sammanställning Evikomp spår ".$track->translateOrDefault(\App::getLocale())->name.".xlsx";
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="'.$filename.'"');
+        $writer->save("php://output");
     }
 }

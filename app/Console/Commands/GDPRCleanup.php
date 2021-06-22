@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\User;
 use App\ActiveTime;
+use App\TimeAttest;
 
 class GDPRCleanup extends Command
 {
@@ -43,9 +44,10 @@ class GDPRCleanup extends Command
 
         $amountdeleted = 0;
         $this->info("Looping through users...");
-        $expDate = \Carbon\Carbon::now()->subDays(2);
+        $expDate = \Carbon\Carbon::now()->subDays(7);
         foreach(User::where('accepted_gdpr', false)->whereDate('updated_at', '<', $expDate)->get() as $user) {
             ActiveTime::where('user_id', $user->id)->delete();
+            TimeAttest::where('user_id', $user->id)->delete();
             logger("Removing user ".$user->id." who hasn't accepted gdpr");
             $this->info("Deleted ".$user->name);
             $user->delete();

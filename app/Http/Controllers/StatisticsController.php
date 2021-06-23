@@ -168,7 +168,6 @@ class StatisticsController extends Controller
             $year = $date->format('Y');
             $month = $date->format('n');
             $lastdayinmonth = $date->format("Y-m-t");
-            logger("Year: ".$year.", month: ".$month);
 
             //New workplaces
             $value = Workplace::whereYear('created_at', $year)->whereMonth('created_at', $month)->count();
@@ -225,6 +224,9 @@ class StatisticsController extends Controller
             $row++;
             $celldate = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
         }
+
+        $value = "Denna fil genererades ".date("Y-m-d H:i:s");
+        $worksheet->setCellValueByColumnAndRow(1, $row+1, $value);
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
 

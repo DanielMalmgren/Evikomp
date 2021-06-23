@@ -11,6 +11,7 @@ use App\Workplace;
 use App\Municipality;
 use App\Lesson;
 use ConsoleTVs\Charts\Classes\Chartjs\Chart;
+use Illuminate\Support\Facades\DB;
 
 class StatisticsController extends Controller
 {
@@ -154,5 +155,82 @@ class StatisticsController extends Controller
             $colors[] = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
         }
         return $colors;
+    }
+
+    public function export() {
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./xls-template/Statistik.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $row = 3;
+        $celldate = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
+        while($celldate != null && $row < 1000) {
+            $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($celldate);
+            $year = $date->format('Y');
+            $month = $date->format('n');
+            $lastdayinmonth = $date->format("Y-m-t");
+            logger("Year: ".$year.", month: ".$month);
+
+            //New workplaces
+            $value = Workplace::whereYear('created_at', $year)->whereMonth('created_at', $month)->count();
+            $worksheet->setCellValueByColumnAndRow(2, $row, $value);
+
+            //Total workplaces
+            $value = Workplace::whereDate('created_at', '<=', $lastdayinmonth)->count();
+            $worksheet->setCellValueByColumnAndRow(3, $row, $value);
+
+            //New users
+            $value = User::whereYear('created_at', $year)->whereMonth('created_at', $month)->count();
+            $worksheet->setCellValueByColumnAndRow(4, $row, $value);
+
+            //Total users
+            $value = User::whereDate('created_at', '<=', $lastdayinmonth)->count();
+            $worksheet->setCellValueByColumnAndRow(5, $row, $value);
+
+            //Users active in platform
+            $active_times = ActiveTime::whereYear('date', $year)->whereMonth('date', $month)->groupBy('user_id');
+            $atusers = User::whereIn('id', $active_times->pluck('user_id'))->get();
+            $value = $atusers->count();
+            $worksheet->setCellValueByColumnAndRow(6, $row, $value);
+
+            //Users active in project time
+            $ptusers = collect();
+            $project_times = ProjectTime::whereYear('date', $year)->whereMonth('date', $month)->get();
+            foreach($project_times as $project_time) {
+                $ptusers = $ptusers->merge($project_time->users)->unique('id');
+            }
+            $value = $ptusers->count();
+            $worksheet->setCellValueByColumnAndRow(7, $row, $value);
+
+            //Users active in either platform or project time
+            $users = $atusers->merge($ptusers)->unique('id');
+            $value = $users->count();
+            $worksheet->setCellValueByColumnAndRow(8, $row, $value);
+
+            //Active time in platform
+            $attime = round(ActiveTime::filter()->whereYear('date', $year)->whereMonth('date', $month)->sum('seconds')/3600);
+            $worksheet->setCellValueByColumnAndRow(9, $row, $attime);
+
+            //Project time
+            $pttime = round($project_times->sum('minutes_total')/60);
+            $worksheet->setCellValueByColumnAndRow(10, $row, $pttime);
+
+            //Attested time by users
+            $value = round(TimeAttest::where('year', $year)->where('month', $month)->where('attestlevel', 1)->sum('hours'));
+            $worksheet->setCellValueByColumnAndRow(13, $row, $value);
+
+            //Attested time by managers
+            $value = round(TimeAttest::where('year', $year)->where('month', $month)->where('attestlevel', 3)->sum('hours'));
+            $worksheet->setCellValueByColumnAndRow(14, $row, $value);
+
+            $row++;
+            $celldate = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
+        }
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+
+        $filename = "Statistik Evikomp.xlsx";
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="'.$filename.'"');
+        $writer->save("php://output");
     }
 }

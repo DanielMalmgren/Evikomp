@@ -5,6 +5,11 @@
 @section('content')
 
 <H1>@lang('Statistik')</H1>
+
+@can('export statistics')
+    <a href="/statistics/export" class="btn btn-secondary">@lang('Exportera Excel-fil')</a><br><br>
+@endcan
+
 <p>@lang('Antal personer inloggade idag: ') {{$sessions}}</p>
 <p>@lang('Antal registrerade användare: ') {{$users}} (Varav {{$maleusers}} män och {{$femaleusers}} kvinnor)</p>
 <p>@lang('Antal arbetsplatser: ') {{$workplaces}}</p>

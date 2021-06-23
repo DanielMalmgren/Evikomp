@@ -131,6 +131,7 @@ Route::get('/sessions',                         'SessionController@index')->midd
 //StatisticsController
 Route::get('/statistics',                       'StatisticsController@index');
 Route::get('/statistics/ajaxchart/{chartid}',   'StatisticsController@ajaxchart');
+Route::get('/statistics/export',                'StatisticsController@export');
 
 //AnnouncementsController
 Route::resource('announcements',                'AnnouncementsController');

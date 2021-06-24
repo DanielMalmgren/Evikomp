@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('custom:checklinks')->weekly();
         $schedule->command('custom:gdprcleanup')->daily()->environments(['prod']);
+        $schedule->command('custom:createstatisticsxls')->cron('0 4 * * *')->environments(['prod']);
         $schedule->command('custom:attestreminder --forreal')->cron('0 7 * * 1,4')->environments(['prod']);
         $schedule->command('custom:attestremindersms --forreal')->cron('0 9 17-23 * 1')->environments(['prod']);
         $schedule->command('custom:presencereminder mode=sync --forreal')->cron('5 * * * *')->environments(['prod']);

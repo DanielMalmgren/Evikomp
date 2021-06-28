@@ -32,7 +32,7 @@ class Track extends Model
 
     public function track_admins(): BelongsToMany
     {
-        return $this->belongsToMany('App\User', 'track_admins');
+        return $this->belongsToMany('App\User', 'track_admins')->withPivot('is_editor');
     }
 
     //Returns all users that has finished any module within this track

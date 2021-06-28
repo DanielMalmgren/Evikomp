@@ -49,7 +49,7 @@ class User extends Authenticatable
     //Get all tracks for which this user is admin
     public function admin_tracks(): BelongsToMany
     {
-        return $this->belongsToMany('App\Track', 'track_admins');
+        return $this->belongsToMany('App\Track', 'track_admins')->withPivot('is_editor');
     }
 
     //Get all notification_receiver objects for lessons for which this user will receive notifications

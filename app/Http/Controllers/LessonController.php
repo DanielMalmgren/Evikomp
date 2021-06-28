@@ -35,12 +35,17 @@ class LessonController extends Controller
             'pages' => $lesson->pages,
             'my_lists' => $user->lesson_lists_owned,
             'first_content_order' => $lesson->getFirstContentOnPage($page),
-            'is_editor' => $user->can('manage lessons') || Auth::user()->admin_tracks->where('id', $lesson->track->id)->isNotEmpty(),
+            'is_editor' => $user->can('manage lessons') || Auth::user()->admin_tracks->where('id', $lesson->track->id)->where('pivot.is_editor', 1)->isNotEmpty(),
         ];
         return view('lessons.show')->with($data);
     }
 
     public function replicate(Lesson $lesson): RedirectResponse {
+        $user = Auth::user();
+        if(!$user->can('manage lessons') && $user->admin_tracks->where('id', $lesson->track->id)->where('pivot.is_editor', true)->isEmpty()) {
+            abort(403);
+        }
+
         $newLesson = $lesson->replicateWithTranslations();
         $newLesson->times_started = 0;
         $newLesson->times_test_started = 0;
@@ -72,6 +77,11 @@ class LessonController extends Controller
     }
 
     public function create(Track $track): View {
+        $user = Auth::user();
+        if(!$user->can('manage lessons') && $user->admin_tracks->where('id', $track->id)->where('pivot.is_editor', true)->isEmpty()) {
+            abort(403);
+        }
+
         $titles = Title::all();
         $data = [
             'track' => $track,
@@ -101,6 +111,11 @@ class LessonController extends Controller
 
         $track = Track::find($request->track);
 
+        $user = Auth::user();
+        if(!$user->can('manage lessons') && $user->admin_tracks->where('id', $track->id)->where('pivot.is_editor', true)->isEmpty()) {
+            abort(403);
+        }
+
         $lesson = new Lesson();
         $lesson->track_id = $request->track;
         $lesson->order = $track->lessons->max('order')+1;
@@ -128,6 +143,11 @@ class LessonController extends Controller
     }
 
     public function edit(Lesson $lesson): View {
+        $user = Auth::user();
+        if(!$user->can('manage lessons') && $user->admin_tracks->where('id', $lesson->track->id)->where('pivot.is_editor', true)->isEmpty()) {
+            abort(403);
+        }
+
         $titles = Title::all();
         $data = [
             'lesson' => $lesson,
@@ -140,6 +160,11 @@ class LessonController extends Controller
     }
 
     public function editquestions(Lesson $lesson): View {
+        $user = Auth::user();
+        if(!$user->can('manage lessons') && $user->admin_tracks->where('id', $lesson->track->id)->where('pivot.is_editor', true)->isEmpty()) {
+            abort(403);
+        }
+
         $questions = $lesson->questions->sortBy('order');
 
         $data = [
@@ -175,20 +200,12 @@ class LessonController extends Controller
         return redirect('/lessons/'.$targetlesson->id.'/editquestions');
     }
 
-    /*public function finish(Lesson $lesson):RedirectResponse {
-
-        $user = Auth::user();
-
-        LessonResult::updateOrCreate(
-            ['user_id' => $user->id, 'lesson_id' => $lesson->id]
-        );
-
-        $lesson->send_notification($user);
-
-        return redirect('/');
-    }*/
-
     public function update(Request $request, Lesson $lesson): RedirectResponse {
+        $user = Auth::user();
+        if(!$user->can('manage lessons') && $user->admin_tracks->where('id', $lesson->track->id)->where('pivot.is_editor', true)->isEmpty()) {
+            abort(403);
+        }
+
         usleep(50000);
         $this->validate($request, [
             'name' => 'required',
@@ -196,8 +213,8 @@ class LessonController extends Controller
             'new_audio.*' => 'file|mimetypes:audio/mpeg|max:61440',
             'new_audio' => 'array|max_uploaded_file_size:61440',
             'new_office.*' => 'file|mimetypes:application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation|max:10000',
-            'new_image.*' => 'file|image|max:30000',
-            'new_file.*' => 'file|max:30000',
+            'new_image.*' => 'file|image|max:10000',
+            'new_file.*' => 'file|max:60000',
             'new_vimeo.*' => 'integer',
             'vimeo.*' => 'integer',
             'color' => 'exists:colors,hex',
@@ -212,16 +229,16 @@ class LessonController extends Controller
             'new_office.*.file' => __('Du måste välja en fil att ladda upp!'),
             'new_image.*.file' => __('Du måste välja en fil att ladda upp!'),
             'new_file.*.file' => __('Du måste välja en fil att ladda upp!'),
-            'new_audio.*.max' => __('Din fil är för stor! Max-storleken är 60MB!'),
-            'new_office.*.max' => __('Din fil är för stor! Max-storleken är 10MB!'),
-            'new_image.*.max' => __('Din fil är för stor! Max-storleken är 20MB!'),
-            'new_file.*.max' => __('Din fil är för stor! Max-storleken är 20MB!'),
-            'new_audio.max_uploaded_file_size' => __('För stora filer! Dina filer får totalt vara max 60MB!'),
+            'new_audio.*.max' => __('Din fil är för stor! Max-storleken är :size!', ['size' => '60MB']),
+            'new_office.*.max' => __('Din fil är för stor! Max-storleken är :size!', ['size' => '10MB']),
+            'new_image.*.max' => __('Din fil är för stor! Max-storleken är :size!', ['size' => '10MB']),
+            'new_file.*.max' => __('Din fil är för stor! Max-storleken är :size!', ['size' => '60MB']),
+            'new_audio.max_uploaded_file_size' => __('För stora filer! Dina filer får totalt vara max :size!', ['size' => '60MB']),
             'new_vimeo.*.integer' => __('Ett giltigt Vimeo-id har bara siffror!'),
             'vimeo.*.integer' => __('Ett giltigt Vimeo-id har bara siffror!'),
             'color.exists' => __('Du måste välja en av de förvalda färgerna!'),
             'icon.image' => __('Felaktigt bildformat!'),
-            'icon.max' => __('Din fil är för stor! Max-storleken är 2MB!'),
+            'icon.max' => __('Din fil är för stor! Max-storleken är :size!', ['size' => '2MB']),
         ]);
 
         $currentLocale = \App::getLocale();
@@ -492,6 +509,11 @@ class LessonController extends Controller
     }
 
     public function destroy(Lesson $lesson): void {
+        $user = Auth::user();
+        if(!$user->can('manage lessons') && $user->admin_tracks->where('id', $lesson->track->id)->where('pivot.is_editor', true)->isEmpty()) {
+            abort(403);
+        }
+
         $user = Auth::user();
         logger("Lesson ".$lesson->id." is being removed by ".$user->name);
         foreach($lesson->contents as $content) {

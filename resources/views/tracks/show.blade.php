@@ -21,7 +21,9 @@
     @if($is_editor)
         @if(locale_is_default())
             <a href="/lessons/create/{{$track->id}}" class="btn btn-secondary">@lang('Lägg till modul')</a>
-            <a href="/scormimport/create/{{$track->id}}" class="btn btn-secondary">@lang('Importera SCORM-fil')</a>
+            @can('Import SCORM')
+                <a href="/scormimport/create/{{$track->id}}" class="btn btn-secondary">@lang('Importera SCORM-fil')</a>
+            @endcan
         @endif
 
         <script type="text/javascript" language="javascript" src="{{asset('vendor/jquery-ui-1.12.1.custom/jquery-ui.min.js')}}"></script>
@@ -41,8 +43,8 @@
             });
         </script>
     @endif
-
-    @can('manage tracks')
+    
+    @can('Manage lessons')
         <a href="/tracks/{{$track->id}}/edit" class="btn btn-secondary">@lang('Redigera spåret')</a>
     @endcan
 

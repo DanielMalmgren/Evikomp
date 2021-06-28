@@ -56,7 +56,7 @@ class TrackController extends Controller
         $data = [
             'track' => $track,
             'lessons' => $lessons,
-            'is_editor' => Auth::user()->can('manage lessons') || Auth::user()->admin_tracks->where('id', $track->id)->isNotEmpty(),
+            'is_editor' => Auth::user()->can('manage lessons') || Auth::user()->admin_tracks->where('id', $track->id)->where('pivot.is_editor', true)->isNotEmpty(),
         ];
         return view('tracks.show')->with($data);
     }
@@ -147,6 +147,29 @@ class TrackController extends Controller
             foreach(array_keys($request->remove_admin) as $user_id) {
                 $user = User::find($user_id);
                 logger('Removing '.$user->name.' as editor for track '.$track->id);
+                $user->admin_tracks()->detach($track);
+                if($user->admin_tracks->isNotEmpty()) {
+                    $user->removeRole('Track editor');
+                }
+            }
+        }
+
+        if($request->new_factcheckers) {
+            foreach($request->new_factcheckers as $user_id) {
+                $user = User::find($user_id);
+                if(isset($user) && !$user->admin_tracks->contains($track)) {
+                    logger('Making '.$user->name.' fact checker for track '.$track->id);
+
+                    $user->admin_tracks()->attach($track, ['is_editor' => false]);
+                    $user->assignRole('Track editor');
+                }
+            }
+        }
+
+        if($request->remove_factchecker) {
+            foreach(array_keys($request->remove_factchecker) as $user_id) {
+                $user = User::find($user_id);
+                logger('Removing '.$user->name.' as fact checker for track '.$track->id);
                 $user->admin_tracks()->detach($track);
                 if($user->admin_tracks->isNotEmpty()) {
                     $user->removeRole('Track editor');

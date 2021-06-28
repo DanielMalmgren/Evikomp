@@ -22,22 +22,22 @@ Route::get('/tracks/{track}/pdfdiploma',        'TrackController@pdfdiploma');
 Route::post('/tracks/reorder',                  'TrackController@reorder')->middleware('permission:manage lessons');
 
 //LessonController
-Route::get('/lessons/create/{track}',           'LessonController@create')->middleware('permission:manage lessons');
-Route::post('/lessons',                         'LessonController@store')->middleware('permission:manage lessons');
-Route::get('/lessons/{lesson}/edit',            'LessonController@edit')->middleware('permission:manage lessons');
-Route::put('/lessons/{lesson}',                 'LessonController@update')->middleware('permission:manage lessons');
-Route::get('/lessons/{lesson}/editquestions',   'LessonController@editquestions')->middleware('permission:manage lessons');
+Route::get('/lessons/create/{track}',           'LessonController@create');
+Route::post('/lessons',                         'LessonController@store');
+Route::get('/lessons/{lesson}/edit',            'LessonController@edit');
+Route::put('/lessons/{lesson}',                 'LessonController@update');
+Route::get('/lessons/{lesson}/editquestions',   'LessonController@editquestions');
 Route::put('/lessons/{lesson}/vote',            'LessonController@vote');
 //Route::get('/lessons/{lesson}/finish',          'LessonController@finish');
-Route::post('/lessons/reorder',                 'LessonController@reorder')->middleware('permission:manage lessons');
+Route::post('/lessons/reorder',                 'LessonController@reorder');
 Route::get('/lessons/{lesson}/replicate',       'LessonController@replicate');
 Route::get('/lessons/{lesson}/{page?}',         'LessonController@show');
 Route::post('/lessons/replicateQuestions',      'LessonController@replicateQuestions');
-Route::delete('/lessons/{lesson}',              'LessonController@destroy')->middleware('permission:manage lessons');
+Route::delete('/lessons/{lesson}',              'LessonController@destroy');
 
 //NotificationReceiversController
-Route::get('/notificationreceivers/{lesson}/edit', 'NotificationReceiversController@edit')->middleware('permission:manage lessons');
-Route::put('/notificationreceivers/{lesson}',   'NotificationReceiversController@update')->middleware('permission:manage lessons');
+Route::get('/notificationreceivers/{lesson}/edit', 'NotificationReceiversController@edit');
+Route::put('/notificationreceivers/{lesson}',   'NotificationReceiversController@update');
 
 //TestController
 Route::get('/test/{lesson}',                    'TestController@show');
@@ -46,13 +46,13 @@ Route::post('/test/{lesson}/test_required_percent', 'TestController@set_test_req
 Route::post('/test/storeResponse',              'TestController@store');
 
 //QuestionController
-Route::get('/test/question/create',             'QuestionController@create')->middleware('permission:manage lessons');
-Route::post('/test/question',                   'QuestionController@store')->middleware('permission:manage lessons');
+Route::get('/test/question/create',             'QuestionController@create');
+Route::post('/test/question',                   'QuestionController@store');
 Route::get('/test/question/{question}',         'QuestionController@show');
-Route::get('/test/question/{question}/edit',    'QuestionController@edit')->middleware('permission:manage lessons');
-Route::put('/test/question/{question}',         'QuestionController@update')->middleware('permission:manage lessons');
-Route::delete('/test/question/{question}',      'QuestionController@destroy')->middleware('permission:manage lessons');
-Route::post('/test/question/reorder',           'QuestionController@reorder')->middleware('permission:manage lessons');
+Route::get('/test/question/{question}/edit',    'QuestionController@edit');
+Route::put('/test/question/{question}',         'QuestionController@update');
+Route::delete('/test/question/{question}',      'QuestionController@destroy');
+Route::post('/test/question/reorder',           'QuestionController@reorder');
 
 //LessonResultController
 Route::get('/result/{lesson}',                  'LessonResultController@show');

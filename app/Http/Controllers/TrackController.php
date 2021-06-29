@@ -227,18 +227,29 @@ class TrackController extends Controller
 
         $i = 3;
         foreach($track->lessons->where('active', true)->sortBy('order') as $lesson) {
+            $lessonname = $lesson->translateOrDefault(\App::getLocale())->name;
+            if(strlen($lessonname) > 10) {
+                $lessonname = mb_substr($lessonname, 0, 9,'UTF-8')."…";
+            }
             $cell = $worksheet->getCellByColumnAndRow($i, 1);
-            $cell->setValue($lesson->translateOrDefault(\App::getLocale())->name);
-            $worksheet->getColumnDimension($cell->getColumn())->setAutoSize(true);
+            $cell->setValue($lessonname, 0, 10);
+            $worksheet->getColumnDimension($cell->getColumn())->setWidth('10');
             $worksheet->getStyle($cell->getCoordinate())->getFont()->setBold(true);
             $column_order[$lesson->id] = $i;
             $i++;
         }
         $cell = $worksheet->getCellByColumnAndRow($i, 1);
         $cell->setValue("Summa");
-        $worksheet->getColumnDimension($cell->getColumn())->setAutoSize(true);
+        $worksheet->getColumnDimension($cell->getColumn())->setWidth('8');
         $worksheet->getStyle($cell->getCoordinate())->getFont()->setBold(true);
         $column_order[-1] = $i;
+        $i++;
+
+        $cell = $worksheet->getCellByColumnAndRow($i, 1);
+        $cell->setValue("Inloggad timmar");
+        $worksheet->getColumnDimension($cell->getColumn())->setAutoSize(true);
+        $worksheet->getStyle($cell->getCoordinate())->getFont()->setBold(true);
+        $column_order[-2] = $i;
 
         $row = 2;
         foreach($track->finished_users->sortBy('name') as $user) {
@@ -251,6 +262,9 @@ class TrackController extends Controller
                 if($lesson_id == -1) {
                     $cell = $worksheet->getCellByColumnAndRow($column, $row);
                     $cell->setValue($total);
+                } elseif($lesson_id == -2) {
+                    $cell = $worksheet->getCellByColumnAndRow($column, $row);
+                    $cell->setValue(round($user->active_times->sum('seconds')/3600, 1));
                 } elseif(LessonResult::where('user_id', $user->id)->where('lesson_id', $lesson_id)->get()->isNotEmpty()) {
                     $cell = $worksheet->getCellByColumnAndRow($column, $row);
                     $cell->setValue("✓");
@@ -264,7 +278,7 @@ class TrackController extends Controller
         $cell = $worksheet->getCellByColumnAndRow(1, $row);
         $cell->setValue("Summa");
         foreach($column_order as $lesson_id => $column) {
-            if($lesson_id != -1) {
+            if($lesson_id > 0) {
                 $lesson = Lesson::find($lesson_id);
                 $cell = $worksheet->getCellByColumnAndRow($column, $row);
                 $cell->setValue($total);

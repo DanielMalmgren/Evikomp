@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Workplace;
+use App\Poll;
 
 class MassMailingController extends Controller
 {
@@ -22,9 +23,17 @@ class MassMailingController extends Controller
         $amountsent = 0;
         $amountfailed = 0;
 
+        $poll = null;
+        if($request->poll) {
+            $poll = Poll::find($request->poll);
+        }
+
         foreach($request->workplaces as $workplace_id) {
             $workplace = Workplace::find($workplace_id);
             foreach($workplace->users->whereNotNull('email') as $user) {
+                if(isset($poll) && $user->poll_sessions->where('finished', true)->where('poll_id', $poll->id)->isNotEmpty()) {
+                    continue;
+                }
                 $to = [];
                 $to[] = ['email' => $user->email, 'name' => $user->name];
                 
@@ -43,9 +52,17 @@ class MassMailingController extends Controller
         return redirect('/')->with('success', __('Meddelandet har skickats ut till :amountsent mottagare', ['amountsent' => $amountsent]));
     }
 
-    public function create() {
+    public function create(Request $request) {
+
+        $connectedPoll = null;
+        if($request->poll) {
+            $connectedPoll = Poll::find($request->poll);
+        }
+
         $data = [
             'workplaces' => Workplace::all(),
+            'polls' => Poll::all(),
+            'connectedPoll' => $connectedPoll,
         ];
 
         return view('massmailing.create')->with($data);

@@ -19,15 +19,32 @@
 
         <div class="mb-3">
             <label for="body">@lang('Meddelandetext')</label>
-            <textarea rows="6" name="body" class="form-control twe"></textarea>
+            <textarea rows="6" name="body" class="form-control twe">
+            @isset($connectedPoll)
+                <br>
+                <a href="{{env('APP_URL')}}/poll/{{$connectedPoll->id}}">
+                    @lang('Länk till enkät')
+                </a>
+            @endisset
+            </textarea>
         </div>
 
         @lang('Målgrupp:') <br>
         <select id="workplaces" name="workplaces[]" multiple="multiple">
             @foreach($workplaces as $workplace)
-                <option value="{{$workplace->id}}" data-section="{{$workplace->municipality->name}}">{{$workplace->name}}</option>
+                <option {{$connectedPoll&&$connectedPoll->workplaces->contains('id', $workplace->id)?"selected":""}} value="{{$workplace->id}}" data-section="{{$workplace->municipality->name}}">{{$workplace->name}}</option>
             @endforeach
         </select>
+
+        <div class="mb-3 col-md-6">
+            <label for="poll">@lang('Skicka endast till användare som inte besvarat nedanstående enkät')</label>
+            <select class="custom-select d-block w-100" id="poll" name="poll" required="">
+                <option value="-1">@lang('Ingen koppling till enkät (skicka till alla)')</option>
+                @foreach($polls as $poll)
+                    <option {{$connectedPoll&&$connectedPoll->id==$poll->id?"selected":""}} value="{{$poll->id}}">{{$poll->translateOrDefault(App::getLocale())->name}}</option>
+                @endforeach
+            </select>
+        </div>
 
         <br><br>
 

@@ -99,7 +99,7 @@
         <br>
 
         <button class="btn btn-primary btn-lg btn-primary" type="submit">@lang('Spara')</button>
-
+        <a href="/massmailing/create?poll={{$poll->id}}" class="btn btn-lg btn-secondary">@lang('Skapa påminnelse')</a>
     </form>
 
     <br><br>

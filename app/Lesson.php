@@ -148,7 +148,7 @@ class Lesson extends Model
                 $to[] = ['email' => $receiver->user->email, 'name' => $receiver->user->name];
                 setlocale(LC_NUMERIC, $receiver->user->locale_id);
 
-                $finished_lessons = $this->track->lessons->whereIn('id', $user->lesson_results->pluck('lesson_id'));
+                $finished_lessons = $this->track->lessons->whereIn('id', $user->lesson_results->pluck('lesson_id'))->sortBy('order');
 
                 try {
                     \Mail::to($to)->send(new \App\Mail\LessonNotification($user, $this, $finished_lessons));

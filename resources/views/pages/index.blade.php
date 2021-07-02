@@ -27,6 +27,18 @@
     <br>
 @endif
 
+@php
+    $ua = htmlentities($_SERVER['HTTP_USER_AGENT'], ENT_QUOTES, 'UTF-8');
+@endphp
+@if (preg_match('~MSIE|Internet Explorer~i', $ua) || (strpos($ua, 'Trident/7.0') !== false && strpos($ua, 'rv:11.0') !== false))
+    <div class="new border border-danger importantnotification">
+        <h1>@lang('Vi ser att du använder Internet Explorer!')</h1>
+        @lang('Det är inte säkert att denna plattform fungera som den ska i Internet Explorer, vi rekommenderar dig att använda en annan webläsare.')
+        <br>
+    </div>
+    <br>
+@endif
+
 @can('see beta features')
     @if(isset($shared_lists) && $shared_lists->isNotEmpty())
         <H1>@lang('Listor')</H1>

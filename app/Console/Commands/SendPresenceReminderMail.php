@@ -54,6 +54,7 @@ class SendPresenceReminderMail extends Command
                 $mode = "sync";
                 $project_times = ProjectTime::where('date', date("Y-m-d"))
                                   ->where('endtime', '<=', date("H:i"))
+                                  ->where('cancelled', false)
                                   ->where('endtime', '>', date('H:i', strtotime('-1 hour')))
                                   ->whereRaw('updated_at < timestamp(date, starttime)')
                                   ->get();
@@ -62,6 +63,7 @@ class SendPresenceReminderMail extends Command
                 $mode = "async";
                 $project_times = ProjectTime::where('date', '<', date("Y-m-d"))
                                   ->whereRaw('updated_at < timestamp(date, starttime)')
+                                  ->where('cancelled', false)
                                   ->where('date', '>', date('Y-m-d', strtotime('-1 month')))
                                   ->orderBy('date')
                                   ->get();

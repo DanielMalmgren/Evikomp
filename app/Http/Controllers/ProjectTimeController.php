@@ -72,7 +72,6 @@ class ProjectTimeController extends Controller
             $time = substr($request->date, 11, 5);
         }
 
-        $project_time_types = ProjectTimeType::all();
         if (Auth::user()->hasRole('Admin')) {
             $workplaces = Workplace::all()->sortBy('name');
         } else {
@@ -81,7 +80,7 @@ class ProjectTimeController extends Controller
 
         $data = [
             'workplaces' => $workplaces,
-            'project_time_types' => $project_time_types,
+            'project_time_types' => ProjectTimeType::orderBy('name')->get(),
             'mindate' => $this->mindate,
             'maxdate' => $this->maxdate,
             'date' => $date,
@@ -97,29 +96,18 @@ class ProjectTimeController extends Controller
     }
 
     public function createsingleuser() {
-        /*$project_time_types = ProjectTimeType::all();
-        $user = Auth::user();
-
-        $data = [
-            'project_time_types' => $project_time_types,
-            'user' => $user,
-            'workplace' => $user->workplace,
-            'mindate' => $this->mindate,
-        ];*/
         \Session::flash('warning', __('På grund av förändringar i plattformen kommer detta menyval att försvinna inom kort.<br> Registrera istället tid i projektet genom att gå in på menyvalet <i><b>Administration->Hantera lärtillfällen</b></i> och klicka på ett datum i kalendern!'));
-        return view('projecttime.createsingleuser'); //->with($data);
+        return view('projecttime.createsingleuser');
     }
 
     public function ajax(Request $request, Workplace $workplace=null) {
-        $project_time_types = ProjectTimeType::all();
-
         if($workplace === null) {
             $workplace = Auth::user()->workplace;
         }
 
         $data = [
             'workplace' => $workplace,
-            'project_time_types' => $project_time_types,
+            'project_time_types' => ProjectTimeType::orderBy('name')->get(),
             'mindate' => $this->mindate,
             'maxdate' => $this->maxdate,
             'date' => $request->date,
@@ -367,7 +355,6 @@ class ProjectTimeController extends Controller
     }
 
     public function edit(ProjectTime $project_time) {
-        $project_time_types = ProjectTimeType::all();
         $user = Auth::user();
 
         if($project_time->teacher_id !== null) {
@@ -414,7 +401,7 @@ class ProjectTimeController extends Controller
         }
 
         $data = [
-            'project_time_types' => $project_time_types,
+            'project_time_types' => ProjectTimeType::orderBy('name')->get(),
             'user' => $user,
             'workplace' => $project_time->workplace,
             'mindate' => $this->mindate,

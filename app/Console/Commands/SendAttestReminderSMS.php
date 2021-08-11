@@ -15,6 +15,7 @@ class SendAttestReminderSMS extends Command
      */
     protected $signature = 'custom:attestremindersms
                             {--forreal : Really send the messages}
+                            {onlyOnWeekday=all : Only send on this week day}
                             {onlysendto=all : Only send to this address}';
 
     /**
@@ -41,6 +42,10 @@ class SendAttestReminderSMS extends Command
      */
     public function handle()
     {
+        if($this->argument('onlyOnWeekday')!='onlyOnWeekday=all' && 
+            substr($this->argument('onlyOnWeekday'), -1)!=\Carbon\Carbon::today()->dayOfWeek) {
+            return;
+        }
         logger("Running job for sending attest sms reminders!");
         $previous_month = date("m", strtotime("first day of previous month"));
         $previous_month_year = date("Y", strtotime("first day of previous month"));

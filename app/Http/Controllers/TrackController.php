@@ -284,7 +284,6 @@ class TrackController extends Controller
             if($lesson_id > 0) {
                 $lesson = Lesson::find($lesson_id);
                 $cell = $worksheet->getCellByColumnAndRow($column, $row);
-                $cell->setValue($total);
                 $cell->setValue($lesson->lesson_results->count());
                 $cell->getStyle()->getAlignment()->setHorizontal('center');
             }

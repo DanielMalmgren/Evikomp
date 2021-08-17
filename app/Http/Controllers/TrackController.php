@@ -211,7 +211,7 @@ class TrackController extends Controller
 
     //Download an Excel-fil with a compilation of all users that has completed anything in this track
     public function compilationXls(Track $track) {
-        if(!Auth::user()->hasRole('Admin')) {
+        if(!Auth::user()->can('export track compilation')) {
             logger("User ".Auth::user()->id." is trying to get xls compilation for track ".$track->id.". Responding with http 403.");
             abort(403);
         }
@@ -253,6 +253,9 @@ class TrackController extends Controller
 
         $row = 2;
         foreach($track->finished_users->sortBy('name') as $user) {
+            if($user->isNot(Auth::user()) && ! Auth::user()->hasRole('Admin') && (! isset($user->workplace) || ! $user->workplace->workplace_admins->contains('id', Auth::user()->id))) {
+                continue;
+            }
             $total = 0;
             $worksheet->setCellValueByColumnAndRow(1, $row, $user->name);
             if($user->workplace) {

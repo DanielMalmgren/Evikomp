@@ -30,29 +30,12 @@
         </div>
 
         @lang('Målgrupp:') <br>
-        {{--<select id="workplaces" name="workplaces[]" multiple="multiple">
-            @foreach($workplaces as $workplace)
-                <option {{$connectedPoll&&$connectedPoll->workplaces->contains('id', $workplace->id)?"selected":""}} value="{{$workplace->id}}" data-section="{{$workplace->municipality->name}}">{{$workplace->name}}</option>
-            @endforeach
-        </select>--}}
 
         <select id="users" name="users[]" multiple="multiple">
             @foreach($users as $user)
-            {{-- Fixa kollen för selected nedan. Ska vara vald om arbetsplatsen är med i målgruppen
-                 och användaren inte redan har fyllt i enkäten --}}
                 <option {{$connectedPoll&&$connectedPoll->workplaces->contains('id', $user->workplace->id)&&$user->poll_sessions->where('finished', true)->where('poll_id', $connectedPoll->id)->isEmpty()?"selected":""}} value="{{$user->id}}" data-section="{{$user->workplace->municipality->name}}/{{$user->workplace->name}}">{{$user->name}}</option>
             @endforeach
         </select>
-
-        {{--<div class="mb-3 col-md-6">
-            <label for="poll">@lang('Skicka endast till användare som inte besvarat nedanstående enkät')</label>
-            <select class="custom-select d-block w-100" id="poll" name="poll" required="">
-                <option value="-1">@lang('Ingen koppling till enkät (skicka till alla)')</option>
-                @foreach($polls as $poll)
-                    <option {{$connectedPoll&&$connectedPoll->id==$poll->id?"selected":""}} value="{{$poll->id}}">{{$poll->translateOrDefault(App::getLocale())->name}}</option>
-                @endforeach
-            </select>
-        </div>--}}
 
         <br><br>
 

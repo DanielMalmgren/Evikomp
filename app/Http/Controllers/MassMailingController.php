@@ -24,7 +24,6 @@ class MassMailingController extends Controller
             'users.required' => __('Du måste välja minst en mottagare!'),
         ]);
 
-        //logger(Auth::user()->name." is doing a mass mailing to ".count($request->workplaces)." workplaces.");
         logger(Auth::user()->name." is doing a mass mailing to ".count($request->users)." users.");
 
         $amountsent = 0;
@@ -35,12 +34,6 @@ class MassMailingController extends Controller
             $poll = Poll::find($request->poll);
         }
 
-        /*foreach($request->workplaces as $workplace_id) {
-            $workplace = Workplace::find($workplace_id);
-            foreach($workplace->users->whereNotNull('email') as $user) {
-                if(isset($poll) && $user->poll_sessions->where('finished', true)->where('poll_id', $poll->id)->isNotEmpty()) {
-                    continue;
-                }*/
         foreach($request->users as $user_id) {
             $user = User::find($user_id);
             $to = [];
@@ -69,8 +62,7 @@ class MassMailingController extends Controller
         }
 
         $data = [
-            //'workplaces' => Workplace::all(),
-            'users' => User::whereNotNull('email')->get(),
+            'users' => User::whereNotNull('email')->whereNotNull('workplace_id')->get(),
             'polls' => Poll::all(),
             'connectedPoll' => $connectedPoll,
         ];

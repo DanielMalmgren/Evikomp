@@ -14,7 +14,7 @@
 
         <div class="mb-3">
             <label for="subject">@lang('Rubrik')</label>
-            <input name="subject" class="form-control" id="subject">
+            <input name="subject" class="form-control" id="subject" value="{{old('subject')}}">
         </div>
 
         <div class="mb-3">
@@ -30,13 +30,21 @@
         </div>
 
         @lang('Målgrupp:') <br>
-        <select id="workplaces" name="workplaces[]" multiple="multiple">
+        {{--<select id="workplaces" name="workplaces[]" multiple="multiple">
             @foreach($workplaces as $workplace)
                 <option {{$connectedPoll&&$connectedPoll->workplaces->contains('id', $workplace->id)?"selected":""}} value="{{$workplace->id}}" data-section="{{$workplace->municipality->name}}">{{$workplace->name}}</option>
             @endforeach
+        </select>--}}
+
+        <select id="users" name="users[]" multiple="multiple">
+            @foreach($users as $user)
+            {{-- Fixa kollen för selected nedan. Ska vara vald om arbetsplatsen är med i målgruppen
+                 och användaren inte redan har fyllt i enkäten --}}
+                <option {{$connectedPoll&&$connectedPoll->workplaces->contains('id', $user->workplace->id)&&$user->poll_sessions->where('finished', true)->where('poll_id', $connectedPoll->id)->isEmpty()?"selected":""}} value="{{$user->id}}" data-section="{{$user->workplace->municipality->name}}/{{$user->workplace->name}}">{{$user->name}}</option>
+            @endforeach
         </select>
 
-        <div class="mb-3 col-md-6">
+        {{--<div class="mb-3 col-md-6">
             <label for="poll">@lang('Skicka endast till användare som inte besvarat nedanstående enkät')</label>
             <select class="custom-select d-block w-100" id="poll" name="poll" required="">
                 <option value="-1">@lang('Ingen koppling till enkät (skicka till alla)')</option>
@@ -44,7 +52,7 @@
                     <option {{$connectedPoll&&$connectedPoll->id==$poll->id?"selected":""}} value="{{$poll->id}}">{{$poll->translateOrDefault(App::getLocale())->name}}</option>
                 @endforeach
             </select>
-        </div>
+        </div>--}}
 
         <br><br>
 
@@ -55,7 +63,7 @@
     <script type="text/javascript">
         function validate(form) {
             checked = document.querySelectorAll('input[type="checkbox"]:checked.option').length;
-            return confirm("@lang('Detta kommer att skicka e-post till samtliga medarbetare på ')" + checked + "@lang(' arbetsplatser. Är du säker?')");
+            return confirm("@lang('Detta kommer att skicka e-post till ')" + checked + "@lang(' personer. Är du säker?')");
         }
 
         $('.twe').trumbowyg({
@@ -66,7 +74,7 @@
     <link href="/tree-multiselect/jquery.tree-multiselect.min.css" rel="stylesheet">
     <script src="/tree-multiselect/jquery.tree-multiselect.min.js"></script>
     <script type="text/javascript">
-    	$("select#workplaces").treeMultiselect({
+    	$("select#users").treeMultiselect({
             startCollapsed: true,
             hideSidePanel: true
         });

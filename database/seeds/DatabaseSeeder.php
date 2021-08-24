@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,7 +28,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(ProjectTimeTypeSeeder::class);
 
-        if(App::environment('lab') || App::environment('dev')) {
+        if(App::environment('lab') || App::environment('local')) {
             $this->call(LessonSeeder::class);
 
             $this->call(QuestionSeeder::class);
@@ -35,7 +36,7 @@ class DatabaseSeeder extends Seeder
             $this->call(AnnouncementSeeder::class);
 
             $this->command->comment('Generating dummy users...');
-            factory(App\User::class, 50)->create();
+            User::factory()->count(250)->create();
         }
     }
 }

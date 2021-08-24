@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Workplace;
 use App\Poll;
+use App\User;
 
 class MassMailingController extends Controller
 {
@@ -15,10 +16,16 @@ class MassMailingController extends Controller
         $this->validate($request, [
             'subject' => 'required',
             'body' => 'required',
-            'workplaces' => 'required',
+            'users' => 'required',
+        ],
+        [
+            'subject.required' => __('Du måste ange ett ett ärende!'),
+            'body.required' => __('Du måste skriva någon text i mailet!'),
+            'users.required' => __('Du måste välja minst en mottagare!'),
         ]);
 
-        logger(Auth::user()->name." is doing a mass mailing to ".count($request->workplaces)." workplaces.");
+        //logger(Auth::user()->name." is doing a mass mailing to ".count($request->workplaces)." workplaces.");
+        logger(Auth::user()->name." is doing a mass mailing to ".count($request->users)." users.");
 
         $amountsent = 0;
         $amountfailed = 0;
@@ -28,22 +35,24 @@ class MassMailingController extends Controller
             $poll = Poll::find($request->poll);
         }
 
-        foreach($request->workplaces as $workplace_id) {
+        /*foreach($request->workplaces as $workplace_id) {
             $workplace = Workplace::find($workplace_id);
             foreach($workplace->users->whereNotNull('email') as $user) {
                 if(isset($poll) && $user->poll_sessions->where('finished', true)->where('poll_id', $poll->id)->isNotEmpty()) {
                     continue;
-                }
-                $to = [];
-                $to[] = ['email' => $user->email, 'name' => $user->name];
-                
-                try {
-                    \Mail::to($to)->send(new \App\Mail\MassMailing($request->subject, $request->body));
-                    $amountsent++;
-                } catch(\Swift_TransportException $e) {
-                    logger("Couldn't send mail to ".$user->email);
-                    $amountfailed++;
-                }
+                }*/
+        foreach($request->users as $user_id) {
+            $user = User::find($user_id);
+            $to = [];
+            $to[] = ['email' => $user->email, 'name' => $user->name];
+            
+            try {
+                //logger("Sending mail to ".$user->email);
+                \Mail::to($to)->send(new \App\Mail\MassMailing($request->subject, $request->body));
+                $amountsent++;
+            } catch(\Swift_TransportException $e) {
+                logger("Couldn't send mail to ".$user->email);
+                $amountfailed++;
             }
         }
 
@@ -60,7 +69,8 @@ class MassMailingController extends Controller
         }
 
         $data = [
-            'workplaces' => Workplace::all(),
+            //'workplaces' => Workplace::all(),
+            'users' => User::whereNotNull('email')->get(),
             'polls' => Poll::all(),
             'connectedPoll' => $connectedPoll,
         ];

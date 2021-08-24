@@ -161,14 +161,14 @@
                     @if ($question->max_alternatives < 2)
                         @foreach($question->alternatives_array as $alternative)
                             <div class="radio">
-                                <label><input type="radio" {{$alternative==$previous?"checked":""}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}]" value="{{$alternative}}" {{$question->compulsory?"required":""}}>{{$alternative}}</label>
+                                <label><input type="radio" {{$alternative==$previous?"checked":""}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}]" value="{{preg_replace('/(?:\[[^][]*])(*SKIP)(*F)|[^][]+/', '', $alternative)}}" {{$question->compulsory?"required":""}}>{{preg_replace('/\[[^)]+\]/', '', $alternative)}}</label>
                             </div>
                         @endforeach
                     @else
                         <p>@lang('(Ange max :alternatives alternativ)', ['alternatives' => $question->max_alternatives])</p>
                         @foreach($question->alternatives_array as $alternative)
                             <div class="checkbox">
-                                <label><input type="checkbox" {{strpos($previous, $alternative)!==false?"checked":""}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}][]" value="{{$alternative}}" onclick="chkcontrol({{$question->id}}, {{$question->max_alternatives}})">{{$alternative}}</label>
+                                <label><input type="checkbox" {{strpos($previous, $alternative)!==false?"checked":""}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}][]" value="{{preg_replace('/(?:\[[^][]*])(*SKIP)(*F)|[^][]+/', '', $alternative)}}" onclick="chkcontrol({{$question->id}}, {{$question->max_alternatives}})">{{preg_replace('/\[[^)]+\]/', ' ', $alternative)}}</label>
                             </div>
                         @endforeach
                     @endif

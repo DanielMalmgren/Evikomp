@@ -112,6 +112,12 @@
                 <div class="row">
                     @if($question->type == 'pagebreak')
                         <hr style="width:95%">
+                    @elseif($question->type == 'instruction')
+                        @if(strlen($question->translateOrDefault(App::getLocale())->text) < 100)
+                            {{$question->translateOrDefault(App::getLocale())->text}}
+                        @else
+                            {{mb_substr($question->translateOrDefault(App::getLocale())->text, 0, 97)."..."}}
+                        @endif
                     @else
                         {{$question->translateOrDefault(App::getLocale())->text}} -
                         {{$question->compulsory?__("Obligatorisk"):__("Frivillig")}}

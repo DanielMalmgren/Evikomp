@@ -33,6 +33,13 @@
                     $("#compulsory").hide();
                     $("#display_criteria").hide();
                     break;
+                case 3: //instruction
+                    $("#min_alternatives").hide();
+                    $("#max_alternatives").hide();
+                    $("#alternatives").hide();
+                    $("#compulsory").hide();
+                    $("#display_criteria").hide();
+                    break;
                 }
             });
 
@@ -78,6 +85,7 @@
                 <option value="freetext">@lang('Fritext')</option>
                 <option value="select">@lang('Val')</option>
                 <option value="pagebreak">@lang('Sidbrytning')</option>
+                <option value="instruction">@lang('Instruktionstext')</option>
             </select>
         </div>
 

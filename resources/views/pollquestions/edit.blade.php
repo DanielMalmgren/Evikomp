@@ -64,25 +64,31 @@
         @method('put')
         @csrf
 
-        <div class="mb-3">
-            <label for="text">@lang('Fråga')</label>
+        <input type="hidden" name="type" value="{{$question->type}}">
+
+        <div style="{{$question->type=='pagebreak'?'display:none':''}}" class="mb-3">
+            @if($question->type=='instruction')
+                <label for="text">@lang('Text')</label>
+            @else
+                <label for="text">@lang('Fråga')</label>
+            @endif
             <input name="text" class="form-control" id="text" value="{{$question->translateOrDefault(App::getLocale())->text}}">
         </div>
 
-        <div class="mb-3">
+        <div style="{{$question->type!='select'&&$question->type!='freetext'?'display:none':''}}" class="mb-3">
             <input type="hidden" name="compulsory" value="0">
             <label><input type="checkbox" name="compulsory" value="1" {{$question->compulsory?"checked":""}}>@lang('Obligatorisk')</label>
         </div>
 
-        <div class="mb-3">
+        {{--<div class="mb-3">
             <label for="type">@lang('Typ av fråga')</label>
             <select class="custom-select d-block w-100" name="type" required="" id="type">
                 <option value="freetext" {{$question->type=='freetext'?"selected":""}}>@lang('Fritext')</option>
                 <option value="select" {{$question->type=='select'?"selected":""}}>@lang('Val')</option>
             </select>
-        </div>
+        </div>--}}
 
-        <div class="mb-3" style="{{$question->type=='freetext'?'display:none':''}}" id="min_alternatives">
+        <div class="mb-3" style="{{$question->type!='select'?'display:none':''}}" id="min_alternatives">
             <label for="min_alternatives">@lang('Minsta antal alternativ att besvara')</label>
             <select class="custom-select d-block w-100" name="min_alternatives" required="">
                 @for ($i = 0; $i < 10; $i++)
@@ -91,7 +97,7 @@
             </select>
         </div>
 
-        <div class="mb-3" style="{{$question->type=='freetext'?'display:none':''}}" id="max_alternatives">
+        <div class="mb-3" style="{{$question->type!='select'?'display:none':''}}" id="max_alternatives">
             <label for="max_alternatives">@lang('Högsta antal alternativ att besvara')</label>
             <select class="custom-select d-block w-100" name="max_alternatives" required="">
                 @for ($i = 1; $i < 10; $i++)
@@ -100,7 +106,7 @@
             </select>
         </div>
 
-        <div style="{{$question->type=='freetext'?'display:none':''}}" id="alternatives">
+        <div style="{{$question->type!='select'?'display:none':''}}" id="alternatives">
             <label>@lang('Alternativ')</label>
             @foreach($question->alternatives_array as $alternative)
                 <div class="row mb-2">
@@ -118,7 +124,7 @@
 
         <br>
 
-        <div class="row mb-2 no-gutters">
+        <div style="{{$question->type!='select'&&$question->type!='freetext'?'display:none':''}}" class="row mb-2 no-gutters">
             <div class="col col-auto flex-nowrap pr-1 my-auto">
                 <label class="mb-0" for="type">@lang('Visningskriterium: ')</label>
             </div>

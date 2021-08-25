@@ -56,15 +56,9 @@ class MassMailingController extends Controller
 
     public function create(Request $request) {
 
-        $connectedPoll = null;
-        if($request->poll) {
-            $connectedPoll = Poll::find($request->poll);
-        }
-
         $data = [
-            'users' => User::whereNotNull('email')->whereNotNull('workplace_id')->get(),
-            'polls' => Poll::all(),
-            'connectedPoll' => $connectedPoll,
+            'users' => User::whereNotNull('email')->whereNotNull('workplace_id')->orderBy('name')->get(),
+            'connectedPoll' => Poll::find($request->poll),
         ];
 
         return view('massmailing.create')->with($data);

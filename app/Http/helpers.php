@@ -1,5 +1,21 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+
+function user_should_attest() {
+    $user = Auth::user();
+
+    setlocale(LC_TIME, $user->locale_id);
+    $previous_month = date("m", strtotime("first day of previous month"));
+    $previous_month_year = date("Y", strtotime("first day of previous month"));
+
+    $last_month_is_attested = $user->month_is_fully_attested($previous_month_year, $previous_month, 0.5);
+
+    $time=Auth::user()->month_total_time($previous_month_year, $previous_month);
+
+    return !$last_month_is_attested && $time>=1.0 && Auth::user()->workplace->includetimeinreports;
+}
+
 function locale_is_default() {
     return \App::isLocale(\Config::get('app.fallback_locale'));
 }

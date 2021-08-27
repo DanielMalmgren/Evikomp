@@ -7,6 +7,7 @@ Route::get('/unsecurelogin',                    'HomeController@unsecurelogin');
 Route::get('/',                                 'HomeController@index');
 Route::get('/about',                            'HomeController@about');
 Route::get('/logout',                           'HomeController@logout');
+Route::get('/prelogout',                        'HomeController@prelogout');
 
 Route::permanentRedirect('/attest', '/timeattestlevel1/create');
 

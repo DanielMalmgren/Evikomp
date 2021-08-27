@@ -15,13 +15,6 @@ class HomeController extends Controller
         $user = Auth::user();
 
         setlocale(LC_TIME, $user->locale_id);
-        $previous_month = date("m", strtotime("first day of previous month"));
-        $previous_month_year = date("Y", strtotime("first day of previous month"));
-        $monthstr = strftime('%B', strtotime("first day of previous month"));
-
-        $last_month_is_attested = $user->month_is_fully_attested($previous_month_year, $previous_month, 0.5);
-
-        $time=Auth::user()->month_total_time($previous_month_year, $previous_month);
 
         if(isset(Auth::user()->workplace->polls)) {
             $now = new \Carbon\Carbon();
@@ -39,10 +32,7 @@ class HomeController extends Controller
 
         $data = [
             'announcements' => $announcements,
-            //'lesson' => Auth::user()->next_lesson(),
-            'should_attest' => !$last_month_is_attested && $time>=1.0 && Auth::user()->workplace->includetimeinreports,
-            //'previous_month' => $previous_month,
-            'monthstr' => $monthstr,
+            'monthstr' => strftime('%B', strtotime("first day of previous month")),
             'poll' => $poll,
             'shared_lists' => $user->all_lesson_lists(true),
         ];
@@ -61,5 +51,13 @@ class HomeController extends Controller
         session()->flush();
         Auth::logout();
         return view('pages.logout');
+    }
+
+    public function prelogout(): View {
+        $data = [
+            'monthstr' => strftime('%B', strtotime("first day of previous month")),
+        ];
+
+        return view('pages.prelogout')->with($data);
     }
 }

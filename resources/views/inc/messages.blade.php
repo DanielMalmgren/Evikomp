@@ -1,7 +1,7 @@
 @if($errors->any())
     @foreach($errors->all() as $error)
         <div class="alert alert-danger">
-            {{$error}}
+            {!!$error!!}
             <a href="#" class="close" data-dismiss="alert" aria-label="close" onclick="$(this).parent().remove();">&times;</a>
         </div>
     @endforeach

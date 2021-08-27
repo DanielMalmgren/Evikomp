@@ -75,6 +75,13 @@
                             <br>
                             @break
 
+                        @case('google')
+                            <div style="border-width:1px;border: solid #000;" class="embed-responsive embed-responsive-16by9">
+                                {!!$content->content!!}
+                            </div>
+                            <br>
+                            @break
+
                         @case('image')
                             <div class="{{$content->adjustment}}" style="max-width:{{$content->max_width}}px">
                                 <img class="lessonimage" src="{{$content->url()}}">

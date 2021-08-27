@@ -16,7 +16,7 @@ class CreateContentsTable extends Migration
         Schema::create('contents', function (Blueprint $table) {
             $table->increments('id');
             $table->string('type', 10);
-            $table->string('content')->nullable();
+            $table->string('content', 1000)->nullable();
             $table->unsignedTinyInteger('order')->nullable();
             $table->unsignedInteger('lesson_id');
             $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');

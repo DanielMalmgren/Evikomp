@@ -162,6 +162,32 @@ $(function() {
                 </div>
                 `);
                 break;
+            case 'google':
+                $(wrapper).append(`
+                <div id="new_google[`+new_id+`]" data-id="`+new_id+`" class="card">
+                    <div class="card-header">
+                        <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
+                        <label class="handle" for="new_google[`+new_id+`]">@lang('Google-fil')</label>
+                        <a href="#" class="close remove_field pl-3" data-dismiss="alert" aria-label="close">&times;</a>
+                        <a data-toggle="collapse" href="#body`+new_id+`" id="collapstoggle`+new_id+`">
+                            <i class="fas fa-chevron-up float-right text-dark"></i>
+                        </a>
+                    </div>
+                    <div class="collapse multi-collapse show" id="body`+new_id+`">
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="new_google[`+new_id+`]">@lang('HTML-kod')</label>
+                                        <input name="new_google[`+new_id+`]" class="form-control original-content">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `);
+                break;
             case 'image':
                 $(wrapper).append(`
                 <div id="new_image[`+new_id+`]" data-id="`+new_id+`" class="card">

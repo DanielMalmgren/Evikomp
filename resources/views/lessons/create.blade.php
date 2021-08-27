@@ -129,9 +129,12 @@
                     <option value="html">@lang('Text')</option>
                     <option value="audio">@lang('Pod (ljudfil)')</option>
                     <option value="office">@lang('Office-fil (Word, Excel, Powerpoint)')</option>
+                    <option value="google">@lang('Google-fil (dokument, kalkylark, presentation)')</option>
                     <option value="image">@lang('Bild')</option>
+                    <option value="flipcard">@lang('Vändkort')</option>
                     <option value="file">@lang('Övrig fil')</option>
                     <option value="pagebreak">@lang('Sidrubrik')</option>
+                    <option value="toc">@lang('Innehållsförteckning')</option>
                 </select>
             </div>
         </div>

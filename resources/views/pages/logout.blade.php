@@ -4,7 +4,7 @@
 
 @section('content')
 
-<script type="text/javascript">
+{{--<script type="text/javascript">
     $(function() {
         $.ajax({
             url: 'https://idp.itsam.se/wa/logout',
@@ -12,7 +12,7 @@
             type: 'GET'
         });
     });
-</script>
+</script>--}}
 
 <h1>@lang('Du är nu utloggad')</h1>
 

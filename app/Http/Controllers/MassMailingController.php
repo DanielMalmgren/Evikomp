@@ -34,6 +34,9 @@ class MassMailingController extends Controller
             $poll = Poll::find($request->poll);
         }
 
+        $from = [];
+        $from[] = ['email' => env('FEEDBACK_RECIPIENT_ADDRESS'), 'name' => env('FEEDBACK_RECIPIENT_NAME')];
+
         foreach($request->users as $user_id) {
             $user = User::find($user_id);
             $to = [];
@@ -41,7 +44,7 @@ class MassMailingController extends Controller
             
             try {
                 //logger("Sending mail to ".$user->email);
-                \Mail::to($to)->send(new \App\Mail\MassMailing($request->subject, $request->body));
+                \Mail::to($to)->from($from)->send(new \App\Mail\MassMailing($request->subject, $request->body));
                 $amountsent++;
             } catch(\Swift_TransportException $e) {
                 logger("Couldn't send mail to ".$user->email);

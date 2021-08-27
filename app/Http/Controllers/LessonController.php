@@ -219,6 +219,7 @@ class LessonController extends Controller
             'vimeo.*' => 'integer',
             'color' => 'exists:colors,hex',
             'icon' => 'image|max:2000',
+            'google.*' => 'regex:/<iframe src="https:\/\/docs.google.com/',
         ],
         [
             'name.required' => __('Du måste ange ett namn på modulen!'),
@@ -239,6 +240,7 @@ class LessonController extends Controller
             'color.exists' => __('Du måste välja en av de förvalda färgerna!'),
             'icon.image' => __('Felaktigt bildformat!'),
             'icon.max' => __('Din fil är för stor! Max-storleken är :size!', ['size' => '2MB']),
+            'google.*.regex' => __('Felaktig HTML-kod för Google-fil. För instruktioner klicka <a target="_blank" href="https://support.google.com/docs/answer/183965?hl=sv#zippy=%2Cb%C3%A4dda-in-ett-dokument-ett-kalkylark-eller-en-presentation">här</a> och läs under rubriken "Bädda in ett dokument, ett kalkylark eller en presentation".'),
         ]);
 
         $currentLocale = \App::getLocale();
@@ -363,6 +365,26 @@ class LessonController extends Controller
             }
         }
 
+        //Loop through all changed Google contents
+        if($request->google) {
+            foreach($request->google as $google_id => $google_text) {
+                $content = Content::find($google_id);
+                $content->content = $google_text;
+                $content->save();
+                logger("Google content ".$google_id." is being changed");
+            }
+        }
+
+        //Loop through all added Google contents
+        if($request->new_google) {
+            foreach($request->new_google as $temp_key => $new_google) {
+                $content = new Content('google', $lesson->id, $new_google);
+                $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
+                $id_map->put($temp_key, $content->id);
+                logger("Google content ".$content->id." is being added");
+            }
+        }
+        
         //Loop through all added image files
         if($request->new_image) {
             foreach($request->new_image as $temp_key => $new_image) {

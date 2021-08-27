@@ -4,7 +4,7 @@
 
 @section('content')
 
-@if($should_attest)
+@if(user_should_attest())
     <div class="new border border-danger importantnotification">
         <h1>@lang('Du har tid att attestera för') {{$monthstr}}!</h1>
 
@@ -33,7 +33,7 @@
 @if (preg_match('~MSIE|Internet Explorer~i', $ua) || (strpos($ua, 'Trident/7.0') !== false && strpos($ua, 'rv:11.0') !== false))
     <div class="new border border-danger importantnotification">
         <h1>@lang('Vi ser att du använder Internet Explorer!')</h1>
-        @lang('Det är inte säkert att denna plattform fungera som den ska i Internet Explorer, vi rekommenderar dig att använda en annan webläsare.')
+        @lang('Det är inte säkert att denna plattform fungerar som den ska i Internet Explorer, vi rekommenderar dig att använda en annan webläsare.')
         <br>
     </div>
     <br>

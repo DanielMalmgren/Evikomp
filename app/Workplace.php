@@ -83,8 +83,8 @@ class Workplace extends Model
         return ($this->active_times->where('month', $month)->where('year', $year)->sum('seconds'))/60;
     }
 
-    public function month_attested_time(int $month, int $year, int $level): int {
-        return $this->time_attests->where('attestlevel', $level)->where('month', $month)->where('year', $year)->sum('hours');
+    public function month_attested_time(int $month, int $year, int $level): float {
+        return round($this->time_attests->where('attestlevel', $level)->where('month', $month)->where('year', $year)->sum('hours'), 1);
     }
 
     public function scopeFilter(Builder $query): Builder

@@ -54,6 +54,9 @@ class HomeController extends Controller
     }
 
     public function prelogout(): View {
+
+        setlocale(LC_TIME, Auth::user()->locale_id);
+
         $data = [
             'monthstr' => strftime('%B', strtotime("first day of previous month")),
         ];

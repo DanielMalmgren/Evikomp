@@ -23,6 +23,9 @@
 
 <br><br>
 
+<a href="/attest" class="btn btn-primary">@lang('Ja just det! Jag vill attestera nu på direkten!')</a>
+<br><br>
+
 @lang('Om du vill kan du först se på en liten film om attesteringen och varför den är viktig!')
 
 <br><br>
@@ -46,8 +49,6 @@
 </script>
 
 <br>
-<a href="/attest" class="btn btn-primary">@lang('Ja just det! Jag vill attestera nu på direkten!')</a>
-<br><br>
 <a href="#" id="logout" class="btn btn-secondary">@lang('Nej, jag behöver logga ut nu. Jag lovar att attestera senare!')</a>
 
 @endsection

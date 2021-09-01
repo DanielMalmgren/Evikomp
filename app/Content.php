@@ -94,6 +94,38 @@ class Content extends Model
         }
     }
 
+    public function getSummaryAttribute()
+    {
+        $summary = '';
+
+        switch ($this->type) {
+            case 'html':
+                $summary = strip_tags($this->text);
+                break;
+            case 'pagebreak':
+                $summary = $this->text;
+                break;
+            case 'image':
+            case 'audio':
+            case 'file':
+            case 'office':
+                $summary = $this->filename();
+                break;
+            case 'vimeo':
+            case 'youtube':
+                $summary = $this->content;
+                break;
+        }
+
+        if(!isset($summary)) {
+            return '';
+        } elseif(strlen($summary) < 50) {
+            return $summary;
+        } else {
+            return mb_substr($summary, 0, 47)."...";
+        }
+    }
+
     public function setColor(String $hex) {
         $color = Color::where('hex', $hex)->first();
         if(isset($color)) {

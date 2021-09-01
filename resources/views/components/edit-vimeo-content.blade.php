@@ -1,7 +1,9 @@
 <div id="vimeo[{{$content->id}}]" data-id="{{$content->id}}" class="card">
     <div class="card-header">
         <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
-        <label class="handle" for="vimeo[{{$content->id}}]">@lang('Vimeo-film')</label>
+        <label class="handle" for="vimeo[{{$content->id}}]">
+            @lang('Vimeo-film') - {{$content->summary}}
+        </label>
         @if(locale_is_default())
             <a href="#" class="close remove_field pl-3" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>
         @endif

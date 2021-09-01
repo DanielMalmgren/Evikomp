@@ -3,6 +3,7 @@
         <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
         <label class="handle" for="html[{{$content->id}}]">
             @lang('Text')
+            - {{$content->summary}}
             @if(!$content->hasTranslation(\App::getLocale()))
                 (@lang('Översatt innehåll saknas - visar innehåll från standardspråk'))
             @endif

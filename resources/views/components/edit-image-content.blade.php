@@ -6,6 +6,7 @@
             @if(!$content->hasTranslation(\App::getLocale()))
                 (@lang('Översatt innehåll saknas - visar innehåll från standardspråk'))
             @endif
+            - {{$content->summary}}
         </label>
         @if(locale_is_default())
             <a href="#" class="close remove_field pl-3" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>

@@ -2,10 +2,11 @@
     <div class="card-header">
         <span class="handle"><i class="fas fa-arrows-alt-v"></i></span>
         <label class="handle" for="office[{{$content->id}}]">
-            @lang('Office-fil (Word, Excel, Powerpoint)')
+            @lang('Office-fil')
             @if(!$content->hasTranslation(\App::getLocale()))
                 (@lang('Översatt innehåll saknas - visar innehåll från standardspråk'))
             @endif
+            - {{$content->summary}}
         </label>
         @if(locale_is_default())
             <a href="#" class="close remove_field pl-3" data-dismiss="alert" data-translations="{{$content->translations()->count()}}" aria-label="close">&times;</a>

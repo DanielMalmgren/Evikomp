@@ -124,10 +124,7 @@ class Lesson extends Model
         if(!$user) {
             $user = Auth::user();
         }
-        return $query->whereHas('lesson_results', function($query) use($user)
-            {
-                $query->where("user_id", $user->id);
-            });
+        return $query->whereRelation('lesson_results', "user_id", $user->id);
     }
 
     //Returns whether a particular user has finished this lesson.

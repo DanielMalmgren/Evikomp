@@ -24,7 +24,6 @@ class HomeController extends Controller
                 ->whereIn('scope_full_or_part_time', [$user->full_or_part_time, 0])
                 ->where('active_from', '<=', $now)
                 ->where('active_to', '>=', $now)
-                ->whereIn('id', PollQuestion::all()->pluck('poll_id'))
                 ->first();
         } else {
             $poll = null;

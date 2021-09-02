@@ -50,10 +50,7 @@ class PollQuestion extends Model
         if(!isset($value)) {
             return;
         }
-        $imploded = implode(';', $value);
-        if(isset($imploded)) {
-            $this->translateOrNew(\App::getLocale())->alternatives = $imploded;
-        }
+        $this->translateOrNew(\App::getLocale())->alternatives = implode(';', $value);
     }
 }
 

@@ -14,7 +14,6 @@ class RedirectFirstLogin
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  bool  $isfirstlogin
      * @return mixed
      */
     public function handle(Request $request, Closure $next)

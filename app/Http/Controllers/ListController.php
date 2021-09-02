@@ -85,7 +85,7 @@ class ListController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  LessonList $list
      * @return \Illuminate\Http\Response
      */
     public function show(LessonList $list)
@@ -162,8 +162,6 @@ class ListController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy(LessonList $list)
     {

@@ -40,11 +40,12 @@ class CreateStatisticsXls extends Command
     /**
      * Execute the console command.
      *
-     * @return int
      */
     public function handle()
     {
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./public/xls-template/Statistik.xlsx');
+
+        $atusers = null;
 
         foreach(Municipality::filter()->orderBy('name')->get() as $municipality) {
             $this->info($municipality->name);

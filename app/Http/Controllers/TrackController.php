@@ -40,13 +40,8 @@ class TrackController extends Controller
             $title = Auth::user()->title;
 
             $lessons = $track->lessons()->where('active', true)
-            //->whereHas('tracks', function ($query) use ($track) {
-            //    $query->where('id', $track->id);
-            //})
                 ->where(static function ($query) use ($title) {
-                    $query->whereHas('titles', static function ($query) use ($title) {
-                        $query->where('id', $title->id);
-                    })
+                    $query->whereRelation('titles', 'id', $title->id)
                 ->orWhere('limited_by_title', false);
                 })
                 ->orderBy('order')->get();
@@ -232,7 +227,7 @@ class TrackController extends Controller
                 $lessonname = mb_substr($lessonname, 0, 9,'UTF-8')."…";
             }
             $cell = $worksheet->getCellByColumnAndRow($i, 1);
-            $cell->setValue($lessonname, 0, 10);
+            $cell->setValue($lessonname);
             $worksheet->getColumnDimension($cell->getColumn())->setWidth('10');
             $worksheet->getStyle($cell->getCoordinate())->getFont()->setBold(true);
             $column_order[$lesson->id] = $i;
@@ -268,7 +263,7 @@ class TrackController extends Controller
                 } elseif($lesson_id == -2) {
                     $cell = $worksheet->getCellByColumnAndRow($column, $row);
                     $cell->setValue(round($user->active_times->sum('seconds')/3600, 1));
-                } elseif(LessonResult::where('user_id', $user->id)->where('lesson_id', $lesson_id)->get()->isNotEmpty()) {
+                } elseif(LessonResult::where('user_id', $user->id)->where('lesson_id', $lesson_id)->exists()) {
                     $cell = $worksheet->getCellByColumnAndRow($column, $row);
                     $cell->setValue("✓");
                     $cell->getStyle()->getAlignment()->setHorizontal('center');

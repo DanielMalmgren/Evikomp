@@ -27,9 +27,6 @@ class Municipality extends Model
 
     public function scopeFilter(Builder $query)
     {
-        return $query->whereHas('workplaces', function($query)
-            {
-                $query->where('includetimeinreports', true);
-            });    
+        return $query->whereRelation('workplaces', 'includetimeinreports', true);
     }
 }

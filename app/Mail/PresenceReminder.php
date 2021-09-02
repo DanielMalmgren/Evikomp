@@ -39,6 +39,8 @@ class PresenceReminder extends Mailable
             case "async":
                 return $this->subject(_('Närvaro vid lärtillfälle'))->view('emails.presencereminder_async');
                 break;
+            default:
+                return null;
         }
 
     }

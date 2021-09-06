@@ -32,6 +32,9 @@ class MassMailing extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->subject)->view('emails.freecontent');
+        $from = [];
+        $from[] = ['email' => env('FEEDBACK_RECIPIENT_ADDRESS'), 'name' => env('FEEDBACK_RECIPIENT_NAME')];
+
+        return $this->from($from)->subject($this->subject)->view('emails.freecontent');
     }
 }

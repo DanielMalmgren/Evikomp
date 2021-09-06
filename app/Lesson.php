@@ -124,7 +124,10 @@ class Lesson extends Model
         if(!$user) {
             $user = Auth::user();
         }
-        return $query->whereRelation('lesson_results', "user_id", $user->id);
+        return $query->whereHas('lesson_results', function($query) use($user)
+            {
+                $query->where("user_id", $user->id)->where("personal_best_percent", $this->test_required_percent);
+            });
     }
 
     //Returns whether a particular user has finished this lesson.
@@ -132,7 +135,7 @@ class Lesson extends Model
         if(!$user) {
             $user = Auth::user();
         }
-        return $this->lesson_results->where("user_id", $user->id)->isNotEmpty();
+        return $this->lesson_results->where("user_id", $user->id)->where("personal_best_percent", $this->test_required_percent)->isNotEmpty();
     }
 
     //Send mail to all notification receivers telling them that $user has finished the lesson

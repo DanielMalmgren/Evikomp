@@ -42,7 +42,7 @@
             <select class="custom-select d-block w-100" id="workplace" name="workplace" required="">
                 <option disabled selected>@lang('Välj arbetsplats...')</option>
                 @foreach($workplaces as $workplace)
-                    <option value="{{$workplace->id}}">{{$workplace->name}}</option>
+                    <option value="{{$workplace->id}}">{{$workplace->name}} ({{$workplace->left_to_level_3_attest_previous_month()}} @lang('timmar'))</option>
                 @endforeach
             </select>
         @endif

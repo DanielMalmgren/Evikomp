@@ -87,6 +87,12 @@ class Workplace extends Model
         return round($this->time_attests->where('attestlevel', $level)->where('month', $month)->where('year', $year)->sum('hours'), 1);
     }
 
+    public function left_to_level_3_attest_previous_month(): float {
+        $year = date('Y', strtotime("first day of previous month"));
+        $month = date('n', strtotime("first day of previous month"));
+        return $this->month_attested_time($month, $year, 1) - $this->month_attested_time($month, $year, 3);
+    }
+
     public function scopeFilter(Builder $query): Builder
     {
         return $query->where('includetimeinreports', true);

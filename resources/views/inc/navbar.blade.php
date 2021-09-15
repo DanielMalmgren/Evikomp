@@ -66,7 +66,6 @@
                                     @canany(['add workplaces','edit workplaces'])
                                         <li aria-haspopup="false"><a href="/workplace">@lang('Arbetsplatsinställningar')</a></li>
                                     @endcanany
-                                    <li aria-haspopup="false"><a href="/projecttime/create">@lang('Registrera projekttid')</a></li>
                                 @endcan
                                 <li aria-haspopup="false"><a href="/projecttime">@lang('Hantera lärtillfällen')</a></li>
                                 @can('use administration')
@@ -87,7 +86,6 @@
                         <ul class="sub-menu">
                             <li aria-haspopup="false"><a href="/settings">@lang('Inställningar')</a></li>
                             <li aria-haspopup="false"><a href="/feedback">@lang('Feedback')</a></li>
-                            <li aria-haspopup="false"><a href="/projecttime/createsingleuser">@lang('Registrera projekttid')</a></li>
                             <li aria-haspopup="false"><a href="/timeattestlevel1/create">@lang('Attestera projekttid')</a></li>
                             <li aria-haspopup="false"><a href="/users/{{Auth::user()->id}}">@lang('Statistik')</a></li>
                             @if(user_should_attest())

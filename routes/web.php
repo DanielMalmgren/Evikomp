@@ -84,7 +84,6 @@ Route::get('/exporttimesummary',                'TimeSummaryController@export')-
 
 //ProjectTimeController
 Route::get('/projecttime/create',               'ProjectTimeController@create');
-Route::get('/projecttime/createsingleuser',     'ProjectTimeController@createsingleuser');
 Route::get('/projecttime',                      'ProjectTimeController@index');
 Route::post('/projecttime',                     'ProjectTimeController@store');
 Route::get('/projecttime/presence_list/{project_time}', 'ProjectTimeController@presence_list');

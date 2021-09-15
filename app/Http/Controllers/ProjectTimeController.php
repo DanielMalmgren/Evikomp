@@ -89,15 +89,8 @@ class ProjectTimeController extends Controller
             'tracks' => Track::where('active', true)->get(),
             'lessons' => Lesson::where('active', true)->get(),
         ];
-        if(!isset($request->date)) {
-            \Session::flash('warning', __('På grund av förändringar i plattformen kommer detta menyval att försvinna inom kort.<br> Registrera istället tid i projektet genom att gå in på menyvalet <i><b>Administration->Hantera lärtillfällen</b></i> och klicka på ett datum i kalendern!'));
-        }
-        return view('projecttime.create')->with($data);
-    }
 
-    public function createsingleuser() {
-        \Session::flash('warning', __('På grund av förändringar i plattformen kommer detta menyval att försvinna inom kort.<br> Registrera istället tid i projektet genom att gå in på menyvalet <i><b>Administration->Hantera lärtillfällen</b></i> och klicka på ett datum i kalendern!'));
-        return view('projecttime.createsingleuser');
+        return view('projecttime.create')->with($data);
     }
 
     public function ajax(Request $request, Workplace $workplace=null) {

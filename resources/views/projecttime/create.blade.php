@@ -4,10 +4,6 @@
 
 @section('content')
 
-{{-- TODO: The if case below can be removed later when the old project time registering pages are completely gone.
-           There should always be a date then. --}}
-@if(isset($date) && $date != '')
-
     <script type="text/javascript">
         $(function() {
             $('#workplace').change(function(){
@@ -53,7 +49,5 @@
         </div>
 
     </div>
-
-@endif
 
 @endsection

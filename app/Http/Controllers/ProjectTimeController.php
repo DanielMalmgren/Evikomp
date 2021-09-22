@@ -275,8 +275,8 @@ class ProjectTimeController extends Controller
                 ->get();
         }
 
-        $tzstring = (new \DateTime('now', new \DateTimeZone( 'Europe/Stockholm' )))->format('P');
         foreach($project_times as $project_time) {
+            $tzstring = (new \DateTime($project_time->date, new \DateTimeZone( 'Europe/Stockholm' )))->format('P');
             $events[] = \Calendar::event(
                 $project_time->workplace->name, //event title
                 false, //full day event?

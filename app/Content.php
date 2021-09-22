@@ -53,6 +53,26 @@ class Content extends Model
         return $this->hasMany('App\ContentSetting');
     }
 
+    public function getHashAttribute()
+    {
+        $valueobj = $this->content_settings->where('key', 'hash')->first();
+        if(isset($valueobj)) {
+            return $valueobj->value;
+        } else {
+            return '';
+        }
+    }
+
+    public function getHashForEmbeddingAttribute()
+    {
+        $valueobj = $this->content_settings->where('key', 'hash')->first();
+        if(isset($valueobj)) {
+            return '?h='.$valueobj->value;
+        } else {
+            return '';
+        }
+    }
+
     public function getMaxWidthAttribute()
     {
         $valueobj = $this->content_settings->where('key', 'max_width')->first();

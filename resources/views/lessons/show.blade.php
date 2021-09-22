@@ -32,7 +32,7 @@
                         @case('vimeo')
                             <div class="{{$content->adjustment}}" style="width:100%;max-width:{{$content->max_width}}px">
                                 <div class="vimeo-container">
-                                    <iframe id="vimeo_{{$content->id}}" src="https://player.vimeo.com/video/{{$content->content}}" width="0" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                                    <iframe id="vimeo_{{$content->id}}" src="https://player.vimeo.com/video/{{$content->content}}{{$content->hash_for_embedding}}" width="0" height="0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
                                 </div>
                             </div>
                             <script type="text/javascript">

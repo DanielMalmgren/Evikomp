@@ -43,9 +43,13 @@ $(function() {
                         <div class="card-body">
                             <div class="container">
                                 <div class="row">
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-2">
                                         <label for="new_vimeo[`+new_id+`]">@lang('ID')</label>
                                         <input name="new_vimeo[`+new_id+`]" class="form-control original-content" maxlength="10">
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label for="settings[`+new_id+`][hash]">@lang('Säkerhetskod')</label>
+                                        <input name="settings[`+new_id+`][hash]" class="form-control"">
                                     </div>
                                     <div class="col-lg-2">
                                         <label for="settings[`+new_id+`][max_width]">@lang('Maxbredd')</label>

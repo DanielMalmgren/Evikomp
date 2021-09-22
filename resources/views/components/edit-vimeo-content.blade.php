@@ -15,9 +15,13 @@
         <div class="card-body">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-2">
                         <label for="vimeo[{{$content->id}}]">@lang('ID')</label>
                         <input name="vimeo[{{$content->id}}]" class="form-control original-content" value="{{$content->content}}">
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="settings[{{$content->id}}][hash]">@lang('Säkerhetskod')</label>
+                        <input name="settings[{{$content->id}}][hash]" class="form-control" value="{{$content->hash}}" maxlength="10">
                     </div>
                     <div class="col-lg-2">
                         <label for="settings[{{$content->id}}][max_width]">@lang('Maxbredd')</label>

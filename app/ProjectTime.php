@@ -130,7 +130,20 @@ class ProjectTime extends Model
     //Type new means they should assign a teacher
     //Type cancelled is a notification about cancellation
     public function notify_training_coordinator($type = 'new') {
-        foreach($this->training_coordinator->workplace_admins as $user) {
+
+        switch($type) {
+            case 'new':
+                $recipients = $this->training_coordinator->workplace_admins;
+                break;
+            case 'cancelled':
+                $recipients = $this->training_coordinator->workplace_admins->push($this->teacher);
+                break;
+            default:
+                logger("notify_training_coordinator called with wrong type argument!");
+                return;
+        }
+
+        foreach($recipients as $user) {
             $to = [];
             $to[] = ['email' => $user->email, 'name' => $user->name];
 
@@ -144,8 +157,6 @@ class ProjectTime extends Model
                         \Mail::to($to)->send(new \App\Mail\ProjectTimeCancelledNotification($this));
                         logger("Sent cancellation notification mail to ".$user->email);
                         break;
-                    default:
-                        logger("notify_training_coordinator called with wrong type argument!");
                 }
             } catch(\Swift_TransportException $e) {
                 logger("Couldn't send mail to ".$user->email);

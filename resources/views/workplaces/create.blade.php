@@ -46,7 +46,7 @@
 
             <div class="mb-3">
                 <input type="hidden" name="training_coordinator" value="0">
-                <label><input type="checkbox" name="training_coordinator" value="1" checked>@lang('Utbildningsanordnare')</label>
+                <label><input type="checkbox" name="training_coordinator" value="1">@lang('Utbildningsanordnare')</label>
             </div>
 
             <label>@lang('Obligatoriska spår')</label>

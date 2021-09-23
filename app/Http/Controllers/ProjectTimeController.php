@@ -434,6 +434,7 @@ class ProjectTimeController extends Controller
         $user = Auth::user();
 
         if($request->submit == 'cancel') {
+            $project_time->notify_training_coordinator('cancelled');
             $project_time->cancelled = true;
             $project_time->save();
             $project_time->users()->detach();
@@ -494,7 +495,7 @@ class ProjectTimeController extends Controller
             $project_time->lessons()->sync($request->lessons);
 
             if($new_training_coordinator) {
-                $project_time->notify_training_coordinator();
+                $project_time->notify_training_coordinator('new');
             }
 
             //Updates that occur after the event started is counted as confirmation of the event

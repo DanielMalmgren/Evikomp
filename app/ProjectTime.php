@@ -126,15 +126,27 @@ class ProjectTime extends Model
         }
     }
 
-    //Notify this project time's training coordinator that they should assign a teacher
-    public function notify_training_coordinator() {
+    //Notify this project time's training coordinator
+    //Type new means they should assign a teacher
+    //Type cancelled is a notification about cancellation
+    public function notify_training_coordinator($type = 'new') {
         foreach($this->training_coordinator->workplace_admins as $user) {
             $to = [];
             $to[] = ['email' => $user->email, 'name' => $user->name];
 
             try {
-                \Mail::to($to)->send(new \App\Mail\ChooseTeacherNotification($this));
-                logger("Sent teacher notification mail to ".$user->email);
+                switch($type) {
+                    case 'new':
+                        \Mail::to($to)->send(new \App\Mail\ChooseTeacherNotification($this));
+                        logger("Sent teacher notification mail to ".$user->email);
+                        break;
+                    case 'cancelled':
+                        \Mail::to($to)->send(new \App\Mail\ProjectTimeCancelledNotification($this));
+                        logger("Sent cancellation notification mail to ".$user->email);
+                        break;
+                    default:
+                        logger("notify_training_coordinator called with wrong type argument!");
+                }
             } catch(\Swift_TransportException $e) {
                 logger("Couldn't send mail to ".$user->email);
             }

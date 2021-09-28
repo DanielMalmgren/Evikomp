@@ -20,20 +20,21 @@
                     $("#display_criteria").show();
                     break;
                 case 1: //select
+                case 2: //select horizontal
                     $("#min_alternatives").show();
                     $("#max_alternatives").show();
                     $("#alternatives").show();
                     $("#compulsory").show();
                     $("#display_criteria").show();
                     break;
-                case 2: //pagebreak
+                case 3: //pagebreak
                     $("#min_alternatives").hide();
                     $("#max_alternatives").hide();
                     $("#alternatives").hide();
                     $("#compulsory").hide();
                     $("#display_criteria").hide();
                     break;
-                case 3: //instruction
+                case 4: //instruction
                     $("#min_alternatives").hide();
                     $("#max_alternatives").hide();
                     $("#alternatives").hide();
@@ -84,6 +85,7 @@
             <select class="custom-select d-block w-100" name="type" required="" id="type">
                 <option value="freetext">@lang('Fritext')</option>
                 <option value="select">@lang('Val')</option>
+                <option value="select_horizontal">@lang('Val (vertikalt)')</option>
                 <option value="pagebreak">@lang('Sidbrytning')</option>
                 <option value="instruction">@lang('Instruktionstext')</option>
             </select>

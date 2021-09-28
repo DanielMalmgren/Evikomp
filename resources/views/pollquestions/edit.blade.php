@@ -75,7 +75,7 @@
             <input name="text" class="form-control" id="text" value="{{$question->translateOrDefault(App::getLocale())->text}}">
         </div>
 
-        <div style="{{$question->type!='select'&&$question->type!='freetext'?'display:none':''}}" class="mb-3">
+        <div style="{{$question->type!='select'&&$question->type!='select_horizontal'&&$question->type!='freetext'?'display:none':''}}" class="mb-3">
             <input type="hidden" name="compulsory" value="0">
             <label><input type="checkbox" name="compulsory" value="1" {{$question->compulsory?"checked":""}}>@lang('Obligatorisk')</label>
         </div>
@@ -88,7 +88,7 @@
             </select>
         </div>--}}
 
-        <div class="mb-3" style="{{$question->type!='select'?'display:none':''}}" id="min_alternatives">
+        <div class="mb-3" style="{{$question->type!='select'&&$question->type!='select_horizontal'?'display:none':''}}" id="min_alternatives">
             <label for="min_alternatives">@lang('Minsta antal alternativ att besvara')</label>
             <select class="custom-select d-block w-100" name="min_alternatives" required="">
                 @for ($i = 0; $i < 10; $i++)
@@ -97,7 +97,7 @@
             </select>
         </div>
 
-        <div class="mb-3" style="{{$question->type!='select'?'display:none':''}}" id="max_alternatives">
+        <div class="mb-3" style="{{$question->type!='select'&&$question->type!='select_horizontal'?'display:none':''}}" id="max_alternatives">
             <label for="max_alternatives">@lang('Högsta antal alternativ att besvara')</label>
             <select class="custom-select d-block w-100" name="max_alternatives" required="">
                 @for ($i = 1; $i < 10; $i++)
@@ -106,7 +106,7 @@
             </select>
         </div>
 
-        <div style="{{$question->type!='select'?'display:none':''}}" id="alternatives">
+        <div style="{{$question->type!='select'&&$question->type!='select_horizontal'?'display:none':''}}" id="alternatives">
             <label>@lang('Alternativ')</label>
             @foreach($question->alternatives_array as $alternative)
                 <div class="row mb-2">

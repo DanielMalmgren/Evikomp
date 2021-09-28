@@ -157,6 +157,8 @@
 
                 @if($question->type == "freetext")
                     <textarea rows={{$question->max_alternatives}} data-original-name="response[{{$question->id}}]" name="response[{{$question->id}}]" class="form-control" {{$question->compulsory?"required":""}}>{{$previous}}</textarea>
+                @elseif($question->type == "instruction")
+                    <br>
                 @elseif($question->type == "select")
                     @if ($question->max_alternatives < 2)
                         @foreach($question->alternatives_array as $alternative)
@@ -179,6 +181,7 @@
                         @endforeach
                     @endif
                 @elseif($question->type == "select_horizontal")
+                    <br>
                     @if ($question->max_alternatives < 2)
                         <div class="radio-label-vertical-wrapper">
                             <div class="form-group">

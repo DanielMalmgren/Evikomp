@@ -127,9 +127,9 @@ class TimeAttestController extends Controller
         $hours = $project_time->minutes/60;
 
         foreach($project_time->users as $user) {
-            logger("Creating attest for ".$user->name);
+            logger("Creating attest for ".$user->name." (".$hours." hours)");
 
-            if(!$user->month_is_fully_attested($year, $month, $hours, 1)) {
+            if(!$user->month_is_fully_attested($year, $month, 0, 1)) {
                 $attest = new TimeAttest();
                 $attest->year = $year;
                 $attest->month = $month;
@@ -142,9 +142,11 @@ class TimeAttestController extends Controller
                 $attest->from_list_by = Auth::user()->id;
                 $attest->project_time_id = $project_time->id;
                 $attest->save();
+            } else {
+                logger("Already fully attested on level 1");
             }
 
-            if(!$user->month_is_fully_attested($year, $month, $hours, 3)) {
+            if(!$user->month_is_fully_attested($year, $month, 0, 3)) {
                 $attest = new TimeAttest();
                 $attest->year = $year;
                 $attest->month = $month;
@@ -157,6 +159,8 @@ class TimeAttestController extends Controller
                 $attest->from_list_by = Auth::user()->id;
                 $attest->project_time_id = $project_time->id;
                 $attest->save();
+            } else {
+                logger("Already fully attested on level 3");
             }
         }
 

@@ -150,7 +150,9 @@
             <div class="question question_{{$question->id}}" data-title="{{$question->translateOrDefault(App::getLocale())->text}}" {!!$question->max_alternatives>1?'data-min-select="'.$question->min_alternatives.'"':''!!} data-id="{{$question->id}}" {!!empty($question->display_criteria)?"":'style=display:none data-display-criteria="'.$question->display_criteria.'"'!!}>
                 {{--<H1>@lang('Fråga :question av :questions', ['question' => $question->order, 'questions' => $question->poll->poll_questions->count()])</H1>--}}
 
-                {{$question->translateOrDefault(App::getLocale())->text}}
+                <p class="font-weight-bold">
+                    {{$question->translateOrDefault(App::getLocale())->text}}
+                </p>
                 @if($question->compulsory)
                     <span class="red">*</span>
                 @endif

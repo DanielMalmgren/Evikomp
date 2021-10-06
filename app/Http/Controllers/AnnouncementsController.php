@@ -46,7 +46,12 @@ class AnnouncementsController extends Controller
     {
         $this->validate($request, [
             'heading' => 'required',
-            'bodytext' => 'required',
+            'bodytext' => 'required|max:65440',
+        ],
+        [
+            'heading.required' => __('Du måste ange en rubrik!'),
+            'bodytext.required' => __('Du måste ange en nyhetstext!'),
+            'bodytext.max' => __('För mycket data i texten!'),
         ]);
 
         $announcement = new Announcement();
@@ -97,7 +102,12 @@ class AnnouncementsController extends Controller
     {
         $this->validate($request, [
             'heading' => 'required',
-            'bodytext' => 'required',
+            'bodytext' => 'required|max:65440',
+        ],
+        [
+            'heading.required' => __('Du måste ange en rubrik!'),
+            'bodytext.required' => __('Du måste ange en nyhetstext!'),
+            'bodytext.max' => __('För mycket data i texten!'),
         ]);
 
         $announcement->heading = $request->heading;

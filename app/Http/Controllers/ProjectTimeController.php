@@ -184,6 +184,12 @@ class ProjectTimeController extends Controller
         $project_time->users()->sync($request->users);
         $project_time->lessons()->sync($request->lessons);
 
+        if($project_time->need_teacher) {
+            $to = [];
+            $to[] = ['email' => env('FEEDBACK_RECIPIENT_ADDRESS'), 'name' => env('FEEDBACK_RECIPIENT_NAME')];
+            \Mail::to($to)->send(new \App\Mail\ChooseTrainingCoordinatorNotification($project_time));
+        }
+
         if($request->generate_presence_list) {
             if($request->signing_boss) {
                 $request->session()->put('signing_boss', $request->signing_boss);

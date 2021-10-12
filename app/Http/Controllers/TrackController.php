@@ -228,14 +228,14 @@ class TrackController extends Controller
             }
             $cell = $worksheet->getCellByColumnAndRow($i, 1);
             $cell->setValue($lessonname);
-            $worksheet->getColumnDimension($cell->getColumn())->setWidth('10');
+            $worksheet->getColumnDimension($cell->getColumn())->setWidth(10);
             $worksheet->getStyle($cell->getCoordinate())->getFont()->setBold(true);
             $column_order[$lesson->id] = $i;
             $i++;
         }
         $cell = $worksheet->getCellByColumnAndRow($i, 1);
         $cell->setValue("Summa");
-        $worksheet->getColumnDimension($cell->getColumn())->setWidth('8');
+        $worksheet->getColumnDimension($cell->getColumn())->setWidth(8);
         $worksheet->getStyle($cell->getCoordinate())->getFont()->setBold(true);
         $column_order[-1] = $i;
         $i++;

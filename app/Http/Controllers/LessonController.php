@@ -54,6 +54,7 @@ class LessonController extends Controller
         $newLesson->push();
 
         foreach($lesson->contents as $content) {
+            /** @var Content $newContent */
             $newContent = $content->replicateWithTranslations();
             $newContent->lesson_id = $newLesson->id;
             $newContent->push();
@@ -392,8 +393,13 @@ class LessonController extends Controller
         //Loop through all added image files
         if($request->new_image) {
             foreach($request->new_image as $temp_key => $new_image) {
+                $scaledImage = \Image::make($new_image)->resize(1024, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })->stream();
                 $content = new Content('image', $lesson->id, null, $new_image->getClientOriginalName());
-                $new_image->storeAs($content->filepath(true), $content->filename());
+                //$new_image->storeAs($content->filepath(true), $content->filename());
+                Storage::put($content->filepath(true).$content->filename(), $scaledImage);
                 $content_order = str_replace("[".$temp_key."]", "[".$content->id."]", $content_order);
                 $id_map->put($temp_key, $content->id);
                 logger("Image content ".$content->id." is being added");

@@ -13,7 +13,7 @@ class LessonResultController extends Controller
 {
     public function show(Request $request, Lesson $lesson) {
 
-        $user = \Auth::user();
+        $user = Auth::user();
 
         $lesson_result = LessonResult::updateOrCreate(
             ['user_id' => $user->id, 'lesson_id' => $lesson->id]

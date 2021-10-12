@@ -81,15 +81,15 @@ class TimeAttestLevel1Controller extends Controller
             $month_is_closed = false;
         }*/
 
-        $prev_month_year = date('Y', strtotime("first day of previous month"));
-        $prev_month = date('n', strtotime("first day of previous month"));
+        $prev_month_year = (int)date('Y', strtotime("first day of previous month"));
+        $prev_month = (int)date('n', strtotime("first day of previous month"));
         $prev_month_str = strftime('%B', strtotime("first day of previous month"));
         $prev_month_time_rows = $user->time_rows($prev_month_year, $prev_month);
         $days_in_prev_month = cal_days_in_month(CAL_GREGORIAN, $prev_month, $prev_month_year);
         $attested_prev_month = $user->attested_time_month($prev_month, $prev_month_year, 1);
 
-        $this_month_year = date('Y');
-        $this_month = date('n');
+        $this_month_year = (int)date('Y');
+        $this_month = (int)date('n');
         $this_month_str = strftime('%B');
         $this_month_time_rows = $user->time_rows($this_month_year, $this_month);
         $days_in_this_month = cal_days_in_month(CAL_GREGORIAN, $this_month, $this_month_year);
@@ -121,8 +121,8 @@ class TimeAttestLevel1Controller extends Controller
         $user = Auth::user();
         setlocale(LC_TIME, 'sv_SE');
 
-        $year = date('Y', strtotime("first day of previous month"));
-        $month = date('n', strtotime("first day of previous month"));
+        $year = (int)date('Y', strtotime("first day of previous month"));
+        $month = (int)date('n', strtotime("first day of previous month"));
         $monthstr = strftime('%B', strtotime("first day of previous month"));
         $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 

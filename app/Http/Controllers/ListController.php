@@ -16,7 +16,7 @@ class ListController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -33,7 +33,7 @@ class ListController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create(Request $request)
     {
@@ -62,7 +62,7 @@ class ListController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -86,7 +86,7 @@ class ListController extends Controller
      * Display the specified resource.
      *
      * @param  LessonList $list
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(LessonList $list)
     {
@@ -102,7 +102,7 @@ class ListController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  LessonList $list
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(LessonList $list)
     {
@@ -132,7 +132,7 @@ class ListController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  LessonList $list
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, LessonList $list)
     {

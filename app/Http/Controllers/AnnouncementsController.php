@@ -14,7 +14,7 @@ class AnnouncementsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -29,7 +29,7 @@ class AnnouncementsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -40,7 +40,7 @@ class AnnouncementsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -67,7 +67,7 @@ class AnnouncementsController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Announcement  $announcement
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Announcement $announcement)
     {
@@ -81,7 +81,7 @@ class AnnouncementsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Announcement  $announcement
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Announcement $announcement)
     {
@@ -96,7 +96,7 @@ class AnnouncementsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Announcement  $announcement
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Announcement $announcement)
     {
@@ -122,7 +122,7 @@ class AnnouncementsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Announcement  $announcement
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Announcement $announcement)
     {

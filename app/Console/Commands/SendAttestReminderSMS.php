@@ -47,8 +47,8 @@ class SendAttestReminderSMS extends Command
             return;
         }
         logger("Running job for sending attest sms reminders!");
-        $previous_month = date("m", strtotime("first day of previous month"));
-        $previous_month_year = date("Y", strtotime("first day of previous month"));
+        $previous_month = (int)date("m", strtotime("first day of previous month"));
+        $previous_month_year = (int)date("Y", strtotime("first day of previous month"));
 
         $amountsent = 0;
         $amountfailed = 0;

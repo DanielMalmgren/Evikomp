@@ -23,7 +23,7 @@ class NotificationReceiver extends Model
         return $this->belongsTo('App\Workplace');
     }
 
-    public function lesson(): BelongsToMany
+    public function lesson(): BelongsTo
     {
         return $this->belongsTo('App\Lesson');
     }

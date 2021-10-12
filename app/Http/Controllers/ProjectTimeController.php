@@ -208,10 +208,10 @@ class ProjectTimeController extends Controller
         //Make sundays red
         $events[] = \Calendar::event(
             '', //event title
-            true, //full day event?
+            'true', //full day event?
             $this->mindate,
             $this->maxdate,
-            0,
+            '0',
             [
                 'display' => 'background',
                 'color' => '#ff0000',
@@ -243,10 +243,10 @@ class ProjectTimeController extends Controller
         foreach($holidays as $holiday) {
             $events[] = \Calendar::event(
                 $swedish_holiday_names[$holiday['id']], //event title
-                true, //full day event?
+                'true', //full day event?
                 $holiday['date'],
                 $holiday['date'],
-                0,
+                '0',
                 [
                     'display' => 'background',
                     'color' => '#ff0000'
@@ -285,10 +285,10 @@ class ProjectTimeController extends Controller
             $tzstring = (new \DateTime($project_time->date, new \DateTimeZone( 'Europe/Stockholm' )))->format('P');
             $events[] = \Calendar::event(
                 $project_time->workplace->name, //event title
-                false, //full day event?
+                'false', //full day event?
                 $project_time->date.'T'.$project_time->startstr().':00'.$tzstring,
                 $project_time->date.'T'.$project_time->endstr().':00'.$tzstring,
-                $project_time->id,
+                (string)$project_time->id,
                 [
                     'url' => '/projecttime/'.$project_time->id.'/edit',
                     'backgroundColor' => $project_time->color(),

@@ -65,7 +65,7 @@ class Workplace extends Model
 
     public function color(): String
     {
-        return '#'.substr(md5($this->id), 0, 6);
+        return '#'.substr(md5((string)$this->id), 0, 6);
     }
 
     public function ptusers($month)
@@ -88,8 +88,8 @@ class Workplace extends Model
     }
 
     public function left_to_level_3_attest_previous_month(): float {
-        $year = date('Y', strtotime("first day of previous month"));
-        $month = date('n', strtotime("first day of previous month"));
+        $year = (int)date('Y', strtotime("first day of previous month"));
+        $month = (int)date('n', strtotime("first day of previous month"));
         return $this->month_attested_time($month, $year, 1) - $this->month_attested_time($month, $year, 3);
     }
 

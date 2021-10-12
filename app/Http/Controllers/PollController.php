@@ -21,6 +21,7 @@ class PollController extends Controller
     }
 
     public function replicate(Poll $poll): RedirectResponse {
+        /** @var Poll $newPoll */
         $newPoll = $poll->replicateWithTranslations();
         $newPoll->translateOrDefault(\App::getLocale())->name .= ' - ' . __('kopia');
         $newPoll->push();

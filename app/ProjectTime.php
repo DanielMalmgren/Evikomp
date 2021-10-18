@@ -62,13 +62,13 @@ class ProjectTime extends Model
     public function color()
     {
         if($this->cancelled) {
-            return '#ffa500';
+            return '#ff812c';
         } elseif($this->no_teacher_available) {
             return '#7d3c98';
         } elseif($this->need_teacher && $this->teacher_id === null) {
             return '#ff0000';
         } else {
-            return '#00ff00';
+            return '#00ad00';
         }
     }
 

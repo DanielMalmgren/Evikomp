@@ -95,6 +95,7 @@ class TrackController extends Controller
         $track->save();
 
         logger("Track ".$track->id." is being created by ".Auth::user()->name);
+        activity()->on($track)->log('created');
 
         return $this->update($request, $track);
     }
@@ -125,6 +126,7 @@ class TrackController extends Controller
         $currentLocale = \App::getLocale();
         $user = Auth::user();
         logger("Track ".$track->id." is being edited by ".$user->name);
+        activity()->on($track)->log('edited');
 
         if($request->new_admins) {
             foreach($request->new_admins as $user_id) {

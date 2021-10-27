@@ -23,18 +23,29 @@
                 @lang('log.'.$logrow->description)
                     <a href="{{request()->fullUrlWithQuery(['description' => $logrow->description])}}"><i class="fas fa-filter"></i></a>
             </div>
-            <div class="col-lg-3 col-md-3 col-sm-2">
+            <div class="col-lg-6 col-md-6 col-sm-6">
                 @if(isset($logrow->subject_id))
                     @php
-                        $class = get_class($logrow->subject);
+                        if($logrow->subject)
+                            $class = get_class($logrow->subject);
+                        else
+                            $class = 'deleted';
                     @endphp
                     @switch($class)
                         @case('App\Lesson')
                             <a href="/lessons/{{$logrow->subject_id}}">{{$logrow->subject->translateOrDefault(App::getLocale())->name}}</a>
-                            <a href="{{request()->fullUrlWithQuery(['lesson' => $logrow->subject_id])}}"><i class="fas fa-filter"></i></a>
+                            <a href="{{request()->fullUrlWithQuery(['subject_id' => $logrow->subject_id, 'subject_type' => $logrow->subject_type])}}"><i class="fas fa-filter"></i></a>
                             @break
                         @case('App\Track')
-                            Second case...
+                            <a href="/tracks/{{$logrow->subject_id}}">{{$logrow->subject->translateOrDefault(App::getLocale())->name}}</a>
+                            <a href="{{request()->fullUrlWithQuery(['subject_id' => $logrow->subject_id, 'subject_type' => $logrow->subject_type])}}"><i class="fas fa-filter"></i></a>
+                            @break
+                        @case('App\Workplace')
+                            {{$logrow->subject->name}}
+                            <a href="{{request()->fullUrlWithQuery(['subject_id' => $logrow->subject_id, 'subject_type' => $logrow->subject_type])}}"><i class="fas fa-filter"></i></a>
+                            @break
+                        @case('deleted')
+                            @lang('Objektet har tagits bort')
                             @break
                         @default
                             Default case...

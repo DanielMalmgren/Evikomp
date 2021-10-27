@@ -40,6 +40,7 @@ class WorkplaceController extends Controller
         $workplace->save();
 
         logger("Workplace ".$workplace->name." is being created by ".Auth::user()->name);
+        activity()->on($workplace)->log('created');
 
         return $this->update($request, $workplace);
     }
@@ -111,6 +112,7 @@ class WorkplaceController extends Controller
         $workplace->save();
 
         logger("Workplace ".$workplace->name." is being edited by ".Auth::user()->name);
+        activity()->on($workplace)->log('edited');
 
         return redirect('/workplace')->with('success', 'Uppgifterna sparade');
     }
@@ -140,6 +142,8 @@ class WorkplaceController extends Controller
             }
         }
         logger('Destroying workplace '.$workplace->name);
+        activity()->on($workplace)->log('deleted');
+
         $workplace->delete();
     }
 }

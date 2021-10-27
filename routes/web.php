@@ -176,3 +176,6 @@ Route::post('/scormimport',                     'SCORMImportController@store');
 
 //TagController
 Route::get('/tags/{tag}',                       'TagController@show');
+
+//LogController
+Route::get('/log',                              'LogController@index');

@@ -41,6 +41,13 @@ function str_word_count_utf8(string $str, int $format = 0) {
     return count(preg_split('~[^\p{L}\p{N}\'-]+~u',$str));
 }
 
+function GmtTimeToLocalTime($time) {
+    date_default_timezone_set('UTC');
+    $new_date = new DateTime($time);
+    $new_date->setTimeZone(new DateTimeZone('Europe/Stockholm'));
+    return $new_date->format("Y-m-d H:i:s");
+}
+
 /*
 Handles month/year increment calculations in a safe way,
 avoiding the pitfall of 'fuzzy' month units.

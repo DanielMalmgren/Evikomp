@@ -123,6 +123,8 @@ class LessonController extends Controller
         $lesson->translateOrNew($currentLocale)->name = $request->name;
         $lesson->save();
 
+        activity()->on($lesson)->log('created');
+
         return $this->update($request, $lesson);
     }
 
@@ -251,6 +253,7 @@ class LessonController extends Controller
         $currentLocale = \App::getLocale();
         $user = Auth::user();
         logger("Lesson ".$lesson->id." is being edited by ".$user->name);
+        activity()->on($lesson)->log('edited');
 
         //Store this in a local variable. We'll have to replace all the temporary id's in it for real ones before we do the ordering
         $content_order = $request->content_order;
@@ -545,6 +548,8 @@ class LessonController extends Controller
         if(!$user->can('manage lessons') && $user->admin_tracks->where('id', $lesson->track->id)->where('pivot.is_editor', true)->isEmpty()) {
             abort(403);
         }
+
+        activity()->on($lesson)->log('deleted');
 
         $user = Auth::user();
         logger("Lesson ".$lesson->id." is being removed by ".$user->name);

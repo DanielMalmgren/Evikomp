@@ -70,5 +70,7 @@ class LoginListener
         session(['nameId' => $samluser->getNameId()]);
 
         \Auth::login($user);
+
+        activity()->log('logged_in');
     }
 }

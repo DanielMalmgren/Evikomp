@@ -28,10 +28,11 @@ class LogController extends Controller
                 ->when($subject_id, function ($query, $subject_id) use ($subject_type) {
                     return $query->where('subject_id', $subject_id)->where('subject_type', $subject_type);
                 })
-                ->get();
+                ->orderBy('created_at', 'desc')->simplePaginate(25);
 
         $data = [
             'logrows' => $logrows,
+            'filtered' => $user || $description || $subject_id || $subject_type,
         ];
         return view('log.index')->with($data);
     }

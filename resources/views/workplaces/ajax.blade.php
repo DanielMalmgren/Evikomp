@@ -118,6 +118,10 @@
     @can('add workplaces')
         <button type="button" class="btn btn-lg btn-danger" onclick="deleteworkplace()" {{$deleteable?'':'disabled'}}>@lang('Radera arbetsplats')</button>
     @endcan
+    @hasrole('Admin')
+        <a href="/log?subject_id={{$workplace->id}}&subject_type=App\Workplace" class="btn btn-secondary">@lang('Visa logg')</a>
+    @endhasrole
+
 </form>
 
 <link href="/select2/select2.min.css" rel="stylesheet" />

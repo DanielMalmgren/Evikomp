@@ -51,5 +51,8 @@
     @can('export track compilation')
         <a href="/tracks/{{$track->id}}/compilationxls" class="btn btn-secondary">@lang('Exportera resultat')</a>
     @endcan
+    @hasrole('Admin')
+        <a href="/log?subject_id={{$track->id}}&subject_type=App\Track" class="btn btn-secondary">@lang('Visa logg')</a>
+    @endhasrole
 
 @endsection

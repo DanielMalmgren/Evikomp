@@ -35,5 +35,8 @@
         <br><br>
         <a href="/users/impersonate/{{$user->id}}" class="btn btn-primary">@lang('Skifta till denna person')</a>
     @endCanImpersonate
+    @hasrole('Admin')
+        <a href="/log?user={{$user->id}}" class="btn btn-secondary">@lang('Visa logg')</a>
+    @endhasrole
 
 @endsection

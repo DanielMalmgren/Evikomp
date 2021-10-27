@@ -210,5 +210,9 @@
         <a href="/notificationreceivers/{{$lesson->id}}/edit" class="btn btn-primary">@lang('Redigera notifieringsmottagare')</a>
         <a href="/lessons/{{$lesson->id}}/replicate" class="btn btn-primary">@lang('Kopiera modulen')</a>
     @endif
+    @hasrole('Admin')
+        <a href="/log?subject_id={{$lesson->id}}&subject_type=App\Lesson" class="btn btn-secondary">@lang('Visa logg')</a>
+    @endhasrole
+
 
 @endsection

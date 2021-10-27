@@ -73,6 +73,7 @@
                                     @hasrole('Admin')
                                         <li aria-haspopup="false"><a href="/poll">@lang('Hantera enkäter')</a></li>
                                         <li aria-haspopup="false"><a href="/massmailing/create">@lang('Skicka e-post')</a></li>
+                                        <li aria-haspopup="false"><a href="/log">@lang('Visa logg')</a></li>
                                     @endhasrole
                                     @can('export ESF report')
                                         <li aria-haspopup="false"><a href="/timesummary">@lang('Sammanställning till ESF')</a></li>

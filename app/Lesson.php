@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use App\Interfaces\ModelInfo;
 
-class Lesson extends Model
+class Lesson extends Model implements ModelInfo
 {
     use \Astrotomic\Translatable\Translatable;
     use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
@@ -71,6 +72,21 @@ class Lesson extends Model
     public function project_times(): BelongsToMany
     {
         return $this->belongsToMany('App\ProjectTime');
+    }
+
+    public function modelName(): String
+    {
+        return $this->translateOrDefault(\App::getLocale())->name;
+    }
+
+    public function modelUrl(): String
+    {
+        return '/lessons/'.$this->id;
+    }
+
+    public function hasUrl(): bool
+    {
+        return true;
     }
 
     public function rating()

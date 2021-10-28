@@ -19,8 +19,16 @@ class LogController extends Controller
         $subject_id = $request->subject_id;
         $subject_type = $request->subject_type;
 
+        if($subject_type == "App\\User") {
+            $user = $subject_id;
+        }
+
         $logrows = Activity::when($user, function ($query, $user) {
-                    return $query->where('causer_id', $user);
+                    return $query->where('causer_id', $user)
+                        ->orWhere(function($query) use ($user) {
+                            $query->where('subject_id', $user)
+                                ->where('subject_type', "App\\User");
+                        });
                 })
                 ->when($description, function ($query, $description) {
                     return $query->where('description', $description);
@@ -28,7 +36,7 @@ class LogController extends Controller
                 ->when($subject_id, function ($query, $subject_id) use ($subject_type) {
                     return $query->where('subject_id', $subject_id)->where('subject_type', $subject_type);
                 })
-                ->orderBy('created_at', 'desc')->simplePaginate(25);
+                ->orderBy('created_at', 'desc')->simplePaginate(20);
 
         $data = [
             'logrows' => $logrows,

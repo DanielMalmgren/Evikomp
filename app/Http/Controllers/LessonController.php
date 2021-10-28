@@ -253,7 +253,7 @@ class LessonController extends Controller
         $currentLocale = \App::getLocale();
         $user = Auth::user();
         logger("Lesson ".$lesson->id." is being edited by ".$user->name);
-        activity()->on($lesson)->log('edited');
+        activity()->on($lesson)->log('updated');
 
         //Store this in a local variable. We'll have to replace all the temporary id's in it for real ones before we do the ordering
         $content_order = $request->content_order;

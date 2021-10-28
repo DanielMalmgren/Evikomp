@@ -3,6 +3,6 @@
 return [
     'deleted' => 'deleted',
     'created' => 'created',
-    'edited' => 'edited',
+    'updated' => 'edited',
     'logged_in' => 'logged in',
 ];

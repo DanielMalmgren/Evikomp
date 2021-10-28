@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\PollQuestion;
+use App\Interfaces\ModelInfo;
 
-class Poll extends Model
+class Poll extends Model implements ModelInfo
 {
     use \Astrotomic\Translatable\Translatable;
 
@@ -31,6 +32,21 @@ class Poll extends Model
     public function workplaces(): BelongsToMany
     {
         return $this->belongsToMany('App\Workplace', 'poll_workplace');
+    }
+
+    public function modelName(): String
+    {
+        return $this->translateOrDefault(\App::getLocale())->name;
+    }
+
+    public function modelUrl(): String
+    {
+        return '/poll/'.$this->id.'/edit';
+    }
+
+    public function hasUrl(): bool
+    {
+        return true;
     }
 
     public function users_count()

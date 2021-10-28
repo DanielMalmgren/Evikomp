@@ -112,7 +112,7 @@ class WorkplaceController extends Controller
         $workplace->save();
 
         logger("Workplace ".$workplace->name." is being edited by ".Auth::user()->name);
-        activity()->on($workplace)->log('edited');
+        activity()->on($workplace)->log('updated');
 
         return redirect('/workplace')->with('success', 'Uppgifterna sparade');
     }

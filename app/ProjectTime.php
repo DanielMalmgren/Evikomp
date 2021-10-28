@@ -7,9 +7,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\LessonResult;
+use Spatie\Activitylog\Traits\LogsActivity;
+use App\Interfaces\ModelInfo;
 
-class ProjectTime extends Model
+class ProjectTime extends Model implements ModelInfo
 {
+    use LogsActivity;
+
     //The workplace having this project time
     public function workplace(): BelongsTo
     {
@@ -56,6 +60,21 @@ class ProjectTime extends Model
     public function lessons(): BelongsToMany
     {
         return $this->belongsToMany('App\Lesson');
+    }
+
+    public function modelName(): String
+    {
+        return $this->date.' '.$this->startstr().' - '.$this->endstr();
+    }
+
+    public function modelUrl(): String
+    {
+        return '/projecttime/'.$this->id.'/edit';
+    }
+
+    public function hasUrl(): bool
+    {
+        return true;
     }
 
     //Return the color of this project time (in hex), which depends on it's status

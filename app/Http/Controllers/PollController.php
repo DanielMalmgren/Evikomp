@@ -74,6 +74,8 @@ class PollController extends Controller
         $poll = new Poll();
         $poll->save();
 
+        activity()->on($poll)->log('created');
+
         return $this->update($request, $poll);
     }
 
@@ -91,6 +93,7 @@ class PollController extends Controller
         $currentLocale = \App::getLocale();
         $user = Auth::user();
         logger("Poll ".$poll->id." is being edited by ".$user->name);
+        activity()->on($poll)->log('updated');
 
         $poll->translateOrNew($currentLocale)->name = $request->name;
         $poll->translateOrNew($currentLocale)->infotext = $request->infotext;

@@ -62,6 +62,8 @@ class SettingsController extends Controller
             abort(403);
         }
 
+        activity()->on($user)->log('updated');
+
         $this->validate($request, [
             'workplace' => 'required',
             'email' => 'required|email|unique:users,email,'.$user->id,

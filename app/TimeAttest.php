@@ -5,9 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\Activitylog\Traits\LogsActivity;
+use App\Interfaces\ModelInfo;
 
-class TimeAttest extends Model
+class TimeAttest extends Model implements ModelInfo
 {
+    use LogsActivity;
+
     public function user(): BelongsTo
     {
         return $this->belongsTo('App\User');
@@ -26,6 +30,21 @@ class TimeAttest extends Model
     public function from_list_by_user(): BelongsTo
     {
         return $this->belongsTo('App\User', 'from_list_by', 'id');
+    }
+
+    public function modelName(): String
+    {
+        return _('Attest för ').$this->user->name;
+    }
+
+    public function modelUrl(): String
+    {
+        return '';
+    }
+
+    public function hasUrl(): bool
+    {
+        return false;
     }
 
     public function scopeGender(Builder $query, string $gender): ?Builder

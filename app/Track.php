@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Lesson;
+use App\Interfaces\ModelInfo;
 
-class Track extends Model
+class Track extends Model implements ModelInfo
 {
     use \Astrotomic\Translatable\Translatable;
     use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
@@ -33,6 +34,21 @@ class Track extends Model
     public function track_admins(): BelongsToMany
     {
         return $this->belongsToMany('App\User', 'track_admins')->withPivot('is_editor');
+    }
+
+    public function modelName(): String
+    {
+        return $this->translateOrDefault(\App::getLocale())->name;
+    }
+
+    public function modelUrl(): String
+    {
+        return '/tracks/'.$this->id;
+    }
+
+    public function hasUrl(): bool
+    {
+        return true;
     }
 
     //Returns all users that has finished any module within this track

@@ -155,6 +155,7 @@ class UsersController extends Controller
         $user->save();
 
         logger($user->name." is created by ".Auth::user()->name);
+        activity()->on($user)->log('created');
 
         return redirect('/')->with('success', __('Användaren har skapats'));
     }

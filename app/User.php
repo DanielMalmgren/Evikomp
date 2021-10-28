@@ -12,8 +12,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Lesson;
+use App\Interfaces\ModelInfo;
 
-class User extends Authenticatable
+class User extends Authenticatable implements ModelInfo
 {
     use \Lab404\Impersonate\Models\Impersonate;
     use HasFactory;
@@ -113,6 +114,21 @@ class User extends Authenticatable
     public function lesson_lists()
     {
         return $this->morphToMany('App\LessonList', 'listable');
+    }
+
+    public function modelName(): String
+    {
+        return $this->name;
+    }
+
+    public function modelUrl(): String
+    {
+        return '/users/'.$this->id;
+    }
+
+    public function hasUrl(): bool
+    {
+        return true;
     }
 
     //Get all lesson lists assigned to this user or to this user's workplace

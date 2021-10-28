@@ -126,7 +126,7 @@ class TrackController extends Controller
         $currentLocale = \App::getLocale();
         $user = Auth::user();
         logger("Track ".$track->id." is being edited by ".$user->name);
-        activity()->on($track)->log('edited');
+        activity()->on($track)->log('updated');
 
         if($request->new_admins) {
             foreach($request->new_admins as $user_id) {

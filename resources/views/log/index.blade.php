@@ -13,7 +13,7 @@
 
             @forelse($logrows as $logrow)
                 <tr>
-                    <td style="max-width:100px">
+                    <td style="max-width:200px">
                         {{GmtTimeToLocalTime($logrow->created_at)}}
                     </td>
                     <td>
@@ -28,29 +28,20 @@
                     </td>
                     <td>
                         @if(isset($logrow->subject_id))
-                            @php
-                                if($logrow->subject)
-                                    $class = get_class($logrow->subject);
-                                else
-                                    $class = 'deleted';
-                            @endphp
-                            @switch($class)
-                                @case('App\Lesson')
-                                    <a href="/lessons/{{$logrow->subject_id}}">{{$logrow->subject->translateOrDefault(App::getLocale())->name}}</a>
+                            @if($logrow->subject)
+                                @if($logrow->subject instanceof \App\Interfaces\ModelInfo)
+                                    @if($logrow->subject->hasUrl())
+                                        <a href="{{$logrow->subject->modelUrl()}}">{{$logrow->subject->modelName()}}</a>
+                                    @else
+                                        {{$logrow->subject->modelName()}}
+                                    @endif
                                     <a href="{{request()->fullUrlWithQuery(['subject_id' => $logrow->subject_id, 'subject_type' => $logrow->subject_type, 'page' => null])}}"><i class="fas fa-filter"></i></a>
-                                    @break
-                                @case('App\Track')
-                                    <a href="/tracks/{{$logrow->subject_id}}">{{$logrow->subject->translateOrDefault(App::getLocale())->name}}</a>
-                                    <a href="{{request()->fullUrlWithQuery(['subject_id' => $logrow->subject_id, 'subject_type' => $logrow->subject_type, 'page' => null])}}"><i class="fas fa-filter"></i></a>
-                                    @break
-                                @case('App\Workplace')
-                                    {{$logrow->subject->name}}
-                                    <a href="{{request()->fullUrlWithQuery(['subject_id' => $logrow->subject_id, 'subject_type' => $logrow->subject_type, 'page' => null])}}"><i class="fas fa-filter"></i></a>
-                                    @break
-                                @case('deleted')
-                                    @lang('Objektet har tagits bort')
-                                    @break
-                            @endswitch
+                                @else
+                                    Okänd objektstyp!
+                                @endif
+                            @else
+                                @lang('Objektet har tagits bort')
+                            @endif
                         @endif
                     </td>
                 </tr>

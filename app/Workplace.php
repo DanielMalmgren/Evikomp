@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
+use App\Interfaces\ModelInfo;
 
-class Workplace extends Model
+class Workplace extends Model implements ModelInfo
 {
     use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
@@ -61,7 +62,22 @@ class Workplace extends Model
     public function lesson_lists()
     {
         return $this->morphToMany('App\LessonList', 'listable');
-    }    
+    }
+
+    public function modelName(): String
+    {
+        return $this->name;
+    }
+
+    public function modelUrl(): String
+    {
+        return '';
+    }
+
+    public function hasUrl(): bool
+    {
+        return false;
+    }
 
     public function color(): String
     {

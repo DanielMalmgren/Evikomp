@@ -45,7 +45,7 @@ class WorkplaceController extends Controller
         return $this->update($request, $workplace);
     }
 
-    public function edit() {
+    public function edit(Request $request) {
         if (Auth::user()->hasRole('Admin')) {
             $workplaces = Workplace::all()->sortBy('name');
         } else {
@@ -57,6 +57,7 @@ class WorkplaceController extends Controller
             'workplaces' => $workplaces,
             'tracks' => $tracks,
             'workplace_types' => $workplace_types,
+            'prechosen_workplace' => $request->workplace,
         ];
 
         return view('workplaces.edit')->with($data);

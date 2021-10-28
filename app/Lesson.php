@@ -76,7 +76,7 @@ class Lesson extends Model implements ModelInfo
 
     public function modelName(): String
     {
-        return $this->translateOrDefault(\App::getLocale())->name;
+        return substr($this->translateOrDefault(\App::getLocale())->name, 0, 50);
     }
 
     public function modelUrl(): String

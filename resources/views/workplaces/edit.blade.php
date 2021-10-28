@@ -11,7 +11,7 @@
         $('#workplace').change(function(){
             var selectedValue = $(this).val();
             $("#settings").load("/workplaceajax/" + selectedValue);
-        });
+        }){{$prechosen_workplace?".change()":""}};
     });
 </script>
 
@@ -26,7 +26,7 @@
         <select class="custom-select d-block w-100" id="workplace" name="workplace" required="">
             <option disabled selected>Välj arbetsplats...</option>
             @foreach($workplaces as $workplace)
-                <option value="{{$workplace->id}}">{{$workplace->name}} ({{$workplace->municipality->name}})</option>
+                <option {{$prechosen_workplace==$workplace->id?"selected":""}} value="{{$workplace->id}}">{{$workplace->name}} ({{$workplace->municipality->name}})</option>
             @endforeach
         </select>
     @endif

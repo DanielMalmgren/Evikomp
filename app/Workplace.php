@@ -71,12 +71,12 @@ class Workplace extends Model implements ModelInfo
 
     public function modelUrl(): String
     {
-        return '';
+        return '/workplace?workplace='.$this->id;
     }
 
     public function hasUrl(): bool
     {
-        return false;
+        return true;
     }
 
     public function color(): String

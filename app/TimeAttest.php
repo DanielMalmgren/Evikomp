@@ -39,12 +39,12 @@ class TimeAttest extends Model implements ModelInfo
 
     public function modelUrl(): String
     {
-        return '';
+        return '/users/'.$this->user->id;
     }
 
     public function hasUrl(): bool
     {
-        return false;
+        return true;
     }
 
     public function scopeGender(Builder $query, string $gender): ?Builder
